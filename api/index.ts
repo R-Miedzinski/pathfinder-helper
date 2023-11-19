@@ -6,8 +6,6 @@ import connectDB from './config/db'
 
 import Router from './routes'
 
-const test = 'asd';
-
 //For env File
 dotenv.config()
 

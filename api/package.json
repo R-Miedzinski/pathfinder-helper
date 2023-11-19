@@ -13,9 +13,7 @@
     "format:check": "prettier --check .",
     "format:write": "prettier --write .",
     "lint:check": "eslint .",
-    "lint:fix": "eslint --fix .",
-    "prepare": "cd .. && husky install api/.husky",
-    "lint-front": "lint-staged"
+    "lint:fix": "eslint --fix ."
   },
   "nodemonConfig": {
     "ext": "ts",
@@ -51,13 +49,5 @@
     "prettier": "^3.0.3",
     "ts-node-dev": "^2.0.0",
     "typescript": "^5.2.2"
-  },
-  "lint-staged": {
-    "*.{js,ts,tsx, jsx}": [
-      "eslint ."
-    ],
-    "*.{json,md,html,js,jsx,ts,tsx}": [
-      "prettier --check"
-    ]
   }
 }
