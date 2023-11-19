@@ -2,6 +2,13 @@
 
 Witam degeneratów
 
+## Porty
+
+- http://localhost:8000 - Web
+- http://localhost:8001 - Api
+- http://localhost:8002 - Taki panel wizualny dla edycji bazy danych (admin/admin)
+
+
 ## Docker
 
 W celu postawienia projektu wymagane sa:
