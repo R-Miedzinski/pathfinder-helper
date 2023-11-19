@@ -14,7 +14,7 @@ const port = process.env.PORT || 8001
 
 app.use(express.json())
 app.use(morgan('tiny'))
-app.use(express.static('public'))
+app.use(express.static(' public'))
 
 connectDB();
 
