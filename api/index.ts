@@ -6,6 +6,8 @@ import connectDB from './config/db'
 
 import Router from './routes'
 
+const test = 'asd';
+
 //For env File
 dotenv.config()
 
@@ -14,7 +16,7 @@ const port = process.env.PORT || 8001
 
 app.use(express.json())
 app.use(morgan('tiny'))
-app.use(express.static(' public'))
+app.use(express.static('public'))
 
 connectDB();
 
