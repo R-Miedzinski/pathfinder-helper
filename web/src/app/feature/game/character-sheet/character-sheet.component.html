@@ -1,0 +1,27 @@
+<mat-tab-group>
+  <mat-tab label="Main Page">
+    <div class="container">
+      <mat-grid-list cols="4" rowHeight="10rem">
+        <mat-grid-tile [colspan]="1" [rowspan]="3">
+          <app-ability-scores></app-ability-scores>
+        </mat-grid-tile>
+        <mat-grid-tile [colspan]="2" [rowspan]="1">
+          <app-various-stats></app-various-stats>
+        </mat-grid-tile>
+        <mat-grid-tile [colspan]="1" [rowspan]="1">
+          <app-health></app-health>
+        </mat-grid-tile>
+        <mat-grid-tile [colspan]="1" [rowspan]="2">
+          <app-skills></app-skills>
+        </mat-grid-tile>
+        <mat-grid-tile [colspan]="2" [rowspan]="2">
+          <app-inventory></app-inventory>
+        </mat-grid-tile>
+      </mat-grid-list>
+    </div>
+  </mat-tab>
+  <mat-tab label="Second page">
+    <p>Some other character sheet page, RP, story</p></mat-tab
+  >
+  <mat-tab label="Spell Book"> <p>Spell book page</p> </mat-tab>
+</mat-tab-group>

@@ -1,0 +1,10 @@
+<button (click)="navigateTo('')">Main</button>
+<br />
+<button (click)="navigateTo('info')">Info</button>
+<br />
+<button (click)="navigateTo('user')">User</button>
+<br />
+<br />
+<input [(ngModel)]="routeToNavigate" placeholder="Enter route" value="" />
+<br />
+<button (click)="navigateTo(routeToNavigate)">Entered Route</button>
