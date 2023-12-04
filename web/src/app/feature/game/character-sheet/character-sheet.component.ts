@@ -1,28 +1,34 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { GameState } from '../ngrx/game-reducer';
+import { Observable, Subject, takeUntil } from 'rxjs';
+import { Character } from '../models/character';
+import * as GameSelectors from '../ngrx/game-selector';
 
 @Component({
   selector: 'app-character-sheet',
   templateUrl: './character-sheet.component.html',
   styleUrls: ['./character-sheet.component.scss'],
 })
-export class CharacterSheetComponent implements OnInit {
-  character: any = null;
+export class CharacterSheetComponent implements OnInit, OnDestroy {
+  private readonly ngDestroyed$: Subject<void> = new Subject();
+  character: Character = {} as Character;
+
+  constructor(private store: Store<GameState>) {}
 
   ngOnInit(): void {
-    this.character = {
-      name: 'Character name',
-      // class names in enum?
-      class: 'className',
-      level: 69,
-      abilityScores: {
-        // put abilities to enum?
-        strength: 10,
-        dexterity: 10,
-        constitution: 10,
-        intelligence: 10,
-        wisdom: 10,
-        charisma: 10,
-      },
-    };
+    this.store
+      .select(GameSelectors.getCharacter)
+      .pipe(takeUntil(this.ngDestroyed$))
+      .subscribe({
+        next: (character: Character) => {
+          this.character = character;
+        },
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.ngDestroyed$.next();
+    this.ngDestroyed$.complete();
   }
 }

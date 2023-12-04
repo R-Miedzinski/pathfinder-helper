@@ -11,6 +11,9 @@ import { SkillsComponent } from './skills/skills.component';
 import { HealthComponent } from './health/health.component';
 import { VariousStatsComponent } from './various-stats/various-stats.component';
 import { InventoryComponent } from './inventory/inventory.component';
+import { GameDataService } from './services/game-data.service';
+import { StoreModule } from '@ngrx/store';
+import { gameFeature } from './ngrx/game-reducer';
 
 @NgModule({
   declarations: [
@@ -24,6 +27,12 @@ import { InventoryComponent } from './inventory/inventory.component';
     VariousStatsComponent,
     InventoryComponent,
   ],
-  imports: [GameRoutingModule, SharedModule, ReactiveFormsModule],
+  providers: [GameDataService],
+  imports: [
+    GameRoutingModule,
+    SharedModule,
+    ReactiveFormsModule,
+    StoreModule.forFeature(gameFeature),
+  ],
 })
 export class GameModule {}

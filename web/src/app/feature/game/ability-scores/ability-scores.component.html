@@ -1,1 +1,4 @@
 <p>ability-scores works!</p>
+<p *ngFor="let ability of abilityScores | keyvalue : keepOrder">
+  {{ ability.key }}: {{ ability.value }}
+</p>

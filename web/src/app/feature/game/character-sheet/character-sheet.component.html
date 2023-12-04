@@ -3,7 +3,8 @@
     <div class="container">
       <mat-grid-list cols="4" rowHeight="10rem">
         <mat-grid-tile [colspan]="1" [rowspan]="3">
-          <app-ability-scores></app-ability-scores>
+          <app-ability-scores
+            [abilityScores]="character.abilities"></app-ability-scores>
         </mat-grid-tile>
         <mat-grid-tile [colspan]="2" [rowspan]="1">
           <app-various-stats></app-various-stats>
