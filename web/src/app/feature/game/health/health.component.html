@@ -1,1 +1,28 @@
-<p>health works!</p>
+<div class="hp">
+  <div class="hp__row">
+    <button mat-raised-button class="hp__short-rest">Short Rest</button>
+    <button mat-raised-button class="hp__long-rest">Long Rest</button>
+  </div>
+  <div class="hp__row">
+    <div class="hp__item hp__current">
+      <span class="hp__value">{{ health.current }}</span>
+    </div>
+    <div class="hp__item hp__maximum">
+      <span class="hp__value">{{ health.maximum }}</span>
+    </div>
+    <div class="hp__item hp__temp">
+      <span class="hp__value">{{ health.temporary }}</span>
+    </div>
+  </div>
+  <form class="hp__row" (ngSubmit)="hpChangeHandler()" #hpForm="ngForm">
+    <div class="hp__input">
+      <mat-form-field>
+        <mat-label>Change in health</mat-label>
+        <input type="number" [(ngModel)]="hpChange" name="hpChange" matInput />
+        <button matSuffix mat-raised-button class="hp__change" type="submit">
+          Apply
+        </button>
+      </mat-form-field>
+    </div>
+  </form>
+</div>

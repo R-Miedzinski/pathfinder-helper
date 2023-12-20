@@ -14,6 +14,8 @@ import { InventoryComponent } from './inventory/inventory.component';
 import { GameDataService } from './services/game-data.service';
 import { StoreModule } from '@ngrx/store';
 import { gameFeature } from './ngrx/game-reducer';
+import { AbilityPipePipe } from './pipes/ability-pipe.pipe';
+import { AbilityModifierPipe } from './pipes/ability-modifier.pipe';
 
 @NgModule({
   declarations: [
@@ -26,6 +28,8 @@ import { gameFeature } from './ngrx/game-reducer';
     HealthComponent,
     VariousStatsComponent,
     InventoryComponent,
+    AbilityPipePipe,
+    AbilityModifierPipe,
   ],
   providers: [GameDataService],
   imports: [

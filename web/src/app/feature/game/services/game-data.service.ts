@@ -4,6 +4,7 @@ import { Observable, of } from 'rxjs';
 import { Character } from '../models/character';
 import { environment } from 'src/environment/environment';
 import { CharacterClassName } from '../models/character-class';
+import { Proficiency } from '../models/proficiency';
 
 @Injectable()
 export class GameDataService {
@@ -26,16 +27,17 @@ const characterMock: Character = {
   race: {},
   level: 1,
   abilities: {
-    str: 10,
-    dex: 11,
+    str: 7,
+    dex: 9,
     con: 12,
-    int: 13,
+    int: 20,
     wis: 14,
     cha: 15,
   },
   hp: {
     current: 20,
     maximum: 25,
+    temporary: 0,
   },
   speed: {
     base: 30,
@@ -56,5 +58,21 @@ const characterMock: Character = {
   baseAttackBonus: 81,
   cmb: 82,
   cmd: 83,
-  skills: [],
+  skills: [
+    {
+      name: 'skill1',
+      level: Proficiency.T,
+      value: 5,
+    },
+    {
+      name: 'skill2',
+      level: Proficiency.E,
+      value: 10,
+    },
+    {
+      name: 'skill3',
+      level: Proficiency.U,
+      value: 1,
+    },
+  ],
 };

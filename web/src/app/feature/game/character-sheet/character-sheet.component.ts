@@ -1,9 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { GameState } from '../ngrx/game-reducer';
-import { Observable, Subject, takeUntil } from 'rxjs';
+import * as GameActions from '../ngrx/game-actions';
+import { Subject, takeUntil } from 'rxjs';
 import { Character } from '../models/character';
 import * as GameSelectors from '../ngrx/game-selector';
+import { cloneDeep } from 'lodash';
 
 @Component({
   selector: 'app-character-sheet',
@@ -30,5 +32,30 @@ export class CharacterSheetComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.ngDestroyed$.next();
     this.ngDestroyed$.complete();
+  }
+
+  public handleHealthChange(value: number): void {
+    const newHP = cloneDeep(this.character.hp);
+
+    if (value > 0) {
+      this.store.dispatch(
+        GameActions.saveHealthAction({
+          hp:
+            newHP.current + value <= newHP.maximum
+              ? { ...newHP, current: newHP.current + value }
+              : { ...newHP, current: newHP.maximum },
+        })
+      );
+    } else {
+      newHP.temporary > -value
+        ? (newHP.temporary -= -value)
+        : ((newHP.current -= -value - newHP.temporary), (newHP.temporary = 0));
+      newHP.current = newHP.current <= 0 ? 0 : newHP.current;
+      this.store.dispatch(
+        GameActions.saveHealthAction({
+          hp: newHP,
+        })
+      );
+    }
   }
 }

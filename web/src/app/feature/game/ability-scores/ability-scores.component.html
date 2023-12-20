@@ -1,4 +1,11 @@
-<p>ability-scores works!</p>
-<p *ngFor="let ability of abilityScores | keyvalue : keepOrder">
-  {{ ability.key }}: {{ ability.value }}
-</p>
+<div class="ability__list">
+  <div
+    class="ability__card"
+    *ngFor="let ability of abilityScores | keyvalue : keepOrderLocal">
+    <span class="ability__key">{{ ability.key | abilityPipe }}</span
+    ><span class="ability__value"> {{ ability.value }}</span>
+    <span class="ability__modifier">
+      {{ ability.value | abilityModifier }}</span
+    >
+  </div>
+</div>

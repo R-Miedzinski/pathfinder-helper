@@ -1,22 +1,28 @@
 <mat-tab-group>
   <mat-tab label="Main Page">
     <div class="container">
-      <mat-grid-list cols="4" rowHeight="10rem">
+      <mat-grid-list cols="4" rowHeight="12rem">
         <mat-grid-tile [colspan]="1" [rowspan]="3">
           <app-ability-scores
+            class="grid-field"
             [abilityScores]="character.abilities"></app-ability-scores>
         </mat-grid-tile>
         <mat-grid-tile [colspan]="2" [rowspan]="1">
-          <app-various-stats></app-various-stats>
+          <app-various-stats class="grid-field"></app-various-stats>
         </mat-grid-tile>
         <mat-grid-tile [colspan]="1" [rowspan]="1">
-          <app-health></app-health>
+          <app-health
+            [health]="character.hp"
+            (healthChange)="handleHealthChange($event)"
+            class="grid-field"></app-health>
         </mat-grid-tile>
         <mat-grid-tile [colspan]="1" [rowspan]="2">
-          <app-skills></app-skills>
+          <app-skills
+            class="grid-field"
+            [skills]="character.skills"></app-skills>
         </mat-grid-tile>
         <mat-grid-tile [colspan]="2" [rowspan]="2">
-          <app-inventory></app-inventory>
+          <app-inventory class="grid-field"></app-inventory>
         </mat-grid-tile>
       </mat-grid-list>
     </div>

@@ -1,0 +1,70 @@
+.hp {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 0.4rem;
+
+  text-align: center;
+  padding: 0 0.8rem;
+
+  &__row {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+  }
+
+  form {
+    margin: 0.8rem 0;
+    // max-width: 16rem;
+    width: 80%;
+
+    align-self: center;
+  }
+
+  &__item {
+    width: 2.4rem;
+    height: 2.4rem;
+    line-height: 2.4rem;
+    border: 1px solid black;
+
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__value {
+    font-size: 1.6rem;
+  }
+
+  &__current {
+    color: red;
+  }
+
+  &__maximum {
+    color: coral;
+  }
+
+  &__temp {
+    color: aqua;
+  }
+
+  &__short-rest {
+  }
+
+  &__long-rest {
+  }
+
+  &__input {
+    font-size: 1rem;
+    display: flex;
+    flex-direction: column;
+    min-width: 8rem;
+  }
+
+  &__change {
+    font-size: 0.8rem;
+
+    width: 1.2rem;
+    height: 1.2rem;
+    margin-top: 1.6rem;
+  }
+}

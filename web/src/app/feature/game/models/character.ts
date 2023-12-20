@@ -1,4 +1,5 @@
 import { CharacterClass } from './character-class';
+import { HP } from './hp';
 import { Race } from './race';
 import { Skill } from './skill';
 
@@ -15,10 +16,7 @@ export interface Character {
     wis: number;
     cha: number;
   };
-  hp: {
-    current: number;
-    maximum: number;
-  };
+  hp: HP;
   speed: {
     base: number;
     armored?: number;
