@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { Abilities } from '../models/abilities';
+import { Abilities } from '../models/classes/abilities';
 
 @Pipe({
   name: 'abilityPipe',

@@ -1,14 +1,32 @@
+<div>
+  <span>Name: {{ character.characterName }} </span>
+  <span>Level: {{ character.level }} </span>
+  <span>Class: {{ character.class.name }} </span>
+  <span>Race: {{ character.race }}</span>
+  <span *ngFor="let feat of character.class.feats"
+    >{{ feat.name }}
+    <ng-container *ngFor="let prerequisite of feat.prerequisits"
+      >{{ prerequisite.name }}:
+      {{ prerequisite.condition(character) }}</ng-container
+    ></span
+  >
+</div>
 <mat-tab-group>
   <mat-tab label="Main Page">
     <div class="container">
-      <mat-grid-list cols="4" rowHeight="12rem">
+      <mat-grid-list cols="4" rowHeight="12.8rem">
         <mat-grid-tile [colspan]="1" [rowspan]="3">
           <app-ability-scores
             class="grid-field"
             [abilityScores]="character.abilities"></app-ability-scores>
         </mat-grid-tile>
         <mat-grid-tile [colspan]="2" [rowspan]="1">
-          <app-various-stats class="grid-field"></app-various-stats>
+          <app-various-stats
+            [speed]="character.speed"
+            [initiativeMod]="character.initiativeMod"
+            [armorClass]="character.armorClass"
+            [savingThrows]="character.savingThrows"
+            class="grid-field"></app-various-stats>
         </mat-grid-tile>
         <mat-grid-tile [colspan]="1" [rowspan]="1">
           <app-health
@@ -22,7 +40,11 @@
             [skills]="character.skills"></app-skills>
         </mat-grid-tile>
         <mat-grid-tile [colspan]="2" [rowspan]="2">
-          <app-inventory class="grid-field"></app-inventory>
+          <app-inventory
+            class="grid-field"
+            [inventory]="character.inventory"
+            [equippedItems]="character.equippedItems"
+            [investedItems]="character.investedItems"></app-inventory>
         </mat-grid-tile>
       </mat-grid-list>
     </div>
@@ -30,5 +52,11 @@
   <mat-tab label="Second page">
     <p>Some other character sheet page, RP, story</p></mat-tab
   >
-  <mat-tab label="Spell Book"> <p>Spell book page</p> </mat-tab>
+  <mat-tab label="Spell Book">
+    <div class="spell-book">
+      <app-spell
+        *ngFor="let spell of character.spells"
+        [spell]="spell"></app-spell>
+    </div>
+  </mat-tab>
 </mat-tab-group>

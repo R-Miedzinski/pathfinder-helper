@@ -1,0 +1,57 @@
+.spell {
+  margin: 0.8rem 1.6rem;
+  border: 1px solid black;
+
+  &__header {
+    margin: 0.4rem;
+    margin-bottom: 0;
+
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &__name {
+    font-size: 0.8rem;
+    font-weight: bold;
+  }
+
+  &__level {
+    font-size: 0.8rem;
+    font-weight: bold;
+
+    text-transform: uppercase;
+  }
+
+  &__traits {
+    padding: 0.2rem 0.4rem 0;
+    display: flex;
+    justify-content: flex-start;
+    gap: 0.2rem;
+  }
+
+  &__trait {
+    padding: 0.2rem 0.4rem;
+    border: 1px solid black;
+  }
+
+  &__properties {
+    padding: 0.4rem 0.8rem 0;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+  }
+
+  &__property {
+    &-label {
+      font-weight: bold;
+    }
+  }
+
+  &__description {
+    padding: 0.4rem 0.8rem 0;
+  }
+
+  &__heightened {
+    padding: 0.4rem 0.8rem 0;
+  }
+}

@@ -1,0 +1,55 @@
+<div class="spell">
+  <div class="spell__header">
+    <span class="spell__name">{{ spell.name }}</span>
+    <span class="spell__level">{{ spell.type }} {{ spell.level }}</span>
+  </div>
+  <mat-divider></mat-divider>
+  <div class="spell__traits">
+    <ng-container *ngIf="spell.traits?.length">
+      <div class="spell__trait" *ngFor="let trait of spell.traits">
+        {{ trait }}
+      </div>
+    </ng-container>
+    <div class="spell__trait">
+      {{ spell.school }}
+    </div>
+  </div>
+  <div class="spell__properties">
+    <div class="spell__property">
+      <span class="spell__property-label">Tradition:</span>
+      {{ spell.tradition }}
+    </div>
+    <div
+      class="spell__property"
+      *ngIf="spell.castTime !== undefined || spell.castRequirenments">
+      <span class="spell__property-label">Cast:</span> {{ spell.castTime
+      }}{{ spell.castRequirenments }}
+    </div>
+    <div class="spell__property" *ngIf="spell.range">
+      <span class="spell__property-label">Range:</span> {{ spell.range }}
+      <ng-container *ngIf="spell.area">
+        <span class="spell__property-label">Area:</span> {{ spell.area }}
+      </ng-container>
+      <ng-container *ngIf="spell.target">
+        <span class="spell__property-label">Target:</span> {{ spell.target }}
+      </ng-container>
+    </div>
+    <div class="spell_property" *ngIf="spell.savingThrow">
+      <span class="spell__property-label">Saving Throw:</span>
+      {{ spell.savingThrow }}
+    </div>
+    <div class="spell_property" *ngIf="spell.duration">
+      <span class="spell__property-label">Duration:</span> {{ spell.duration }}
+    </div>
+  </div>
+  <mat-divider></mat-divider>
+  <div class="spell__description">
+    <span>{{ spell.description }}</span>
+  </div>
+  <ng-container *ngIf="spell.descriptionHeightened">
+    <mat-divider></mat-divider>
+    <div class="spell__heightened">
+      <span>Heightened:</span> {{ spell.descriptionHeightened }}
+    </div>
+  </ng-container>
+</div>

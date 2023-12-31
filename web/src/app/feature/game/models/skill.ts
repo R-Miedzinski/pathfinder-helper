@@ -1,7 +1,11 @@
-import { Proficiency } from './proficiency';
+import { Abilities } from './classes/abilities';
+import { Proficiency } from './enums/proficiency';
+import { Skills } from './enums/skills';
 
 export interface Skill {
-  name: string;
+  name: Skills;
   level: Proficiency;
   value: number;
+  ability: keyof Abilities;
+  specialty?: string;
 }

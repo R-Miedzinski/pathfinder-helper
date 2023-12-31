@@ -5,6 +5,7 @@
     <span class="ability__key">{{ ability.key | abilityPipe }}</span
     ><span class="ability__value"> {{ ability.value }}</span>
     <span class="ability__modifier">
+      {{ ability.value | cast : Number | modifierPlusMinus }}
       {{ ability.value | abilityModifier }}</span
     >
   </div>

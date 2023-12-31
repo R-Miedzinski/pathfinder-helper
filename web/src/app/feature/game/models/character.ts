@@ -1,7 +1,11 @@
+import { extend } from 'lodash';
 import { CharacterClass } from './character-class';
 import { HP } from './hp';
-import { Race } from './race';
+import { Item } from './item';
+import { Race } from './enums/race';
 import { Skill } from './skill';
+import { Spell } from './spell';
+import { EquipmentSlots } from './classes/equipment-slots';
 
 export interface Character {
   characterName: string;
@@ -37,4 +41,9 @@ export interface Character {
   cmb?: number;
   cmd?: number;
   skills: Skill[];
+  inventory: Item[];
+  spells?: Spell[];
+  equipment?: EquipmentSlots;
+  equippedItems?: { item: string; quantity: number }[];
+  investedItems?: { item: string; quantity: number }[];
 }

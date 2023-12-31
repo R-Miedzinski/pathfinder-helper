@@ -6,6 +6,12 @@ import { Subject, takeUntil } from 'rxjs';
 import { Character } from '../models/character';
 import * as GameSelectors from '../ngrx/game-selector';
 import { cloneDeep } from 'lodash';
+import { AbilityModifierPipe } from '../pipes/ability-modifier.pipe';
+import { Proficiency } from '../models/enums/proficiency';
+import { Armor } from '../models/armor';
+import { Item } from '../models/item';
+import { ItemType } from '../models/enums/item-type';
+import { Weapon } from '../models/weapon';
 
 @Component({
   selector: 'app-character-sheet',
@@ -14,11 +20,12 @@ import { cloneDeep } from 'lodash';
 })
 export class CharacterSheetComponent implements OnInit, OnDestroy {
   private readonly ngDestroyed$: Subject<void> = new Subject();
+  private abilityModifierPipe: AbilityModifierPipe = new AbilityModifierPipe();
   character: Character = {} as Character;
 
   constructor(private store: Store<GameState>) {}
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.store
       .select(GameSelectors.getCharacter)
       .pipe(takeUntil(this.ngDestroyed$))
@@ -27,6 +34,12 @@ export class CharacterSheetComponent implements OnInit, OnDestroy {
           this.character = character;
         },
       });
+
+    this.calculateInitiative();
+    this.calculateArmorClass();
+    this.calculateSavingThrows();
+    this.calculateSkillBonus();
+    this.applyEquipmentStats();
   }
 
   ngOnDestroy(): void {
@@ -57,5 +70,110 @@ export class CharacterSheetComponent implements OnInit, OnDestroy {
         })
       );
     }
+  }
+
+  private calculateInitiative(): void {
+    const newInititative = this.abilityModifierPipe.transform(
+      this.character.abilities.dex
+    );
+    this.store.dispatch(
+      GameActions.saveInitiativeAction({ initiativeMod: newInititative })
+    );
+  }
+
+  private calculateArmorClass(): void {
+    const newAC =
+      10 + this.abilityModifierPipe.transform(this.character.abilities.dex);
+    this.store.dispatch(
+      GameActions.saveArmorClassAction({ armorClass: newAC })
+    );
+  }
+
+  private calculateSkillBonus(): void {
+    for (let skill of this.character.skills) {
+      let newSkillValue = this.abilityModifierPipe.transform(
+        this.character.abilities[skill.ability]
+      );
+      switch (skill.level) {
+        case Proficiency.T:
+          newSkillValue += 2;
+          break;
+        case Proficiency.E:
+          newSkillValue += 4;
+          break;
+        case Proficiency.M:
+          newSkillValue += 6;
+          break;
+        case Proficiency.L:
+          newSkillValue += 8;
+          break;
+        default:
+          break;
+      }
+      if (skill.level !== Proficiency.U) {
+        newSkillValue += this.character.level;
+      }
+      this.store.dispatch(
+        GameActions.saveSkillAction({
+          skill: {
+            ...skill,
+            value: newSkillValue,
+          },
+        })
+      );
+    }
+  }
+
+  private calculateSavingThrows(): void {
+    const newFortitude = this.abilityModifierPipe.transform(
+      this.character.abilities.con
+    );
+    const newReflex = this.abilityModifierPipe.transform(
+      this.character.abilities.dex
+    );
+    const newWill = this.abilityModifierPipe.transform(
+      this.character.abilities.wis
+    );
+    this.store.dispatch(
+      GameActions.saveSavingThrowsAction({
+        savingThrows: {
+          fortitude: newFortitude,
+          reflex: newReflex,
+          will: newWill,
+        },
+      })
+    );
+  }
+
+  private applyEquipmentStats(): void {
+    if (this.character.equippedItems) {
+      this.character?.equippedItems.forEach(item => {
+        const itemToApply = <Item>(
+          this.character.inventory.find(
+            itemInInventory => itemInInventory.name === item.item
+          )
+        );
+        if (this.isItemArmor(itemToApply)) {
+          let newAC = this.character.armorClass + itemToApply.ACbonus;
+          const dexMod = this.abilityModifierPipe.transform(
+            this.character.abilities.dex
+          );
+          if (dexMod > itemToApply.DexcCap) {
+            newAC -= dexMod - itemToApply.DexcCap;
+          }
+          this.store.dispatch(
+            GameActions.saveArmorClassAction({ armorClass: newAC })
+          );
+        }
+      });
+    }
+  }
+
+  private isItemArmor(item: Item): item is Armor {
+    return item.itemType === ItemType.armor;
+  }
+
+  private isItemWeapon(item: Item): item is Weapon {
+    return item.itemType === ItemType.weapon;
   }
 }

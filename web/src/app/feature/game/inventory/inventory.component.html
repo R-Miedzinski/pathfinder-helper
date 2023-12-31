@@ -1,1 +1,8 @@
-<p>inventory works!</p>
+<ul>
+  <li *ngFor="let item of inventory">
+    <app-item
+      [item]="item"
+      [equipped]="isEquipped(item)"
+      [invested]="isInvested(item)"></app-item>
+  </li>
+</ul>

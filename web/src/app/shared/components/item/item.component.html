@@ -1,0 +1,48 @@
+<div class="item">
+  Invested:{{ invested }} <br />Equipped:{{ equipped }}
+  <div class="item__header">
+    <span class="item__name">{{ item.name }}</span>
+    <span class="item__level">{{ item.itemType }} {{ item.level }}</span>
+  </div>
+  <mat-divider></mat-divider>
+  <div class="item__traits" *ngIf="item.traits?.length">
+    <div class="item__trait" *ngFor="let trait of item.traits">
+      {{ trait }}
+    </div>
+  </div>
+  <div class="item__properties" *ngIf="haveProperites">
+    <div class="item__property" *ngIf="item.price">
+      <span class="item__property-label">Price:</span> {{ item.price }}
+    </div>
+    <div class="item__property" *ngIf="item.ammunition">
+      <span class="item__property-label">Ammunition:</span>
+      <span *ngFor="let ammo; in: item.ammunition">{{ ammo }}</span>
+    </div>
+    <div class="item__property" *ngIf="item.usage">
+      <span class="item__property-label">Usage:</span> {{ item.usage }}
+    </div>
+    <div class="item__property" *ngIf="item.bulk">
+      <span class="item__property-label">Bulk:</span> {{ item.bulk }}
+    </div>
+    <div class="item__property" *ngIf="item.activate">
+      <span class="item__property-label">Activate:</span> {{ item.activate }}
+    </div>
+    <div class="item__property" *ngIf="item.onset">
+      <span class="item__property-label">Onset:</span> {{ item.onset }}
+    </div>
+  </div>
+  <mat-divider *ngIf="haveProperites"></mat-divider>
+  <div class="item__description">
+    <span>{{ item.description }}</span>
+  </div>
+  <ng-container *ngIf="item.type">
+    <mat-divider></mat-divider>
+    <div class="item__type"><span>Type:</span> {{ item.type }}</div>
+  </ng-container>
+  <ng-container *ngIf="item.craftRequirenments">
+    <mat-divider></mat-divider>
+    <div class="item__craft">
+      <span>Craft Requirenments:</span> {{ item.craftRequirenments }}
+    </div>
+  </ng-container>
+</div>

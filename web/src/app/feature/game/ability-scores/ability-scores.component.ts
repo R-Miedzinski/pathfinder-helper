@@ -9,5 +9,6 @@ import keepOrder from 'src/app/shared/helpers/keepOrder';
 })
 export class AbilityScoresComponent {
   @Input() abilityScores: any;
+  Number = Number;
   keepOrderLocal = keepOrder;
 }
