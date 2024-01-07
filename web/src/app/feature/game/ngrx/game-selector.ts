@@ -7,3 +7,13 @@ export const getCharacter = createSelector(
   gameFeature,
   (state: GameState) => state.character
 );
+
+export const getInventory = createSelector(
+  gameFeature,
+  (state: GameState) => state.character.inventory
+);
+
+export const getSpells = createSelector(
+  gameFeature,
+  (state: GameState) => state.character.spells || []
+);

@@ -7,9 +7,9 @@ import keepOrder from 'src/app/shared/helpers/keepOrder';
   styleUrls: ['./various-stats.component.scss'],
 })
 export class VariousStatsComponent {
+  @Input() rowHeight!: number;
   @Input() speed: any;
   @Input() initiativeMod?: number;
   @Input() armorClass?: number;
-  @Input() savingThrows: any;
   keepOrderLocal = keepOrder;
 }

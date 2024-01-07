@@ -1,6 +1,7 @@
 .item {
-  margin: 0.8rem 1.6rem;
+  // margin: 0.8rem 1.6rem;
   border: 1px solid black;
+  background-color: var(--mat-sidenav-content-background-color);
 
   &__header {
     margin: 0.4rem;

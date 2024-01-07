@@ -14,18 +14,22 @@
 <mat-tab-group>
   <mat-tab label="Main Page">
     <div class="container">
-      <mat-grid-list cols="4" rowHeight="12.8rem">
+      <mat-grid-list cols="5" rowHeight="{{ rowHeight }}rem">
         <mat-grid-tile [colspan]="1" [rowspan]="3">
           <app-ability-scores
             class="grid-field"
             [abilityScores]="character.abilities"></app-ability-scores>
         </mat-grid-tile>
+        <mat-grid-tile [colspan]="1" [rowspan]="1"
+          ><app-saving-throws
+            [savingThrows]="character.savingThrows"></app-saving-throws
+        ></mat-grid-tile>
         <mat-grid-tile [colspan]="2" [rowspan]="1">
           <app-various-stats
+            [rowHeight]="rowHeight"
             [speed]="character.speed"
             [initiativeMod]="character.initiativeMod"
             [armorClass]="character.armorClass"
-            [savingThrows]="character.savingThrows"
             class="grid-field"></app-various-stats>
         </mat-grid-tile>
         <mat-grid-tile [colspan]="1" [rowspan]="1">
@@ -39,24 +43,49 @@
             class="grid-field"
             [skills]="character.skills"></app-skills>
         </mat-grid-tile>
-        <mat-grid-tile [colspan]="2" [rowspan]="2">
+        <mat-grid-tile [colspan]="1" [rowspan]="2"
+          ><app-hover-card displayMessage="Actions">
+            <div>
+              Some Div
+              <p>and a paragraph</p>
+              <ul>
+                <li>item</li>
+                <li>item 2</li>
+                <li>3rd</li>
+              </ul>
+            </div>
+          </app-hover-card></mat-grid-tile
+        >
+        <mat-grid-tile [colspan]="2" [rowspan]="2"> </mat-grid-tile>
+      </mat-grid-list>
+    </div>
+  </mat-tab>
+  <mat-tab label="Feats & Inventory">
+    <div class="container">
+      <mat-grid-list cols="1" rowHeight="{{ rowHeight / 3 }}rem">
+        <mat-grid-tile [rowspan]="5">Feats</mat-grid-tile>
+        <mat-grid-tile [rowspan]="4">
           <app-inventory
             class="grid-field"
-            [inventory]="character.inventory"
-            [equippedItems]="character.equippedItems"
-            [investedItems]="character.investedItems"></app-inventory>
+            [inventory]="inventoryWithItems"
+            [investedItems]="InvestedItems"
+            [equippedItems]="equippedItems"
+            (equipmentChange)="changeEquipment($event)"></app-inventory>
         </mat-grid-tile>
       </mat-grid-list>
     </div>
   </mat-tab>
-  <mat-tab label="Second page">
+  <mat-tab label="RP page (name pending)">
     <p>Some other character sheet page, RP, story</p></mat-tab
   >
   <mat-tab label="Spell Book">
     <div class="spell-book">
-      <app-spell
-        *ngFor="let spell of character.spells"
-        [spell]="spell"></app-spell>
+      <app-hover-card
+        *ngFor="let spell of spellsList"
+        [displayMessage]="spell.name"
+        position="left">
+        <app-spell [spell]="spell"></app-spell
+      ></app-hover-card>
     </div>
   </mat-tab>
 </mat-tab-group>

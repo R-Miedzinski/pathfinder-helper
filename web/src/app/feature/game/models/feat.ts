@@ -1,6 +1,7 @@
 import { Character } from './character';
 
 export interface Feat {
+  id: string;
   name: string;
   level: number;
   traits?: string[];

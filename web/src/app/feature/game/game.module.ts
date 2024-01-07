@@ -14,10 +14,10 @@ import { InventoryComponent } from './inventory/inventory.component';
 import { GameDataService } from './services/game-data.service';
 import { StoreModule } from '@ngrx/store';
 import { gameFeature } from './ngrx/game-reducer';
-import { AbilityPipePipe } from './pipes/ability-pipe.pipe';
-import { AbilityModifierPipe } from './pipes/ability-modifier.pipe';
 import { ModifierPlusMinusPipe } from './pipes/modifier-plus-minus.pipe';
-import { EquipmentService } from './services/equipment.service';
+import { ItemsService } from './services/items.service';
+import { SpellsService } from './services/spells.service';
+import { SavingThrowsComponent } from './saving-throws/saving-throws.component';
 
 @NgModule({
   declarations: [
@@ -30,11 +30,10 @@ import { EquipmentService } from './services/equipment.service';
     HealthComponent,
     VariousStatsComponent,
     InventoryComponent,
-    AbilityPipePipe,
-    AbilityModifierPipe,
     ModifierPlusMinusPipe,
+    SavingThrowsComponent,
   ],
-  providers: [GameDataService, EquipmentService],
+  providers: [GameDataService, ItemsService, SpellsService],
   imports: [
     GameRoutingModule,
     SharedModule,

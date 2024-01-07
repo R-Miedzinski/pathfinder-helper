@@ -1,4 +1,37 @@
+.inventory {
+  display: flex;
+  gap: 1.6rem;
+
+  font-size: 0.8rem;
+}
+
+.item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+
+  border: 1px solid black;
+}
+
+.buttons {
+  display: flex;
+
+  button {
+    font-size: 0.8rem;
+    height: 1.2rem;
+    width: 1.6rem;
+  }
+}
+
+h3 {
+  text-align: center;
+}
+
 ul {
   max-height: 100%;
-  overflow: auto;
+  overflow: unset;
+}
+
+app-hover-card {
+  text-align: center;
 }

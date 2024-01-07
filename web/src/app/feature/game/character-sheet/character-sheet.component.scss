@@ -4,6 +4,7 @@
 
 mat-grid-tile {
   border: 1px solid black;
+  overflow: unset;
 }
 
 .grid-field {
@@ -12,11 +13,13 @@ mat-grid-tile {
 }
 
 .spell-book {
+  height: 6.4rem;
   display: flex;
   flex-wrap: wrap;
   align-items: stretch;
 
   & > * {
+    align-self: center;
     flex-basis: 50%;
   }
 }

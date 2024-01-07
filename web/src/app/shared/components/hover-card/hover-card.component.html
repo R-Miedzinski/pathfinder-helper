@@ -1,0 +1,13 @@
+<div
+  (mouseenter)="openHoverCard($event)"
+  (mouseleave)="closeHoverCard()"
+  class="hover-card-wrapper">
+  {{ displayMessage }}
+  <ng-content select="[hoverable]"></ng-content>
+  <div
+    *ngIf="displayHoverCard"
+    class="hover-card position-{{ position }}"
+    style="--width: {{ hoverCardWidth }}rem">
+    <ng-content select="[card-content]"></ng-content>
+  </div>
+</div>

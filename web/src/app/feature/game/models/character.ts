@@ -1,25 +1,17 @@
-import { extend } from 'lodash';
 import { CharacterClass } from './character-class';
 import { HP } from './hp';
-import { Item } from './item';
 import { Race } from './enums/race';
 import { Skill } from './skill';
-import { Spell } from './spell';
 import { EquipmentSlots } from './classes/equipment-slots';
+import { SavingThrow } from './saving-throw';
+import { Ability } from './ability';
 
 export interface Character {
   characterName: string;
   class: CharacterClass;
   race: Race;
   level: number;
-  abilities: {
-    str: number;
-    dex: number;
-    con: number;
-    int: number;
-    wis: number;
-    cha: number;
-  };
+  abilities: Ability[];
   hp: HP;
   speed: {
     base: number;
@@ -31,19 +23,15 @@ export interface Character {
   };
   initiativeMod: number;
   armorClass: number;
-  savingThrows: {
-    fortitude: number;
-    reflex: number;
-    will: number;
-  };
+  savingThrows: SavingThrow[];
   spellResistance?: number;
   baseAttackBonus?: number;
   cmb?: number;
   cmd?: number;
   skills: Skill[];
-  inventory: Item[];
-  spells?: Spell[];
+  inventory: { itemId: string; count: number }[];
+  spells?: string[];
   equipment?: EquipmentSlots;
-  equippedItems?: { item: string; quantity: number }[];
-  investedItems?: { item: string; quantity: number }[];
+  equippedItems?: { itemId: string; count: number }[];
+  investedItems?: { itemId: string; count: number }[];
 }

@@ -1,12 +1,10 @@
 <div class="ability__list">
-  <div
-    class="ability__card"
-    *ngFor="let ability of abilityScores | keyvalue : keepOrderLocal">
-    <span class="ability__key">{{ ability.key | abilityPipe }}</span
-    ><span class="ability__value"> {{ ability.value }}</span>
+  <div class="ability__card" *ngFor="let ability of abilityScores">
+    <span class="ability__key">{{ ability.name }}</span
+    ><span class="ability__value"> {{ ability.score }}</span>
     <span class="ability__modifier">
-      {{ ability.value | cast : Number | modifierPlusMinus }}
-      {{ ability.value | abilityModifier }}</span
+      {{ ability.score | modifierPlusMinus }}
+      {{ ability.modifier }}</span
     >
   </div>
 </div>

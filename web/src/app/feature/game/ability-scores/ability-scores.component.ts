@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import keepOrder from 'src/app/shared/helpers/keepOrder';
+import { Ability } from '../models/ability';
 
 @Component({
   selector: 'app-ability-scores',
@@ -8,7 +9,7 @@ import keepOrder from 'src/app/shared/helpers/keepOrder';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AbilityScoresComponent {
-  @Input() abilityScores: any;
+  @Input() abilityScores: Ability[] = [];
   Number = Number;
   keepOrderLocal = keepOrder;
 }

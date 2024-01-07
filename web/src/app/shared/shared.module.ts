@@ -5,9 +5,10 @@ import { FormsModule } from '@angular/forms';
 import { CastPipe } from './pipes/cast.pipe';
 import { ItemComponent } from './components/item/item.component';
 import { SpellComponent } from './components/spell/spell.component';
+import { HoverCardComponent } from './components/hover-card/hover-card.component';
 
 @NgModule({
-  declarations: [CastPipe, ItemComponent, SpellComponent],
+  declarations: [CastPipe, ItemComponent, SpellComponent, HoverCardComponent],
   imports: [CommonModule, MaterialModule, FormsModule],
   exports: [
     CommonModule,
@@ -16,6 +17,7 @@ import { SpellComponent } from './components/spell/spell.component';
     CastPipe,
     ItemComponent,
     SpellComponent,
+    HoverCardComponent,
   ],
 })
 export class SharedModule {}

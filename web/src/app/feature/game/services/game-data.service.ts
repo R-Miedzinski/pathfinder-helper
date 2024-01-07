@@ -1,10 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Observable, of, tap } from 'rxjs';
 import { Character } from '../models/character';
 import { environment } from 'src/environment/environment';
 import { Proficiency } from '../models/enums/proficiency';
-import { Abilities } from '../models/classes/abilities';
 import { Race } from '../models/enums/race';
 import { cloneDeep } from 'lodash';
 import { Skill } from '../models/skill';
@@ -21,111 +20,13 @@ import { ArmorCategory } from '../models/enums/armor-category';
 import { ArmorGroup } from '../models/enums/armor-group';
 import { EquipmentSlots } from '../models/classes/equipment-slots';
 import { ItemType } from '../models/enums/item-type';
+import { SavingThrowName } from '../models/enums/saving-throw-names';
+import { Abilities } from '../models/enums/abilities';
+import { ItemsService } from './items.service';
 
-@Injectable()
-export class GameDataService {
-  constructor(private httpClient: HttpClient) {}
-
-  getCharacter(id: string): Observable<Character> {
-    return of(characterMock);
-    return this.httpClient.get<Character>(
-      environment.apiUrl + '/api/characters/' + id
-    );
-  }
-}
-
-const abilities = new Abilities();
-
-const skillsMock: Skill[] = [
+export const spellsList: Spell[] = [
   {
-    name: Skills.stealth,
-    level: Proficiency.T,
-    value: 5,
-    ability: 'dex',
-  },
-  {
-    name: Skills.athletics,
-    level: Proficiency.E,
-    value: 10,
-    ability: 'str',
-  },
-  {
-    name: Skills.performance,
-    level: Proficiency.U,
-    value: 1,
-    ability: 'cha',
-  },
-];
-
-const inventoryMock: Item[] = [
-  {
-    equippable: false,
-    itemType: ItemType.item,
-    name: 'testItem1',
-    level: 1,
-    description: 'descritpion of testItem1',
-    usage: 'usage',
-    activate: 3,
-  },
-  {
-    equippable: false,
-    itemType: ItemType.item,
-    name: 'testItem2',
-    level: 2,
-    description: 'descritpion of testItem2',
-    traits: ['with', 'traits'],
-    type: 'with type',
-  },
-  {
-    equippable: true,
-    itemType: ItemType.item,
-    name: 'testItem3',
-    level: 3,
-    price: 10,
-    description: 'descritpion of testItem3',
-    craftRequirenments: 'some craft reqs',
-  },
-  <Weapon>{
-    equippable: true,
-    itemType: ItemType.weapon,
-    name: 'testItem4',
-    level: 4,
-    damage: new Dice(1, 8),
-    group: WeaponGroup.sword,
-    damageType: DamageType.slashing,
-    hands: 1,
-    description: `descritpion of testItem4. This one is quite long. Let's even say this one is a weapon.
-    Deals ${new Dice(1, 8)} dmg `,
-    craftRequirenments: 'some craft reqs, maybe some ore and wood.',
-  },
-  <Armor>{
-    equippable: true,
-    itemType: ItemType.armor,
-    name: 'testItem5',
-    level: 6,
-    category: ArmorCategory.medium,
-    group: ArmorGroup.leather,
-    ACbonus: 3,
-    DexcCap: 2,
-    checkPenalty: 3,
-    speedPenalty: 5,
-    minStrenght: 14,
-    description: 'descritpion of testItem5. Test armor',
-  },
-  {
-    equippable: false,
-    itemType: ItemType.item,
-    name: 'testItem6',
-    level: 3,
-    price: 10,
-    description: `descritpion of testItem6, which is really, really long. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris lacinia faucibus urna, eget lacinia sem suscipit non. Curabitur convallis placerat est. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus iaculis tincidunt augue. Sed sollicitudin a justo sit amet sagittis. In non magna vitae nisi accumsan sagittis. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nulla imperdiet dignissim nisi, et venenatis turpis pellentesque laoreet. Integer id libero tortor. Donec efficitur rutrum sapien, ac faucibus sem iaculis venenatis.
-      Interdum et malesuada fames ac ante ipsum primis in faucibus. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nunc eget eros suscipit, imperdiet nisi ac, ullamcorper risus. Suspendisse tempus massa nisl, ut varius risus lobortis sit amet. Mauris mauris tellus, fringilla id faucibus ut, semper placerat nulla. Mauris ac tortor in ex feugiat aliquet. Aenean velit dui, imperdiet quis porta a, tristique a urna. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nullam eget diam tincidunt, pharetra arcu nec, porttitor lacus. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.`,
-    craftRequirenments: 'some craft reqs',
-  },
-];
-
-const spellsMock: Spell[] = [
-  {
+    id: '1',
     name: 'spell1',
     type: 'spell',
     level: 1,
@@ -134,6 +35,7 @@ const spellsMock: Spell[] = [
     school: 'conjuration',
   },
   {
+    id: '2',
     name: 'spell2',
     type: 'cantrip',
     level: 4,
@@ -143,12 +45,65 @@ const spellsMock: Spell[] = [
   },
 ];
 
+@Injectable()
+export class GameDataService {
+  constructor(
+    private httpClient: HttpClient,
+    private itemsService: ItemsService
+  ) {}
+
+  public getCharacter(id: string): Observable<Character> {
+    return of(characterMock).pipe(
+      tap(character => {
+        this.itemsService.getItems(character.inventory);
+        character.investedItems?.map(item =>
+          this.itemsService.investItem(item)
+        );
+        character.equippedItems?.map(item => this.itemsService.equipItem(item));
+      })
+    );
+    return this.httpClient.get<Character>(
+      environment.apiUrl + '/api/characters/' + id
+    );
+  }
+}
+
+const skillsMock: Skill[] = [
+  {
+    name: Skills.stealth,
+    level: Proficiency.T,
+    value: 5,
+    ability: Abilities.dex,
+  },
+  {
+    name: Skills.athletics,
+    level: Proficiency.E,
+    value: 10,
+    ability: Abilities.str,
+  },
+  {
+    name: Skills.performance,
+    level: Proficiency.U,
+    value: 1,
+    ability: Abilities.cha,
+  },
+];
+
+const inventoryMock = [
+  { itemId: '1', count: 1 },
+  { itemId: '2', count: 2 },
+  { itemId: '3', count: 1 },
+];
+
+const spellsId = ['1', '2'];
+
 const characterMock: Character = {
   characterName: 'CHAR_NAME',
   class: {
     name: Classes.alchemist,
     feats: [
       {
+        id: 'featId1',
         name: 'someFeat',
         level: 1,
         description: 'someTestFeat',
@@ -163,14 +118,44 @@ const characterMock: Character = {
   },
   race: Race.dwarf,
   level: 1,
-  abilities: {
-    str: 7,
-    dex: 9,
-    con: 12,
-    int: 20,
-    wis: 14,
-    cha: 15,
-  },
+  abilities: [
+    {
+      id: 'str',
+      name: Abilities.str,
+      score: 10,
+      modifier: 0,
+    },
+    {
+      id: 'dex',
+      name: Abilities.dex,
+      score: 13,
+      modifier: 1,
+    },
+    {
+      id: 'con',
+      name: Abilities.con,
+      score: 14,
+      modifier: 2,
+    },
+    {
+      id: 'int',
+      name: Abilities.int,
+      score: 8,
+      modifier: -1,
+    },
+    {
+      id: 'wis',
+      name: Abilities.wis,
+      score: 16,
+      modifier: 3,
+    },
+    {
+      id: 'cha',
+      name: Abilities.cha,
+      score: 7,
+      modifier: -2,
+    },
+  ],
   hp: {
     current: 20,
     maximum: 25,
@@ -186,18 +171,36 @@ const characterMock: Character = {
   },
   initiativeMod: 2,
   armorClass: 30,
-  savingThrows: {
-    fortitude: 71,
-    reflex: 72,
-    will: 73,
-  },
+  savingThrows: [
+    {
+      id: '1',
+      name: SavingThrowName.fortitude,
+      ability: Abilities.con,
+      proficiency: Proficiency.T,
+      value: 0,
+    },
+    {
+      id: '2',
+      name: SavingThrowName.reflex,
+      ability: Abilities.dex,
+      proficiency: Proficiency.U,
+      value: 0,
+    },
+    {
+      id: '3',
+      name: SavingThrowName.will,
+      ability: Abilities.wis,
+      proficiency: Proficiency.M,
+      value: 0,
+    },
+  ],
   spellResistance: 80,
   baseAttackBonus: 81,
   cmb: 82,
   cmd: 83,
   skills: cloneDeep(skillsMock),
   inventory: cloneDeep(inventoryMock),
-  spells: cloneDeep(spellsMock),
+  spells: cloneDeep(spellsId),
   equipment: new EquipmentSlots(),
-  equippedItems: [{ item: inventoryMock[4].name, quantity: 1 }],
+  equippedItems: [{ itemId: '4', count: 1 }],
 };

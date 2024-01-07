@@ -9,8 +9,6 @@ import { Item } from 'src/app/feature/game/models/item';
 })
 export class ItemComponent {
   @Input() item!: Item;
-  @Input() equipped!: boolean | undefined;
-  @Input() invested!: boolean | undefined;
 
   get haveProperites(): boolean {
     return (
