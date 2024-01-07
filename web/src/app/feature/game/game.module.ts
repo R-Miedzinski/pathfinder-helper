@@ -18,6 +18,9 @@ import { ModifierPlusMinusPipe } from './pipes/modifier-plus-minus.pipe';
 import { ItemsService } from './services/items.service';
 import { SpellsService } from './services/spells.service';
 import { SavingThrowsComponent } from './saving-throws/saving-throws.component';
+import { SpellBookComponent } from './spell-book/spell-book.component';
+import { FeatsComponent } from './feats/feats.component';
+import { FeatsService } from './services/feats.service';
 
 @NgModule({
   declarations: [
@@ -32,8 +35,10 @@ import { SavingThrowsComponent } from './saving-throws/saving-throws.component';
     InventoryComponent,
     ModifierPlusMinusPipe,
     SavingThrowsComponent,
+    SpellBookComponent,
+    FeatsComponent,
   ],
-  providers: [GameDataService, ItemsService, SpellsService],
+  providers: [GameDataService, ItemsService, SpellsService, FeatsService],
   imports: [
     GameRoutingModule,
     SharedModule,

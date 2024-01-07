@@ -1,14 +1,14 @@
-import { CharacterClass } from './character-class';
 import { HP } from './hp';
 import { Race } from './enums/race';
 import { Skill } from './skill';
-import { EquipmentSlots } from './classes/equipment-slots';
 import { SavingThrow } from './saving-throw';
 import { Ability } from './ability';
+import { Classes } from './enums/classes';
 
 export interface Character {
   characterName: string;
-  class: CharacterClass;
+  class: Classes;
+  feats: string[];
   race: Race;
   level: number;
   abilities: Ability[];
@@ -31,7 +31,6 @@ export interface Character {
   skills: Skill[];
   inventory: { itemId: string; count: number }[];
   spells?: string[];
-  equipment?: EquipmentSlots;
   equippedItems?: { itemId: string; count: number }[];
   investedItems?: { itemId: string; count: number }[];
 }

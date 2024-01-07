@@ -11,5 +11,5 @@ export class VariousStatsComponent {
   @Input() speed: any;
   @Input() initiativeMod?: number;
   @Input() armorClass?: number;
-  keepOrderLocal = keepOrder;
+  protected keepOrderLocal = keepOrder;
 }

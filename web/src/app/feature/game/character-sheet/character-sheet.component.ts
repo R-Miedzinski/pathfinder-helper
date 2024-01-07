@@ -8,7 +8,7 @@ import * as GameSelectors from '../ngrx/game-selector';
 import { cloneDeep } from 'lodash';
 import { ItemsService } from '../services/items.service';
 import { SpellsService } from '../services/spells.service';
-import { Spell } from '../models/spell';
+import { FeatsService } from '../services/feats.service';
 
 @Component({
   selector: 'app-character-sheet',
@@ -27,13 +27,15 @@ export class CharacterSheetComponent implements OnInit, OnDestroy {
   InvestedItems = this.itemsService.investedItems$.pipe(
     takeUntil(this.ngDestroyed$)
   );
-  spellsList: Spell[] = [];
-  public readonly rowHeight = 12.8;
+  spellsList = this.spellsService.spellList$.pipe(takeUntil(this.ngDestroyed$));
+  featsList = this.featsService.featList$.pipe(takeUntil(this.ngDestroyed$));
+  public readonly rowHeight = 19.6;
 
   constructor(
     private store: Store<GameState>,
     private itemsService: ItemsService,
-    private spellsService: SpellsService
+    private spellsService: SpellsService,
+    private featsService: FeatsService
   ) {}
 
   public ngOnInit(): void {
@@ -56,16 +58,20 @@ export class CharacterSheetComponent implements OnInit, OnDestroy {
       });
 
     this.store
+      .select(GameSelectors.getFeats)
+      .pipe(takeUntil(this.ngDestroyed$))
+      .subscribe({
+        next: (featIds: string[]) => {
+          this.featsService.getFeats(featIds);
+        },
+      });
+
+    this.store
       .select(GameSelectors.getSpells)
       .pipe(takeUntil(this.ngDestroyed$))
       .subscribe({
         next: (spellIds: string[]) => {
-          this.spellsService
-            .getSpells(spellIds)
-            .pipe(takeUntil(this.ngDestroyed$))
-            .subscribe({
-              next: spells => (this.spellsList = spells),
-            });
+          this.spellsService.getSpells(spellIds);
         },
       });
   }

@@ -17,3 +17,8 @@ export const getSpells = createSelector(
   gameFeature,
   (state: GameState) => state.character.spells || []
 );
+
+export const getFeats = createSelector(
+  gameFeature,
+  (state: GameState) => state.character.feats || []
+);

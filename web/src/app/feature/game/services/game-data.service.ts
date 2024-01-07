@@ -7,43 +7,11 @@ import { Proficiency } from '../models/enums/proficiency';
 import { Race } from '../models/enums/race';
 import { cloneDeep } from 'lodash';
 import { Skill } from '../models/skill';
-import { Item } from '../models/item';
-import { Spell } from '../models/spell';
-import { Weapon } from '../models/weapon';
-import { WeaponGroup } from '../models/enums/weapon-group';
-import { DamageType } from '../models/enums/damage-type';
-import { Dice } from '../models/classes/dice';
 import { Classes } from '../models/enums/classes';
 import { Skills } from '../models/enums/skills';
-import { Armor } from '../models/armor';
-import { ArmorCategory } from '../models/enums/armor-category';
-import { ArmorGroup } from '../models/enums/armor-group';
-import { EquipmentSlots } from '../models/classes/equipment-slots';
-import { ItemType } from '../models/enums/item-type';
 import { SavingThrowName } from '../models/enums/saving-throw-names';
 import { Abilities } from '../models/enums/abilities';
 import { ItemsService } from './items.service';
-
-export const spellsList: Spell[] = [
-  {
-    id: '1',
-    name: 'spell1',
-    type: 'spell',
-    level: 1,
-    tradition: ['Arcane'],
-    description: 'description of spell 1',
-    school: 'conjuration',
-  },
-  {
-    id: '2',
-    name: 'spell2',
-    type: 'cantrip',
-    level: 4,
-    tradition: ['Occult', 'Primal'],
-    description: 'description of spell 2',
-    school: 'destruction',
-  },
-];
 
 @Injectable()
 export class GameDataService {
@@ -97,25 +65,12 @@ const inventoryMock = [
 
 const spellsId = ['1', '2'];
 
+const feats = ['1', '2', '3', '4', '5', '6'];
+
 const characterMock: Character = {
   characterName: 'CHAR_NAME',
-  class: {
-    name: Classes.alchemist,
-    feats: [
-      {
-        id: 'featId1',
-        name: 'someFeat',
-        level: 1,
-        description: 'someTestFeat',
-        prerequisits: [
-          {
-            name: `Is ${Race.dwarf}?`,
-            condition: (character: Character) => character.race === Race.dwarf,
-          },
-        ],
-      },
-    ],
-  },
+  class: Classes.alchemist,
+  feats: cloneDeep(feats),
   race: Race.dwarf,
   level: 1,
   abilities: [
@@ -201,6 +156,5 @@ const characterMock: Character = {
   skills: cloneDeep(skillsMock),
   inventory: cloneDeep(inventoryMock),
   spells: cloneDeep(spellsId),
-  equipment: new EquipmentSlots(),
   equippedItems: [{ itemId: '4', count: 1 }],
 };
