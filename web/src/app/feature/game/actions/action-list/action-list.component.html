@@ -1,0 +1,44 @@
+<ul class="action-list" *ngIf="actions.length > 0">
+  <li class="action" *ngFor="let action of actions">
+    <app-hover-card position="top-left" [hoverCardWidth]="16">
+      <div hoverable class="action-item">
+        <span class="action-item__name">{{ action.name }}</span>
+        <span class="action-item__cost" *ngIf="action.cost !== undefined">
+          {{ action.cost }}
+        </span>
+      </div>
+      <div card-content class="action-hover">
+        <div class="action-hover__header">
+          <span class="action-hover__name">{{ action.name }}</span>
+          <span class="action-hover__cost" *ngIf="action.cost !== undefined">
+            {{ action.cost }}
+          </span>
+        </div>
+        <mat-divider></mat-divider>
+        <div class="action-hover__traits">
+          <app-trait
+            *ngFor="let trait of action.traits"
+            [traitId]="trait"></app-trait>
+        </div>
+        <div class="action-hover__properties">
+          <div class="action-hover__property" *ngIf="action.requirements">
+            <span class="action-hover__property-label">Requirement:</span>
+            {{ action.requirements }}
+          </div>
+          <div class="action-hover__property" *ngIf="action.trigger">
+            <span class="action-hover__property-label">Trigger:</span>
+            {{ action.trigger }}
+          </div>
+        </div>
+        <mat-divider
+          *ngIf="
+            action.requirements || action.trigger || action.traits?.length
+          ">
+        </mat-divider>
+        <div
+          class="action-hover__description"
+          [innerHTML]="action.description | sanitazeHTML"></div>
+      </div>
+    </app-hover-card>
+  </li>
+</ul>

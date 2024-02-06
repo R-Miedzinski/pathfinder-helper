@@ -5,9 +5,10 @@
   </div>
   <mat-divider></mat-divider>
   <div class="item__traits" *ngIf="item.traits?.length">
-    <div class="item__trait" *ngFor="let trait of item.traits">
-      {{ trait }}
-    </div>
+    <app-trait
+      position="top-right"
+      *ngFor="let trait of item.traits"
+      [traitId]="trait"></app-trait>
   </div>
   <div class="item__properties" *ngIf="haveProperites">
     <div class="item__property" *ngIf="item.price">
@@ -15,7 +16,7 @@
     </div>
     <div class="item__property" *ngIf="item.ammunition">
       <span class="item__property-label">Ammunition:</span>
-      <span *ngFor="let ammo; in: item.ammunition">{{ ammo }}</span>
+      <span *ngFor="let ammo of item.ammunition">{{ ammo }}</span>
     </div>
     <div class="item__property" *ngIf="item.usage">
       <span class="item__property-label">Usage:</span> {{ item.usage }}
@@ -31,9 +32,9 @@
     </div>
   </div>
   <mat-divider *ngIf="haveProperites"></mat-divider>
-  <div class="item__description">
-    <span>{{ item.description }}</span>
-  </div>
+  <div
+    class="item__description"
+    [innerHTML]="item.description | sanitazeHTML"></div>
   <ng-container *ngIf="item.type">
     <mat-divider></mat-divider>
     <div class="item__type"><span>Type:</span> {{ item.type }}</div>

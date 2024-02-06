@@ -1,6 +1,21 @@
-<ul>
-  <li *ngFor="let skill of skills">
-    {{ skill.name }} : {{ skill.value }} : {{ skill.level }} :
-    {{ skill.ability }}
-  </li>
-</ul>
+<form [formGroup]="skillsForm">
+  <div *ngFor="let skill of skills" class="skill">
+    <label [for]="skill.name">{{ skill.name }}</label>
+    <div *ngIf="mode !== modes.edit" class="proficiency">{{ skill.level }}</div>
+    <div *ngIf="mode === modes.edit">
+      <select
+        type="select"
+        [id]="skill.name"
+        [formControlName]="skill.name"
+        (change)="valueChanged(skill)">
+        <option
+          *ngFor="let profLevel of proficiencies | keyvalue : keepOrderLocal"
+          [value]="profLevel.value">
+          {{ profLevel.value }}
+        </option>
+      </select>
+    </div>
+    <div>{{ skill.value }}</div>
+    <div>{{ skill.ability }}</div>
+  </div>
+</form>

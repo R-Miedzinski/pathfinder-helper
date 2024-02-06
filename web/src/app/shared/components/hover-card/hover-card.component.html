@@ -1,6 +1,7 @@
 <div
   (mouseenter)="openHoverCard($event)"
   (mouseleave)="closeHoverCard()"
+  (click)="toggleBlockHover($event)"
   class="hover-card-wrapper">
   {{ displayMessage }}
   <ng-content select="[hoverable]"></ng-content>

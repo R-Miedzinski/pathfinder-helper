@@ -1,4 +1,8 @@
 <button mat-raised-button (click)="backToMenu()">Back to user menu</button>
+<button mat-raised-button (click)="goToGame(0)">New Character</button>
+<button mat-raised-button (click)="toggleEditMode()">
+  {{ mode === modes.edit ? 'View Mode' : 'Edit Mode' }}
+</button>
 <mat-tab-group>
   <mat-tab label="Character Sheet">
     <app-character-sheet></app-character-sheet>

@@ -6,13 +6,12 @@
   <mat-divider></mat-divider>
   <div class="spell__traits">
     <ng-container *ngIf="spell.traits?.length">
-      <div class="spell__trait" *ngFor="let trait of spell.traits">
-        {{ trait }}
-      </div>
+      <app-trait
+        position="top"
+        *ngFor="let trait of spell.traits"
+        [traitId]="trait"></app-trait>
     </ng-container>
-    <div class="spell__trait">
-      {{ spell.school }}
-    </div>
+    <app-trait position="top" [traitId]="spell.school"></app-trait>
   </div>
   <div class="spell__properties">
     <div class="spell__property">

@@ -1,81 +1,63 @@
 <div>
-  <span>Name: {{ character.characterName }} </span>
-  <span>Level: {{ character.level }} </span>
-  <span>Class: {{ character.class }} </span>
-  <span>Race: {{ character.race }}</span>
+  <span>
+    Name: <strong>{{ character.characterName }}</strong> | Level:
+    <strong>{{ character.level }}</strong>
+  </span>
+  <br />
+  <span>
+    Class: <strong>{{ character.class }}</strong> | Race:
+    <strong>{{ character.race }}</strong>
+  </span>
+  <br />
+  <span>
+    App Mode: <strong>{{ mode }}</strong>
+  </span>
+  <br />
+  <button (click)="fetchFeats()">Fetch Feats</button>
 </div>
 <mat-tab-group>
   <mat-tab label="Main Page">
-    <div class="container">
-      <mat-grid-list cols="5" rowHeight="{{ rowHeight }}rem">
-        <mat-grid-tile [colspan]="1" [rowspan]="3">
-          <app-ability-scores
-            class="grid-field"
-            [abilityScores]="character.abilities"></app-ability-scores>
-        </mat-grid-tile>
-        <mat-grid-tile [colspan]="1" [rowspan]="1"
-          ><app-saving-throws
-            [savingThrows]="character.savingThrows"></app-saving-throws
-        ></mat-grid-tile>
-        <mat-grid-tile [colspan]="2" [rowspan]="1">
-          <app-various-stats
-            [rowHeight]="rowHeight"
-            [speed]="character.speed"
-            [initiativeMod]="character.initiativeMod"
-            [armorClass]="character.armorClass"
-            class="grid-field"></app-various-stats>
-        </mat-grid-tile>
-        <mat-grid-tile [colspan]="1" [rowspan]="1">
-          <app-health
-            [health]="character.hp"
-            (healthChange)="handleHealthChange($event)"
-            class="grid-field"></app-health>
-        </mat-grid-tile>
-        <mat-grid-tile [colspan]="1" [rowspan]="2">
-          <app-skills
-            class="grid-field"
-            [skills]="character.skills"></app-skills>
-        </mat-grid-tile>
-        <mat-grid-tile [colspan]="3" [rowspan]="2"
-          ><app-hover-card displayMessage="Actions">
-            <div card-content>
-              Some Div
-              <p>and a paragraph</p>
-              <ul>
-                <li>item</li>
-                <li>item 2</li>
-                <li>3rd</li>
-              </ul>
-            </div>
-          </app-hover-card></mat-grid-tile
-        >
-      </mat-grid-list>
-    </div>
+    <app-main-character-page
+      class="container"
+      [mode]="mode"
+      [rowHeight]="rowHeight"
+      [character]="character"
+      [actionsList]="actionsList | async"
+      (healthChange)="handleHealthChange($event)" />
   </mat-tab>
   <mat-tab label="Feats & Inventory">
     <div class="container">
       <mat-grid-list cols="1" rowHeight="{{ rowHeight / 3 }}rem">
-        <mat-grid-tile [rowspan]="5"
-          ><app-feats
+        <mat-grid-tile [rowspan]="5">
+          <app-feats
             class="grid-field"
             [rowHeight]="rowHeight / 3"
-            [featList]="featsList | async"></app-feats
-        ></mat-grid-tile>
+            [featList]="featsList | async" />
+        </mat-grid-tile>
         <mat-grid-tile [rowspan]="4">
           <app-inventory
             class="grid-field"
             [inventory]="inventoryWithItems"
             [investedItems]="InvestedItems"
             [equippedItems]="equippedItems"
-            (equipmentChange)="changeEquipment($event)"></app-inventory>
+            (equipmentChange)="changeEquipment($event)" />
         </mat-grid-tile>
       </mat-grid-list>
     </div>
   </mat-tab>
   <mat-tab label="RP page (name pending)">
-    <p>Some other character sheet page, RP, story</p></mat-tab
-  >
+    <div class="container">
+      <app-backstory
+        [name]="character.characterName"
+        [race]="character.race"
+        [backstory]="character.backstory"
+        [rowHeight]="rowHeight / 4"
+        [mode]="mode" />
+    </div>
+  </mat-tab>
   <mat-tab label="Spell Book">
-    <app-spell-book [spellList]="spellsList"></app-spell-book>
+    <div class="container">
+      <app-spell-book [spellList]="spellsList | async" />
+    </div>
   </mat-tab>
 </mat-tab-group>

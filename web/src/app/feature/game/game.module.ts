@@ -21,6 +21,14 @@ import { SavingThrowsComponent } from './saving-throws/saving-throws.component';
 import { SpellBookComponent } from './spell-book/spell-book.component';
 import { FeatsComponent } from './feats/feats.component';
 import { FeatsService } from './services/feats.service';
+import { NewCharacterComponent } from './new-character/new-character.component';
+import { BackstoryComponent } from './backstory/backstory.component';
+import { ActionsComponent } from './actions/actions.component';
+import { ActionService } from './services/action.service';
+import { ActionListComponent } from './actions/action-list/action-list.component';
+import { MainCharacterPageComponent } from './main-character-page/main-character-page.component';
+import { SkillsService } from './services/skills.service';
+import { AbilitiesService } from './services/abilities.service';
 
 @NgModule({
   declarations: [
@@ -37,8 +45,21 @@ import { FeatsService } from './services/feats.service';
     SavingThrowsComponent,
     SpellBookComponent,
     FeatsComponent,
+    NewCharacterComponent,
+    BackstoryComponent,
+    ActionsComponent,
+    ActionListComponent,
+    MainCharacterPageComponent,
   ],
-  providers: [GameDataService, ItemsService, SpellsService, FeatsService],
+  providers: [
+    GameDataService,
+    ItemsService,
+    SpellsService,
+    FeatsService,
+    ActionService,
+    SkillsService,
+    AbilitiesService,
+  ],
   imports: [
     GameRoutingModule,
     SharedModule,

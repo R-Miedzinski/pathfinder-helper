@@ -2,12 +2,13 @@ import { Injectable, OnDestroy } from '@angular/core';
 import { Spell } from '../models/spell';
 import { ReplaySubject, Subject, of, takeUntil } from 'rxjs';
 import { cloneDeep } from 'lodash';
+import { SpellType } from '../models/enums/spell-type';
 
 export const spellsList: Spell[] = [
   {
     id: '1',
     name: 'spell1',
-    type: 'spell',
+    type: SpellType.Spell,
     level: 1,
     tradition: ['Arcane'],
     description: 'description of spell 1',
@@ -16,7 +17,7 @@ export const spellsList: Spell[] = [
   {
     id: '2',
     name: 'spell2',
-    type: 'cantrip',
+    type: SpellType.Cantrip,
     level: 4,
     tradition: ['Occult', 'Primal'],
     description: 'description of spell 2',

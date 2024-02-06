@@ -2,13 +2,19 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { GameState } from '../ngrx/game-reducer';
 import * as GameActions from '../ngrx/game-actions';
-import { Subject, takeUntil, tap } from 'rxjs';
+import { Subject, retry, takeUntil, tap } from 'rxjs';
 import { Character } from '../models/character';
 import * as GameSelectors from '../ngrx/game-selector';
 import { cloneDeep } from 'lodash';
 import { ItemsService } from '../services/items.service';
 import { SpellsService } from '../services/spells.service';
 import { FeatsService } from '../services/feats.service';
+import { ActionService } from '../services/action.service';
+import { CharacterSheetMode } from '../models/enums/character-sheet-mode';
+import { Skill } from '../models/skill';
+import { Proficiency } from '../models/enums/proficiency';
+import { SkillsService } from '../services/skills.service';
+import { AbilitiesService } from '../services/abilities.service';
 
 @Component({
   selector: 'app-character-sheet',
@@ -17,28 +23,46 @@ import { FeatsService } from '../services/feats.service';
 })
 export class CharacterSheetComponent implements OnInit, OnDestroy {
   private readonly ngDestroyed$: Subject<void> = new Subject();
-  character: Character = {} as Character;
-  inventoryWithItems = this.itemsService.itemsInInventory$.pipe(
+  protected mode: CharacterSheetMode = CharacterSheetMode.view;
+  protected character: Character = {} as Character;
+  protected inventoryWithItems = this.itemsService.itemsInInventory$.pipe(
     takeUntil(this.ngDestroyed$)
   );
-  equippedItems = this.itemsService.equippedItems$.pipe(
+  protected equippedItems = this.itemsService.equippedItems$.pipe(
     takeUntil(this.ngDestroyed$)
   );
-  InvestedItems = this.itemsService.investedItems$.pipe(
+  protected InvestedItems = this.itemsService.investedItems$.pipe(
     takeUntil(this.ngDestroyed$)
   );
-  spellsList = this.spellsService.spellList$.pipe(takeUntil(this.ngDestroyed$));
-  featsList = this.featsService.featList$.pipe(takeUntil(this.ngDestroyed$));
+  protected spellsList = this.spellsService.spellList$.pipe(
+    takeUntil(this.ngDestroyed$)
+  );
+  protected featsList = this.featsService.featList$.pipe(
+    takeUntil(this.ngDestroyed$)
+  );
+  protected actionsList = this.actionService.actionsList$.pipe(
+    takeUntil(this.ngDestroyed$)
+  );
   public readonly rowHeight = 19.6;
 
   constructor(
     private store: Store<GameState>,
     private itemsService: ItemsService,
     private spellsService: SpellsService,
-    private featsService: FeatsService
+    private featsService: FeatsService,
+    private actionService: ActionService,
+    private skillsService: SkillsService,
+    private abilitiesService: AbilitiesService
   ) {}
 
   public ngOnInit(): void {
+    this.store
+      .select(GameSelectors.getMode)
+      .pipe(takeUntil(this.ngDestroyed$))
+      .subscribe({
+        next: (mode: CharacterSheetMode) => (this.mode = mode),
+      });
+
     this.store
       .select(GameSelectors.getCharacter)
       .pipe(takeUntil(this.ngDestroyed$))
@@ -74,36 +98,50 @@ export class CharacterSheetComponent implements OnInit, OnDestroy {
           this.spellsService.getSpells(spellIds);
         },
       });
+
+    this.store
+      .select(GameSelectors.getActions)
+      .pipe(takeUntil(this.ngDestroyed$))
+      .subscribe({
+        next: (actionIds: string[]) => {
+          this.actionService.getActions(actionIds);
+        },
+      });
+
+    this.skillsService.recalculateSkills();
+    this.abilitiesService.recalculateAbilities();
   }
 
-  ngOnDestroy(): void {
+  public ngOnDestroy(): void {
     this.ngDestroyed$.next();
     this.ngDestroyed$.complete();
   }
 
-  public handleHealthChange(value: number): void {
+  public handleHealthChange(hpChange: {
+    change: number;
+    addTemp: boolean;
+  }): void {
     const newHP = cloneDeep(this.character.hp);
 
-    if (value > 0) {
-      this.store.dispatch(
-        GameActions.saveHealthAction({
-          hp:
-            newHP.current + value <= newHP.maximum
-              ? { ...newHP, current: newHP.current + value }
-              : { ...newHP, current: newHP.maximum },
-        })
-      );
-    } else {
-      newHP.temporary > -value
-        ? (newHP.temporary -= -value)
-        : ((newHP.current -= -value - newHP.temporary), (newHP.temporary = 0));
-      newHP.current = newHP.current <= 0 ? 0 : newHP.current;
-      this.store.dispatch(
-        GameActions.saveHealthAction({
-          hp: newHP,
-        })
-      );
+    if (hpChange.addTemp && hpChange.change >= 0) {
+      newHP.temporary = hpChange.change;
+    } else if (!hpChange.addTemp) {
+      let changeAmount = hpChange.change;
+      if (changeAmount >= 0) {
+        changeAmount + newHP.current <= newHP.maximum
+          ? (newHP.current += changeAmount)
+          : (newHP.current = newHP.maximum);
+      } else {
+        changeAmount = -changeAmount;
+        newHP.temporary - changeAmount >= 0
+          ? (newHP.temporary -= changeAmount)
+          : (newHP.current - (changeAmount - newHP.temporary) >= 0
+              ? (newHP.current -= changeAmount - newHP.temporary)
+              : (newHP.current = 0),
+            (newHP.temporary = 0));
+      }
     }
+    this.store.dispatch(GameActions.saveHealthAction({ hp: newHP }));
   }
 
   public changeEquipment(event: { action: string; itemId: string }): void {
@@ -122,108 +160,16 @@ export class CharacterSheetComponent implements OnInit, OnDestroy {
     }
   }
 
-  // private calculateInitiative(): void {
-  //   const newInititative = this.abilityModifierPipe.transform(
-  //     this.character.abilities.dex
-  //   );
-  //   this.store.dispatch(
-  //     GameActions.saveInitiativeAction({ initiativeMod: newInititative })
-  //   );
-  // }
-
-  // private calculateArmorClass(): void {
-  //   const newAC =
-  //     10 + this.abilityModifierPipe.transform(this.character.abilities.dex);
-  //   this.store.dispatch(
-  //     GameActions.saveArmorClassAction({ armorClass: newAC })
-  //   );
-  // }
-
-  // private calculateSkillBonus(): void {
-  //   for (let skill of this.character.skills) {
-  //     let newSkillValue = this.abilityModifierPipe.transform(
-  //       this.character.abilities[skill.ability]
-  //     );
-  //     switch (skill.level) {
-  //       case Proficiency.T:
-  //         newSkillValue += 2;
-  //         break;
-  //       case Proficiency.E:
-  //         newSkillValue += 4;
-  //         break;
-  //       case Proficiency.M:
-  //         newSkillValue += 6;
-  //         break;
-  //       case Proficiency.L:
-  //         newSkillValue += 8;
-  //         break;
-  //       default:
-  //         break;
-  //     }
-  //     if (skill.level !== Proficiency.U) {
-  //       newSkillValue += this.character.level;
-  //     }
-  //     this.store.dispatch(
-  //       GameActions.saveSkillAction({
-  //         skill: {
-  //           ...skill,
-  //           value: newSkillValue,
-  //         },
-  //       })
-  //     );
-  //   }
-  // }
-
-  // private calculateSavingThrows(): void {
-  //   const newFortitude = this.abilityModifierPipe.transform(
-  //     this.character.abilities.con
-  //   );
-  //   const newReflex = this.abilityModifierPipe.transform(
-  //     this.character.abilities.dex
-  //   );
-  //   const newWill = this.abilityModifierPipe.transform(
-  //     this.character.abilities.wis
-  //   );
-  //   this.store.dispatch(
-  //     GameActions.saveSavingThrowsAction({
-  //       savingThrows: {
-  //         fortitude: newFortitude,
-  //         reflex: newReflex,
-  //         will: newWill,
-  //       },
-  //     })
-  //   );
-  // }
-
-  // private applyEquipmentStats(): void {
-  //   if (this.character.equippedItems) {
-  //     this.character?.equippedItems.forEach(item => {
-  //       const itemToApply = <Item>(
-  //         this.character.inventory.find(
-  //           itemInInventory => itemInInventory.name === item.item
-  //         )
-  //       );
-  //       if (this.isItemArmor(itemToApply)) {
-  //         let newAC = this.character.armorClass + itemToApply.ACbonus;
-  //         const dexMod = this.abilityModifierPipe.transform(
-  //           this.character.abilities.dex
-  //         );
-  //         if (dexMod > itemToApply.DexcCap) {
-  //           newAC -= dexMod - itemToApply.DexcCap;
-  //         }
-  //         this.store.dispatch(
-  //           GameActions.saveArmorClassAction({ armorClass: newAC })
-  //         );
-  //       }
-  //     });
-  //   }
-  // }
-
-  // private isItemArmor(item: Item): item is Armor {
-  //   return item.itemType === ItemType.armor;
-  // }
-
-  // private isItemWeapon(item: Item): item is Weapon {
-  //   return item.itemType === ItemType.weapon;
-  // }
+  public fetchFeats(): void {
+    this.featsService
+      .getFeatsToAdd(
+        this.character.level,
+        this.character.class,
+        this.character.race
+      )
+      .pipe(takeUntil(this.ngDestroyed$))
+      .subscribe({
+        next: newFeats => console.log(newFeats),
+      });
+  }
 }

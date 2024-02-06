@@ -1,0 +1,191 @@
+<form [formGroup]="backstoryForm">
+  <mat-grid-list [cols]="6" rowHeight="{{ rowHeight }}rem">
+    <mat-grid-tile [colspan]="2" [rowspan]="5">
+      <img [src]="backstory.image" [alt]="'Portrait of ' + name" />
+    </mat-grid-tile>
+    <mat-grid-tile [colspan]="4" [rowspan]="1">
+      <div class="backstory__row">
+        <div class="backstory__entry">
+          <label for="name" class="backstory__label"> Character Name: </label>
+          <input
+            *ngIf="mode === modes.edit"
+            id="name"
+            type="text"
+            class="backstory__input"
+            formControlName="name" />
+          <div *ngIf="mode !== modes.edit" class="backstory__value">
+            {{ name }}
+          </div>
+        </div>
+        <div class="backstory__entry">
+          <label for="race" class="backstory__label"> Character Race: </label>
+          <div class="backstory__value">
+            {{ race }}
+          </div>
+        </div>
+        <div class="backstory__entry" formGroupName="backstory">
+          <label for="alignment" class="backstory__label"> Alignment: </label>
+          <select
+            *ngIf="mode === modes.edit"
+            id="alignment"
+            type="select"
+            class="backstory__input"
+            formControlName="alignment">
+            <option
+              *ngFor="let alignment of alignments | keyvalue : keepOrderLocal"
+              [value]="alignment.value">
+              {{ alignment.value }}
+            </option>
+          </select>
+          <div *ngIf="mode !== modes.edit" class="backstory__value">
+            {{ backstory.alignment }}
+          </div>
+        </div>
+      </div>
+    </mat-grid-tile>
+    <mat-grid-tile [colspan]="4" [rowspan]="1">
+      <div class="backstory__row" formGroupName="backstory">
+        <div class="backstory__entry">
+          <label for="nationality" class="backstory__label">
+            Nationality:
+          </label>
+          <input
+            *ngIf="mode === modes.edit"
+            id="nationality"
+            type="text"
+            class="backstory__input"
+            formControlName="nationality" />
+          <div *ngIf="mode !== modes.edit" class="backstory__value">
+            {{ backstory.nationality }}
+          </div>
+        </div>
+        <div class="backstory__entry">
+          <label for="ethnicity" class="backstory__label"> Ethnicity: </label>
+          <input
+            *ngIf="mode === modes.edit"
+            id="ethnicity"
+            type="text"
+            class="backstory__input"
+            formControlName="ethnicity" />
+          <div *ngIf="mode !== modes.edit" class="backstory__value">
+            {{ backstory.ethnicity }}
+          </div>
+        </div>
+        <div class="backstory__entry">
+          <label for="deity" class="backstory__label"> Deity: </label>
+          <input
+            *ngIf="mode === modes.edit"
+            id="deity"
+            type="text"
+            class="backstory__input"
+            formControlName="deity" />
+          <div *ngIf="mode !== modes.edit" class="backstory__value">
+            {{ backstory.deity }}
+          </div>
+        </div>
+      </div>
+    </mat-grid-tile>
+    <mat-grid-tile [colspan]="4" [rowspan]="1">
+      <div class="backstory__row" formGroupName="backstory">
+        <div class="backstory__entry">
+          <label for="age" class="backstory__label"> Age: </label>
+          <input
+            *ngIf="mode === modes.edit"
+            id="age"
+            type="text"
+            class="backstory__input"
+            formControlName="age" />
+          <div *ngIf="mode !== modes.edit" class="backstory__value">
+            {{ backstory.age }}
+          </div>
+        </div>
+        <div class="backstory__entry">
+          <div>
+            <label for="gender" class="backstory__label"> Gender </label>
+            (<label for="pronouns" class="backstory__label">Pronouns</label>):
+          </div>
+          <div class="backstory__double-input">
+            <input
+              *ngIf="mode === modes.edit"
+              id="gender"
+              type="text"
+              class="backstory__input"
+              formControlName="gender" />
+            <input
+              *ngIf="mode === modes.edit"
+              id="pronouns"
+              type="text"
+              class="backstory__input"
+              formControlName="pronouns" />
+          </div>
+          <div *ngIf="mode !== modes.edit" class="backstory__value">
+            {{ backstory.gender }} ({{ backstory.pronouns }})
+          </div>
+        </div>
+        <div class="backstory__entry">
+          <label for="height" class="backstory__label"> Height: </label>
+          <input
+            *ngIf="mode === modes.edit"
+            id="height"
+            type="text"
+            class="backstory__input"
+            formControlName="height" />
+          <div *ngIf="mode !== modes.edit" class="backstory__value">
+            {{ backstory.height }}
+          </div>
+        </div>
+        <div class="backstory__entry">
+          <label for="weight" class="backstory__label"> Weight: </label>
+          <input
+            *ngIf="mode === modes.edit"
+            id="weight"
+            type="text"
+            class="backstory__input"
+            formControlName="weight" />
+          <div *ngIf="mode !== modes.edit" class="backstory__value">
+            {{ backstory.weight }}
+          </div>
+        </div>
+      </div>
+    </mat-grid-tile>
+    <mat-grid-tile [colspan]="4" [rowspan]="2">
+      <div class="backstory__row" formGroupName="backstory">
+        appearence, attitude, beliefs, likes and dislikes block
+      </div>
+    </mat-grid-tile>
+    <mat-grid-tile [colspan]="6" [rowspan]="4">
+      <div class="backstory__row" formGroupName="backstory">
+        <div class="backstory__entry">
+          <label for="story" class="backstory__label">
+            <ng-container *ngIf="mode === modes.edit">
+              Story (can be HTML):
+            </ng-container>
+            <ng-container *ngIf="mode !== modes.edit"> Story: </ng-container>
+          </label>
+          <textarea
+            *ngIf="mode === modes.edit"
+            id="story"
+            type="text"
+            class="backstory__input"
+            formControlName="story"></textarea>
+          <div
+            *ngIf="mode !== modes.edit"
+            class="backstory__value"
+            [innerHTML]="backstory.story | sanitazeHTML"></div>
+        </div>
+        <div class="backstory__entry">
+          <label for="notes" class="backstory__label"> Notes: </label>
+          <textarea
+            *ngIf="mode === modes.edit"
+            id="notes"
+            type="text"
+            class="backstory__input"
+            formControlName="notes"></textarea>
+          <div *ngIf="mode !== modes.edit" class="backstory__value">
+            {{ backstory.notes }}
+          </div>
+        </div>
+      </div>
+    </mat-grid-tile>
+  </mat-grid-list>
+</form>

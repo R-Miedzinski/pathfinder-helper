@@ -1,0 +1,10 @@
+<app-hover-card [position]="position" [hoverCardWidth]="19.6">
+  <div class="trait" hoverable>
+    <span>
+      {{ traitId }}
+    </span>
+  </div>
+  <div class="trait-description" card-content>
+    <span [innerHTML]="traitDesc | sanitazeHTML"></span>
+  </div>
+</app-hover-card>

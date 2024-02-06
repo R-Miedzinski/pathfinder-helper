@@ -1,7 +1,9 @@
+import { SpellType } from './enums/spell-type';
+
 export interface Spell {
   id: string;
   name: string;
-  type: string;
+  type: SpellType;
   level: number;
   traits?: string[];
   description: string;

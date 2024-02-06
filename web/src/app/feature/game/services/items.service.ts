@@ -53,7 +53,7 @@ const itemsList: Item[] = [
     damageType: DamageType.slashing,
     hands: 1,
     description: `descritpion of testItem4. This one is quite long. Let's even say this one is a weapon.
-    Deals ${new Dice(1, 8)} dmg `,
+    Deals <strong>${new Dice(1, 8)}</strong> dmg `,
     craftRequirenments: 'some craft reqs, maybe some ore and wood.',
   },
   <Armor>{
@@ -123,10 +123,6 @@ export class ItemsService implements OnDestroy {
       count: number;
     }[]
   ): void {
-    console.log(
-      'reading items from "DB":',
-      itemIds.map(item => item.itemId)
-    );
     this.itemsInInventory$.next(
       itemIds.map(({ itemId, count }) => {
         const item = itemsList.filter(it => it.id === itemId)[0];

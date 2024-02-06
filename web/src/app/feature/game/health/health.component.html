@@ -1,28 +1,52 @@
-<div class="hp">
-  <div class="hp__row">
-    <button mat-raised-button class="hp__short-rest">Short Rest</button>
-    <button mat-raised-button class="hp__long-rest">Long Rest</button>
-  </div>
-  <div class="hp__row">
-    <div class="hp__item hp__current">
-      <span class="hp__value">{{ health.current }}</span>
+<mat-grid-list cols="2" rowHeight="{{ rowHeight / 4 }}rem">
+  <mat-grid-tile [colspan]="2" [rowspan]="1">
+    <button mat-raised-button color="primary" (click)="restHandler()">
+      Rest Button
+    </button>
+  </mat-grid-tile>
+  <mat-grid-tile [colspan]="2" [rowspan]="1">
+    <div class="health-wrapper">
+      <span class="health-current">
+        {{ health.current }}
+      </span>
+      <span class="health-temporary">
+        {{ health.temporary > 0 ? '(' + health.temporary + ')' : '' }}
+      </span>
+      /
+      <span class="health-maximum">
+        {{ health.maximum }}
+      </span>
     </div>
-    <div class="hp__item hp__maximum">
-      <span class="hp__value">{{ health.maximum }}</span>
-    </div>
-    <div class="hp__item hp__temp">
-      <span class="hp__value">{{ health.temporary }}</span>
-    </div>
-  </div>
-  <form class="hp__row" (ngSubmit)="hpChangeHandler()" #hpForm="ngForm">
-    <div class="hp__input">
-      <mat-form-field>
-        <mat-label>Change in health</mat-label>
-        <input type="number" [(ngModel)]="hpChange" name="hpChange" matInput />
-        <button matSuffix mat-raised-button class="hp__change" type="submit">
-          Apply
+  </mat-grid-tile>
+  <mat-grid-tile [colspan]="2" [rowspan]="2">
+    <form ngForm class="health-form">
+      <div class="form-group">
+        <label for="hpChange">Health change</label>
+        <input
+          class="input-health"
+          type="number"
+          id="hpChange"
+          [(ngModel)]="hpChange"
+          name="hpChange"
+          min="{{ addTemp ? 0 : -health.maximum }}" />
+      </div>
+      <div class="form-group">
+        <label for="addTemporary">Add temporary</label>
+        <input
+          class="input-checkbox"
+          type="checkbox"
+          [(ngModel)]="addTemp"
+          id="addTemporary"
+          name="addTemp" />
+      </div>
+      <div class="form-group">
+        <button
+          mat-stroked-button
+          color="{{ addTemp ? 'primary' : hpChange >= 0 ? '' : 'warn' }}"
+          (click)="hpChangeHandler()">
+          Apply change
         </button>
-      </mat-form-field>
-    </div>
-  </form>
-</div>
+      </div>
+    </form>
+  </mat-grid-tile>
+</mat-grid-list>

@@ -1,1 +1,17 @@
-<p>spell-book works!</p>
+<mat-grid-list cols="6" rowHeight="12.8rem">
+  <ng-container *ngFor="let spells of sortedSpells | keyvalue : keepOrderLocal">
+    <mat-grid-tile [colspan]="2" [rowspan]="2">
+      <div>
+        <h3>{{ spells.key | titlecase }}</h3>
+        <ul>
+          <li *ngFor="let spell of spells.value">
+            <app-hover-card position="top" [hoverCardWidth]="12.8">
+              <div hoverable>{{ spell.name }}:{{ spell.level }}</div>
+              <app-spell [spell]="spell" card-content></app-spell>
+            </app-hover-card>
+          </li>
+        </ul>
+      </div>
+    </mat-grid-tile>
+  </ng-container>
+</mat-grid-list>

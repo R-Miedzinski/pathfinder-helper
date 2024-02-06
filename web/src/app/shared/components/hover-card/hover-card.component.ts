@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, HostListener, Input, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-hover-card',
@@ -18,11 +18,11 @@ export class HoverCardComponent implements OnInit {
     | 'bottom-left'
     | 'bottom-right';
   protected displayHoverCard: boolean = false;
+  protected keepHovered: boolean = false;
 
   public ngOnInit(): void {
     if (!this.hoverCardWidth) {
       this.hoverCardWidth = 12.8;
-      3;
     }
 
     if (!this.position) {
@@ -30,11 +30,27 @@ export class HoverCardComponent implements OnInit {
     }
   }
 
-  public openHoverCard(event: MouseEvent): void {
+  protected openHoverCard(event: MouseEvent): void {
     this.displayHoverCard = true;
   }
 
-  public closeHoverCard(): void {
+  protected closeHoverCard(): void {
+    this.displayHoverCard = false || this.keepHovered;
+  }
+
+  protected toggleBlockHover(event: MouseEvent): void {
+    event.stopPropagation();
+    this.keepHovered = !this.keepHovered;
+  }
+
+  @HostListener('window:keydown.n')
+  protected lockHover(): void {
+    this.keepHovered = true;
+  }
+
+  @HostListener('window:keydown.esc')
+  protected forceClose(): void {
     this.displayHoverCard = false;
+    this.keepHovered = false;
   }
 }

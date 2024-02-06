@@ -4,6 +4,7 @@ import { Skill } from './skill';
 import { SavingThrow } from './saving-throw';
 import { Ability } from './ability';
 import { Classes } from './enums/classes';
+import { Backstory } from './backstory';
 
 export interface Character {
   characterName: string;
@@ -33,4 +34,6 @@ export interface Character {
   spells?: string[];
   equippedItems?: { itemId: string; count: number }[];
   investedItems?: { itemId: string; count: number }[];
+  actions?: string[];
+  backstory: Backstory;
 }

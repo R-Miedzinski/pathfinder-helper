@@ -22,6 +22,10 @@ export class GameMenuComponent implements OnInit {
   ngOnInit() {
     this.games = [
       {
+        id: '0',
+        name: 'New character screen',
+      },
+      {
         id: '1',
         name: 'some first game',
       },

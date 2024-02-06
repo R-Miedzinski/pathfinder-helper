@@ -14,12 +14,21 @@ import { HP } from '../models/hp';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HealthComponent {
+  @Input() rowHeight!: number;
   @Input() health!: HP;
-  @Output() healthChange: EventEmitter<number> = new EventEmitter<number>();
-  hpChange: number = 0;
+  @Output() healthChange: EventEmitter<{ change: number; addTemp: boolean }> =
+    new EventEmitter<{ change: number; addTemp: boolean }>();
+  public hpChange: number = 0;
+  public addTemp: boolean = false;
 
   public hpChangeHandler(): void {
-    this.healthChange.emit(this.hpChange);
-    this.hpChange = 0;
+    this.healthChange.emit({
+      change: this.hpChange,
+      addTemp: this.addTemp,
+    });
+  }
+
+  public restHandler(): void {
+    console.error('rest not implemented yet');
   }
 }

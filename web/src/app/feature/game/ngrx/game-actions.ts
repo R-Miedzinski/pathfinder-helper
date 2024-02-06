@@ -2,6 +2,17 @@ import { createAction, props } from '@ngrx/store';
 import { Character } from '../models/character';
 import { HP } from '../models/hp';
 import { Skill } from '../models/skill';
+import { CharacterSheetMode } from '../models/enums/character-sheet-mode';
+import { SavingThrow } from '../models/saving-throw';
+import { Ability } from '../models/ability';
+import { Backstory } from '../models/backstory';
+import { Race } from '../models/enums/race';
+import { Feat } from '../models/feat';
+
+export const setMode = createAction(
+  '[GAME] Set Mode',
+  props<{ mode: CharacterSheetMode }>()
+);
 
 export const saveCharacterAction = createAction(
   '[GAME] Save User',
@@ -24,8 +35,13 @@ export const saveArmorClassAction = createAction(
 );
 
 export const saveSavingThrowsAction = createAction(
-  '[GAME] Set new Saving Throws',
-  props<{ savingThrows: { fortitude: number; reflex: number; will: number } }>()
+  '[GAME] Set Saving Throws',
+  props<{ savingThrows: SavingThrow[] }>()
+);
+
+export const saveSavingThrowAction = createAction(
+  '[GAME] Update Saving Throw',
+  props<{ savingThrow: SavingThrow }>()
 );
 
 export const saveAllSkillsAction = createAction(
@@ -36,4 +52,39 @@ export const saveAllSkillsAction = createAction(
 export const saveSkillAction = createAction(
   '[GAME] Update a Skill',
   props<{ skill: Skill }>()
+);
+
+export const saveAbilitiesAction = createAction(
+  '[GAME] Set new Abilities',
+  props<{ abilities: Ability[] }>()
+);
+
+export const saveAbilityAction = createAction(
+  '[GAME] Update an Ability',
+  props<{ ability: Ability }>()
+);
+
+export const saveFeatsAction = createAction(
+  '[GAME] Set new Feats',
+  props<{ feats: Feat[] }>()
+);
+
+export const addFeatAction = createAction(
+  '[GAME] Add new Feat',
+  props<{ feat: Feat }>()
+);
+
+export const saveNameAction = createAction(
+  '[GAME] Set new Name',
+  props<{ name: string }>()
+);
+
+export const saveRaceAction = createAction(
+  '[GAME] Set new Race',
+  props<{ race: Race }>()
+);
+
+export const saveBackstoryAction = createAction(
+  '[GAME] Set new Backstory',
+  props<{ backstory: Backstory }>()
 );

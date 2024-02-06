@@ -1,8 +1,13 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { Feat } from '../models/feat';
 import { FeatCategory } from '../models/enums/feat-category';
-import { ReplaySubject, Subject, takeUntil } from 'rxjs';
+import { Observable, ReplaySubject, Subject, of, takeUntil } from 'rxjs';
 import { cloneDeep } from 'lodash';
+import { GameState } from '../ngrx/game-reducer';
+import * as GameActions from '../ngrx/game-actions';
+import { Store } from '@ngrx/store';
+import { Classes } from '../models/enums/classes';
+import { Race } from '../models/enums/race';
 
 export const featList: Feat[] = [
   {
@@ -24,7 +29,7 @@ export const featList: Feat[] = [
     traits: ['class feat'],
     description: 'description of test feat 2',
     eligible: true,
-    prerequisits: [{ condition: 'Is aclhemist?', fills: true }],
+    prerequisits: [{ condition: 'Is Alchemist?', fills: true }],
     // activate?: number,
   },
   {
@@ -80,7 +85,7 @@ export class FeatsService implements OnDestroy {
   private feats: Feat[] = [];
   private readonly ngOnDestroy$ = new Subject<void>();
 
-  constructor() {
+  constructor(private store: Store<GameState>) {
     this.featList$.pipe(takeUntil(this.ngOnDestroy$)).subscribe({
       next: list => (this.feats = cloneDeep(list)),
     });
@@ -97,5 +102,47 @@ export class FeatsService implements OnDestroy {
         return featList.find(feat => feat.id === id) || ({} as Feat);
       })
     );
+  }
+
+  public addFeat(newFeat: Feat): void {
+    if (!this.feats.some(feat => feat.id === newFeat.id)) {
+      this.featList$.next([...this.feats, newFeat]);
+      this.store.dispatch(GameActions.addFeatAction({ feat: newFeat }));
+    } else {
+      console.error(`Feat ${newFeat.name} already exists on this character`);
+    }
+  }
+
+  public getFeatsToAdd(
+    level: number,
+    charClass?: Classes,
+    race?: Race
+  ): Observable<Feat[]> {
+    const featsToReturn: Feat[] = [];
+    featList.forEach(feat => {
+      if (feat.level <= level) {
+        featsToReturn.push(feat);
+      }
+    });
+
+    featsToReturn
+      .map(feat => {
+        if (
+          feat.prerequisits?.some(
+            cond =>
+              cond.condition === `Is ${charClass}?` ||
+              cond.condition === `Is ${race}?`
+          )
+        ) {
+          return feat;
+        } else if (feat.prerequisits?.length) {
+          return undefined;
+        }
+
+        return feat;
+      })
+      .filter(Boolean);
+
+    return of(featsToReturn);
   }
 }
