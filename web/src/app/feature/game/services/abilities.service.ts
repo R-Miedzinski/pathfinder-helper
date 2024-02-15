@@ -4,7 +4,7 @@ import { Store } from '@ngrx/store';
 import * as GameActions from '../ngrx/game-actions';
 import * as GameSelectors from '../ngrx/game-selector';
 import { Subject, takeUntil } from 'rxjs';
-import { Ability } from '../models/ability';
+import { Ability } from '../models/interfaces/ability';
 import { cloneDeep } from 'lodash';
 import { SkillsService } from './skills.service';
 
@@ -48,6 +48,28 @@ export class AbilitiesService implements OnDestroy {
 
   public recalculateAbilities(): void {
     this.abilities.forEach(ability => this.abilityChangeHandler(ability));
+  }
+
+  public applyBoost(ability: Ability): void {
+    let newAbilityScore = ability.score;
+
+    newAbilityScore += ability.score >= 18 ? 1 : 2;
+
+    const newAbility = cloneDeep(ability);
+    newAbility.score = newAbilityScore;
+
+    this.store.dispatch(GameActions.saveAbilityAction({ ability: newAbility }));
+  }
+
+  public applyFlaw(ability: Ability): void {
+    let newAbilityScore = ability.score;
+
+    newAbilityScore -= ability.score > 18 ? 1 : 2;
+
+    const newAbility = cloneDeep(ability);
+    newAbility.score = newAbilityScore;
+
+    this.store.dispatch(GameActions.saveAbilityAction({ ability: newAbility }));
   }
 
   private valToMod(value: number): number {

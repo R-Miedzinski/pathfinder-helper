@@ -1,4 +1,4 @@
-import { Alignment } from './enums/alignment';
+import { Alignment } from '../enums/alignment';
 
 export interface Backstory {
   id: string;
@@ -19,4 +19,12 @@ export interface Backstory {
   likes?: string;
   dislikes?: string;
   deity?: string;
+}
+
+export function newBackstory(): Backstory {
+  return {
+    id: '',
+    alignment: Alignment.N,
+    story: '',
+  };
 }

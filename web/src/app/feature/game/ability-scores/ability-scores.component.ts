@@ -5,7 +5,7 @@ import {
   OnInit,
 } from '@angular/core';
 import keepOrder from 'src/app/shared/helpers/keepOrder';
-import { Ability } from '../models/ability';
+import { Ability } from '../models/interfaces/ability';
 import { CharacterSheetMode } from '../models/enums/character-sheet-mode';
 import { AbstractControl, FormBuilder, FormGroup } from '@angular/forms';
 import { AbilitiesService } from '../services/abilities.service';

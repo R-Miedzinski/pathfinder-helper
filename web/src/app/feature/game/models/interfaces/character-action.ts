@@ -1,4 +1,4 @@
-import { CharacterActionType } from './enums/character-action-type';
+import { CharacterActionType } from '../enums/character-action-type';
 
 export interface CharacterAction {
   id: string;

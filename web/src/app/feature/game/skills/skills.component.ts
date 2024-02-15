@@ -6,7 +6,7 @@ import {
   OnChanges,
   Output,
 } from '@angular/core';
-import { Skill } from '../models/skill';
+import { Skill } from '../models/interfaces/skill';
 import { cloneDeep } from 'lodash';
 import stringSort from 'src/app/shared/helpers/string-sort';
 import { CharacterSheetMode } from '../models/enums/character-sheet-mode';

@@ -1,14 +1,14 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { Observable, ReplaySubject, Subject, of, takeUntil, tap } from 'rxjs';
-import { Item } from '../models/item';
+import { Item } from '../models/interfaces/item';
 import { ItemType } from '../models/enums/item-type';
-import { Weapon } from '../models/weapon';
+import { Weapon } from '../models/interfaces/weapon';
 import { Dice } from '../models/classes/dice';
 import { WeaponGroup } from '../models/enums/weapon-group';
 import { DamageType } from '../models/enums/damage-type';
 import { ArmorGroup } from '../models/enums/armor-group';
 import { ArmorCategory } from '../models/enums/armor-category';
-import { Armor } from '../models/armor';
+import { Armor } from '../models/interfaces/armor';
 import { cloneDeep } from 'lodash';
 
 const itemsList: Item[] = [

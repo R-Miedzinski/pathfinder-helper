@@ -1,26 +1,26 @@
 import { createFeature, createReducer, on } from '@ngrx/store';
-import { Character } from '../models/character';
+import { Character } from '../models/interfaces/character';
 import * as GameActions from './game-actions';
-import { HP } from '../models/hp';
-import { cloneDeep } from 'lodash';
-import { Skill } from '../models/skill';
+import { HP } from '../models/interfaces/hp';
+import { cloneDeep, isEqual } from 'lodash';
+import { Skill } from '../models/interfaces/skill';
 import { CharacterSheetMode } from '../models/enums/character-sheet-mode';
-import { SavingThrow } from '../models/saving-throw';
-import { Ability } from '../models/ability';
+import { SavingThrow } from '../models/interfaces/saving-throw';
+import { Ability } from '../models/interfaces/ability';
 import { Race } from '../models/enums/race';
-import { Backstory } from '../models/backstory';
-import { Feat } from '../models/feat';
+import { Backstory } from '../models/interfaces/backstory';
+import { Feat } from '../models/interfaces/feat';
 
 export interface GameState {
   mode: CharacterSheetMode;
   character: Character;
-  newCharacter: Character | null;
+  newCharacter: Character;
 }
 
 const initialGameState: GameState = {
   mode: CharacterSheetMode.view,
   character: {} as Character,
-  newCharacter: null,
+  newCharacter: {} as Character,
 };
 
 const gameReducer = createReducer(
@@ -30,6 +30,9 @@ const gameReducer = createReducer(
     (state: GameState, props: { mode: CharacterSheetMode }) => {
       const gameStateCopy = cloneDeep(state);
       gameStateCopy.mode = props.mode;
+      if (!isEqual(gameStateCopy.character, gameStateCopy.newCharacter)) {
+        gameStateCopy.newCharacter = cloneDeep(gameStateCopy.character);
+      }
 
       return gameStateCopy;
     }
@@ -39,6 +42,7 @@ const gameReducer = createReducer(
     (state: GameState, props: { character: Character }) => {
       const gameStateCopy = cloneDeep(state);
       gameStateCopy.character = cloneDeep(props.character);
+      gameStateCopy.newCharacter = cloneDeep(props.character);
 
       return gameStateCopy;
     }

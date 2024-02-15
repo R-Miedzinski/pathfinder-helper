@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { CharacterAction } from '../../models/character-action';
+import { CharacterAction } from '../../models/interfaces/character-action';
 
 @Component({
   selector: 'app-action-list',

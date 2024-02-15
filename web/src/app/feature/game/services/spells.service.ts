@@ -1,5 +1,5 @@
 import { Injectable, OnDestroy } from '@angular/core';
-import { Spell } from '../models/spell';
+import { Spell } from '../models/interfaces/spell';
 import { ReplaySubject, Subject, of, takeUntil } from 'rxjs';
 import { cloneDeep } from 'lodash';
 import { SpellType } from '../models/enums/spell-type';

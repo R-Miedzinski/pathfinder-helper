@@ -1,5 +1,5 @@
 import { Character } from './character';
-import { FeatCategory } from './enums/feat-category';
+import { FeatCategory } from '../enums/feat-category';
 
 export interface Feat {
   id: string;

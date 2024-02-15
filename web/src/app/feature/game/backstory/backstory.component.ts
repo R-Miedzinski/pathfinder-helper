@@ -5,7 +5,7 @@ import {
   OnDestroy,
   OnInit,
 } from '@angular/core';
-import { Backstory } from '../models/backstory';
+import { Backstory } from '../models/interfaces/backstory';
 import { Race } from '../models/enums/race';
 import { CharacterSheetMode } from '../models/enums/character-sheet-mode';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';

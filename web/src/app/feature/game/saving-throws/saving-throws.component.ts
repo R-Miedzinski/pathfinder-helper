@@ -5,7 +5,7 @@ import {
   OnChanges,
   OnInit,
 } from '@angular/core';
-import { SavingThrow } from '../models/saving-throw';
+import { SavingThrow } from '../models/interfaces/saving-throw';
 import { AbstractControl, FormBuilder, FormGroup } from '@angular/forms';
 import { CharacterSheetMode } from '../models/enums/character-sheet-mode';
 import stringSort from 'src/app/shared/helpers/string-sort';

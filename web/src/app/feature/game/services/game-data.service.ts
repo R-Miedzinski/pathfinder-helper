@@ -1,59 +1,44 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, of, tap } from 'rxjs';
-import { Character } from '../models/character';
+import { Observable, of } from 'rxjs';
+import { Character } from '../models/interfaces/character';
 import { environment } from 'src/environment/environment';
-import { Proficiency } from '../models/enums/proficiency';
 import { Race } from '../models/enums/race';
 import { cloneDeep } from 'lodash';
-import { Skill } from '../models/skill';
+import { newSkills } from '../models/interfaces/skill';
 import { Classes } from '../models/enums/classes';
-import { Skills } from '../models/enums/skills';
-import { SavingThrowName } from '../models/enums/saving-throw-names';
 import { Abilities } from '../models/enums/abilities';
-import { ItemsService } from './items.service';
 import { Alignment } from '../models/enums/alignment';
+import { newSavingThrows } from '../models/interfaces/saving-throw';
+import { RaceData } from '../models/interfaces/race-data';
 
 @Injectable()
 export class GameDataService {
-  constructor(
-    private httpClient: HttpClient,
-    private itemsService: ItemsService
-  ) {}
+  constructor(private httpClient: HttpClient) {}
 
-  public getCharacter(id: string): Observable<Character | 'new_character'> {
+  public getCharacter(id: string): Observable<Character | 'NEW'> {
     if (Number(id) > 0) {
       return of(characterMock);
     } else {
-      return of('new_character');
+      return of('NEW');
     }
 
     return this.httpClient.get<Character>(
       environment.apiUrl + '/api/characters/' + id
     );
   }
-}
 
-const skillsMock: Skill[] = [
-  {
-    name: Skills.stealth,
-    level: Proficiency.T,
-    value: 5,
-    ability: Abilities.dex,
-  },
-  {
-    name: Skills.athletics,
-    level: Proficiency.E,
-    value: 10,
-    ability: Abilities.str,
-  },
-  {
-    name: Skills.performance,
-    level: Proficiency.U,
-    value: 1,
-    ability: Abilities.cha,
-  },
-];
+  public getRaceBonuses(race: Race): Observable<RaceData> {
+    const MOCK_RACE_DATA: RaceData = {
+      name: race,
+      description: 'Sample race description. This is a really nice race',
+      boosts: [Abilities.str, Abilities.dex, Abilities.cha],
+      flaws: [Abilities.int],
+    };
+
+    return of(MOCK_RACE_DATA);
+  }
+}
 
 const inventoryMock = [
   { itemId: '1', count: 1 },
@@ -66,7 +51,7 @@ const actionsList = ['1', '2', '3', '4', '5'];
 
 const spellsId = ['1', '2'];
 
-const feats = ['1', '2', '3', '4', '5', '6'];
+const feats = ['1', '2', '4', '5', '6', '8'];
 
 const loremIpsum = `<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vehicula justo sed risus lacinia, at sagittis lorem malesuada. Vivamus ultricies ullamcorper tortor, non bibendum turpis commodo at. Maecenas nunc lacus, luctus id ante at, egestas ornare tortor. Morbi id erat at ipsum luctus facilisis. In at pretium nisl. Praesent finibus iaculis justo. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Donec a lacus sed turpis lobortis scelerisque. Vivamus bibendum tortor id rhoncus aliquet.</p>
 <p>Proin viverra metus ac vulputate accumsan. Praesent aliquet sit amet metus ut faucibus. Vestibulum varius condimentum tellus, sed cursus dui sodales sed. Pellentesque vestibulum at risus vitae suscipit. Sed id venenatis dolor. Vivamus enim augue, tristique a facilisis nec, elementum et eros. Aliquam at velit enim. Morbi ut sollicitudin magna. Fusce ac ipsum lacus. Praesent facilisis ut ipsum a euismod. Nam eu urna augue. Maecenas vulputate vulputate eros, nec porttitor arcu ornare eu. Nam malesuada lacus aliquam lectus elementum laoreet. Suspendisse orci ex, maximus quis dolor eget, egestas auctor tellus.</p>
@@ -77,7 +62,7 @@ const characterMock: Character = {
   class: Classes.alchemist,
   feats: cloneDeep(feats),
   race: Race.dwarf,
-  level: 10,
+  level: 1,
   abilities: [
     {
       id: 'str',
@@ -131,34 +116,12 @@ const characterMock: Character = {
   },
   initiativeMod: 2,
   armorClass: 30,
-  savingThrows: [
-    {
-      id: '1',
-      name: SavingThrowName.fortitude,
-      ability: Abilities.con,
-      proficiency: Proficiency.T,
-      value: 0,
-    },
-    {
-      id: '2',
-      name: SavingThrowName.reflex,
-      ability: Abilities.dex,
-      proficiency: Proficiency.U,
-      value: 0,
-    },
-    {
-      id: '3',
-      name: SavingThrowName.will,
-      ability: Abilities.wis,
-      proficiency: Proficiency.M,
-      value: 0,
-    },
-  ],
+  savingThrows: newSavingThrows(),
   spellResistance: 80,
   baseAttackBonus: 81,
   cmb: 82,
   cmd: 83,
-  skills: cloneDeep(skillsMock),
+  skills: newSkills(),
   inventory: cloneDeep(inventoryMock),
   spells: cloneDeep(spellsId),
   actions: cloneDeep(actionsList),

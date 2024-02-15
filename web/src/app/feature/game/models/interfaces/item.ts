@@ -1,4 +1,4 @@
-import { ItemType } from './enums/item-type';
+import { ItemType } from '../enums/item-type';
 
 export interface Item {
   id: string;

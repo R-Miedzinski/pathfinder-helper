@@ -4,11 +4,11 @@ import { GameState } from '../ngrx/game-reducer';
 import * as GameActions from '../ngrx/game-actions';
 import * as GameSelectors from '../ngrx/game-selector';
 import { Store } from '@ngrx/store';
-import { Skill } from '../models/skill';
+import { Skill } from '../models/interfaces/skill';
 import { cloneDeep } from 'lodash';
 import { Proficiency } from '../models/enums/proficiency';
-import { Character } from '../models/character';
-import { SavingThrow } from '../models/saving-throw';
+import { Character } from '../models/interfaces/character';
+import { SavingThrow } from '../models/interfaces/saving-throw';
 import { Abilities } from '../models/enums/abilities';
 
 @Injectable()

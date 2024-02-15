@@ -4,7 +4,7 @@ import {
   Input,
   OnInit,
 } from '@angular/core';
-import { Spell } from '../models/spell';
+import { Spell } from '../models/interfaces/spell';
 import { Observable } from 'rxjs';
 import { SpellType } from '../models/enums/spell-type';
 import keepOrder from 'src/app/shared/helpers/keepOrder';

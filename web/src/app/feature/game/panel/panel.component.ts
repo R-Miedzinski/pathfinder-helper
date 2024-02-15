@@ -8,6 +8,7 @@ import { Subject, takeUntil } from 'rxjs';
 import * as GameActions from '../ngrx/game-actions';
 import { CharacterSheetMode } from '../models/enums/character-sheet-mode';
 import * as GameSelectors from '../ngrx/game-selector';
+import { newCharacter } from '../models/interfaces/character';
 
 @Component({
   selector: 'app-panel',
@@ -18,6 +19,7 @@ export class PanelComponent implements OnInit, OnDestroy {
   protected mode: CharacterSheetMode = CharacterSheetMode.view;
   protected currentGame: string = '';
   protected modes = CharacterSheetMode;
+  protected isNewCharacter: boolean = false;
   private readonly ngDestroyed$: Subject<void> = new Subject();
 
   constructor(
@@ -35,12 +37,19 @@ export class PanelComponent implements OnInit, OnDestroy {
         .pipe(takeUntil(this.ngDestroyed$))
         .subscribe({
           next: character => {
-            if (character !== 'new_character') {
+            if (character !== 'NEW') {
               this.store.dispatch(
                 GameActions.saveCharacterAction({ character })
               );
+              this.isNewCharacter = false;
             } else {
-              this.router.navigate(['../new'], { relativeTo: this.route });
+              // this.router.navigate(['../new'], { relativeTo: this.route });
+              this.store.dispatch(
+                GameActions.saveCharacterAction({
+                  character: newCharacter(),
+                })
+              );
+              this.isNewCharacter = true;
             }
           },
         });
@@ -52,18 +61,19 @@ export class PanelComponent implements OnInit, OnDestroy {
       .subscribe(mode => (this.mode = mode));
   }
 
-  backToMenu(): void {
-    this.router.navigate(['/user']);
-  }
-
-  goToGame(id: number) {
-    this.router.navigate(['../', id], { relativeTo: this.route });
-  }
-
-  ngOnDestroy(): void {
+  public ngOnDestroy(): void {
     this.store.dispatch(AppActions.setCurrentGame({ name: null }));
     this.ngDestroyed$.next();
     this.ngDestroyed$.complete();
+  }
+
+  protected backToMenu(): void {
+    this.router.navigate(['/user']);
+  }
+
+  protected goToGame(id: number) {
+    this.store.dispatch(GameActions.setMode({ mode: this.modes.view }));
+    this.router.navigate(['../', id], { relativeTo: this.route });
   }
 
   protected toggleEditMode(): void {

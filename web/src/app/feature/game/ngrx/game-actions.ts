@@ -1,13 +1,13 @@
 import { createAction, props } from '@ngrx/store';
-import { Character } from '../models/character';
-import { HP } from '../models/hp';
-import { Skill } from '../models/skill';
+import { Character } from '../models/interfaces/character';
+import { HP } from '../models/interfaces/hp';
+import { Skill } from '../models/interfaces/skill';
 import { CharacterSheetMode } from '../models/enums/character-sheet-mode';
-import { SavingThrow } from '../models/saving-throw';
-import { Ability } from '../models/ability';
-import { Backstory } from '../models/backstory';
+import { SavingThrow } from '../models/interfaces/saving-throw';
+import { Ability } from '../models/interfaces/ability';
+import { Backstory } from '../models/interfaces/backstory';
 import { Race } from '../models/enums/race';
-import { Feat } from '../models/feat';
+import { Feat } from '../models/interfaces/feat';
 
 export const setMode = createAction(
   '[GAME] Set Mode',

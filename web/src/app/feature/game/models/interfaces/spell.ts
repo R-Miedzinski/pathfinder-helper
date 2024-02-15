@@ -1,4 +1,4 @@
-import { SpellType } from './enums/spell-type';
+import { SpellType } from '../enums/spell-type';
 
 export interface Spell {
   id: string;

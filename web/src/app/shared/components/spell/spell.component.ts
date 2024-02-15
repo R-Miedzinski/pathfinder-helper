@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { Spell } from 'src/app/feature/game/models/spell';
+import { Spell } from 'src/app/feature/game/models/interfaces/spell';
 
 @Component({
   selector: 'app-spell',

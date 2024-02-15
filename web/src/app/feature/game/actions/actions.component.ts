@@ -4,7 +4,7 @@ import {
   Input,
   OnInit,
 } from '@angular/core';
-import { CharacterAction } from '../models/character-action';
+import { CharacterAction } from '../models/interfaces/character-action';
 import { CharacterActionType } from '../models/enums/character-action-type';
 import keepOrder from 'src/app/shared/helpers/keepOrder';
 
