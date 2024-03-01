@@ -1,0 +1,17 @@
+export enum WeaponGroup {
+  axe = 'Axe',
+  bomb = 'Bomb',
+  bow = 'Bow',
+  brawling = 'Brawling',
+  club = 'Club',
+  dart = 'Dart',
+  flail = 'Flail',
+  hammer = 'Hammer',
+  knife = 'Knife',
+  pick = 'Pick',
+  polearm = 'Polearm',
+  shield = 'Shield',
+  sling = 'Sling',
+  spear = 'Spear',
+  sword = 'Sword',
+}

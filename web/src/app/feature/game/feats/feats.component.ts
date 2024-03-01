@@ -4,8 +4,8 @@ import {
   Input,
   OnInit,
 } from '@angular/core';
-import { Feat } from '../models/interfaces/feat';
-import { FeatCategory } from '../models/enums/feat-category';
+import { Feat } from '../../../shared/models/interfaces/feat';
+import { FeatCategory } from '../../../shared/models/enums/feat-category';
 
 @Component({
   selector: 'app-feats',

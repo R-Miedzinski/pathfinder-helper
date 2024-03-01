@@ -4,12 +4,12 @@ import { GameState } from '../ngrx/game-reducer';
 import * as GameActions from '../ngrx/game-actions';
 import * as GameSelectors from '../ngrx/game-selector';
 import { Store } from '@ngrx/store';
-import { Skill } from '../models/interfaces/skill';
 import { cloneDeep } from 'lodash';
-import { Proficiency } from '../models/enums/proficiency';
-import { Character } from '../models/interfaces/character';
-import { SavingThrow } from '../models/interfaces/saving-throw';
-import { Abilities } from '../models/enums/abilities';
+import { Character } from '../../../shared/models/interfaces/character';
+import { Proficiency } from '../../../shared/models/enums/proficiency';
+import { Skill } from '../../../shared/models/interfaces/skill';
+import { SavingThrow } from '../../../shared/models/interfaces/saving-throw';
+import { Abilities } from '../../../shared/models/enums/abilities';
 
 @Injectable()
 export class SkillsService implements OnDestroy {

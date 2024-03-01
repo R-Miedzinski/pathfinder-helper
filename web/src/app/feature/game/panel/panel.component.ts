@@ -6,9 +6,9 @@ import * as AppActions from '../../../core/ngrx/actions/app.actions';
 import { GameDataService } from '../services/game-data.service';
 import { Subject, takeUntil } from 'rxjs';
 import * as GameActions from '../ngrx/game-actions';
-import { CharacterSheetMode } from '../models/enums/character-sheet-mode';
 import * as GameSelectors from '../ngrx/game-selector';
-import { newCharacter } from '../models/interfaces/character';
+import { CharacterSheetMode } from '../../../shared/models/enums/character-sheet-mode';
+import { newCharacter } from '../../../shared/models/interfaces/character';
 
 @Component({
   selector: 'app-panel',
@@ -20,6 +20,7 @@ export class PanelComponent implements OnInit, OnDestroy {
   protected currentGame: string = '';
   protected modes = CharacterSheetMode;
   protected isNewCharacter: boolean = false;
+  protected characterId?: string;
   private readonly ngDestroyed$: Subject<void> = new Subject();
 
   constructor(
@@ -33,21 +34,22 @@ export class PanelComponent implements OnInit, OnDestroy {
     this.route.params.pipe(takeUntil(this.ngDestroyed$)).subscribe(params => {
       this.currentGame = params['id'];
       this.gameData
-        .getCharacter(this.currentGame)
+        .getCharacter(this.currentGame, '1')
         .pipe(takeUntil(this.ngDestroyed$))
         .subscribe({
           next: character => {
             if (character !== 'NEW') {
+              this.characterId = character.id;
               this.store.dispatch(
                 GameActions.saveCharacterAction({ character })
               );
               this.isNewCharacter = false;
             } else {
-              // this.router.navigate(['../new'], { relativeTo: this.route });
+              const character = newCharacter();
+              character.id = '0';
+              this.characterId = character.id;
               this.store.dispatch(
-                GameActions.saveCharacterAction({
-                  character: newCharacter(),
-                })
+                GameActions.saveCharacterAction({ character })
               );
               this.isNewCharacter = true;
             }

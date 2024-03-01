@@ -6,9 +6,9 @@ import {
   OnInit,
   Output,
 } from '@angular/core';
-import { Character } from '../models/interfaces/character';
-import { CharacterAction } from '../models/interfaces/character-action';
-import { CharacterSheetMode } from '../models/enums/character-sheet-mode';
+import { Character } from '../../../shared/models/interfaces/character';
+import { CharacterAction } from '../../../shared/models/interfaces/character-action';
+import { CharacterSheetMode } from '../../../shared/models/enums/character-sheet-mode';
 
 @Component({
   selector: 'app-main-character-page',

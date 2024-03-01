@@ -4,7 +4,7 @@
   flex-wrap: wrap;
 
   & > * {
-    flex-basis: 50%;
+    flex-basis: 100%;
     padding: 0.8rem 1.6rem;
     border: 1px solid black;
   }
@@ -20,6 +20,7 @@
 
   &__abilities {
     display: flex;
+    flex-direction: column;
     gap: 1.2rem;
 
     .boosts span,

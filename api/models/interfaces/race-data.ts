@@ -1,9 +1,9 @@
-import { Abilities } from '../enums/abilities';
 import { Race } from '../enums/race';
+import { AbilityBoost } from './ability-boost';
 
 export interface RaceData {
   name: Race;
   description: string;
-  boosts: Abilities[];
-  flaws: Abilities[];
+  boosts: AbilityBoost[];
+  flaws: AbilityBoost[];
 }

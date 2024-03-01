@@ -2,19 +2,19 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { GameState } from '../ngrx/game-reducer';
 import * as GameActions from '../ngrx/game-actions';
-import { Subject, retry, takeUntil, tap } from 'rxjs';
-import { Character } from '../models/interfaces/character';
+import { Subject, takeUntil } from 'rxjs';
+import { Character } from '../../../shared/models/interfaces/character';
 import * as GameSelectors from '../ngrx/game-selector';
 import { cloneDeep } from 'lodash';
 import { ItemsService } from '../services/items.service';
 import { SpellsService } from '../services/spells.service';
 import { FeatsService } from '../services/feats.service';
 import { ActionService } from '../services/action.service';
-import { CharacterSheetMode } from '../models/enums/character-sheet-mode';
-import { Skill } from '../models/interfaces/skill';
-import { Proficiency } from '../models/enums/proficiency';
+import { CharacterSheetMode } from '../../../shared/models/enums/character-sheet-mode';
 import { SkillsService } from '../services/skills.service';
 import { AbilitiesService } from '../services/abilities.service';
+import { Abilities } from 'src/app/shared/models/enums/abilities';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-character-sheet',
@@ -22,16 +22,18 @@ import { AbilitiesService } from '../services/abilities.service';
   styleUrls: ['./character-sheet.component.scss'],
 })
 export class CharacterSheetComponent implements OnInit, OnDestroy {
-  private readonly ngDestroyed$: Subject<void> = new Subject();
+  public readonly rowHeight = 19.6;
   protected mode: CharacterSheetMode = CharacterSheetMode.view;
-  protected character: Character = {} as Character;
+  protected character!: Character;
+  private readonly ngDestroyed$: Subject<void> = new Subject();
+
   protected inventoryWithItems = this.itemsService.itemsInInventory$.pipe(
     takeUntil(this.ngDestroyed$)
   );
   protected equippedItems = this.itemsService.equippedItems$.pipe(
     takeUntil(this.ngDestroyed$)
   );
-  protected InvestedItems = this.itemsService.investedItems$.pipe(
+  protected investedItems = this.itemsService.investedItems$.pipe(
     takeUntil(this.ngDestroyed$)
   );
   protected spellsList = this.spellsService.spellList$.pipe(
@@ -43,7 +45,6 @@ export class CharacterSheetComponent implements OnInit, OnDestroy {
   protected actionsList = this.actionService.actionsList$.pipe(
     takeUntil(this.ngDestroyed$)
   );
-  public readonly rowHeight = 19.6;
 
   constructor(
     private store: Store<GameState>,
@@ -107,7 +108,6 @@ export class CharacterSheetComponent implements OnInit, OnDestroy {
           this.actionService.getActions(actionIds);
         },
       });
-
     this.skillsService.recalculateSkills();
     this.abilitiesService.recalculateAbilities();
   }

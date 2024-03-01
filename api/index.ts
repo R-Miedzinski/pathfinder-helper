@@ -2,7 +2,7 @@ import express, { Application } from 'express'
 import swaggerUi from 'swagger-ui-express'
 import dotenv from 'dotenv'
 import morgan from 'morgan'
-import connectDB from './config/db'
+// import connectDB from './config/db'
 
 import Router from './routes'
 
@@ -16,7 +16,7 @@ app.use(express.json())
 app.use(morgan('tiny'))
 app.use(express.static('public'))
 
-connectDB();
+// connectDB();
 
 app.use(
     '/docs',

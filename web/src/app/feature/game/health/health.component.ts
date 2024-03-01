@@ -5,7 +5,7 @@ import {
   Output,
   EventEmitter,
 } from '@angular/core';
-import { HP } from '../models/interfaces/hp';
+import { HP } from '../../../shared/models/interfaces/hp';
 
 @Component({
   selector: 'app-health',

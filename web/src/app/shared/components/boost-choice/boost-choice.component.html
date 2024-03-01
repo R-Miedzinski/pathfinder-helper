@@ -1,0 +1,17 @@
+<form [formGroup]="chosenAbility">
+  <div class="form-radio-group">
+    <fieldset
+      class="ability"
+      *ngFor="let ability of abilities | keyvalue : keepOrderLocal"
+      [disabled]="disabledAbilities.get(ability.value) || disabled">
+      <label [for]="ability.value + componentId">{{ ability.value }}</label>
+      <input
+        [id]="ability.value + componentId"
+        name="ability"
+        type="radio"
+        [value]="ability.value"
+        formControlName="ability" />
+    </fieldset>
+  </div>
+  {{ exclude }}
+</form>

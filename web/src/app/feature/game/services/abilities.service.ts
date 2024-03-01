@@ -4,9 +4,9 @@ import { Store } from '@ngrx/store';
 import * as GameActions from '../ngrx/game-actions';
 import * as GameSelectors from '../ngrx/game-selector';
 import { Subject, takeUntil } from 'rxjs';
-import { Ability } from '../models/interfaces/ability';
 import { cloneDeep } from 'lodash';
 import { SkillsService } from './skills.service';
+import { Ability } from '../../../shared/models/interfaces/ability';
 
 @Injectable()
 export class AbilitiesService implements OnDestroy {

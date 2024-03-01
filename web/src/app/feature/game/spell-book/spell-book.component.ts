@@ -4,10 +4,9 @@ import {
   Input,
   OnInit,
 } from '@angular/core';
-import { Spell } from '../models/interfaces/spell';
-import { Observable } from 'rxjs';
-import { SpellType } from '../models/enums/spell-type';
 import keepOrder from 'src/app/shared/helpers/keepOrder';
+import { Spell } from '../../../shared/models/interfaces/spell';
+import { SpellType } from '../../../shared/models/enums/spell-type';
 
 @Component({
   selector: 'app-spell-book',

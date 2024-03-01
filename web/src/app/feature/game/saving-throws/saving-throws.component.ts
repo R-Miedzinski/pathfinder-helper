@@ -5,14 +5,14 @@ import {
   OnChanges,
   OnInit,
 } from '@angular/core';
-import { SavingThrow } from '../models/interfaces/saving-throw';
 import { AbstractControl, FormBuilder, FormGroup } from '@angular/forms';
-import { CharacterSheetMode } from '../models/enums/character-sheet-mode';
 import stringSort from 'src/app/shared/helpers/string-sort';
 import { cloneDeep } from 'lodash';
 import keepOrder from 'src/app/shared/helpers/keepOrder';
 import { SkillsService } from '../services/skills.service';
-import { Proficiency } from '../models/enums/proficiency';
+import { SavingThrow } from '../../../shared/models/interfaces/saving-throw';
+import { CharacterSheetMode } from '../../../shared/models/enums/character-sheet-mode';
+import { Proficiency } from '../../../shared/models/enums/proficiency';
 
 @Component({
   selector: 'app-saving-throws',

@@ -1,12 +1,13 @@
 import { HP } from './hp';
-import { Race } from '../enums/race';
 import { Skill, newSkills } from './skill';
 import { SavingThrow, newSavingThrows } from './saving-throw';
 import { Ability, newAbilities } from './ability';
-import { Classes } from '../enums/classes';
 import { Backstory, newBackstory } from './backstory';
+import { Classes } from '../enums/classes';
+import { Race } from '../enums/race';
 
 export interface Character {
+  id: string;
   characterName: string;
   class: Classes;
   feats: string[];
@@ -40,6 +41,7 @@ export interface Character {
 
 export function newCharacter(): Character {
   const newCharacter = {
+    id: '',
     characterName: '',
     class: Classes.fighter,
     feats: [],

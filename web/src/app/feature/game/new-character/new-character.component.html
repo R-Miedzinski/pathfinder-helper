@@ -1,8 +1,8 @@
 <mat-stepper #stepper>
   <mat-step [stepControl]="chooseRaceForm">
-    <form [formGroup]="chooseRaceForm" class="new-character-form race-form">
+    <div class="new-character-form race-form">
       <ng-template matStepLabel>Select Ancestry</ng-template>
-      <div class="race__choice">
+      <form [formGroup]="chooseRaceForm" class="race__choice">
         <label for="race">Choose character ancestry:</label>
         <select id="race" formControlName="race" (change)="raceChange()">
           <option value="" disabled selected hidden>Choose a Race</option>
@@ -12,28 +12,63 @@
             {{ race.value }}
           </option>
         </select>
-      </div>
+      </form>
       <ng-container *ngIf="raceData">
         <div class="race__description">
           {{ raceData.description }}
         </div>
-        <div class="race__abilities">
+        <form class="race__abilities" [formGroup]="boostsForm">
           <div class="boosts" *ngIf="raceData.boosts.length > 0">
             <span>Ability Boosts:</span>
-            <ul>
-              <li *ngFor="let boost of raceData.boosts">{{ boost }}</li>
+            <ul formArrayName="boostsArray">
+              <li *ngFor="let boost of boosts.controls; let i = index">
+                <div [formGroupName]="i" [ngSwitch]="raceData.boosts[i].type">
+                  <app-boost-choice
+                    [formControl]="boost.get('boost')! | toFormControl"
+                    *ngSwitchCase="boostTypes.free"></app-boost-choice>
+                  <app-boost-choice
+                    [formControl]="boost.get('boost')! | toFormControl"
+                    [enableOnly]="raceData.boosts[i].abilities"
+                    *ngSwitchCase="boostTypes.choice"></app-boost-choice>
+                  <app-boost-choice
+                    [formControl]="boost.get('boost')! | toFormControl"
+                    [enableOnly]="raceData.boosts[i].abilities"
+                    *ngSwitchCase="boostTypes.set"></app-boost-choice>
+                </div>
+              </li>
             </ul>
           </div>
           <div class="flaws" *ngIf="raceData.flaws.length > 0">
             <span>Ability Flaws:</span>
-            <ul>
-              <li *ngFor="let flaw of raceData.flaws">{{ flaw }}</li>
+            <ul formArrayName="flawsArray">
+              <li *ngFor="let flaw of flaws.controls; let i = index">
+                <div [formGroupName]="i" [ngSwitch]="raceData.flaws[i].type">
+                  <app-boost-choice
+                    [formControl]="flaw.get('flaw')! | toFormControl"
+                    *ngSwitchCase="boostTypes.free"></app-boost-choice>
+                  <app-boost-choice
+                    [formControl]="flaw.get('flaw')! | toFormControl"
+                    [enableOnly]="raceData.flaws[i].abilities"
+                    *ngSwitchCase="boostTypes.choice"></app-boost-choice>
+                  <app-boost-choice
+                    [formControl]="flaw.get('flaw')! | toFormControl"
+                    [enableOnly]="raceData.flaws[i].abilities"
+                    *ngSwitchCase="boostTypes.set"></app-boost-choice>
+                </div>
+              </li>
             </ul>
           </div>
+        </form>
+        <div class="race__feat">
+          <label for="raceFeats">Choose a feat:</label>
+          <select id="raceFeats">
+            <option *ngFor="let feat of raceFeatNames" [value]="feat">
+              {{ feat }}
+            </option>
+          </select>
         </div>
-        <div class="race__feat">choice of ancestry feat</div>
       </ng-container>
-    </form>
+    </div>
     <button mat-button matStepperNext>Next</button>
   </mat-step>
   <mat-step>

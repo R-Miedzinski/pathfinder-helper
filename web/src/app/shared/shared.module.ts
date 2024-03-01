@@ -8,6 +8,8 @@ import { SpellComponent } from './components/spell/spell.component';
 import { HoverCardComponent } from './components/hover-card/hover-card.component';
 import { TraitComponent } from './components/trait/trait.component';
 import { SanitazeHTMLPipe } from './pipes/sanitaze-html.pipe';
+import { BoostChoiceComponent } from './components/boost-choice/boost-choice.component';
+import { ToFormControlPipe } from './pipes/to-form-control.pipe';
 
 @NgModule({
   declarations: [
@@ -17,6 +19,8 @@ import { SanitazeHTMLPipe } from './pipes/sanitaze-html.pipe';
     HoverCardComponent,
     TraitComponent,
     SanitazeHTMLPipe,
+    BoostChoiceComponent,
+    ToFormControlPipe,
   ],
   imports: [CommonModule, MaterialModule, FormsModule, ReactiveFormsModule],
   exports: [
@@ -25,11 +29,13 @@ import { SanitazeHTMLPipe } from './pipes/sanitaze-html.pipe';
     FormsModule,
     ReactiveFormsModule,
     CastPipe,
+    ToFormControlPipe,
     SanitazeHTMLPipe,
     ItemComponent,
     SpellComponent,
     HoverCardComponent,
     TraitComponent,
+    BoostChoiceComponent,
   ],
 })
 export class SharedModule {}

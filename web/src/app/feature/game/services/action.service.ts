@@ -1,8 +1,8 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { ReplaySubject, Subject, takeUntil } from 'rxjs';
-import { CharacterAction } from '../models/interfaces/character-action';
 import { cloneDeep } from 'lodash';
-import { CharacterActionType } from '../models/enums/character-action-type';
+import { CharacterActionType } from '../../../shared/models/enums/character-action-type';
+import { CharacterAction } from '../../../shared/models/interfaces/character-action';
 
 const actionList: CharacterAction[] = [
   {

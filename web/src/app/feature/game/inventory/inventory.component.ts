@@ -7,7 +7,7 @@ import {
   OnInit,
   Output,
 } from '@angular/core';
-import { Item } from '../models/interfaces/item';
+import { Item } from '../../../shared/models/interfaces/item';
 import { Observable, Subject, takeUntil } from 'rxjs';
 import { cloneDeep } from 'lodash';
 import stringSort from 'src/app/shared/helpers/string-sort';

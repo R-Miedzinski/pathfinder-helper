@@ -6,19 +6,14 @@ import {
   OnChanges,
   Output,
 } from '@angular/core';
-import { Skill } from '../models/interfaces/skill';
 import { cloneDeep } from 'lodash';
 import stringSort from 'src/app/shared/helpers/string-sort';
-import { CharacterSheetMode } from '../models/enums/character-sheet-mode';
-import {
-  AbstractControl,
-  FormArray,
-  FormBuilder,
-  FormGroup,
-} from '@angular/forms';
-import { Proficiency } from '../models/enums/proficiency';
+import { AbstractControl, FormBuilder, FormGroup } from '@angular/forms';
 import keepOrder from 'src/app/shared/helpers/keepOrder';
 import { SkillsService } from '../services/skills.service';
+import { CharacterSheetMode } from '../../../shared/models/enums/character-sheet-mode';
+import { Skill } from '../../../shared/models/interfaces/skill';
+import { Proficiency } from '../../../shared/models/enums/proficiency';
 
 @Component({
   selector: 'app-skills',

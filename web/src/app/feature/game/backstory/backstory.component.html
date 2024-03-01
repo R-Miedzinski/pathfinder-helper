@@ -23,14 +23,15 @@
             {{ race }}
           </div>
         </div>
-        <div class="backstory__entry" formGroupName="backstory">
+        <div class="backstory__entry">
           <label for="alignment" class="backstory__label"> Alignment: </label>
           <select
             *ngIf="mode === modes.edit"
             id="alignment"
             type="select"
             class="backstory__input"
-            formControlName="alignment">
+            formControlName="alignment"
+            (onchange)="valueChanged()">
             <option
               *ngFor="let alignment of alignments | keyvalue : keepOrderLocal"
               [value]="alignment.value">
@@ -44,7 +45,7 @@
       </div>
     </mat-grid-tile>
     <mat-grid-tile [colspan]="4" [rowspan]="1">
-      <div class="backstory__row" formGroupName="backstory">
+      <div class="backstory__row">
         <div class="backstory__entry">
           <label for="nationality" class="backstory__label">
             Nationality:
@@ -54,7 +55,8 @@
             id="nationality"
             type="text"
             class="backstory__input"
-            formControlName="nationality" />
+            formControlName="nationality"
+            (onchange)="valueChanged()" />
           <div *ngIf="mode !== modes.edit" class="backstory__value">
             {{ backstory.nationality }}
           </div>
@@ -66,7 +68,8 @@
             id="ethnicity"
             type="text"
             class="backstory__input"
-            formControlName="ethnicity" />
+            formControlName="ethnicity"
+            (onchange)="valueChanged()" />
           <div *ngIf="mode !== modes.edit" class="backstory__value">
             {{ backstory.ethnicity }}
           </div>
@@ -78,7 +81,8 @@
             id="deity"
             type="text"
             class="backstory__input"
-            formControlName="deity" />
+            formControlName="deity"
+            (onchange)="valueChanged()" />
           <div *ngIf="mode !== modes.edit" class="backstory__value">
             {{ backstory.deity }}
           </div>
@@ -86,7 +90,7 @@
       </div>
     </mat-grid-tile>
     <mat-grid-tile [colspan]="4" [rowspan]="1">
-      <div class="backstory__row" formGroupName="backstory">
+      <div class="backstory__row">
         <div class="backstory__entry">
           <label for="age" class="backstory__label"> Age: </label>
           <input
@@ -94,7 +98,8 @@
             id="age"
             type="text"
             class="backstory__input"
-            formControlName="age" />
+            formControlName="age"
+            (onchange)="valueChanged()" />
           <div *ngIf="mode !== modes.edit" class="backstory__value">
             {{ backstory.age }}
           </div>
@@ -110,13 +115,15 @@
               id="gender"
               type="text"
               class="backstory__input"
-              formControlName="gender" />
+              formControlName="gender"
+              (onchange)="valueChanged()" />
             <input
               *ngIf="mode === modes.edit"
               id="pronouns"
               type="text"
               class="backstory__input"
-              formControlName="pronouns" />
+              formControlName="pronouns"
+              (onchange)="valueChanged()" />
           </div>
           <div *ngIf="mode !== modes.edit" class="backstory__value">
             {{ backstory.gender }} ({{ backstory.pronouns }})
@@ -129,7 +136,8 @@
             id="height"
             type="text"
             class="backstory__input"
-            formControlName="height" />
+            formControlName="height"
+            (onchange)="valueChanged()" />
           <div *ngIf="mode !== modes.edit" class="backstory__value">
             {{ backstory.height }}
           </div>
@@ -141,7 +149,8 @@
             id="weight"
             type="text"
             class="backstory__input"
-            formControlName="weight" />
+            formControlName="weight"
+            (onchange)="valueChanged()" />
           <div *ngIf="mode !== modes.edit" class="backstory__value">
             {{ backstory.weight }}
           </div>
@@ -149,12 +158,12 @@
       </div>
     </mat-grid-tile>
     <mat-grid-tile [colspan]="4" [rowspan]="2">
-      <div class="backstory__row" formGroupName="backstory">
+      <div class="backstory__row">
         appearence, attitude, beliefs, likes and dislikes block
       </div>
     </mat-grid-tile>
     <mat-grid-tile [colspan]="6" [rowspan]="4">
-      <div class="backstory__row" formGroupName="backstory">
+      <div class="backstory__row">
         <div class="backstory__entry">
           <label for="story" class="backstory__label">
             <ng-container *ngIf="mode === modes.edit">
@@ -167,7 +176,8 @@
             id="story"
             type="text"
             class="backstory__input"
-            formControlName="story"></textarea>
+            formControlName="story"
+            (onchange)="valueChanged()"></textarea>
           <div
             *ngIf="mode !== modes.edit"
             class="backstory__value"
@@ -180,7 +190,8 @@
             id="notes"
             type="text"
             class="backstory__input"
-            formControlName="notes"></textarea>
+            formControlName="notes"
+            (onchange)="valueChanged()"></textarea>
           <div *ngIf="mode !== modes.edit" class="backstory__value">
             {{ backstory.notes }}
           </div>

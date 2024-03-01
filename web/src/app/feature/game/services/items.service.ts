@@ -1,15 +1,15 @@
 import { Injectable, OnDestroy } from '@angular/core';
-import { Observable, ReplaySubject, Subject, of, takeUntil, tap } from 'rxjs';
-import { Item } from '../models/interfaces/item';
-import { ItemType } from '../models/enums/item-type';
-import { Weapon } from '../models/interfaces/weapon';
-import { Dice } from '../models/classes/dice';
-import { WeaponGroup } from '../models/enums/weapon-group';
-import { DamageType } from '../models/enums/damage-type';
-import { ArmorGroup } from '../models/enums/armor-group';
-import { ArmorCategory } from '../models/enums/armor-category';
-import { Armor } from '../models/interfaces/armor';
+import { ReplaySubject, Subject, takeUntil } from 'rxjs';
+import { Dice } from '../../../shared/models/classes/dice';
 import { cloneDeep } from 'lodash';
+import { Item } from '../../../shared/models/interfaces/item';
+import { ItemType } from '../../../shared/models/enums/item-type';
+import { Weapon } from '../../../shared/models/interfaces/weapon';
+import { WeaponGroup } from '../../../shared/models/enums/weapon-group';
+import { DamageType } from '../../../shared/models/enums/damage-type';
+import { Armor } from '../../../shared/models/interfaces/armor';
+import { ArmorCategory } from '../../../shared/models/enums/armor-category';
+import { ArmorGroup } from '../../../shared/models/enums/armor-group';
 
 const itemsList: Item[] = [
   {

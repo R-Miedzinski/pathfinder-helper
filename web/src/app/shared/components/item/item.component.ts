@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { Item } from 'src/app/feature/game/models/interfaces/item';
+import { Item } from 'src/app/shared/models/interfaces/item';
 
 @Component({
   selector: 'app-item',

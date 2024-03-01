@@ -1,13 +1,13 @@
 import { Injectable, OnDestroy } from '@angular/core';
-import { Feat } from '../models/interfaces/feat';
-import { FeatCategory } from '../models/enums/feat-category';
 import { Observable, ReplaySubject, Subject, of, takeUntil } from 'rxjs';
 import { cloneDeep } from 'lodash';
 import { GameState } from '../ngrx/game-reducer';
 import * as GameActions from '../ngrx/game-actions';
 import { Store } from '@ngrx/store';
-import { Classes } from '../models/enums/classes';
-import { Race } from '../models/enums/race';
+import { FeatCategory } from '../../../shared/models/enums/feat-category';
+import { Feat } from '../../../shared/models/interfaces/feat';
+import { Classes } from '../../../shared/models/enums/classes';
+import { Race } from '../../../shared/models/enums/race';
 
 export const featList: Feat[] = [
   {

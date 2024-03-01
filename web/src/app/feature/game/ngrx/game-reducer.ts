@@ -1,15 +1,18 @@
 import { createFeature, createReducer, on } from '@ngrx/store';
-import { Character } from '../models/interfaces/character';
+import {
+  Character,
+  newCharacter,
+} from '../../../shared/models/interfaces/character';
 import * as GameActions from './game-actions';
-import { HP } from '../models/interfaces/hp';
 import { cloneDeep, isEqual } from 'lodash';
-import { Skill } from '../models/interfaces/skill';
-import { CharacterSheetMode } from '../models/enums/character-sheet-mode';
-import { SavingThrow } from '../models/interfaces/saving-throw';
-import { Ability } from '../models/interfaces/ability';
-import { Race } from '../models/enums/race';
-import { Backstory } from '../models/interfaces/backstory';
-import { Feat } from '../models/interfaces/feat';
+import { Skill } from '../../../shared/models/interfaces/skill';
+import { CharacterSheetMode } from '../../../shared/models/enums/character-sheet-mode';
+import { SavingThrow } from '../../../shared/models/interfaces/saving-throw';
+import { Ability } from '../../../shared/models/interfaces/ability';
+import { Race } from '../../../shared/models/enums/race';
+import { Backstory } from '../../../shared/models/interfaces/backstory';
+import { Feat } from '../../../shared/models/interfaces/feat';
+import { HP } from '../../../shared/models/interfaces/hp';
 
 export interface GameState {
   mode: CharacterSheetMode;
@@ -19,8 +22,8 @@ export interface GameState {
 
 const initialGameState: GameState = {
   mode: CharacterSheetMode.view,
-  character: {} as Character,
-  newCharacter: {} as Character,
+  character: newCharacter(),
+  newCharacter: newCharacter(),
 };
 
 const gameReducer = createReducer(
