@@ -1,12 +1,11 @@
 import {
   Component,
-  EventEmitter,
   Input,
+  OnChanges,
   OnDestroy,
   OnInit,
-  Output,
+  SimpleChanges,
 } from '@angular/core';
-import { Abilities } from '../../models/enums/abilities';
 import keepOrder from '../../helpers/keepOrder';
 import {
   ControlValueAccessor,
@@ -16,6 +15,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { Subject, takeUntil } from 'rxjs';
+import { Abilities } from 'rpg-app-shared-package/dist/public-api';
 
 @Component({
   selector: 'app-boost-choice',
@@ -30,7 +30,7 @@ import { Subject, takeUntil } from 'rxjs';
   ],
 })
 export class BoostChoiceComponent
-  implements OnInit, OnDestroy, ControlValueAccessor
+  implements OnInit, OnDestroy, ControlValueAccessor, OnChanges
 {
   @Input({ required: false }) exclude: Abilities[] = [];
   @Input({ required: false }) enableOnly: Abilities[] = [];
@@ -39,6 +39,7 @@ export class BoostChoiceComponent
   protected disabledAbilities: Map<Abilities, boolean> = new Map();
   protected chosenAbility!: FormGroup;
 
+  protected isSetValue: boolean = false;
   protected disabled: boolean = false;
   private touched: boolean = false;
   private onTouched = () => {};
@@ -51,8 +52,23 @@ export class BoostChoiceComponent
 
   constructor(private fb: FormBuilder) {}
 
+  public ngOnChanges(changes: SimpleChanges): void {
+    // TODO: exclude changes registering
+    if (changes['exclude'] && this.enableOnly.length) {
+      console.log('exclude chaged');
+      this.allAbilities.forEach(ability => {
+        this.disabledAbilities.set(ability, false);
+      });
+
+      this.exclude.forEach(ability => {
+        this.disabledAbilities.set(ability, true);
+      });
+    }
+  }
+
   public ngOnInit(): void {
     this.componentId = ++BoostChoiceComponent.id;
+    this.isSetValue = false;
     this.allAbilities.forEach(ability => {
       this.disabledAbilities.set(ability, false);
     });
@@ -71,8 +87,15 @@ export class BoostChoiceComponent
       });
     }
 
+    if (this.enableOnly.length === 1) {
+      this.isSetValue = true;
+    }
+
     this.chosenAbility = this.fb.group({
-      ability: [undefined, Validators.required],
+      ability: [
+        this.isSetValue ? this.enableOnly[0] : undefined,
+        Validators.required,
+      ],
     });
 
     this.chosenAbility.controls['ability'].valueChanges

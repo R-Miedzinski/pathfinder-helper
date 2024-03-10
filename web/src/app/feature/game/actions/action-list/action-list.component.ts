@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { CharacterAction } from '../../../../shared/models/interfaces/character-action';
+import { CharacterAction } from 'rpg-app-shared-package/dist/public-api';
 
 @Component({
   selector: 'app-action-list',

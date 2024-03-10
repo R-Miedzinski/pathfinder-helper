@@ -5,16 +5,18 @@ import {
   OnDestroy,
   OnInit,
 } from '@angular/core';
-import { Backstory } from '../../../shared/models/interfaces/backstory';
-import { Race } from '../../../shared/models/enums/race';
-import { CharacterSheetMode } from '../../../shared/models/enums/character-sheet-mode';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subject, takeUntil } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { GameState } from '../ngrx/game-reducer';
 import * as GameActions from '../ngrx/game-actions';
-import { Alignment } from '../../../shared/models/enums/alignment';
 import keepOrder from 'src/app/shared/helpers/keepOrder';
+import {
+  Alignment,
+  Backstory,
+  CharacterSheetMode,
+  Race,
+} from 'rpg-app-shared-package/dist/public-api';
 
 @Component({
   selector: 'app-backstory',

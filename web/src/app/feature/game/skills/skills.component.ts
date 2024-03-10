@@ -1,19 +1,19 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  EventEmitter,
   Input,
   OnChanges,
-  Output,
 } from '@angular/core';
 import { cloneDeep } from 'lodash';
 import stringSort from 'src/app/shared/helpers/string-sort';
 import { AbstractControl, FormBuilder, FormGroup } from '@angular/forms';
 import keepOrder from 'src/app/shared/helpers/keepOrder';
 import { SkillsService } from '../services/skills.service';
-import { CharacterSheetMode } from '../../../shared/models/enums/character-sheet-mode';
-import { Skill } from '../../../shared/models/interfaces/skill';
-import { Proficiency } from '../../../shared/models/enums/proficiency';
+import {
+  CharacterSheetMode,
+  Proficiency,
+  Skill,
+} from 'rpg-app-shared-package/dist/public-api';
 
 @Component({
   selector: 'app-skills',

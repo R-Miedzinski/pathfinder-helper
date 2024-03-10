@@ -29,6 +29,7 @@ import { ActionListComponent } from './actions/action-list/action-list.component
 import { MainCharacterPageComponent } from './main-character-page/main-character-page.component';
 import { SkillsService } from './services/skills.service';
 import { AbilitiesService } from './services/abilities.service';
+import { ExcludeForFreeBoostPipe } from './pipes/exclude-for-free-boost.pipe';
 
 @NgModule({
   declarations: [
@@ -41,7 +42,6 @@ import { AbilitiesService } from './services/abilities.service';
     HealthComponent,
     VariousStatsComponent,
     InventoryComponent,
-    ModifierPlusMinusPipe,
     SavingThrowsComponent,
     SpellBookComponent,
     FeatsComponent,
@@ -50,6 +50,8 @@ import { AbilitiesService } from './services/abilities.service';
     ActionsComponent,
     ActionListComponent,
     MainCharacterPageComponent,
+    ModifierPlusMinusPipe,
+    ExcludeForFreeBoostPipe,
   ],
   providers: [
     GameDataService,

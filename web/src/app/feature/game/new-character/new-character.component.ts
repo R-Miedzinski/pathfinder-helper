@@ -1,5 +1,4 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Race } from '../../../shared/models/enums/race';
 import keepOrder from 'src/app/shared/helpers/keepOrder';
 import { Store } from '@ngrx/store';
 import { GameState } from '../ngrx/game-reducer';
@@ -9,17 +8,20 @@ import { AbilitiesService } from '../services/abilities.service';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { GameDataService } from '../services/game-data.service';
 import { Subject, takeUntil } from 'rxjs';
-import { RaceData } from '../../../shared/models/interfaces/race-data';
 import { isEqual } from 'lodash';
-import { Ability } from '../../../shared/models/interfaces/ability';
-import { Alignment } from '../../../shared/models/enums/alignment';
+import { FeatsService } from '../services/feats.service';
 import {
+  Abilities,
+  Ability,
   AbilityBoost,
   AbilityBoostType,
-} from 'src/app/shared/models/interfaces/ability-boost';
-import { Abilities } from 'src/app/shared/models/enums/abilities';
-import { FeatsService } from '../services/feats.service';
-import { Feat } from 'src/app/shared/models/interfaces/feat';
+  Alignment,
+  BackgroundData,
+  ClassData,
+  Feat,
+  Race,
+  RaceData,
+} from 'rpg-app-shared-package/dist/public-api';
 
 @Component({
   selector: 'app-new-character',
@@ -34,13 +36,17 @@ export class NewCharacterComponent implements OnInit, OnDestroy {
   protected chooseRaceForm!: FormGroup;
   protected boostsForm!: FormGroup;
   protected backgroundForm!: FormGroup;
-  protected chosseClassForm!: FormGroup;
+  protected chooseClassForm!: FormGroup;
   protected eqForm!: FormGroup;
   protected detailsForm!: FormGroup;
 
   protected raceData?: RaceData;
   protected raceFeatNames: string[] = [];
   protected raceFeats: Feat[] = [];
+  protected backgrounds: { id: string; name: string }[] = [];
+  protected chosenBackground?: BackgroundData;
+  protected classes: { id: string; name: string }[] = [];
+  protected chosenClass?: ClassData;
 
   private abilities!: Ability[];
   private readonly ngDestroyed$: Subject<void> = new Subject();
@@ -77,7 +83,7 @@ export class NewCharacterComponent implements OnInit, OnDestroy {
           this.initBoostsForm([], []);
           this.initBoostsForm(raceData.boosts, raceData.flaws);
           this.raceData = raceData;
-          this.handleFeatsFetch();
+          this.handleRaceFeatsFetch();
         },
       });
   }
@@ -88,6 +94,10 @@ export class NewCharacterComponent implements OnInit, OnDestroy {
 
   protected get flaws(): FormArray {
     return this.boostsForm.get('flawsArray') as FormArray;
+  }
+
+  protected get backgroundBoosts(): FormArray {
+    return this.backgroundForm.get('boosts') as FormArray;
   }
 
   private initCharacter(): void {
@@ -141,9 +151,59 @@ export class NewCharacterComponent implements OnInit, OnDestroy {
     );
   }
 
-  private initBackgroundForm(): void {}
+  private initBackgroundForm(): void {
+    this.backgroundForm = this.fb.group({
+      background: [''],
+      boosts: this.fb.array([]),
+    });
 
-  private initClassForm(): void {}
+    this.gameDataService.getBackgrounds().subscribe({
+      next: (value: { id: string; name: string }[]) => {
+        this.backgrounds = value;
+      },
+    });
+
+    this.backgroundForm
+      .get('background')
+      ?.valueChanges.pipe(takeUntil(this.ngDestroyed$))
+      .subscribe({
+        next: (id: string) => {
+          this.gameDataService.getBackgorundData(id).subscribe({
+            next: (data: BackgroundData) => {
+              this.initBackgroundBoostsForm([]);
+
+              this.chosenBackground = data;
+              this.initBackgroundBoostsForm(this.chosenBackground.boosts);
+            },
+          });
+        },
+      });
+  }
+
+  private initClassForm(): void {
+    this.chooseClassForm = this.fb.group({
+      class: [''],
+    });
+
+    this.gameDataService.getClasses().subscribe({
+      next: (value: { id: string; name: string }[]) => {
+        this.classes = value;
+      },
+    });
+
+    this.chooseClassForm
+      .get('class')
+      ?.valueChanges.pipe(takeUntil(this.ngDestroyed$))
+      .subscribe({
+        next: (id: string) => {
+          this.gameDataService.getClassData(id).subscribe({
+            next: (data: ClassData) => {
+              this.chosenClass = data;
+            },
+          });
+        },
+      });
+  }
 
   private initEqForm(): void {}
 
@@ -186,7 +246,7 @@ export class NewCharacterComponent implements OnInit, OnDestroy {
       });
   }
 
-  private handleFeatsFetch(): void {
+  private handleRaceFeatsFetch(): void {
     if (this.raceData) {
       this.featsService
         .getFeatsToAdd(1, undefined, this.raceData.name)
@@ -198,5 +258,20 @@ export class NewCharacterComponent implements OnInit, OnDestroy {
           },
         });
     }
+  }
+
+  private initBackgroundBoostsForm(boosts: AbilityBoost[]): void {
+    this.backgroundBoosts.clear();
+    boosts.forEach(boost => {
+      this.backgroundBoosts.push(
+        this.fb.group({
+          boost: [
+            boost.type === AbilityBoostType.free
+              ? Abilities.str
+              : boost.abilities[0],
+          ],
+        })
+      );
+    });
   }
 }

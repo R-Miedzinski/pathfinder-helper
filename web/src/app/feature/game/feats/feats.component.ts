@@ -4,8 +4,7 @@ import {
   Input,
   OnInit,
 } from '@angular/core';
-import { Feat } from '../../../shared/models/interfaces/feat';
-import { FeatCategory } from '../../../shared/models/enums/feat-category';
+import { Feat, FeatCategory } from 'rpg-app-shared-package/dist/public-api';
 
 @Component({
   selector: 'app-feats',

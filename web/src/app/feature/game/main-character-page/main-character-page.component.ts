@@ -6,10 +6,11 @@ import {
   OnInit,
   Output,
 } from '@angular/core';
-import { Character } from '../../../shared/models/interfaces/character';
-import { CharacterAction } from '../../../shared/models/interfaces/character-action';
-import { CharacterSheetMode } from '../../../shared/models/enums/character-sheet-mode';
-
+import {
+  Character,
+  CharacterAction,
+  CharacterSheetMode,
+} from 'rpg-app-shared-package/dist/public-api';
 @Component({
   selector: 'app-main-character-page',
   templateUrl: './main-character-page.component.html',

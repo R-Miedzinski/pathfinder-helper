@@ -1,7 +1,4 @@
-import { Abilities } from '../models/enums/abilities'
-import { Race } from '../models/enums/race'
-import { AbilityBoostType } from '../models/interfaces/ability-boost'
-import { RaceData } from '../models/interfaces/race-data'
+import { Abilities, AbilityBoostType, CreatureSize, Race, RaceData } from 'rpg-app-shared-package'
 
 export const raceData: RaceData[] = [
     {
@@ -27,6 +24,16 @@ export const raceData: RaceData[] = [
                 abilities: [Abilities.cha],
             },
         ],
+        size: CreatureSize.medium,
+        baseSpeed: 20,
+        languages: ['Common', 'Dwarven'],
+        traits: [Race.dwarf, 'Humanoid'],
+        baseHp: 10,
+        darkvision: `You can see in darkness and 
+        dim light just as well as you can 
+        see in bright light, though your 
+        vision in darkness is in black 
+        and white`,
     },
     {
         name: Race.elf,
@@ -51,6 +58,15 @@ export const raceData: RaceData[] = [
                 abilities: [Abilities.con],
             },
         ],
+        size: CreatureSize.medium,
+        baseSpeed: 30,
+        languages: ['Common', 'Elven'],
+        traits: [Race.elf, 'Humanoid'],
+        baseHp: 6,
+        darkvision: `You can see in dim light as 
+        though it were bright light, 
+        so you ignore the concealed 
+        condition due to dim light.`,
     },
     {
         name: Race.gnome,
@@ -75,6 +91,15 @@ export const raceData: RaceData[] = [
                 abilities: [Abilities.str],
             },
         ],
+        size: CreatureSize.small,
+        baseSpeed: 25,
+        languages: ['Common', 'Gnomish'],
+        traits: [Race.gnome, 'Humanoid'],
+        baseHp: 8,
+        darkvision: `You can see in dim light as 
+        though it were bright light, 
+        so you ignore the concealed 
+        condition due to dim light.`,
     },
     {
         name: Race.goblin,
@@ -99,6 +124,16 @@ export const raceData: RaceData[] = [
                 abilities: [Abilities.wis],
             },
         ],
+        size: CreatureSize.small,
+        baseSpeed: 25,
+        languages: ['Common', 'Goblin'],
+        traits: [Race.goblin, 'Humanoid'],
+        baseHp: 6,
+        darkvision: `You can see in darkness and 
+        dim light just as well as you 
+        can see in bright light, though 
+        your vision in darkness is in 
+        black and white.`,
     },
     {
         name: Race.halfling,
@@ -123,6 +158,25 @@ export const raceData: RaceData[] = [
                 abilities: [Abilities.str],
             },
         ],
+        size: CreatureSize.small,
+        baseSpeed: 25,
+        languages: ['Common', 'Halfling'],
+        traits: [Race.halfling, 'Humanoid'],
+        baseHp: 6,
+        darkvision: `Your eyes are sharp, allowing 
+        you to make out small details 
+        about concealed or even 
+        invisible creatures that others 
+        might miss. You gain a +2 
+        circumstance bonus when using 
+        the Seek action to find hidden or 
+        undetected creatures within 30 
+        feet of you. When you target an 
+        opponent that is concealed from 
+        you or hidden from you, reduce 
+        the DC of the flat check to 3 for 
+        a concealed target or 9 for a 
+        hidden one`,
     },
     {
         name: Race.human,
@@ -138,6 +192,11 @@ export const raceData: RaceData[] = [
             },
         ],
         flaws: [],
+        size: CreatureSize.small,
+        baseSpeed: 25,
+        languages: ['Common'],
+        traits: [Race.human, 'Humanoid'],
+        baseHp: 8,
     },
     {
         name: Race.halfElf,
@@ -153,6 +212,11 @@ export const raceData: RaceData[] = [
             },
         ],
         flaws: [],
+        size: CreatureSize.small,
+        baseSpeed: 25,
+        languages: ['Common'],
+        traits: [Race.human, Race.halfElf, 'Humanoid'],
+        baseHp: 8,
     },
     {
         name: Race.halfOrc,
@@ -168,5 +232,10 @@ export const raceData: RaceData[] = [
             },
         ],
         flaws: [],
+        size: CreatureSize.small,
+        baseSpeed: 25,
+        languages: ['Common'],
+        traits: [Race.human, Race.halfOrc, 'Humanoid'],
+        baseHp: 8,
     },
 ]

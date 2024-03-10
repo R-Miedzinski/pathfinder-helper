@@ -7,10 +7,10 @@ import {
   OnInit,
   Output,
 } from '@angular/core';
-import { Item } from '../../../shared/models/interfaces/item';
 import { Observable, Subject, takeUntil } from 'rxjs';
 import { cloneDeep } from 'lodash';
 import stringSort from 'src/app/shared/helpers/string-sort';
+import { Item } from 'rpg-app-shared-package/dist/public-api';
 
 @Component({
   selector: 'app-inventory',

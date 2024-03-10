@@ -5,11 +5,13 @@ import {
   OnInit,
 } from '@angular/core';
 import keepOrder from 'src/app/shared/helpers/keepOrder';
-import { Ability } from '../../../shared/models/interfaces/ability';
-import { CharacterSheetMode } from '../../../shared/models/enums/character-sheet-mode';
 import { AbstractControl, FormBuilder, FormGroup } from '@angular/forms';
 import { AbilitiesService } from '../services/abilities.service';
 import { cloneDeep } from 'lodash';
+import {
+  Ability,
+  CharacterSheetMode,
+} from 'rpg-app-shared-package/dist/public-api';
 
 @Component({
   selector: 'app-ability-scores',

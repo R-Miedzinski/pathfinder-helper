@@ -1,4 +1,4 @@
-<form [formGroup]="chosenAbility">
+<form [formGroup]="chosenAbility" *ngIf="!isSetValue">
   <div class="form-radio-group">
     <fieldset
       class="ability"
@@ -13,5 +13,14 @@
         formControlName="ability" />
     </fieldset>
   </div>
-  {{ exclude }}
 </form>
+<div *ngIf="isSetValue">
+  <div class="form-radio-group">
+    <div
+      class="ability ability--set"
+      *ngIf="chosenAbility.get('ability')?.value">
+      <input type="checkbox" checked="true" />
+      <label>{{ chosenAbility.get('ability')?.value }}</label>
+    </div>
+  </div>
+</div>

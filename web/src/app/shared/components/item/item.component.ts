@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { Item } from 'src/app/shared/models/interfaces/item';
+import { Item } from 'rpg-app-shared-package/dist/public-api';
 
 @Component({
   selector: 'app-item',

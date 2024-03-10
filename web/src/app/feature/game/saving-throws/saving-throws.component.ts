@@ -2,7 +2,6 @@ import {
   ChangeDetectionStrategy,
   Component,
   Input,
-  OnChanges,
   OnInit,
 } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup } from '@angular/forms';
@@ -10,9 +9,11 @@ import stringSort from 'src/app/shared/helpers/string-sort';
 import { cloneDeep } from 'lodash';
 import keepOrder from 'src/app/shared/helpers/keepOrder';
 import { SkillsService } from '../services/skills.service';
-import { SavingThrow } from '../../../shared/models/interfaces/saving-throw';
-import { CharacterSheetMode } from '../../../shared/models/enums/character-sheet-mode';
-import { Proficiency } from '../../../shared/models/enums/proficiency';
+import {
+  CharacterSheetMode,
+  Proficiency,
+  SavingThrow,
+} from 'rpg-app-shared-package/dist/public-api';
 
 @Component({
   selector: 'app-saving-throws',

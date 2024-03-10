@@ -1,8 +1,7 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { ReplaySubject, Subject, takeUntil } from 'rxjs';
 import { cloneDeep } from 'lodash';
-import { SpellType } from '../../../shared/models/enums/spell-type';
-import { Spell } from '../../../shared/models/interfaces/spell';
+import { Spell, SpellType } from 'rpg-app-shared-package/dist/public-api';
 
 export const spellsList: Spell[] = [
   {

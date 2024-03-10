@@ -5,7 +5,7 @@ import {
   Output,
   EventEmitter,
 } from '@angular/core';
-import { HP } from '../../../shared/models/interfaces/hp';
+import { HP } from 'rpg-app-shared-package/dist/public-api';
 
 @Component({
   selector: 'app-health',

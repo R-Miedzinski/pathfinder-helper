@@ -1,13 +1,15 @@
 import { createAction, props } from '@ngrx/store';
-import { Character } from '../../../shared/models/interfaces/character';
-import { HP } from '../../../shared/models/interfaces/hp';
-import { Skill } from '../../../shared/models/interfaces/skill';
-import { CharacterSheetMode } from '../../../shared/models/enums/character-sheet-mode';
-import { SavingThrow } from '../../../shared/models/interfaces/saving-throw';
-import { Ability } from '../../../shared/models/interfaces/ability';
-import { Backstory } from '../../../shared/models/interfaces/backstory';
-import { Race } from '../../../shared/models/enums/race';
-import { Feat } from '../../../shared/models/interfaces/feat';
+import {
+  Ability,
+  Backstory,
+  Character,
+  CharacterSheetMode,
+  Feat,
+  HP,
+  Race,
+  SavingThrow,
+  Skill,
+} from 'rpg-app-shared-package/dist/public-api';
 
 export const setMode = createAction(
   '[GAME] Set Mode',

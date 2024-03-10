@@ -2,6 +2,8 @@ import express from 'express'
 import PingController from '../controllers/ping'
 import characterRouter from './characterRouter'
 import raceDataRouter from './raceDataRouter'
+import backgroundsRouter from './backgroundsRouter'
+import classesRouter from './classesRouter'
 
 const router = express.Router()
 
@@ -9,7 +11,7 @@ router.use('*', (req, res, next) => {
     console.log('connection on', req.baseUrl + req.url)
     console.log('method: ', req.method)
 
-    next()
+    setTimeout(next, 500)
 })
 
 router.get('/ping', async (_req, res) => {
@@ -47,6 +49,10 @@ router.use('/api/feat', (req, res) => {
     res.send('feat')
 })
 
+router.use('/api/classes', classesRouter)
+
 router.use('/api/race', raceDataRouter)
+
+router.use('/api/backgrounds', backgroundsRouter)
 
 export default router

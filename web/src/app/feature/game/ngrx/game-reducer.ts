@@ -1,18 +1,18 @@
 import { createFeature, createReducer, on } from '@ngrx/store';
-import {
-  Character,
-  newCharacter,
-} from '../../../shared/models/interfaces/character';
 import * as GameActions from './game-actions';
 import { cloneDeep, isEqual } from 'lodash';
-import { Skill } from '../../../shared/models/interfaces/skill';
-import { CharacterSheetMode } from '../../../shared/models/enums/character-sheet-mode';
-import { SavingThrow } from '../../../shared/models/interfaces/saving-throw';
-import { Ability } from '../../../shared/models/interfaces/ability';
-import { Race } from '../../../shared/models/enums/race';
-import { Backstory } from '../../../shared/models/interfaces/backstory';
-import { Feat } from '../../../shared/models/interfaces/feat';
-import { HP } from '../../../shared/models/interfaces/hp';
+import {
+  Ability,
+  Backstory,
+  Character,
+  CharacterSheetMode,
+  Feat,
+  HP,
+  Race,
+  SavingThrow,
+  Skill,
+  newCharacter,
+} from 'rpg-app-shared-package/dist/public-api';
 
 export interface GameState {
   mode: CharacterSheetMode;

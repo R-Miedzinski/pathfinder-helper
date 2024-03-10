@@ -1,4 +1,4 @@
-.race-form {
+.new-character-form {
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
@@ -23,10 +23,44 @@
     flex-direction: column;
     gap: 1.2rem;
 
-    .boosts span,
-    .flaws span {
+    .boosts h4,
+    .flaws h4 {
       font-weight: bold;
     }
+  }
+
+  &__description {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  &__trait-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+
+    & > * {
+      flex-basis: 24%;
+    }
+  }
+}
+
+.background {
+  &__choice {
+    display: flex;
+    flex-direction: column;
+    align-items: baseline;
+    gap: 0.4rem;
+  }
+}
+
+.class {
+  &__choice {
+    display: flex;
+    flex-direction: column;
+    align-items: baseline;
+    gap: 0.4rem;
   }
 }
 
@@ -53,15 +87,13 @@
     &.third-width {
       width: 33.33%;
     }
-
-    label {
-      &.required::after {
-        content: '*';
-        color: red;
-      }
-    }
   }
 
   &__input {
   }
+}
+
+.required::after {
+  content: '*';
+  color: red;
 }

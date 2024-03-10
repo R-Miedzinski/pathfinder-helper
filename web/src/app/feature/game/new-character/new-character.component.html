@@ -3,7 +3,7 @@
     <div class="new-character-form race-form">
       <ng-template matStepLabel>Select Ancestry</ng-template>
       <form [formGroup]="chooseRaceForm" class="race__choice">
-        <label for="race">Choose character ancestry:</label>
+        <label for="race" class="required">Choose character ancestry:</label>
         <select id="race" formControlName="race" (change)="raceChange()">
           <option value="" disabled selected hidden>Choose a Race</option>
           <option
@@ -15,16 +15,41 @@
       </form>
       <ng-container *ngIf="raceData">
         <div class="race__description">
-          {{ raceData.description }}
+          <div class="race__trait-list">
+            <app-trait
+              *ngFor="let trait of raceData.traits"
+              position="top-right"
+              [traitId]="trait">
+            </app-trait>
+          </div>
+          <div>
+            {{ raceData.description }}
+          </div>
+        </div>
+        <div class="race__details">
+          <div>
+            <h4>Hit Points Granted:</h4>
+            {{ raceData.baseHp }}
+          </div>
+          <div>
+            <h4>Size:</h4>
+            {{ raceData.size }}
+          </div>
+          <div>
+            <h4>Base Speed:</h4>
+            {{ raceData.baseSpeed }} feet
+          </div>
         </div>
         <form class="race__abilities" [formGroup]="boostsForm">
           <div class="boosts" *ngIf="raceData.boosts.length > 0">
-            <span>Ability Boosts:</span>
+            <h4 class="required">Ability Boosts:</h4>
             <ul formArrayName="boostsArray">
               <li *ngFor="let boost of boosts.controls; let i = index">
                 <div [formGroupName]="i" [ngSwitch]="raceData.boosts[i].type">
+                  <!-- TODO: exclude already chosen boosts on multiples -->
                   <app-boost-choice
                     [formControl]="boost.get('boost')! | toFormControl"
+                    [exclude]="boosts.controls | excludeForFreeBoost : i"
                     *ngSwitchCase="boostTypes.free"></app-boost-choice>
                   <app-boost-choice
                     [formControl]="boost.get('boost')! | toFormControl"
@@ -39,7 +64,7 @@
             </ul>
           </div>
           <div class="flaws" *ngIf="raceData.flaws.length > 0">
-            <span>Ability Flaws:</span>
+            <h4 class="required">Ability Flaws:</h4>
             <ul formArrayName="flawsArray">
               <li *ngFor="let flaw of flaws.controls; let i = index">
                 <div [formGroupName]="i" [ngSwitch]="raceData.flaws[i].type">
@@ -59,8 +84,12 @@
             </ul>
           </div>
         </form>
+        <div class="race__darkvision" *ngIf="raceData.darkvision">
+          <h4>Darkvision:</h4>
+          <p>{{ raceData.darkvision }}</p>
+        </div>
         <div class="race__feat">
-          <label for="raceFeats">Choose a feat:</label>
+          <label for="raceFeats" class="required">Choose a feat:</label>
           <select id="raceFeats">
             <option *ngFor="let feat of raceFeatNames" [value]="feat">
               {{ feat }}
@@ -73,12 +102,95 @@
   </mat-step>
   <mat-step>
     <form>
-      <ng-template matStepLabel>Pick Background</ng-template>
-      <ul>
-        <li>assign boosts</li>
-        <li>assign proficiencies</li>
-        <li>assign lore training and skill feat</li>
-      </ul>
+      <div>
+        <ng-template matStepLabel>Pick Background</ng-template>
+        <form
+          [formGroup]="backgroundForm"
+          class="new-character-form background-form"
+          *ngIf="backgrounds.length">
+          <div class="background__choice">
+            <label for="background" class="required">
+              Choose characters background:
+            </label>
+            <select id="background" formControlName="background">
+              <option value="" disabled selected hidden>
+                Choose a Background
+              </option>
+              <option *ngFor="let value of backgrounds" [value]="value.id">
+                {{ value.name }}
+              </option>
+            </select>
+          </div>
+          <ng-container *ngIf="chosenBackground">
+            <div class="background__name">
+              <h4 class="background__label">Chosen Background:</h4>
+              {{ chosenBackground.name }}
+            </div>
+            <div class="background__description">
+              <h4 class="background__label">Description:</h4>
+              {{ chosenBackground.description }}
+            </div>
+            <div class="background__abilities">
+              <h4 class="background__label" class="required">
+                Ability Boosts Gained:
+              </h4>
+              <ul formArrayName="boosts">
+                <li
+                  *ngFor="
+                    let boost of backgroundBoosts.controls;
+                    let i = index
+                  ">
+                  <div
+                    [formGroupName]="i"
+                    [ngSwitch]="chosenBackground.boosts[i].type">
+                    <app-boost-choice
+                      [formControl]="boost.get('boost')! | toFormControl"
+                      *ngSwitchCase="boostTypes.free"></app-boost-choice>
+                    <app-boost-choice
+                      [formControl]="boost.get('boost')! | toFormControl"
+                      [enableOnly]="chosenBackground.boosts[i].abilities"
+                      *ngSwitchCase="boostTypes.choice"></app-boost-choice>
+                    <app-boost-choice
+                      [formControl]="boost.get('boost')! | toFormControl"
+                      [enableOnly]="chosenBackground.boosts[i].abilities"
+                      *ngSwitchCase="boostTypes.set"></app-boost-choice>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div
+              class="background__skills"
+              *ngIf="chosenBackground.proficiencies?.length">
+              <h4 class="background__label">Skill Proficiencies Gained:</h4>
+              <ul>
+                <li *ngFor="let proficiency of chosenBackground.proficiencies">
+                  You become
+                  <strong>
+                    {{ proficiency.level }}
+                  </strong>
+                  in
+                  <strong>
+                    <ng-container *ngIf="proficiency.specialty">
+                      {{ proficiency.specialty }}
+                    </ng-container>
+                    {{ proficiency.skill }}
+                  </strong>
+                </li>
+              </ul>
+            </div>
+            <div
+              class="background__feats"
+              *ngIf="chosenBackground.feats?.length">
+              <h4 class="background__label">Feats Gained:</h4>
+              <span
+                class="background__feat"
+                *ngFor="let feat of chosenBackground.feats">
+                {{ feat }}
+              </span>
+            </div>
+          </ng-container>
+        </form>
+      </div>
       <button mat-button matStepperPrevious>Back</button>
       <button mat-button matStepperNext>Next</button>
     </form>
@@ -86,6 +198,131 @@
   <mat-step>
     <form>
       <ng-template matStepLabel>Choose a Class</ng-template>
+      <form
+        [formGroup]="chooseClassForm"
+        class="new-character-form class-form"
+        *ngIf="classes.length">
+        <div class="class__choice">
+          <label for="class" class="required"> Choose characters class: </label>
+          <select id="class" formControlName="class">
+            <option value="" disabled selected hidden>Choose a Class</option>
+            <option *ngFor="let value of classes" [value]="value.id">
+              {{ value.name }}
+            </option>
+          </select>
+        </div>
+        <ng-container *ngIf="chosenClass">
+          <div class="classes__name">
+            <h4 class="classes__label">Chosen Class:</h4>
+            {{ chosenClass.name }}
+          </div>
+          <div class="classes__description">
+            <h4 class="classes__label">Description:</h4>
+            {{ chosenClass.description }}
+          </div>
+          <div class="classes__details">
+            <div>
+              <h4>Hit Points Granted:</h4>
+              {{ chosenClass.baseHp }}
+            </div>
+            <div>
+              <h4>Key Ability:</h4>
+              {{ chosenClass.keyAbility }}
+            </div>
+          </div>
+          <div class="classes__abilities">
+            <h4 class="classes__label">Ability Boosts Gained:</h4>
+            <div *ngFor="let boost of chosenClass.boosts; let i = index">
+              <ng-container
+                [formGroupName]="i"
+                [ngSwitch]="chosenClass.boosts[i].type">
+                <app-boost-choice
+                  *ngSwitchCase="boostTypes.free"></app-boost-choice>
+                <app-boost-choice
+                  [enableOnly]="chosenClass.boosts[i].abilities"
+                  *ngSwitchCase="boostTypes.choice"></app-boost-choice>
+                <app-boost-choice
+                  [enableOnly]="chosenClass.boosts[i].abilities"
+                  *ngSwitchCase="boostTypes.set"></app-boost-choice>
+              </ng-container>
+            </div>
+          </div>
+          <div
+            class="classes__skills"
+            *ngIf="chosenClass.proficiencies?.length">
+            <h4 class="classes__label">Saving Throws Proficiencies Gained:</h4>
+            <ul>
+              <li *ngFor="let proficiency of chosenClass?.savingThrows">
+                You become
+                <strong>
+                  {{ proficiency.level }}
+                </strong>
+                in
+                <strong>
+                  {{ proficiency.name }}
+                </strong>
+              </li>
+            </ul>
+          </div>
+          <div
+            class="classes__skills"
+            *ngIf="chosenClass.proficiencies?.length">
+            <h4 class="classes__label">Skill Proficiencies Gained:</h4>
+            <ul>
+              <li *ngFor="let proficiency of chosenClass?.proficiencies">
+                You become
+                <strong>
+                  {{ proficiency.level }}
+                </strong>
+                in
+                <strong>
+                  <ng-container *ngIf="proficiency.specialty">
+                    {{ proficiency.specialty }}
+                  </ng-container>
+                  {{ proficiency.skill }}
+                </strong>
+              </li>
+            </ul>
+          </div>
+          <div
+            class="classes__skills"
+            *ngIf="chosenClass.proficiencies?.length">
+            <h4 class="classes__label">Weapon Proficiencies Gained:</h4>
+            <ul>
+              <li *ngFor="let proficiency of chosenClass?.weaponProficiencies">
+                You become
+                <strong>
+                  {{ proficiency.level }}
+                </strong>
+                in
+                <strong>
+                  {{ proficiency.type }}
+                </strong>
+              </li>
+            </ul>
+          </div>
+          <div
+            class="classes__skills"
+            *ngIf="chosenClass.proficiencies?.length">
+            <h4 class="classes__label">Armor Proficiencies Gained:</h4>
+            <ul>
+              <li *ngFor="let proficiency of chosenClass?.armorProficiencies">
+                You become
+                <strong>
+                  {{ proficiency.level }}
+                </strong>
+                in
+                <strong>
+                  {{ proficiency.type }}
+                </strong>
+              </li>
+            </ul>
+          </div>
+          <div class="classes__feats">
+            <h4 class="classes__label">Choose a Feat:</h4>
+          </div>
+        </ng-container>
+      </form>
       <ul>
         <li>apply class ability boosts</li>
         <li>determine ability scores</li>

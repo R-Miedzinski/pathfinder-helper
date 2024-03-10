@@ -1,11 +1,5 @@
 import { cloneDeep } from 'lodash'
-import { Character } from '../models/interfaces/character'
-import { Classes } from '../models/enums/classes'
-import { Race } from '../models/enums/race'
-import { Abilities } from '../models/enums/abilities'
-import { newSavingThrows } from '../models/interfaces/saving-throw'
-import { newSkills } from '../models/interfaces/skill'
-import { Alignment } from '../models/enums/alignment'
+import { Abilities, Alignment, Character, Classes, Race, newSavingThrows, newSkills } from 'rpg-app-shared-package'
 
 const inventoryMock = [
     { itemId: '1', count: 1 },

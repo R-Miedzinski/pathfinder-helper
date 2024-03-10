@@ -4,8 +4,10 @@ import {
   Input,
   OnInit,
 } from '@angular/core';
-import { CharacterAction } from '../../../shared/models/interfaces/character-action';
-import { CharacterActionType } from '../../../shared/models/enums/character-action-type';
+import {
+  CharacterAction,
+  CharacterActionType,
+} from 'rpg-app-shared-package/dist/public-api';
 import keepOrder from 'src/app/shared/helpers/keepOrder';
 
 @Component({

@@ -1,6 +1,6 @@
-import { Abilities } from '../enums/abilities';
-import { Proficiency } from '../enums/proficiency';
-import { Skills } from '../enums/skills';
+import { Abilities } from "../enums/abilities";
+import { Proficiency } from "../enums/proficiency";
+import { Skills } from "../enums/skills";
 
 export interface Skill {
   id: string;
@@ -82,6 +82,13 @@ export function newSkills(): Skill[] {
       level: Proficiency.U,
       value: 0,
       ability: Abilities.int,
+    },
+    {
+      id: Skills.perception,
+      name: Skills.perception,
+      level: Proficiency.U,
+      value: 0,
+      ability: Abilities.wis,
     },
     {
       id: Skills.performance,

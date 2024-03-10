@@ -6,7 +6,7 @@ import * as GameSelectors from '../ngrx/game-selector';
 import { Subject, takeUntil } from 'rxjs';
 import { cloneDeep } from 'lodash';
 import { SkillsService } from './skills.service';
-import { Ability } from '../../../shared/models/interfaces/ability';
+import { Ability } from 'rpg-app-shared-package/dist/public-api';
 
 @Injectable()
 export class AbilitiesService implements OnDestroy {

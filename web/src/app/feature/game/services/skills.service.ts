@@ -5,11 +5,13 @@ import * as GameActions from '../ngrx/game-actions';
 import * as GameSelectors from '../ngrx/game-selector';
 import { Store } from '@ngrx/store';
 import { cloneDeep } from 'lodash';
-import { Character } from '../../../shared/models/interfaces/character';
-import { Proficiency } from '../../../shared/models/enums/proficiency';
-import { Skill } from '../../../shared/models/interfaces/skill';
-import { SavingThrow } from '../../../shared/models/interfaces/saving-throw';
-import { Abilities } from '../../../shared/models/enums/abilities';
+import {
+  Abilities,
+  Character,
+  Proficiency,
+  SavingThrow,
+  Skill,
+} from 'rpg-app-shared-package/dist/public-api';
 
 @Injectable()
 export class SkillsService implements OnDestroy {

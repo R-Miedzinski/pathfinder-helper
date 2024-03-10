@@ -4,10 +4,12 @@ import { cloneDeep } from 'lodash';
 import { GameState } from '../ngrx/game-reducer';
 import * as GameActions from '../ngrx/game-actions';
 import { Store } from '@ngrx/store';
-import { FeatCategory } from '../../../shared/models/enums/feat-category';
-import { Feat } from '../../../shared/models/interfaces/feat';
-import { Classes } from '../../../shared/models/enums/classes';
-import { Race } from '../../../shared/models/enums/race';
+import {
+  Classes,
+  Feat,
+  FeatCategory,
+  Race,
+} from 'rpg-app-shared-package/dist/public-api';
 
 export const featList: Feat[] = [
   {

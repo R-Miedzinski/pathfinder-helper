@@ -7,8 +7,10 @@ import { GameDataService } from '../services/game-data.service';
 import { Subject, takeUntil } from 'rxjs';
 import * as GameActions from '../ngrx/game-actions';
 import * as GameSelectors from '../ngrx/game-selector';
-import { CharacterSheetMode } from '../../../shared/models/enums/character-sheet-mode';
-import { newCharacter } from '../../../shared/models/interfaces/character';
+import {
+  CharacterSheetMode,
+  newCharacter,
+} from 'rpg-app-shared-package/dist/public-api';
 
 @Component({
   selector: 'app-panel',

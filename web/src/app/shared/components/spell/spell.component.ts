@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { Spell } from 'src/app/shared/models/interfaces/spell';
+import { Spell } from 'rpg-app-shared-package/dist/public-api';
 
 @Component({
   selector: 'app-spell',

@@ -1,7 +1,7 @@
 import express from 'express'
 import { cloneDeep } from 'lodash'
 import * as CharacterMock from '../storage/character'
-import { Character } from '../models/interfaces/character'
+import { Character } from 'rpg-app-shared-package'
 const characterRouter = express.Router()
 
 const characterMock: Character = cloneDeep(CharacterMock.characterMock)

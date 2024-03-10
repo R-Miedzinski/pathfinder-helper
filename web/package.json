@@ -10,7 +10,6 @@
   },
   "private": true,
   "dependencies": {
-    "@app-types": "../shared/models/dist",
     "@angular/animations": "^16.2.0",
     "@angular/cdk": "^16.2.11",
     "@angular/common": "^16.2.0",

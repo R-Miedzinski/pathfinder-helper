@@ -1,15 +1,17 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { ReplaySubject, Subject, takeUntil } from 'rxjs';
-import { Dice } from '../../../shared/models/classes/dice';
 import { cloneDeep } from 'lodash';
-import { Item } from '../../../shared/models/interfaces/item';
-import { ItemType } from '../../../shared/models/enums/item-type';
-import { Weapon } from '../../../shared/models/interfaces/weapon';
-import { WeaponGroup } from '../../../shared/models/enums/weapon-group';
-import { DamageType } from '../../../shared/models/enums/damage-type';
-import { Armor } from '../../../shared/models/interfaces/armor';
-import { ArmorCategory } from '../../../shared/models/enums/armor-category';
-import { ArmorGroup } from '../../../shared/models/enums/armor-group';
+import {
+  Armor,
+  ArmorCategory,
+  ArmorGroup,
+  DamageType,
+  Dice,
+  Item,
+  ItemType,
+  Weapon,
+  WeaponGroup,
+} from 'rpg-app-shared-package';
 
 const itemsList: Item[] = [
   {

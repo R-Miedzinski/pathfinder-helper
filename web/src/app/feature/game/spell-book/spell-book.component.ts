@@ -4,9 +4,8 @@ import {
   Input,
   OnInit,
 } from '@angular/core';
+import { Spell, SpellType } from 'rpg-app-shared-package/dist/public-api';
 import keepOrder from 'src/app/shared/helpers/keepOrder';
-import { Spell } from '../../../shared/models/interfaces/spell';
-import { SpellType } from '../../../shared/models/enums/spell-type';
 
 @Component({
   selector: 'app-spell-book',

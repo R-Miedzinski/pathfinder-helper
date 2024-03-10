@@ -1,7 +1,7 @@
 import express from 'express'
 import { cloneDeep } from 'lodash'
 import { raceData } from '../storage/raceData'
-import { RaceData } from '../models/interfaces/race-data'
+import { RaceData } from 'rpg-app-shared-package'
 
 const raceDataRouter = express.Router()
 

@@ -3,18 +3,18 @@ import { Store } from '@ngrx/store';
 import { GameState } from '../ngrx/game-reducer';
 import * as GameActions from '../ngrx/game-actions';
 import { Subject, takeUntil } from 'rxjs';
-import { Character } from '../../../shared/models/interfaces/character';
 import * as GameSelectors from '../ngrx/game-selector';
 import { cloneDeep } from 'lodash';
 import { ItemsService } from '../services/items.service';
 import { SpellsService } from '../services/spells.service';
 import { FeatsService } from '../services/feats.service';
 import { ActionService } from '../services/action.service';
-import { CharacterSheetMode } from '../../../shared/models/enums/character-sheet-mode';
 import { SkillsService } from '../services/skills.service';
 import { AbilitiesService } from '../services/abilities.service';
-import { Abilities } from 'src/app/shared/models/enums/abilities';
-import { FormControl } from '@angular/forms';
+import {
+  Character,
+  CharacterSheetMode,
+} from 'rpg-app-shared-package/dist/public-api';
 
 @Component({
   selector: 'app-character-sheet',
