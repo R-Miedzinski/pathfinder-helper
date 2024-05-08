@@ -1,16 +1,5 @@
 import { cloneDeep } from 'lodash'
-import {
-  Abilities,
-  Backstory,
-  Character,
-  Classes,
-  Proficiency,
-  Race,
-  SavingThrowName,
-  Skill,
-  Skills,
-  newCharacter,
-} from 'rpg-app-shared-package'
+import { Abilities, Character, Proficiency, SeedCharacterData, Skill, newCharacter } from 'rpg-app-shared-package'
 import { raceData } from '../storage/raceData'
 import { classData } from '../storage/classData'
 
@@ -190,33 +179,5 @@ export class CharacterFactory {
     if (abilityId >= 0 && currAb) {
       this.character.abilities[abilityId] = cloneDeep(currAb)
     }
-  }
-}
-
-export interface SeedCharacterData {
-  id: string
-  name: string
-  class: Classes
-  ancestryFeats: { id: string; payload: unknown }[]
-  classFeats: { id: string; payload: unknown }[]
-  skillFeats: { id: string; payload: unknown }[]
-  bonusFeats: { id: string; payload: unknown }[]
-  generalFeats: { id: string; payload: unknown }[]
-  race: Race
-  level: number
-  boosts: Abilities[]
-  flaws: Abilities[]
-  savingThrows: { name: SavingThrowName; level: Proficiency }[]
-  skills: { name: Skills; level: Proficiency; ability: Abilities; specialty?: string }[]
-  inventory: { itemId: string; count: number }[]
-  spells: string[]
-  equippedItems: { itemId: string; count: number }[]
-  investedItems: { itemId: string; count: number }[]
-  actions: string[]
-  backstory: Backstory
-  hp?: {
-    maximum?: number
-    current?: number
-    temporary?: number
   }
 }

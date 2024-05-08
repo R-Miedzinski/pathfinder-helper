@@ -36,4 +36,8 @@ export class HttpCacheClientService {
       })
     );
   }
+
+  public post<T>(url: string, payload: any): Observable<T> {
+    return this.http.post<T>(url, payload);
+  }
 }

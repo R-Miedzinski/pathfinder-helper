@@ -7,10 +7,8 @@ import {
   Race,
   SavingThrowName,
   Skills,
-  //   newSavingThrows,
-  //   newSkills,
+  SeedCharacterData,
 } from 'rpg-app-shared-package'
-import { SeedCharacterData } from '../helpers/create-character'
 
 const inventoryMock = [
   { itemId: '1', count: 1 },
@@ -139,8 +137,6 @@ export const characterMock: SeedCharacterData = {
     deity: 'Grand Kangaroo',
   },
   hp: {
-    // maximum: 20,
-    // current: 15,
     temporary: 5,
   },
 }

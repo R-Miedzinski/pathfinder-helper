@@ -1,4 +1,4 @@
-<mat-stepper #stepper>
+<mat-stepper #stepper (selectionChange)="onStepChanged($event)" linear="true">
   <mat-step [stepControl]="chooseRaceForm">
     <div class="new-character-form race-form">
       <ng-template matStepLabel>Select Ancestry</ng-template>
@@ -100,7 +100,7 @@
     </div>
     <button mat-button matStepperNext>Next</button>
   </mat-step>
-  <mat-step>
+  <mat-step [stepControl]="backgroundForm">
     <form>
       <div>
         <ng-template matStepLabel>Pick Background</ng-template>
@@ -195,7 +195,7 @@
       <button mat-button matStepperNext>Next</button>
     </form>
   </mat-step>
-  <mat-step>
+  <mat-step [stepControl]="chooseClassForm">
     <form>
       <ng-template matStepLabel>Choose a Class</ng-template>
       <form
@@ -232,20 +232,25 @@
           </div>
           <div class="classes__abilities">
             <h4 class="classes__label">Ability Boosts Gained:</h4>
-            <div *ngFor="let boost of chosenClass.boosts; let i = index">
-              <ng-container
-                [formGroupName]="i"
-                [ngSwitch]="chosenClass.boosts[i].type">
-                <app-boost-choice
-                  *ngSwitchCase="boostTypes.free"></app-boost-choice>
-                <app-boost-choice
-                  [enableOnly]="chosenClass.boosts[i].abilities"
-                  *ngSwitchCase="boostTypes.choice"></app-boost-choice>
-                <app-boost-choice
-                  [enableOnly]="chosenClass.boosts[i].abilities"
-                  *ngSwitchCase="boostTypes.set"></app-boost-choice>
-              </ng-container>
-            </div>
+            <ul formArrayName="boosts">
+              <li *ngFor="let boost of classBoosts.controls; let i = index">
+                <div
+                  [formGroupName]="i"
+                  [ngSwitch]="chosenClass.boosts[i].type">
+                  <app-boost-choice
+                    [formControl]="boost.get('boost')! | toFormControl"
+                    *ngSwitchCase="boostTypes.free"></app-boost-choice>
+                  <app-boost-choice
+                    [formControl]="boost.get('boost')! | toFormControl"
+                    [enableOnly]="chosenClass.boosts[i].abilities"
+                    *ngSwitchCase="boostTypes.choice"></app-boost-choice>
+                  <app-boost-choice
+                    [formControl]="boost.get('boost')! | toFormControl"
+                    [enableOnly]="chosenClass.boosts[i].abilities"
+                    *ngSwitchCase="boostTypes.set"></app-boost-choice>
+                </div>
+              </li>
+            </ul>
           </div>
           <div
             class="classes__skills"

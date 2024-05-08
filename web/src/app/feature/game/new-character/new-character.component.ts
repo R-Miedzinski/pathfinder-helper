@@ -21,7 +21,9 @@ import {
   Feat,
   Race,
   RaceData,
+  SeedCharacterData,
 } from 'rpg-app-shared-package/dist/public-api';
+import { StepperSelectionEvent } from '@angular/cdk/stepper';
 
 @Component({
   selector: 'app-new-character',
@@ -100,6 +102,56 @@ export class NewCharacterComponent implements OnInit, OnDestroy {
     return this.backgroundForm.get('boosts') as FormArray;
   }
 
+  protected get classBoosts(): FormArray {
+    return this.chooseClassForm.get('boosts') as FormArray;
+  }
+
+  protected onStepChanged(event: StepperSelectionEvent): void {
+    if (event.selectedIndex === 5) {
+      const characterData: SeedCharacterData = {
+        id: '0',
+        name: this.detailsForm.get('name')?.value,
+        class: this.chosenClass!.name,
+        race: this.raceData!.name,
+        level: 1,
+        ancestryFeats: [],
+        classFeats: [],
+        generalFeats: [],
+        skillFeats: [],
+        bonusFeats: [],
+        boosts: [
+          ...this.boosts.value.map((item: { boost: Abilities }) => item.boost),
+          ...this.backgroundForm
+            .get('boosts')
+            ?.value.map((item: { boost: Abilities }) => item.boost),
+          ...this.chooseClassForm
+            .get('boosts')
+            ?.value.map((item: { boost: Abilities }) => item.boost),
+        ],
+        flaws: this.flaws.value.map((item: { boost: Abilities }) => item.boost),
+        savingThrows: [],
+        skills: [],
+        inventory: [],
+        equippedItems: [],
+        investedItems: [],
+        spells: [],
+        actions: [],
+        backstory: this.detailsForm.get('backstory')?.value,
+      };
+
+      console.log(characterData);
+
+      this.gameDataService
+        .previewNewCharacter(characterData)
+        .pipe(takeUntil(this.ngDestroyed$))
+        .subscribe({
+          next: character => {
+            this.store.dispatch(GameActions.saveCharacterAction({ character }));
+          },
+        });
+    }
+  }
+
   private initCharacter(): void {
     this.store
       .select(GameSelectors.getAbilities)
@@ -133,6 +185,7 @@ export class NewCharacterComponent implements OnInit, OnDestroy {
             boost.type === AbilityBoostType.free
               ? Abilities.str
               : boost.abilities[0],
+            Validators.required,
           ],
         })
       )
@@ -145,6 +198,7 @@ export class NewCharacterComponent implements OnInit, OnDestroy {
             flaw.type === AbilityBoostType.free
               ? Abilities.str
               : flaw.abilities[0],
+            Validators.required,
           ],
         })
       )
@@ -153,7 +207,7 @@ export class NewCharacterComponent implements OnInit, OnDestroy {
 
   private initBackgroundForm(): void {
     this.backgroundForm = this.fb.group({
-      background: [''],
+      background: ['', Validators.required],
       boosts: this.fb.array([]),
     });
 
@@ -182,7 +236,8 @@ export class NewCharacterComponent implements OnInit, OnDestroy {
 
   private initClassForm(): void {
     this.chooseClassForm = this.fb.group({
-      class: [''],
+      class: ['', Validators.required],
+      boosts: this.fb.array([]),
     });
 
     this.gameDataService.getClasses().subscribe({
@@ -198,7 +253,10 @@ export class NewCharacterComponent implements OnInit, OnDestroy {
         next: (id: string) => {
           this.gameDataService.getClassData(id).subscribe({
             next: (data: ClassData) => {
+              this.initClassBoostsForm([]);
+
               this.chosenClass = data;
+              this.initClassBoostsForm(this.chosenClass.boosts);
             },
           });
         },
@@ -269,6 +327,23 @@ export class NewCharacterComponent implements OnInit, OnDestroy {
             boost.type === AbilityBoostType.free
               ? Abilities.str
               : boost.abilities[0],
+            Validators.required,
+          ],
+        })
+      );
+    });
+  }
+
+  private initClassBoostsForm(boosts: AbilityBoost[]): void {
+    this.classBoosts.clear();
+    boosts.forEach(boost => {
+      this.classBoosts.push(
+        this.fb.group({
+          boost: [
+            boost.type === AbilityBoostType.free
+              ? Abilities.str
+              : boost.abilities[0],
+            Validators.required,
           ],
         })
       );

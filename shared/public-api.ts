@@ -35,6 +35,7 @@ export { HP } from "./models/interfaces/hp";
 export { Item } from "./models/interfaces/item";
 export { RaceData } from "./models/interfaces/race-data";
 export { SavingThrow, newSavingThrows } from "./models/interfaces/saving-throw";
+export { SeedCharacterData } from "./models/interfaces/seed-character-data";
 export { Skill, newSkills } from "./models/interfaces/skill";
 export { Spell } from "./models/interfaces/spell";
 export { Weapon } from "./models/interfaces/weapon";

@@ -8,11 +8,11 @@ import {
   BackgroundData,
   Character,
   ClassData,
-  CreatureSize,
   Race,
   RaceData,
+  SeedCharacterData,
 } from 'rpg-app-shared-package/dist/public-api';
-import { EMPTY, Observable, catchError, of, tap } from 'rxjs';
+import { Observable, catchError, of } from 'rxjs';
 import { HttpCacheClientService } from 'src/app/shared/services/http-cache-client.service';
 import { environment } from 'src/environment/environment';
 
@@ -79,5 +79,13 @@ export class GameDataService {
     const url = `${environment.apiUrl}/api/classes/${id}`;
 
     return this.httpCacheClient.get<ClassData>(url);
+  }
+
+  public previewNewCharacter(
+    characterData: SeedCharacterData
+  ): Observable<Character> {
+    const url = `${environment.apiUrl}/api/character/new-character-preview`;
+
+    return this.httpCacheClient.post<Character>(url, characterData);
   }
 }
