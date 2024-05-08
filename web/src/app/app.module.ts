@@ -15,6 +15,7 @@ import { ToolbarComponent } from './core/toolbar/toolbar.component';
 import { SideNavComponent } from './core/side-nav/side-nav.component';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { HttpCacheClientService } from './shared/services/http-cache-client.service';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     HttpClientModule,
     BrowserAnimationsModule,
   ],
-  providers: [],
+  providers: [HttpCacheClientService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

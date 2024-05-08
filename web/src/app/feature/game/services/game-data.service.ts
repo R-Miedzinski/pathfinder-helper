@@ -13,6 +13,7 @@ import {
   RaceData,
 } from 'rpg-app-shared-package/dist/public-api';
 import { EMPTY, Observable, catchError, of, tap } from 'rxjs';
+import { HttpCacheClientService } from 'src/app/shared/services/http-cache-client.service';
 import { environment } from 'src/environment/environment';
 
 @Injectable()
@@ -21,7 +22,10 @@ export class GameDataService {
   private backgroundDataCache: Map<string, BackgroundData> = new Map();
   private classDataCache: Map<string, ClassData> = new Map();
 
-  constructor(private httpClient: HttpClient) {}
+  constructor(
+    private httpClient: HttpClient,
+    private httpCacheClient: HttpCacheClientService
+  ) {}
 
   public getCharacter(
     gameId: string,
@@ -38,23 +42,9 @@ export class GameDataService {
   }
 
   public getRaceBonuses(race: Race): Observable<RaceData> {
-    const raceData = this.raceDataCache.get(race);
-    if (raceData) {
-      return of(raceData);
-    }
     const url = `${environment.apiUrl}/api/race/${race}`;
 
-    return this.httpClient.get<RaceData>(url).pipe(
-      catchError((err: HttpErrorResponse) => {
-        console.error('Error in getting race', err.message);
-        return EMPTY;
-      }),
-      tap(data => {
-        if (data?.description) {
-          this.raceDataCache.set(race, data);
-        }
-      })
-    );
+    return this.httpCacheClient.get<RaceData>(url);
   }
 
   public getBackgrounds(): Observable<{ id: string; name: string }[]> {
@@ -69,28 +59,9 @@ export class GameDataService {
   }
 
   public getBackgorundData(id: string): Observable<BackgroundData> {
-    const backgroundData = this.backgroundDataCache.get(id);
-    if (backgroundData) {
-      console.log('retrieving backgroundData from cahche');
-      return of(backgroundData);
-    }
     const url = `${environment.apiUrl}/api/backgrounds/${id}`;
 
-    return this.httpClient.get<BackgroundData>(url).pipe(
-      catchError((err: HttpErrorResponse) => {
-        console.error(
-          `Error in getting background data for ${id}`,
-          err.message
-        );
-        return EMPTY;
-      }),
-      tap((data: BackgroundData) => {
-        if (data.name) {
-          console.log('putting backgroundData into cache');
-          this.backgroundDataCache.set(id, data);
-        }
-      })
-    );
+    return this.httpCacheClient.get<BackgroundData>(url);
   }
 
   public getClasses(): Observable<{ id: string; name: string }[]> {
@@ -105,27 +76,8 @@ export class GameDataService {
   }
 
   public getClassData(id: string): Observable<ClassData> {
-    const classData = this.classDataCache.get(id);
-    if (classData) {
-      console.log('retrieving classData from cahche');
-      return of(classData);
-    }
     const url = `${environment.apiUrl}/api/classes/${id}`;
 
-    return this.httpClient.get<ClassData>(url).pipe(
-      catchError((err: HttpErrorResponse) => {
-        console.error(
-          `Error in getting background data for ${id}`,
-          err.message
-        );
-        return EMPTY;
-      }),
-      tap((data: ClassData) => {
-        if (data.name) {
-          console.log('putting backgroundData into cache');
-          this.classDataCache.set(id, data);
-        }
-      })
-    );
+    return this.httpCacheClient.get<ClassData>(url);
   }
 }

@@ -4,50 +4,53 @@ import characterRouter from './characterRouter'
 import raceDataRouter from './raceDataRouter'
 import backgroundsRouter from './backgroundsRouter'
 import classesRouter from './classesRouter'
+import traitsRouter from './traitsRouter'
 
 const router = express.Router()
 
 router.use('*', (req, res, next) => {
-    console.log('connection on', req.baseUrl + req.url)
-    console.log('method: ', req.method)
+  console.log('connection on', req.baseUrl + req.url)
+  console.log('method: ', req.method)
 
-    setTimeout(next, 500)
+  setTimeout(next, 500)
 })
 
 router.get('/ping', async (_req, res) => {
-    const response = await PingController.getTestMessage()
-    return res.send(response.message)
+  const response = await PingController.getTestMessage()
+  return res.send(response.message)
 })
 
 router.use('/api/characters', (req, res) => {
-    res.send('characters')
+  res.send('characters')
 })
 
 router.use('/api/character', characterRouter)
 
 router.use('/api/spells', (req, res) => {
-    res.send('spells')
+  res.send('spells')
 })
 
 router.use('/api/spell', (req, res) => {
-    res.send('spell')
+  res.send('spell')
 })
 
 router.use('/api/actions', (req, res) => {
-    res.send('actions')
+  res.send('actions')
 })
 
 router.use('/api/action', (req, res) => {
-    res.send('action')
+  res.send('action')
 })
 
 router.use('/api/feats', (req, res) => {
-    res.send('feats')
+  res.send('feats')
 })
 
 router.use('/api/feat', (req, res) => {
-    res.send('feat')
+  res.send('feat')
 })
+
+router.use('/api/traits', traitsRouter)
 
 router.use('/api/classes', classesRouter)
 

@@ -7,22 +7,22 @@ const backgroundsRouter = express.Router()
 
 const backgroundDataArray: BackgroundData[] = cloneDeep(backgroundData)
 const backgroundDataIdsArray: { id: string; name: string }[] = backgroundDataArray.map((data) => ({
-    id: data.id,
-    name: data.name,
+  id: data.id,
+  name: data.name,
 }))
 
 backgroundsRouter.get('', (req, res) => {
-    res.send(backgroundDataIdsArray)
+  res.send(backgroundDataIdsArray)
 })
 
-backgroundsRouter.get('/:id', (req, res) => {
-    const backgroundData = backgroundDataArray.find((data) => data.id === req.params.id)
-    if (!backgroundData) {
-        const error = new Error('Requested background not found')
-        res.end(error)
-    }
+backgroundsRouter.get('/:id', (req, res, next) => {
+  const backgroundData = backgroundDataArray.find((data) => data.id === req.params.id)
+  if (!backgroundData) {
+    const error = new Error('Requested background not found')
+    next(error)
+  }
 
-    res.send(backgroundData)
+  res.send(backgroundData)
 })
 
 export default backgroundsRouter

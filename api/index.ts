@@ -19,17 +19,17 @@ app.use(express.static('public'))
 // connectDB();
 
 app.use(
-    '/docs',
-    swaggerUi.serve,
-    swaggerUi.setup(undefined, {
-        swaggerOptions: {
-            url: '/swagger.json',
-        },
-    })
+  '/docs',
+  swaggerUi.serve,
+  swaggerUi.setup(undefined, {
+    swaggerOptions: {
+      url: '/swagger.json',
+    },
+  })
 )
 
 app.use(Router)
 
 app.listen(port, () => {
-    console.log(`Server is Fire at http://localhost:${port}`)
+  console.log(`Server is Fire at http://localhost:${port}`)
 })
