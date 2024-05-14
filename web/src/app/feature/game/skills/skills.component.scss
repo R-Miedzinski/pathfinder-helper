@@ -6,3 +6,14 @@
 .proficiency {
   font-weight: bold;
 }
+
+.eq-block {
+  margin-top: 0.6rem;
+  padding-top: 0.6rem;
+  border-top: solid 1px black;
+
+  h3,
+  ul {
+    padding-bottom: 0.2rem;
+  }
+}

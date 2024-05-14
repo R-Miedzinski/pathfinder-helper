@@ -8,6 +8,8 @@ import {
   SavingThrowName,
   Skills,
   SeedCharacterData,
+  WeaponGroup,
+  ArmorCategory,
 } from 'rpg-app-shared-package'
 
 const inventoryMock = [
@@ -31,40 +33,11 @@ export const characterMock: SeedCharacterData = {
   id: '1',
   name: 'CHAR_NAME',
   class: Classes.alchemist,
-  ancestryFeats: [
-    {
-      id: '1',
-      payload: '',
-    },
-  ],
-  classFeats: [
-    {
-      id: '2',
-      payload: '',
-    },
-    {
-      id: '5',
-      payload: '',
-    },
-  ],
-  skillFeats: [
-    {
-      id: '8',
-      payload: '',
-    },
-  ],
-  bonusFeats: [
-    {
-      id: '6',
-      payload: '',
-    },
-  ],
-  generalFeats: [
-    {
-      id: '4',
-      payload: '',
-    },
-  ],
+  ancestryFeats: ['1'],
+  classFeats: ['2', '5'],
+  skillFeats: ['8'],
+  bonusFeats: ['6'],
+  generalFeats: ['4'],
   race: Race.dwarf,
   level: 1,
   boosts: [
@@ -139,6 +112,30 @@ export const characterMock: SeedCharacterData = {
   hp: {
     temporary: 5,
   },
+  attacks: [
+    {
+      type: WeaponGroup.simple,
+      level: Proficiency.T,
+    },
+    {
+      type: WeaponGroup.bomb,
+      level: Proficiency.T,
+    },
+    {
+      type: WeaponGroup.unarmed,
+      level: Proficiency.T,
+    },
+  ],
+  defences: [
+    {
+      type: ArmorCategory.light,
+      level: Proficiency.T,
+    },
+    {
+      type: ArmorCategory.unarmored,
+      level: Proficiency.T,
+    },
+  ],
 }
 // {
 //     id: '1',

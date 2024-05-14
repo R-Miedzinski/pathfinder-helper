@@ -3,6 +3,8 @@ import {
   Component,
   Input,
   OnChanges,
+  OnInit,
+  SimpleChanges,
 } from '@angular/core';
 import { cloneDeep } from 'lodash';
 import stringSort from 'src/app/shared/helpers/string-sort';
@@ -10,9 +12,12 @@ import { AbstractControl, FormBuilder, FormGroup } from '@angular/forms';
 import keepOrder from 'src/app/shared/helpers/keepOrder';
 import { SkillsService } from '../services/skills.service';
 import {
+  ArmorProficiency,
   CharacterSheetMode,
   Proficiency,
   Skill,
+  WeaponProficiency,
+  createProfToValMap,
 } from 'rpg-app-shared-package/dist/public-api';
 
 @Component({
@@ -21,22 +26,32 @@ import {
   styleUrls: ['./skills.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SkillsComponent implements OnChanges {
+export class SkillsComponent implements OnChanges, OnInit {
   @Input() skills: Skill[] = [];
+  @Input() weapons: WeaponProficiency[] = [];
+  @Input() armores: ArmorProficiency[] = [];
+  @Input() level: number = 0;
   @Input({ required: true }) mode!: CharacterSheetMode;
   protected modes = CharacterSheetMode;
   protected skillsForm!: FormGroup;
   protected proficiencies = Proficiency;
+  protected profToValMap: Map<Proficiency, number> = new Map();
   protected keepOrderLocal = keepOrder;
 
   constructor(private fb: FormBuilder, private skillsService: SkillsService) {}
 
-  ngOnChanges(): void {
-    this.skills = cloneDeep(this.skills).sort((a, b) =>
-      stringSort(a.name, b.name)
-    );
+  public ngOnInit(): void {
+    this.profToValMap = createProfToValMap(this.level);
+  }
 
-    this.initForm();
+  public ngOnChanges(change: SimpleChanges): void {
+    if (change['skills']) {
+      this.skills = cloneDeep(this.skills).sort((a, b) =>
+        stringSort(a.name, b.name)
+      );
+
+      this.initForm();
+    }
   }
 
   protected initForm(): void {

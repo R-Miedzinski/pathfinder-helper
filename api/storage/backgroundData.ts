@@ -27,13 +27,15 @@ export const backgroundData: BackgroundData[] = [
     ],
     proficiencies: [
       {
-        skill: Skills.religion,
+        name: Skills.religion,
         level: Proficiency.T,
+        ability: Abilities.wis,
       },
       {
-        skill: Skills.lore,
+        name: Skills.lore,
         level: Proficiency.T,
         specialty: 'Scribing',
+        ability: Abilities.int,
       },
     ],
     feats: ['Student of the Canon'],
@@ -57,13 +59,15 @@ export const backgroundData: BackgroundData[] = [
     ],
     proficiencies: [
       {
-        skill: Skills.acrobatics,
+        name: Skills.acrobatics,
         level: Proficiency.T,
+        ability: Abilities.dex,
       },
       {
-        skill: Skills.lore,
+        name: Skills.lore,
         level: Proficiency.T,
         specialty: 'Circus',
+        ability: Abilities.int,
       },
     ],
     feats: ['Steady Balance'],
@@ -87,13 +91,15 @@ export const backgroundData: BackgroundData[] = [
     ],
     proficiencies: [
       {
-        skill: Skills.nature,
+        name: Skills.nature,
         level: Proficiency.T,
+        ability: Abilities.wis,
       },
       {
-        skill: Skills.lore,
+        name: Skills.lore,
         level: Proficiency.T,
         specialty: 'Terrain',
+        ability: Abilities.int,
       },
     ],
     feats: ['Train Animal'],

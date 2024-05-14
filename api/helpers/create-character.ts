@@ -1,5 +1,13 @@
 import { cloneDeep } from 'lodash'
-import { Abilities, Character, Proficiency, SeedCharacterData, Skill, newCharacter } from 'rpg-app-shared-package'
+import {
+  Abilities,
+  Character,
+  Proficiency,
+  SeedCharacterData,
+  Skill,
+  createProfToValMap,
+  newCharacter,
+} from 'rpg-app-shared-package'
 import { raceData } from '../storage/raceData'
 import { classData } from '../storage/classData'
 
@@ -16,6 +24,7 @@ export class CharacterFactory {
     this.applyEquipment(characterData)
     this.calculateAbilityBonuses()
     this.calculateSkillProficiencies(characterData)
+    this.calculateEquipmentProficiencies(characterData)
     this.calculateSavingThrows(characterData)
     this.calculateSpeed()
     this.calculateHealth(characterData)
@@ -31,13 +40,12 @@ export class CharacterFactory {
     this.character.characterName = data.name
     this.character.class = data.class
 
-    const getId = (feat: { id: string; payload: unknown }) => feat.id
     this.character.feats = ([] as string[])
-      .concat(data.ancestryFeats.map(getId))
-      .concat(data.classFeats.map(getId))
-      .concat(data.skillFeats.map(getId))
-      .concat(data.bonusFeats.map(getId))
-      .concat(data.generalFeats.map(getId))
+      .concat(data.ancestryFeats)
+      .concat(data.classFeats)
+      .concat(data.skillFeats)
+      .concat(data.bonusFeats)
+      .concat(data.generalFeats)
 
     this.character.race = data.race
     this.character.level = data.level
@@ -48,13 +56,7 @@ export class CharacterFactory {
     this.character.actions = data.actions
     this.character.backstory = data.backstory
 
-    this.profToValMap = new Map([
-      [Proficiency.U, 0],
-      [Proficiency.T, 2 + this.character.level],
-      [Proficiency.E, 4 + this.character.level],
-      [Proficiency.M, 6 + this.character.level],
-      [Proficiency.L, 8 + this.character.level],
-    ])
+    this.profToValMap = createProfToValMap(this.character.level)
   }
 
   private applyAbilityBoosts(data: SeedCharacterData): void {
@@ -106,6 +108,11 @@ export class CharacterFactory {
     })
 
     this.character.skills = basicSkills.concat(characterSkills)
+  }
+
+  private calculateEquipmentProficiencies(data: SeedCharacterData): void {
+    this.character.attacks = data.attacks
+    this.character.defences = data.defences
   }
 
   private calculateSavingThrows(data: SeedCharacterData): void {

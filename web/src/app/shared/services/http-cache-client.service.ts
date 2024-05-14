@@ -31,7 +31,7 @@ export class HttpCacheClientService {
         return EMPTY;
       }),
       tap((data: T) => {
-        console.log('putting backgroundData into cache');
+        console.log(`putting into cache: ${url}`);
         this.requestCache.set(url + httpTypes.get, data);
       })
     );

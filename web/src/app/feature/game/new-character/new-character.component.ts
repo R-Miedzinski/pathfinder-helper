@@ -43,7 +43,6 @@ export class NewCharacterComponent implements OnInit, OnDestroy {
   protected detailsForm!: FormGroup;
 
   protected raceData?: RaceData;
-  protected raceFeatNames: string[] = [];
   protected raceFeats: Feat[] = [];
   protected backgrounds: { id: string; name: string }[] = [];
   protected chosenBackground?: BackgroundData;
@@ -83,6 +82,8 @@ export class NewCharacterComponent implements OnInit, OnDestroy {
         next: raceData => {
           this.raceData = undefined;
           this.initBoostsForm([], []);
+          this.chooseRaceForm.get('feat')?.setValue('');
+
           this.initBoostsForm(raceData.boosts, raceData.flaws);
           this.raceData = raceData;
           this.handleRaceFeatsFetch();
@@ -114,7 +115,7 @@ export class NewCharacterComponent implements OnInit, OnDestroy {
         class: this.chosenClass!.name,
         race: this.raceData!.name,
         level: 1,
-        ancestryFeats: [],
+        ancestryFeats: [this.chooseRaceForm.get('feat')?.value],
         classFeats: [],
         generalFeats: [],
         skillFeats: [],
@@ -129,8 +130,13 @@ export class NewCharacterComponent implements OnInit, OnDestroy {
             ?.value.map((item: { boost: Abilities }) => item.boost),
         ],
         flaws: this.flaws.value.map((item: { boost: Abilities }) => item.boost),
-        savingThrows: [],
-        skills: [],
+        savingThrows: [...(this.chosenClass?.savingThrows ?? [])],
+        skills: [
+          ...(this.chosenBackground?.proficiencies ?? []),
+          ...(this.chosenClass?.proficiencies ?? []),
+        ],
+        attacks: this.chosenClass?.weaponProficiencies ?? [],
+        defences: this.chosenClass?.armorProficiencies ?? [],
         inventory: [],
         equippedItems: [],
         investedItems: [],
@@ -169,6 +175,7 @@ export class NewCharacterComponent implements OnInit, OnDestroy {
   private initRaceForm(): void {
     this.chooseRaceForm = this.fb.group({
       race: ['', Validators.required],
+      feat: ['', Validators.required],
     });
   }
 
@@ -307,12 +314,11 @@ export class NewCharacterComponent implements OnInit, OnDestroy {
   private handleRaceFeatsFetch(): void {
     if (this.raceData) {
       this.featsService
-        .getFeatsToAdd(1, undefined, this.raceData.name)
+        .getFeatsToAdd(10, undefined, this.raceData.name) // change level to 1
         .pipe(takeUntil(this.ngDestroyed$))
         .subscribe({
           next: (feats: Feat[]) => {
             this.raceFeats = feats;
-            this.raceFeatNames = feats.map(feat => feat.name);
           },
         });
     }

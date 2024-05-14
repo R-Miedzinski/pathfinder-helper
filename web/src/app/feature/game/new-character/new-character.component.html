@@ -88,14 +88,15 @@
           <h4>Darkvision:</h4>
           <p>{{ raceData.darkvision }}</p>
         </div>
-        <div class="race__feat">
-          <label for="raceFeats" class="required">Choose a feat:</label>
-          <select id="raceFeats">
-            <option *ngFor="let feat of raceFeatNames" [value]="feat">
-              {{ feat }}
+        <form [formGroup]="chooseRaceForm" class="race__feat">
+          <label for="raceFeats" class="required">Ancestry feat:</label>
+          <select id="raceFeats" formControlName="feat">
+            <option value="" disabled selected hidden>Choose a Feat</option>
+            <option *ngFor="let feat of raceFeats" [value]="feat.id">
+              {{ feat.name }}
             </option>
           </select>
-        </div>
+        </form>
       </ng-container>
     </div>
     <button mat-button matStepperNext>Next</button>
@@ -173,7 +174,7 @@
                     <ng-container *ngIf="proficiency.specialty">
                       {{ proficiency.specialty }}
                     </ng-container>
-                    {{ proficiency.skill }}
+                    {{ proficiency.name }}
                   </strong>
                 </li>
               </ul>
@@ -284,7 +285,7 @@
                   <ng-container *ngIf="proficiency.specialty">
                     {{ proficiency.specialty }}
                   </ng-container>
-                  {{ proficiency.skill }}
+                  {{ proficiency.name }}
                 </strong>
               </li>
             </ul>

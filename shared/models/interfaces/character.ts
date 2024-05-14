@@ -1,10 +1,12 @@
-import { HP } from './hp';
-import { Skill, newSkills } from './skill';
-import { SavingThrow, newSavingThrows } from './saving-throw';
-import { Ability, newAbilities } from './ability';
-import { Backstory, newBackstory } from './backstory';
-import { Classes } from '../enums/classes';
-import { Race } from '../enums/race';
+import { HP } from "./hp";
+import { Skill, newSkills } from "./skill";
+import { SavingThrow, newSavingThrows } from "./saving-throw";
+import { Ability, newAbilities } from "./ability";
+import { Backstory, newBackstory } from "./backstory";
+import { Classes } from "../enums/classes";
+import { Race } from "../enums/race";
+import { WeaponProficiency } from "./weapon-proficiency";
+import { ArmorProficiency } from "./armor-proficiency";
 
 export interface Character {
   id: string;
@@ -37,12 +39,14 @@ export interface Character {
   investedItems?: { itemId: string; count: number }[];
   actions?: string[];
   backstory: Backstory;
+  attacks: WeaponProficiency[];
+  defences: ArmorProficiency[];
 }
 
 export function newCharacter(): Character {
   const newCharacter = {
-    id: '',
-    characterName: '',
+    id: "",
+    characterName: "",
     class: Classes.fighter,
     feats: [],
     race: Race.human,
@@ -62,6 +66,8 @@ export function newCharacter(): Character {
     skills: newSkills(),
     inventory: [],
     backstory: newBackstory(),
+    attacks: [],
+    defences: [],
   };
 
   return newCharacter;

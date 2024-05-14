@@ -29,6 +29,9 @@
     <mat-grid-tile [colspan]="1" [rowspan]="2">
       <app-skills
         class="grid-field"
+        [level]="character.level"
+        [armores]="character.defences"
+        [weapons]="character.attacks"
         [skills]="character.skills"
         [mode]="modes.view" />
     </mat-grid-tile>
@@ -71,6 +74,8 @@
     <mat-grid-tile [colspan]="1" [rowspan]="2">
       <app-skills
         class="grid-field"
+        [armores]="character.defences"
+        [weapons]="character.attacks"
         [skills]="character.skills"
         [mode]="modes.edit" />
     </mat-grid-tile>

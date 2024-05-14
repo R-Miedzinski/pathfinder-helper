@@ -24,6 +24,7 @@ export {
   AbilityBoost,
   AbilityBoostType,
 } from "./models/interfaces/ability-boost";
+export { ArmorProficiency } from "./models/interfaces/armor-proficiency";
 export { Armor } from "./models/interfaces/armor";
 export { BackgroundData } from "./models/interfaces/background-data";
 export { Backstory, newBackstory } from "./models/interfaces/backstory";
@@ -38,4 +39,7 @@ export { SavingThrow, newSavingThrows } from "./models/interfaces/saving-throw";
 export { SeedCharacterData } from "./models/interfaces/seed-character-data";
 export { Skill, newSkills } from "./models/interfaces/skill";
 export { Spell } from "./models/interfaces/spell";
+export { WeaponProficiency } from "./models/interfaces/weapon-proficiency";
 export { Weapon } from "./models/interfaces/weapon";
+/* Utils */
+export { createProfToValMap } from "./utils/profToValMap";

@@ -19,7 +19,7 @@ import {
 })
 export class MainCharacterPageComponent implements OnInit {
   @Input() rowHeight!: number;
-  @Input() character!: Character;
+  @Input() character: Character = {} as Character;
   @Input() actionsList!: CharacterAction[] | null;
   @Input() mode!: CharacterSheetMode;
   @Output() healthChange: EventEmitter<{
@@ -31,9 +31,6 @@ export class MainCharacterPageComponent implements OnInit {
   public ngOnInit(): void {
     if (this.rowHeight === undefined) {
       this.rowHeight = 19.6;
-    }
-    if (this.character === undefined) {
-      this.character = {} as Character;
     }
     if (!this.actionsList) {
       this.actionsList = [];

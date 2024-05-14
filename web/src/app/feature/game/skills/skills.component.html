@@ -1,6 +1,9 @@
 <form [formGroup]="skillsForm">
   <div *ngFor="let skill of skills" class="skill">
-    <label [for]="skill.name">{{ skill.name }}</label>
+    <label [for]="skill.name">
+      <span *ngIf="skill.specialty">{{ skill.specialty }}</span>
+      {{ skill.name }}
+    </label>
     <div *ngIf="mode !== modes.edit" class="proficiency">{{ skill.level }}</div>
     <div *ngIf="mode === modes.edit">
       <select
@@ -19,3 +22,25 @@
     <div>{{ skill.ability }}</div>
   </div>
 </form>
+<div class="eq-block">
+  <h3>Weapon Proficiencies:</h3>
+  <ul>
+    <li *ngFor="let weapon of weapons" class="skill">
+      <label>
+        {{ weapon.type }}
+      </label>
+      <div class="proficiency">{{ weapon.level }}</div>
+      <div>{{ profToValMap.get(weapon.level) }}</div>
+    </li>
+  </ul>
+  <h3>Armor Proficiencies:</h3>
+  <ul>
+    <li *ngFor="let armor of armores" class="skill">
+      <label>
+        {{ armor.type }}
+      </label>
+      <div class="proficiency">{{ armor.level }}</div>
+      <div>{{ profToValMap.get(armor.level) }}</div>
+    </li>
+  </ul>
+</div>

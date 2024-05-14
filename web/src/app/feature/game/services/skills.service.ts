@@ -11,6 +11,7 @@ import {
   Proficiency,
   SavingThrow,
   Skill,
+  createProfToValMap,
 } from 'rpg-app-shared-package/dist/public-api';
 
 @Injectable()
@@ -26,13 +27,7 @@ export class SkillsService implements OnDestroy {
       .subscribe({
         next: (data: Character) => {
           this.character = data;
-          this.profToValMap = new Map([
-            [Proficiency.U, 0],
-            [Proficiency.T, 2 + this.character.level],
-            [Proficiency.E, 4 + this.character.level],
-            [Proficiency.M, 6 + this.character.level],
-            [Proficiency.L, 8 + this.character.level],
-          ]);
+          this.profToValMap = createProfToValMap(this.character.level);
         },
       });
   }

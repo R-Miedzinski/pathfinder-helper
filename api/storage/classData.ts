@@ -45,12 +45,14 @@ export const classData: ClassData[] = [
     ],
     proficiencies: [
       {
-        skill: Skills.perception,
+        name: Skills.perception,
         level: Proficiency.T,
+        ability: Abilities.wis,
       },
       {
-        skill: Skills.crafting,
+        name: Skills.crafting,
         level: Proficiency.T,
+        ability: Abilities.int,
       },
     ],
     weaponProficiencies: [
@@ -112,12 +114,14 @@ export const classData: ClassData[] = [
     ],
     proficiencies: [
       {
-        skill: Skills.perception,
+        name: Skills.perception,
         level: Proficiency.E,
+        ability: Abilities.wis,
       },
       {
-        skill: Skills.athletics,
+        name: Skills.athletics,
         level: Proficiency.T,
+        ability: Abilities.str,
       },
     ],
     weaponProficiencies: [
