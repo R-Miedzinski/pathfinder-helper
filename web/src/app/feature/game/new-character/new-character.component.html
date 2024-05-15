@@ -46,13 +46,13 @@
             <ul formArrayName="boostsArray">
               <li *ngFor="let boost of boosts.controls; let i = index">
                 <div [formGroupName]="i" [ngSwitch]="raceData.boosts[i].type">
-                  <!-- TODO: exclude already chosen boosts on multiples -->
                   <app-boost-choice
                     [formControl]="boost.get('boost')! | toFormControl"
-                    [exclude]="boosts.controls | excludeForFreeBoost : i"
+                    [exclude]="boosts.value | excludeForFreeBoost : i"
                     *ngSwitchCase="boostTypes.free"></app-boost-choice>
                   <app-boost-choice
                     [formControl]="boost.get('boost')! | toFormControl"
+                    [exclude]="boosts.value | excludeForFreeBoost : i"
                     [enableOnly]="raceData.boosts[i].abilities"
                     *ngSwitchCase="boostTypes.choice"></app-boost-choice>
                   <app-boost-choice
@@ -146,9 +146,15 @@
                     [ngSwitch]="chosenBackground.boosts[i].type">
                     <app-boost-choice
                       [formControl]="boost.get('boost')! | toFormControl"
+                      [exclude]="
+                        backgroundBoosts.value | excludeForFreeBoost : i
+                      "
                       *ngSwitchCase="boostTypes.free"></app-boost-choice>
                     <app-boost-choice
                       [formControl]="boost.get('boost')! | toFormControl"
+                      [exclude]="
+                        backgroundBoosts.value | excludeForFreeBoost : i
+                      "
                       [enableOnly]="chosenBackground.boosts[i].abilities"
                       *ngSwitchCase="boostTypes.choice"></app-boost-choice>
                     <app-boost-choice
@@ -240,9 +246,11 @@
                   [ngSwitch]="chosenClass.boosts[i].type">
                   <app-boost-choice
                     [formControl]="boost.get('boost')! | toFormControl"
+                    [exclude]="classBoosts.value | excludeForFreeBoost : i"
                     *ngSwitchCase="boostTypes.free"></app-boost-choice>
                   <app-boost-choice
                     [formControl]="boost.get('boost')! | toFormControl"
+                    [exclude]="classBoosts.value | excludeForFreeBoost : i"
                     [enableOnly]="chosenClass.boosts[i].abilities"
                     *ngSwitchCase="boostTypes.choice"></app-boost-choice>
                   <app-boost-choice
@@ -329,13 +337,6 @@
           </div>
         </ng-container>
       </form>
-      <ul>
-        <li>apply class ability boosts</li>
-        <li>determine ability scores</li>
-        <li>determine initial HP</li>
-        <li>assign and calculate proficiencies</li>
-        <li>record class details</li>
-      </ul>
       <button mat-button matStepperPrevious>Back</button>
       <button mat-button matStepperNext>Next</button>
     </form>

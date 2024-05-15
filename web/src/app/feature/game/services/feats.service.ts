@@ -1,5 +1,12 @@
 import { Injectable, OnDestroy } from '@angular/core';
-import { Observable, ReplaySubject, Subject, of, takeUntil } from 'rxjs';
+import {
+  BehaviorSubject,
+  Observable,
+  Subject,
+  combineLatest,
+  of,
+  takeUntil,
+} from 'rxjs';
 import { cloneDeep } from 'lodash';
 import { GameState } from '../ngrx/game-reducer';
 import * as GameActions from '../ngrx/game-actions';
@@ -10,6 +17,8 @@ import {
   FeatCategory,
   Race,
 } from 'rpg-app-shared-package/dist/public-api';
+import { HttpCacheClientService } from 'src/app/shared/services/http-cache-client.service';
+import { environment } from 'src/environment/environment';
 
 export const featList: Feat[] = [
   {
@@ -100,11 +109,14 @@ export const featList: Feat[] = [
 
 @Injectable()
 export class FeatsService implements OnDestroy {
-  public featList$: ReplaySubject<Feat[]> = new ReplaySubject();
+  public featList$: BehaviorSubject<Feat[]> = new BehaviorSubject<Feat[]>([]);
   private feats: Feat[] = [];
   private readonly ngOnDestroy$ = new Subject<void>();
 
-  constructor(private store: Store<GameState>) {
+  constructor(
+    private store: Store<GameState>,
+    private http: HttpCacheClientService
+  ) {
     this.featList$.pipe(takeUntil(this.ngOnDestroy$)).subscribe({
       next: list => (this.feats = cloneDeep(list)),
     });
@@ -116,20 +128,25 @@ export class FeatsService implements OnDestroy {
   }
 
   public getFeats(featIds: string[]): void {
-    this.featList$.next(
-      featIds.map(id => {
-        return featList.find(feat => feat.id === id) || ({} as Feat);
-      })
-    );
-  }
+    console.log('getFeats called');
 
-  public addFeat(newFeat: Feat): void {
-    if (!this.feats.some(feat => feat.id === newFeat.id)) {
-      this.featList$.next([...this.feats, newFeat]);
-      this.store.dispatch(GameActions.addFeatAction({ feat: newFeat }));
-    } else {
-      console.error(`Feat ${newFeat.name} already exists on this character`);
-    }
+    const featCalls: Observable<Feat>[] = featIds.map(id => {
+      const featUrl = environment.apiUrl + '/api/feats/' + id;
+
+      return this.http.get<Feat>(featUrl);
+    });
+
+    combineLatest(featCalls)
+      .pipe(takeUntil(this.ngOnDestroy$))
+      .subscribe({
+        next: list => this.featList$.next(list),
+      });
+
+    // this.featList$.next(
+    //   featIds.map(id => {
+    //     return featList.find(feat => feat.id === id) || ({} as Feat);
+    //   })
+    // );
   }
 
   public getFeatsToAdd(

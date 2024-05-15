@@ -12,7 +12,7 @@ export interface Character {
   id: string;
   characterName: string;
   class: Classes;
-  feats: string[];
+  feats: { id: string; name: string }[];
   race: Race;
   level: number;
   abilities: Ability[];

@@ -40,12 +40,12 @@ export class CharacterFactory {
     this.character.characterName = data.name
     this.character.class = data.class
 
-    this.character.feats = ([] as string[])
-      .concat(data.ancestryFeats)
-      .concat(data.classFeats)
-      .concat(data.skillFeats)
-      .concat(data.bonusFeats)
-      .concat(data.generalFeats)
+    this.character.feats = ([] as { id: string; name: string }[])
+      .concat(data.ancestryFeats.map((id) => ({ id, name: 'Feat: ' + id })))
+      .concat(data.classFeats.map((id) => ({ id, name: 'Feat: ' + id })))
+      .concat(data.skillFeats.map((id) => ({ id, name: 'Feat: ' + id })))
+      .concat(data.bonusFeats.map((id) => ({ id, name: 'Feat: ' + id })))
+      .concat(data.generalFeats.map((id) => ({ id, name: 'Feat: ' + id })))
 
     this.character.race = data.race
     this.character.level = data.level
@@ -65,12 +65,12 @@ export class CharacterFactory {
   }
 
   private applyFeats(): void {
-    this.character.feats.forEach((feat) => console.log(`handle ${feat}`))
+    this.character.feats.forEach((feat) => console.log(`factory handle feat: ${feat}`))
   }
 
   private applyEquipment(data: SeedCharacterData): void {
     // TODO: Figure out inventory
-    console.log(data.inventory)
+    console.log('inventory in character facotry:', data.inventory)
   }
 
   private calculateAbilityBonuses(): void {

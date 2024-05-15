@@ -1,5 +1,6 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { GameState } from './game-reducer';
+import { Character } from 'rpg-app-shared-package';
 
 export const gameFeature = createFeatureSelector<GameState>('gameData');
 
@@ -24,8 +25,8 @@ export const getSpells = createSelector(
 );
 
 export const getFeats = createSelector(
-  gameFeature,
-  (state: GameState) => state.character.feats || []
+  getCharacter,
+  (character: Character) => character.feats || []
 );
 
 export const getActions = createSelector(

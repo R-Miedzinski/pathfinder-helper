@@ -117,7 +117,7 @@ export class NewCharacterComponent implements OnInit, OnDestroy {
         level: 1,
         ancestryFeats: [this.chooseRaceForm.get('feat')?.value],
         classFeats: [],
-        generalFeats: [],
+        generalFeats: this.chosenBackground?.feats ?? [],
         skillFeats: [],
         bonusFeats: [],
         boosts: [

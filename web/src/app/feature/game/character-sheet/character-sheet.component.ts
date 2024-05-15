@@ -86,8 +86,8 @@ export class CharacterSheetComponent implements OnInit, OnDestroy {
       .select(GameSelectors.getFeats)
       .pipe(takeUntil(this.ngDestroyed$))
       .subscribe({
-        next: (featIds: string[]) => {
-          this.featsService.getFeats(featIds);
+        next: (featIds: { id: string; name: string }[]) => {
+          this.featsService.getFeats(featIds.map(item => item.id));
         },
       });
 
@@ -108,8 +108,8 @@ export class CharacterSheetComponent implements OnInit, OnDestroy {
           this.actionService.getActions(actionIds);
         },
       });
-    this.skillsService.recalculateSkills();
-    this.abilitiesService.recalculateAbilities();
+    // this.skillsService.recalculateSkills();
+    // this.abilitiesService.recalculateAbilities();
   }
 
   public ngOnDestroy(): void {
@@ -158,18 +158,5 @@ export class CharacterSheetComponent implements OnInit, OnDestroy {
     if (event.action === 'deinvest') {
       this.itemsService.deinvestItem(event.itemId);
     }
-  }
-
-  public fetchFeats(): void {
-    this.featsService
-      .getFeatsToAdd(
-        this.character.level,
-        this.character.class,
-        this.character.race
-      )
-      .pipe(takeUntil(this.ngDestroyed$))
-      .subscribe({
-        next: newFeats => console.log(newFeats),
-      });
   }
 }

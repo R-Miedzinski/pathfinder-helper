@@ -8,6 +8,7 @@ import {
 } from '@angular/core';
 import keepOrder from '../../helpers/keepOrder';
 import {
+  AbstractControl,
   ControlValueAccessor,
   FormBuilder,
   FormGroup,
@@ -53,16 +54,28 @@ export class BoostChoiceComponent
   constructor(private fb: FormBuilder) {}
 
   public ngOnChanges(changes: SimpleChanges): void {
-    // TODO: exclude changes registering
-    if (changes['exclude'] && this.enableOnly.length) {
-      console.log('exclude chaged');
-      this.allAbilities.forEach(ability => {
-        this.disabledAbilities.set(ability, false);
-      });
+    if (changes['exclude']) {
+      if (this.enableOnly.length > 0) {
+        this.allAbilities.forEach(ability => {
+          this.disabledAbilities.set(ability, true);
+        });
 
-      this.exclude.forEach(ability => {
+        this.enableOnly.forEach(ability => {
+          this.disabledAbilities.set(ability, false);
+        });
+      } else {
+        this.allAbilities.forEach(ability => {
+          this.disabledAbilities.set(ability, false);
+        });
+      }
+
+      this.exclude.forEach((ability: Abilities) => {
         this.disabledAbilities.set(ability, true);
       });
+
+      if (this.exclude.includes(this.ability?.value)) {
+        this.ability?.setValue(undefined);
+      }
     }
   }
 
@@ -71,10 +84,6 @@ export class BoostChoiceComponent
     this.isSetValue = false;
     this.allAbilities.forEach(ability => {
       this.disabledAbilities.set(ability, false);
-    });
-
-    this.exclude.forEach(ability => {
-      this.disabledAbilities.set(ability, true);
     });
 
     if (this.enableOnly.length > 0) {
@@ -87,6 +96,10 @@ export class BoostChoiceComponent
       });
     }
 
+    this.exclude.forEach(ability => {
+      this.disabledAbilities.set(ability, true);
+    });
+
     if (this.enableOnly.length === 1) {
       this.isSetValue = true;
     }
@@ -98,15 +111,13 @@ export class BoostChoiceComponent
       ],
     });
 
-    this.chosenAbility.controls['ability'].valueChanges
-      .pipe(takeUntil(this.ngDestroyed$))
-      .subscribe({
-        next: ability => {
-          if (!this.disabled) {
-            this.onChange(ability);
-          }
-        },
-      });
+    this.ability?.valueChanges.pipe(takeUntil(this.ngDestroyed$)).subscribe({
+      next: ability => {
+        if (!this.disabled) {
+          this.onChange(ability);
+        }
+      },
+    });
   }
 
   public ngOnDestroy(): void {
@@ -115,7 +126,7 @@ export class BoostChoiceComponent
   }
 
   public writeValue(obj: any): void {
-    this.chosenAbility.controls['ability'].setValue(obj);
+    this.ability?.setValue(obj);
   }
 
   public registerOnChange(fn: any): void {
@@ -135,5 +146,9 @@ export class BoostChoiceComponent
       this.onTouched();
       this.touched = true;
     }
+  }
+
+  public get ability(): AbstractControl | null {
+    return this.chosenAbility?.get('ability');
   }
 }

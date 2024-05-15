@@ -18,7 +18,7 @@ export class HttpCacheClientService {
   public get<T>(url: string): Observable<T> {
     const data = this.requestCache.get(url + httpTypes.get);
     if (data) {
-      console.log('retrieving data from cahche');
+      console.log('retrieving data from cache');
       return of(data);
     }
 

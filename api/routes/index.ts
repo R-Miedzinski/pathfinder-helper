@@ -5,6 +5,7 @@ import raceDataRouter from './raceDataRouter'
 import backgroundsRouter from './backgroundsRouter'
 import classesRouter from './classesRouter'
 import traitsRouter from './traitsRouter'
+import featsRouter from './featsRouter'
 
 const router = express.Router()
 
@@ -42,9 +43,7 @@ router.use('/api/action', (req, res) => {
   res.send('action')
 })
 
-router.use('/api/feats', (req, res) => {
-  res.send('feats')
-})
+router.use('/api/feats', featsRouter)
 
 router.use('/api/feat', (req, res) => {
   res.send('feat')
