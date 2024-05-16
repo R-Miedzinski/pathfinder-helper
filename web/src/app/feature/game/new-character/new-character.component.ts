@@ -313,8 +313,10 @@ export class NewCharacterComponent implements OnInit, OnDestroy {
 
   private handleRaceFeatsFetch(): void {
     if (this.raceData) {
+      this.raceFeats = [];
+
       this.featsService
-        .getFeatsToAdd(10, undefined, this.raceData.name) // change level to 1
+        .getRaceFeatsToAdd(1, this.raceData.name)
         .pipe(takeUntil(this.ngDestroyed$))
         .subscribe({
           next: (feats: Feat[]) => {

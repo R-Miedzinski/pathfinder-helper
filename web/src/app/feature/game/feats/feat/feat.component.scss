@@ -1,0 +1,60 @@
+.feat {
+  &__box {
+    margin: 0 0.8rem;
+    padding: 0.4rem 0.8rem;
+    border: 1px solid black;
+  }
+
+  &__card {
+    border: 1px solid black;
+    background-color: var(--mat-sidenav-content-background-color);
+  }
+
+  &__header {
+    margin: 0.4rem;
+    margin-bottom: 0;
+
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &__name {
+    font-size: 1.6rem;
+    font-weight: bold;
+  }
+
+  &__level {
+    font-size: 1.6rem;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+
+  &__traits {
+    padding: 0.2rem 0.4rem 0;
+    display: flex;
+    justify-content: flex-start;
+    gap: 0.2rem;
+  }
+
+  &__trait {
+    padding: 0.2rem 0.4rem;
+    border: 1px solid black;
+  }
+
+  &__properties {
+    padding: 0.4rem 0.8rem 0;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+  }
+
+  &__property {
+    &-label {
+      font-weight: bold;
+    }
+  }
+
+  &__description {
+    padding: 0.4rem 0.8rem 0;
+  }
+}

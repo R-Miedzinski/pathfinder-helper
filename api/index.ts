@@ -30,6 +30,12 @@ app.use(
 
 app.use(Router)
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+app.use((err: any, req: any, res: any) => {
+  console.error(err.stack)
+  res.status(500).send('Something broke!')
+})
+
 app.listen(port, () => {
   console.log(`Server is Fire at http://localhost:${port}`)
 })

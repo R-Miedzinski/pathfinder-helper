@@ -1,0 +1,71 @@
+[
+  {
+    "id": "G4",
+    "name": "General Feat 4",
+    "level": 1,
+    "category": "General Feat",
+    "description": "This is a description of test general feat 4",
+    "effectType": "Description"
+  },
+  {
+    "id": "B6",
+    "name": "Bonus Feat 6",
+    "level": 1,
+    "category": "Bonus Feat",
+    "description": "This is a description of test bonus feat 6",
+    "effectType": "Description"
+  },
+  {
+    "id": "S8",
+    "name": "Skill Feat 8",
+    "level": 1,
+    "category": "Skill Feat",
+    "description": "This is a description of test Skill feat 8",
+    "effectType": "Description"
+  },
+  {
+    "id": "A1",
+    "name": "Ancestry Feat 1",
+    "level": 1,
+    "category": "Ancestry Feat",
+    "traits": ["Dwarf", "some other trait"],
+    "description": "This is a description of test ancestry feat 1",
+    "effectType": "Description"
+  },
+  {
+    "id": "A2",
+    "name": "Ancestry Feat 2",
+    "level": 1,
+    "category": "Ancestry Feat",
+    "traits": ["Goblin"],
+    "description": "This is a description of test ancestry feat 2",
+    "effectType": "Description"
+  },
+  {
+    "id": "A3",
+    "name": "Ancestry Feat 3",
+    "level": 1,
+    "category": "Ancestry Feat",
+    "traits": ["Elf"],
+    "description": "This is a description of test ancestry feat 3",
+    "effectType": "Description"
+  },
+  {
+    "id": "C2",
+    "name": "Class Feat 2",
+    "level": 1,
+    "category": "Class Feat",
+    "traits": ["Alchemist"],
+    "description": "This is a description of test class feat 2",
+    "effectType": "Description"
+  },
+  {
+    "id": "C5",
+    "name": "Class Feat 5",
+    "level": 1,
+    "category": "Class Feat",
+    "traits": ["Alchemist"],
+    "description": "This is a description of test class feat 5",
+    "effectType": "Description"
+  }
+]

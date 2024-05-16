@@ -4,7 +4,7 @@
       <h3>Ancestry feats</h3>
       <ul>
         <li *ngFor="let feat of ancestryFeats">
-          {{ feat.name }}:{{ feat.level }}
+          <app-feat [feat]="feat"></app-feat>
         </li>
       </ul>
     </div>
@@ -14,7 +14,7 @@
       <h3>Skill feats</h3>
       <ul>
         <li *ngFor="let feat of skillFeats">
-          {{ feat.name }}:{{ feat.level }}
+          <app-feat [feat]="feat"></app-feat>
         </li>
       </ul>
     </div>
@@ -24,7 +24,7 @@
       <h3>General feats</h3>
       <ul>
         <li *ngFor="let feat of generalFeats">
-          {{ feat.name }}:{{ feat.level }}
+          <app-feat [feat]="feat"></app-feat>
         </li>
       </ul>
     </div>
@@ -34,7 +34,7 @@
       <h3>Class feats</h3>
       <ul>
         <li *ngFor="let feat of classFeats">
-          {{ feat.name }}:{{ feat.level }}
+          <app-feat [feat]="feat"></app-feat>
         </li>
       </ul>
     </div>
@@ -44,7 +44,7 @@
       <h3>Bonus feats</h3>
       <ul>
         <li *ngFor="let feat of bonusFeats">
-          {{ feat.name }}:{{ feat.level }}
+          <app-feat [feat]="feat"></app-feat>
         </li>
       </ul>
     </div>

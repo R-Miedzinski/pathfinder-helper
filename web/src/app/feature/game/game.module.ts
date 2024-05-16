@@ -30,6 +30,7 @@ import { MainCharacterPageComponent } from './main-character-page/main-character
 import { SkillsService } from './services/skills.service';
 import { AbilitiesService } from './services/abilities.service';
 import { ExcludeForFreeBoostPipe } from './pipes/exclude-for-free-boost.pipe';
+import { FeatComponent } from './feats/feat/feat.component';
 
 @NgModule({
   declarations: [
@@ -52,6 +53,7 @@ import { ExcludeForFreeBoostPipe } from './pipes/exclude-for-free-boost.pipe';
     MainCharacterPageComponent,
     ModifierPlusMinusPipe,
     ExcludeForFreeBoostPipe,
+    FeatComponent,
   ],
   providers: [
     GameDataService,
