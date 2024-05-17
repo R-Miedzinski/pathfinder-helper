@@ -18,6 +18,7 @@ import {
   Alignment,
   BackgroundData,
   ClassData,
+  Classes,
   Feat,
   Race,
   RaceData,
@@ -44,10 +45,15 @@ export class NewCharacterComponent implements OnInit, OnDestroy {
 
   protected raceData?: RaceData;
   protected raceFeats: Feat[] = [];
+  protected classFeats: Feat[] = [];
   protected backgrounds: { id: string; name: string }[] = [];
   protected chosenBackground?: BackgroundData;
   protected classes: { id: string; name: string }[] = [];
   protected chosenClass?: ClassData;
+
+  protected chosenRaceFeat?: Feat;
+  protected chosenBackgroundFeats?: Feat[];
+  protected chosenClassFeat?: Feat;
 
   private abilities!: Ability[];
   private readonly ngDestroyed$: Subject<void> = new Subject();
@@ -116,7 +122,7 @@ export class NewCharacterComponent implements OnInit, OnDestroy {
         race: this.raceData!.name,
         level: 1,
         ancestryFeats: [this.chooseRaceForm.get('feat')?.value],
-        classFeats: [],
+        classFeats: [this.chooseClassForm.get('feat')?.value],
         generalFeats: this.chosenBackground?.feats ?? [],
         skillFeats: [],
         bonusFeats: [],
@@ -177,6 +183,16 @@ export class NewCharacterComponent implements OnInit, OnDestroy {
       race: ['', Validators.required],
       feat: ['', Validators.required],
     });
+
+    this.chooseRaceForm
+      .get('feat')
+      ?.valueChanges.pipe(takeUntil(this.ngDestroyed$))
+      .subscribe({
+        next: featId =>
+          (this.chosenRaceFeat = this.raceFeats.find(
+            feat => feat.id === featId
+          )),
+      });
   }
 
   private initBoostsForm(boosts: AbilityBoost[], flaws: AbilityBoost[]): void {
@@ -234,6 +250,7 @@ export class NewCharacterComponent implements OnInit, OnDestroy {
               this.initBackgroundBoostsForm([]);
 
               this.chosenBackground = data;
+              this.getBackgroundFeats(this.chosenBackground.feats ?? []);
               this.initBackgroundBoostsForm(this.chosenBackground.boosts);
             },
           });
@@ -245,6 +262,7 @@ export class NewCharacterComponent implements OnInit, OnDestroy {
     this.chooseClassForm = this.fb.group({
       class: ['', Validators.required],
       boosts: this.fb.array([]),
+      feat: ['', Validators.required],
     });
 
     this.gameDataService.getClasses().subscribe({
@@ -261,12 +279,26 @@ export class NewCharacterComponent implements OnInit, OnDestroy {
           this.gameDataService.getClassData(id).subscribe({
             next: (data: ClassData) => {
               this.initClassBoostsForm([]);
+              this.chooseClassForm
+                .get('feat')
+                ?.setValue('', { emitEvent: false });
 
               this.chosenClass = data;
+              this.initClassFeatsForm(this.chosenClass.name);
               this.initClassBoostsForm(this.chosenClass.boosts);
             },
           });
         },
+      });
+
+    this.chooseClassForm
+      .get('feat')
+      ?.valueChanges.pipe(takeUntil(this.ngDestroyed$))
+      .subscribe({
+        next: featId =>
+          (this.chosenClassFeat = this.classFeats.find(
+            feat => feat.id === featId
+          )),
       });
   }
 
@@ -342,6 +374,20 @@ export class NewCharacterComponent implements OnInit, OnDestroy {
     });
   }
 
+  private getBackgroundFeats(ids: string[]): void {
+    if (ids.length) {
+      this.featsService
+        .getFeats(ids)
+        .pipe(takeUntil(this.ngDestroyed$))
+        .subscribe({
+          next: feats => (
+            (this.chosenBackgroundFeats = feats),
+            console.log(JSON.stringify(feats))
+          ),
+        });
+    }
+  }
+
   private initClassBoostsForm(boosts: AbilityBoost[]): void {
     this.classBoosts.clear();
     boosts.forEach(boost => {
@@ -356,5 +402,18 @@ export class NewCharacterComponent implements OnInit, OnDestroy {
         })
       );
     });
+  }
+
+  private initClassFeatsForm(charClass: Classes): void {
+    if (this.chosenClass) {
+      this.featsService
+        .getClassFeatsToAdd(1, charClass)
+        .pipe(takeUntil(this.ngDestroyed$))
+        .subscribe({
+          next: data => {
+            this.classFeats = data;
+          },
+        });
+    }
   }
 }

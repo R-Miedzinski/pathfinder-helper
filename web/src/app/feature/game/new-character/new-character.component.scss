@@ -44,6 +44,11 @@
       flex-basis: 24%;
     }
   }
+
+  &__feat {
+    display: flex;
+    gap: 50%;
+  }
 }
 
 .background {
@@ -53,14 +58,27 @@
     align-items: baseline;
     gap: 0.4rem;
   }
+
+  &__feats {
+    ul {
+      display: flex;
+      justify-content: space-between;
+      gap: 0.8rem;
+    }
+  }
 }
 
-.class {
+.classes {
   &__choice {
     display: flex;
     flex-direction: column;
     align-items: baseline;
     gap: 0.4rem;
+  }
+
+  &__feat {
+    display: flex;
+    gap: 50%;
   }
 }
 

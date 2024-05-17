@@ -1,12 +1,51 @@
-<app-hover-card
-  *ngIf="feat"
-  position="bottom"
-  [hoverCardWidth]="20"
-  class="feat">
-  <div hoverable class="feat__box">
-    {{ feat.name }}
-  </div>
-  <div card-content class="feat__card">
+<ng-container *ngIf="cardOnly; else hoverCard">
+  <ng-container *ngTemplateOutlet="featCard; context: { feat }"></ng-container>
+</ng-container>
+
+<ng-template #hoverCard>
+  <app-hover-card
+    *ngIf="feat"
+    position="bottom"
+    [hoverCardWidth]="20"
+    class="feat">
+    <div hoverable class="feat__box">
+      {{ feat.name }}
+    </div>
+    <ng-container
+      card-content
+      *ngTemplateOutlet="featCard; context: { feat }"></ng-container>
+    <!-- <div card-content class="feat__card">
+      <div class="feat__header">
+        <span class="feat__name">{{ feat.name }}</span>
+        <span class="feat__level"> Feat {{ feat.level }}</span>
+      </div>
+      <mat-divider></mat-divider>
+      <div class="feat__traits" *ngIf="feat.traits?.length">
+        <app-trait
+          position="top"
+          *ngFor="let trait of feat.traits"
+          [traitId]="trait"></app-trait>
+      </div>
+      <div class="feat__properties" *ngIf="feat.prerequisits?.length">
+        <div class="feat__property">
+          <span class="feat__property-label">Prerequisits:</span>
+          <ul>
+            <li *ngFor="let prerequisit of feat.prerequisits">
+              {{ prerequisit.condition }}
+            </li>
+          </ul>
+        </div>
+      </div>
+      <mat-divider *ngIf="feat.prerequisits?.length"></mat-divider>
+      <div
+        class="feat__description"
+        [innerHTML]="feat.description | sanitazeHTML"></div>
+    </div> -->
+  </app-hover-card>
+</ng-template>
+
+<ng-template #featCard let-feat="feat">
+  <div class="feat__card">
     <div class="feat__header">
       <span class="feat__name">{{ feat.name }}</span>
       <span class="feat__level"> Feat {{ feat.level }}</span>
@@ -31,6 +70,5 @@
     <mat-divider *ngIf="feat.prerequisits?.length"></mat-divider>
     <div
       class="feat__description"
-      [innerHTML]="feat.description | sanitazeHTML"></div>
-  </div>
-</app-hover-card>
+      [innerHTML]="feat.description | sanitazeHTML"></div></div
+></ng-template>

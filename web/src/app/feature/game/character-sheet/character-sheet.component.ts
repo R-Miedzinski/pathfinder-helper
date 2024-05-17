@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { GameState } from '../ngrx/game-reducer';
 import * as GameActions from '../ngrx/game-actions';
-import { Subject, takeUntil } from 'rxjs';
+import { Observable, Subject, takeUntil } from 'rxjs';
 import * as GameSelectors from '../ngrx/game-selector';
 import { cloneDeep } from 'lodash';
 import { ItemsService } from '../services/items.service';
@@ -11,10 +11,7 @@ import { FeatsService } from '../services/feats.service';
 import { ActionService } from '../services/action.service';
 import { SkillsService } from '../services/skills.service';
 import { AbilitiesService } from '../services/abilities.service';
-import {
-  Character,
-  CharacterSheetMode,
-} from 'rpg-app-shared-package/dist/public-api';
+import { Character, CharacterSheetMode, Feat } from 'rpg-app-shared-package';
 
 @Component({
   selector: 'app-character-sheet',
@@ -39,9 +36,7 @@ export class CharacterSheetComponent implements OnInit, OnDestroy {
   protected spellsList = this.spellsService.spellList$.pipe(
     takeUntil(this.ngDestroyed$)
   );
-  protected featsList = this.featsService.featList$.pipe(
-    takeUntil(this.ngDestroyed$)
-  );
+  protected featsList: Observable<Feat[]> = new Observable();
   protected actionsList = this.actionService.actionsList$.pipe(
     takeUntil(this.ngDestroyed$)
   );
@@ -87,7 +82,9 @@ export class CharacterSheetComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.ngDestroyed$))
       .subscribe({
         next: (featIds: { id: string; name: string }[]) => {
-          this.featsService.getFeats(featIds.map(item => item.id));
+          this.featsList = this.featsService.getFeats(
+            featIds.map(item => item.id)
+          );
         },
       });
 

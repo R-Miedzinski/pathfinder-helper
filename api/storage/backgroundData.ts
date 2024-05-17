@@ -38,7 +38,7 @@ export const backgroundData: BackgroundData[] = [
         ability: Abilities.int,
       },
     ],
-    feats: ['Student of the Canon'],
+    feats: ['S1'],
   },
   {
     id: '2',
@@ -70,7 +70,7 @@ export const backgroundData: BackgroundData[] = [
         ability: Abilities.int,
       },
     ],
-    feats: ['Steady Balance'],
+    feats: ['S2'],
   },
   {
     id: '3',
@@ -102,6 +102,6 @@ export const backgroundData: BackgroundData[] = [
         ability: Abilities.int,
       },
     ],
-    feats: ['Train Animal'],
+    feats: ['S3'],
   },
 ]

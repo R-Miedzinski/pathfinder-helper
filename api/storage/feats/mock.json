@@ -16,6 +16,55 @@
     "effectType": "Description"
   },
   {
+    "id": "S1",
+    "name": "Student of the Canon",
+    "level": 1,
+    "category": "Skill Feat",
+    "traits": ["General", "Skill"],
+    "prerequisits": {
+      "condition": "proficiency",
+      "payload": {
+        "level": "Trained",
+        "skill": "Religion"
+      }
+    },
+    "description": "You’ve researched many faiths enough to recognize notions about them that are unlikely to be true. If you roll a critical failure at a Religion check to Decipher Writing of a religious nature or to Recall Knowledge about the tenets of faiths, you get a failure instead. When attempting to Recall Knowledge about the tenets of your own faith, if you roll a failure, you get a success instead, and if you roll a success, you get a critical success instead.",
+    "effectType": "Description"
+  },
+  {
+    "id": "S2",
+    "name": "Steady Balance",
+    "level": 1,
+    "category": "Skill Feat",
+    "traits": ["General", "Skill"],
+    "prerequisits": {
+      "condition": "proficiency",
+      "payload": {
+        "level": "Trained",
+        "skill": "Acrobatics"
+      }
+    },
+    "description": "You can keep your balance easily, even in adverse conditions. Whenever you roll a success using the Balance action, you get a critical success instead. You’re not flat-footed while attempting to Balance on narrow surfaces and uneven ground. Thanks to your incredible balance, you can attempt an Acrobatics check instead of a Reflex save to Grab an Edge.",
+    "effectType": "Description"
+  },
+  {
+    "id": "S3",
+    "name": "Train Animals",
+    "level": 1,
+    "category": "Skill Feat",
+    "traits": ["Downtime", "General", "Manipulate", "Skill"],
+    "prerequisits": {
+      "condition": "proficiency",
+      "payload": {
+        "level": "Trained",
+        "skill": "Nature"
+      }
+    },
+    "description": "Grants a Train Animal Action: You spend time teaching an animal to do a certain action. You can either select a basic action the animal already knows how to do (typically those listed in the Command an Animal action on page 249) or attempt to teach the animal a new basic action. The GM determines the DC of any check required and the amount of time the training takes (usually at least a week). It’s usually impossible to teach an animal a trick that uses critical thinking. If you’re expert, master, or legendary in Nature, you might be able to train more unusual creatures, at the GM’s discretion.Success The animal learns the action. If it was an action the animal already knew, you can Command the Animal to take that action without attempting a Nature check. If it was a new basic action, add that action to the actions the animal can take when Commanded, but you must still roll.Failure The animal doesn’t learn the trick.",
+    "effectType": "Action",
+    "payload": { "id": "TrainAnimalAction" }
+  },
+  {
     "id": "S8",
     "name": "Skill Feat 8",
     "level": 1,
@@ -51,12 +100,39 @@
     "effectType": "Description"
   },
   {
+    "id": "C1",
+    "name": "Class Feat 1",
+    "level": 1,
+    "category": "Class Feat",
+    "traits": ["Alchemist"],
+    "description": "This is a description of test class feat 1",
+    "effectType": "Description"
+  },
+  {
     "id": "C2",
     "name": "Class Feat 2",
     "level": 1,
     "category": "Class Feat",
     "traits": ["Alchemist"],
     "description": "This is a description of test class feat 2",
+    "effectType": "Description"
+  },
+  {
+    "id": "C3",
+    "name": "Class Feat 3",
+    "level": 1,
+    "category": "Class Feat",
+    "traits": ["Barbarian"],
+    "description": "This is a description of test class feat 3",
+    "effectType": "Description"
+  },
+  {
+    "id": "C4",
+    "name": "Class Feat 4",
+    "level": 1,
+    "category": "Class Feat",
+    "traits": ["Barbarian"],
+    "description": "This is a description of test class feat 4",
     "effectType": "Description"
   },
   {

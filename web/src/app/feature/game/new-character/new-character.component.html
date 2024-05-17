@@ -88,15 +88,20 @@
           <h4>Darkvision:</h4>
           <p>{{ raceData.darkvision }}</p>
         </div>
-        <form [formGroup]="chooseRaceForm" class="race__feat">
-          <label for="raceFeats" class="required">Ancestry feat:</label>
-          <select id="raceFeats" formControlName="feat">
-            <option value="" disabled selected hidden>Choose a Feat</option>
-            <option *ngFor="let feat of raceFeats" [value]="feat.id">
-              {{ feat.name }}
-            </option>
-          </select>
-        </form>
+        <div class="race__feat">
+          <form [formGroup]="chooseRaceForm">
+            <label for="raceFeats" class="required">Ancestry feat:</label>
+            <select id="raceFeats" formControlName="feat">
+              <option value="" disabled selected hidden>Choose a Feat</option>
+              <option *ngFor="let feat of raceFeats" [value]="feat.id">
+                {{ feat.name }}
+              </option>
+            </select>
+          </form>
+          <div *ngIf="chosenRaceFeat">
+            <app-feat [feat]="chosenRaceFeat" [cardOnly]="true"></app-feat>
+          </div>
+        </div>
       </ng-container>
     </div>
     <button mat-button matStepperNext>Next</button>
@@ -187,13 +192,15 @@
             </div>
             <div
               class="background__feats"
-              *ngIf="chosenBackground.feats?.length">
+              *ngIf="chosenBackgroundFeats?.length">
               <h4 class="background__label">Feats Gained:</h4>
-              <span
-                class="background__feat"
-                *ngFor="let feat of chosenBackground.feats">
-                {{ feat }}
-              </span>
+              <ul>
+                <li
+                  class="background__feat"
+                  *ngFor="let feat of chosenBackgroundFeats">
+                  <app-feat [feat]="feat" [cardOnly]="true"></app-feat>
+                </li>
+              </ul>
             </div>
           </ng-container>
         </form>
@@ -209,7 +216,7 @@
         [formGroup]="chooseClassForm"
         class="new-character-form class-form"
         *ngIf="classes.length">
-        <div class="class__choice">
+        <div class="classes__choice">
           <label for="class" class="required"> Choose characters class: </label>
           <select id="class" formControlName="class">
             <option value="" disabled selected hidden>Choose a Class</option>
@@ -332,8 +339,19 @@
               </li>
             </ul>
           </div>
-          <div class="classes__feats">
-            <h4 class="classes__label">Choose a Feat:</h4>
+          <div class="classes__feat">
+            <form [formGroup]="chooseClassForm">
+              <label for="classFeats" class="required">Class feat:</label>
+              <select id="classFeats" formControlName="feat">
+                <option value="" disabled selected hidden>Choose a Feat</option>
+                <option *ngFor="let feat of classFeats" [value]="feat.id">
+                  {{ feat.name }}
+                </option>
+              </select>
+            </form>
+            <div *ngIf="chosenClassFeat">
+              <app-feat [feat]="chosenClassFeat" [cardOnly]="true"></app-feat>
+            </div>
           </div>
         </ng-container>
       </form>

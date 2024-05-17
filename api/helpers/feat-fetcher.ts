@@ -4,6 +4,8 @@ import { Classes, Feat, FeatData, Race } from 'rpg-app-shared-package'
 
 export class FeatFetcher {
   private readonly baseFeatUrl: string = path.join(__dirname, `../storage/feats/mock.json`)
+  private areFeatsLoaded = false
+  private feats: FeatData[] = []
 
   constructor() {}
 
@@ -36,6 +38,18 @@ export class FeatFetcher {
   }
 
   private readFeatsFromFile(): Promise<FeatData[]> {
-    return fs.readFile(this.baseFeatUrl, 'utf8').then(JSON.parse)
+    if (this.areFeatsLoaded) {
+      console.log('returning feats from cache')
+      return new Promise((resolve) => {
+        resolve(this.feats)
+      })
+    }
+
+    console.log('fetching new feats data')
+    return fs.readFile(this.baseFeatUrl, 'utf8').then((data) => {
+      this.feats = JSON.parse(data)
+      this.areFeatsLoaded = true
+      return JSON.parse(data)
+    })
   }
 }

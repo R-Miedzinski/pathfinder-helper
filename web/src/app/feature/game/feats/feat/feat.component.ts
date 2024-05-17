@@ -9,4 +9,5 @@ import { Feat } from 'rpg-app-shared-package/dist/public-api';
 })
 export class FeatComponent {
   @Input() feat?: Feat;
+  @Input() cardOnly?: boolean;
 }

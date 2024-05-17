@@ -9,10 +9,15 @@ const characterRouter = express.Router()
 
 // const characterMock: SeedCharacterData = cloneDeep(CharacterMock.characterMock)
 
-characterRouter.post('/new-character-preview', (req, res) => {
+characterRouter.post('/new-character-preview', (req, res, next) => {
   const characterFactory = new CharacterFactory(req.body)
 
-  res.send(characterFactory.createNewCharacter())
+  characterFactory
+    .buildNewCharacter()
+    .then(() => {
+      res.send(characterFactory.createNewCharacter())
+    })
+    .catch((err) => next(err))
 })
 
 characterRouter.get('', (req, res, next) => {
@@ -38,7 +43,13 @@ characterRouter.get('', (req, res, next) => {
     }
 
     const characterFactory = new CharacterFactory(JSON.parse(data))
-    res.send(characterFactory.createNewCharacter())
+
+    characterFactory
+      .buildNewCharacter()
+      .then(() => {
+        res.send(characterFactory.createNewCharacter())
+      })
+      .catch((err) => next(err))
   })
 })
 

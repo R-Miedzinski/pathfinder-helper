@@ -10,24 +10,31 @@ import {
 } from 'rpg-app-shared-package'
 import { raceData } from '../storage/raceData'
 import { classData } from '../storage/classData'
+import { FeatFetcher } from './feat-fetcher'
 
 export class CharacterFactory {
   private character: Character
   private profToValMap: Map<Proficiency, number> = new Map()
+  private seedData: SeedCharacterData
+  private featFetcher: FeatFetcher
 
   constructor(characterData: SeedCharacterData) {
     this.character = newCharacter()
+    this.featFetcher = new FeatFetcher()
+    this.seedData = characterData
+  }
 
-    this.assignConstantValues(characterData)
-    this.applyAbilityBoosts(characterData)
-    this.applyFeats()
-    this.applyEquipment(characterData)
+  public async buildNewCharacter(): Promise<void> {
+    this.assignConstantValues()
+    this.applyAbilityBoosts()
+    await this.applyFeats()
+    this.applyEquipment()
     this.calculateAbilityBonuses()
-    this.calculateSkillProficiencies(characterData)
-    this.calculateEquipmentProficiencies(characterData)
-    this.calculateSavingThrows(characterData)
+    this.calculateSkillProficiencies()
+    this.calculateEquipmentProficiencies()
+    this.calculateSavingThrows()
     this.calculateSpeed()
-    this.calculateHealth(characterData)
+    this.calculateHealth()
     this.calculateOtherStats()
   }
 
@@ -35,50 +42,62 @@ export class CharacterFactory {
     return this.character
   }
 
-  private assignConstantValues(data: SeedCharacterData): void {
-    this.character.id = data.id
-    this.character.characterName = data.name
-    this.character.class = data.class
+  private assignConstantValues(): void {
+    this.character.id = this.seedData.id
+    this.character.characterName = this.seedData.name
+    this.character.class = this.seedData.class
 
     this.character.feats = ([] as { id: string; name: string }[])
-      .concat(data.ancestryFeats.map((id) => ({ id, name: 'Feat: ' + id })))
-      .concat(data.classFeats.map((id) => ({ id, name: 'Feat: ' + id })))
-      .concat(data.skillFeats.map((id) => ({ id, name: 'Feat: ' + id })))
-      .concat(data.bonusFeats.map((id) => ({ id, name: 'Feat: ' + id })))
-      .concat(data.generalFeats.map((id) => ({ id, name: 'Feat: ' + id })))
+      .concat(this.seedData.ancestryFeats.map((id) => ({ id, name: 'Feat: ' + id })))
+      .concat(this.seedData.classFeats.map((id) => ({ id, name: 'Feat: ' + id })))
+      .concat(this.seedData.skillFeats.map((id) => ({ id, name: 'Feat: ' + id })))
+      .concat(this.seedData.bonusFeats.map((id) => ({ id, name: 'Feat: ' + id })))
+      .concat(this.seedData.generalFeats.map((id) => ({ id, name: 'Feat: ' + id })))
 
-    this.character.race = data.race
-    this.character.level = data.level
-    this.character.spells = data.spells
-    this.character.inventory = data.inventory
-    this.character.equippedItems = data.equippedItems
-    this.character.investedItems = data.investedItems
-    this.character.actions = data.actions
-    this.character.backstory = data.backstory
+    this.character.race = this.seedData.race
+    this.character.level = this.seedData.level
+    this.character.spells = this.seedData.spells
+    this.character.inventory = this.seedData.inventory
+    this.character.equippedItems = this.seedData.equippedItems
+    this.character.investedItems = this.seedData.investedItems
+    this.character.actions = this.seedData.actions
+    this.character.backstory = this.seedData.backstory
 
     this.profToValMap = createProfToValMap(this.character.level)
   }
 
-  private applyAbilityBoosts(data: SeedCharacterData): void {
-    data.boosts.forEach((ability) => this.applyBoost(ability))
-    data.flaws.forEach((flaw) => this.applyFlaw(flaw))
+  private applyAbilityBoosts(): void {
+    this.seedData.boosts.forEach((ability) => this.applyBoost(ability))
+    this.seedData.flaws.forEach((flaw) => this.applyFlaw(flaw))
   }
 
-  private applyFeats(): void {
-    this.character.feats.forEach((feat) => console.log(`factory handle feat: ${feat}`))
+  private async applyFeats(): Promise<void[]> {
+    const promises = this.character.feats.map((feat) => {
+      return new Promise<void>((resolve, reject) => {
+        this.featFetcher
+          .getFeatData(feat.id)
+          .then((data) => {
+            console.log('fetched a feat in feat handler:', JSON.stringify(data))
+            resolve()
+          })
+          .catch(reject)
+      })
+    })
+
+    return Promise.all(promises)
   }
 
-  private applyEquipment(data: SeedCharacterData): void {
+  private applyEquipment(): void {
     // TODO: Figure out inventory
-    console.log('inventory in character facotry:', data.inventory)
+    console.log('inventory in character facotry:', this.seedData.inventory)
   }
 
   private calculateAbilityBonuses(): void {
     this.character.abilities.forEach((ability) => (ability.modifier = Math.floor(ability.score / 2 - 5)))
   }
 
-  private calculateSkillProficiencies(data: SeedCharacterData): void {
-    const savedSkills = cloneDeep(data.skills)
+  private calculateSkillProficiencies(): void {
+    const savedSkills = cloneDeep(this.seedData.skills)
 
     const basicSkills = this.character.skills
       .filter((skill) => !savedSkills.map((skill) => skill.name).some((name) => name === skill.name))
@@ -110,13 +129,13 @@ export class CharacterFactory {
     this.character.skills = basicSkills.concat(characterSkills)
   }
 
-  private calculateEquipmentProficiencies(data: SeedCharacterData): void {
-    this.character.attacks = data.attacks
-    this.character.defences = data.defences
+  private calculateEquipmentProficiencies(): void {
+    this.character.attacks = this.seedData.attacks
+    this.character.defences = this.seedData.defences
   }
 
-  private calculateSavingThrows(data: SeedCharacterData): void {
-    data.savingThrows.forEach((st) => {
+  private calculateSavingThrows(): void {
+    this.seedData.savingThrows.forEach((st) => {
       this.character.savingThrows.find((savingThrow) => savingThrow.name === st.name)!.proficiency = st.level
     })
 
@@ -132,15 +151,15 @@ export class CharacterFactory {
     }
   }
 
-  private calculateHealth(data: SeedCharacterData): void {
+  private calculateHealth(): void {
     this.character.hp.maximum =
-      data?.hp?.maximum ??
+      this.seedData?.hp?.maximum ??
       raceData.find((race) => race.name === this.character.race)!.baseHp +
         this.character.level *
           (classData.find((charClass) => charClass.name === this.character.class)!.baseHp +
             this.character.abilities.find((ability) => ability.name === Abilities.con)!.modifier)
-    this.character.hp.current = data?.hp?.current ?? this.character.hp.maximum
-    this.character.hp.temporary = data?.hp?.temporary ?? 0
+    this.character.hp.current = this.seedData?.hp?.current ?? this.character.hp.maximum
+    this.character.hp.temporary = this.seedData?.hp?.temporary ?? 0
   }
 
   private calculateOtherStats(): void {
