@@ -14,33 +14,6 @@
     <ng-container
       card-content
       *ngTemplateOutlet="featCard; context: { feat }"></ng-container>
-    <!-- <div card-content class="feat__card">
-      <div class="feat__header">
-        <span class="feat__name">{{ feat.name }}</span>
-        <span class="feat__level"> Feat {{ feat.level }}</span>
-      </div>
-      <mat-divider></mat-divider>
-      <div class="feat__traits" *ngIf="feat.traits?.length">
-        <app-trait
-          position="top"
-          *ngFor="let trait of feat.traits"
-          [traitId]="trait"></app-trait>
-      </div>
-      <div class="feat__properties" *ngIf="feat.prerequisits?.length">
-        <div class="feat__property">
-          <span class="feat__property-label">Prerequisits:</span>
-          <ul>
-            <li *ngFor="let prerequisit of feat.prerequisits">
-              {{ prerequisit.condition }}
-            </li>
-          </ul>
-        </div>
-      </div>
-      <mat-divider *ngIf="feat.prerequisits?.length"></mat-divider>
-      <div
-        class="feat__description"
-        [innerHTML]="feat.description | sanitazeHTML"></div>
-    </div> -->
   </app-hover-card>
 </ng-template>
 
@@ -57,17 +30,17 @@
         *ngFor="let trait of feat.traits"
         [traitId]="trait"></app-trait>
     </div>
-    <div class="feat__properties" *ngIf="feat.prerequisits?.length">
+    <div class="feat__properties" *ngIf="feat.rules?.length">
       <div class="feat__property">
         <span class="feat__property-label">Prerequisits:</span>
         <ul>
-          <li *ngFor="let prerequisit of feat.prerequisits">
-            {{ prerequisit.condition }}
+          <li *ngFor="let rule of feat.rules">
+            {{ rule.condition }}
           </li>
         </ul>
       </div>
     </div>
-    <mat-divider *ngIf="feat.prerequisits?.length"></mat-divider>
+    <mat-divider *ngIf="feat.rules?.length"></mat-divider>
     <div
       class="feat__description"
       [innerHTML]="feat.description | sanitazeHTML"></div></div

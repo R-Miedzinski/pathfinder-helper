@@ -1,7 +1,11 @@
 export enum FeatEffectType {
-  proficiencyIncrease = "Proficiency",
+  armor = "Armor Proficiency",
+  weapon = "Weapon Proficiency",
+  savingThrow = "Saving Throw Proficiency",
+  skill = "Skill Proficiency",
   action = "Action",
   description = "Description",
-  statIncrease = "Stats",
-  addFeats = "Feat",
+  boost = "Ability Boost",
+  flaw = "Ability Flaw",
+  feat = "Feat",
 }

@@ -33,8 +33,6 @@ export class FeatsService implements OnDestroy {
   }
 
   public getFeats(featIds: string[]): Observable<Feat[]> {
-    console.log('getFeats called');
-
     const featCalls: Observable<Feat>[] = featIds.map(id => {
       const featUrl = environment.apiUrl + '/api/feats/' + id;
 
@@ -42,10 +40,6 @@ export class FeatsService implements OnDestroy {
     });
 
     return combineLatest(featCalls);
-    // .pipe(takeUntil(this.ngOnDestroy$))
-    // .subscribe({
-    //   next: list => this.featList$.next(list),
-    // });
   }
 
   public getRaceFeatsToAdd(level: number, race: Race): Observable<Feat[]> {

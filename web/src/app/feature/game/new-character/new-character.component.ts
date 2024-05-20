@@ -380,10 +380,7 @@ export class NewCharacterComponent implements OnInit, OnDestroy {
         .getFeats(ids)
         .pipe(takeUntil(this.ngDestroyed$))
         .subscribe({
-          next: feats => (
-            (this.chosenBackgroundFeats = feats),
-            console.log(JSON.stringify(feats))
-          ),
+          next: feats => (this.chosenBackgroundFeats = feats),
         });
     }
   }

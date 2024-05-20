@@ -11,6 +11,7 @@ import {
 import { raceData } from '../storage/raceData'
 import { classData } from '../storage/classData'
 import { FeatFetcher } from './feat-fetcher'
+import { identifyEffects } from './identify-effects'
 
 export class CharacterFactory {
   private character: Character
@@ -18,16 +19,16 @@ export class CharacterFactory {
   private seedData: SeedCharacterData
   private featFetcher: FeatFetcher
 
-  constructor(characterData: SeedCharacterData) {
+  constructor(characterData: SeedCharacterData, featFetcher: FeatFetcher) {
     this.character = newCharacter()
-    this.featFetcher = new FeatFetcher()
+    this.featFetcher = featFetcher
     this.seedData = characterData
   }
 
   public async buildNewCharacter(): Promise<void> {
     this.assignConstantValues()
-    this.applyAbilityBoosts()
     await this.applyFeats()
+    this.applyAbilityBoosts()
     this.applyEquipment()
     this.calculateAbilityBonuses()
     this.calculateSkillProficiencies()
@@ -76,9 +77,22 @@ export class CharacterFactory {
       return new Promise<void>((resolve, reject) => {
         this.featFetcher
           .getFeatData(feat.id)
-          .then((data) => {
-            console.log('fetched a feat in feat handler:', JSON.stringify(data))
-            resolve()
+          .then(async (data) => {
+            if (data) {
+              console.log(
+                'handling feat: ',
+                feat.id,
+                data.effect.map((item) => item.effectType)
+              )
+              const featHandlers = identifyEffects(data, this.featFetcher)
+              const handlerPromises = featHandlers.map(
+                async (handler) => await handler.handleFeat(this.character, this.seedData)
+              )
+              await Promise.all(handlerPromises)
+              resolve()
+            } else {
+              reject()
+            }
           })
           .catch(reject)
       })

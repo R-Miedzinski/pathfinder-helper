@@ -1,13 +1,17 @@
 import express from 'express'
 import PingController from '../controllers/ping'
-import characterRouter from './characterRouter'
-import raceDataRouter from './raceDataRouter'
-import backgroundsRouter from './backgroundsRouter'
-import classesRouter from './classesRouter'
-import traitsRouter from './traitsRouter'
-import featsRouter from './featsRouter'
+import { characterRouterFactory } from './characterRouter'
+import { raceDataRouterFactory } from './raceDataRouter'
+import { backgroundsRouterFactory } from './backgroundsRouter'
+import { classesRouterFactory } from './classesRouter'
+import { traitsRouterFactory } from './traitsRouter'
+import { featsRouterFactory } from './featsRouter'
+import { FeatFetcher } from '../helpers/feat-fetcher'
 
 const router = express.Router()
+
+// Declare service providers
+const featFetcher = new FeatFetcher()
 
 router.use('*', (req, res, next) => {
   console.log('connection on', req.baseUrl + req.url)
@@ -25,7 +29,7 @@ router.use('/api/characters', (req, res) => {
   res.send('characters')
 })
 
-router.use('/api/character', characterRouter)
+router.use('/api/character', characterRouterFactory(featFetcher))
 
 router.use('/api/spells', (req, res) => {
   res.send('spells')
@@ -43,18 +47,18 @@ router.use('/api/action', (req, res) => {
   res.send('action')
 })
 
-router.use('/api/feats', featsRouter)
+router.use('/api/feats', featsRouterFactory(featFetcher))
 
 router.use('/api/feat', (req, res) => {
   res.send('feat')
 })
 
-router.use('/api/traits', traitsRouter)
+router.use('/api/traits', traitsRouterFactory())
 
-router.use('/api/classes', classesRouter)
+router.use('/api/classes', classesRouterFactory())
 
-router.use('/api/race', raceDataRouter)
+router.use('/api/race', raceDataRouterFactory())
 
-router.use('/api/backgrounds', backgroundsRouter)
+router.use('/api/backgrounds', backgroundsRouterFactory())
 
 export default router

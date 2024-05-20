@@ -32,8 +32,26 @@ export { Backstory, newBackstory } from "./models/interfaces/backstory";
 export { Character, newCharacter } from "./models/interfaces/character";
 export { CharacterAction } from "./models/interfaces/character-action";
 export { ClassData } from "./models/interfaces/class-data";
-export { FeatData } from "./models/interfaces/feat-data";
-export { Feat } from "./models/interfaces/feat";
+export {
+  FeatData,
+  FeatEffect,
+  GrantActionEffect,
+  GrantFeatEffect,
+  GrantBoostEffect,
+  GrantFlawEffect,
+  GrantSkillProficiencyEffect,
+  GrantWeaponProficiencyEffect,
+  GrantArmorProficiencyEffect,
+  GrantSTProficiencyEffect,
+} from "./models/interfaces/feat-data";
+export {
+  Feat,
+  FeatConditions,
+  FeatRulePayload,
+  FeatRuleAbilityPayload,
+  FeatRuleFeatPayload,
+  FeatRuleProficiencyPayload,
+} from "./models/interfaces/feat";
 export { HP } from "./models/interfaces/hp";
 export { Item } from "./models/interfaces/item";
 export { RaceData } from "./models/interfaces/race-data";
@@ -44,4 +62,5 @@ export { Spell } from "./models/interfaces/spell";
 export { WeaponProficiency } from "./models/interfaces/weapon-proficiency";
 export { Weapon } from "./models/interfaces/weapon";
 /* Utils */
+export { skillToAbilityMap } from "./utils/skill-to-ability-map";
 export { createProfToValMap } from "./utils/profToValMap";

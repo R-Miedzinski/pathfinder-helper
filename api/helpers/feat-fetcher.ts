@@ -1,24 +1,16 @@
 import * as fs from 'fs/promises'
 import path from 'path'
-import { Classes, Feat, FeatData, Race } from 'rpg-app-shared-package'
+import { Classes, FeatData, Race } from 'rpg-app-shared-package'
 
 export class FeatFetcher {
-  private readonly baseFeatUrl: string = path.join(__dirname, `../storage/feats/mock.json`)
+  private readonly dirName: string = path.join(__dirname, '../storage/feats/')
   private areFeatsLoaded = false
   private feats: FeatData[] = []
 
   constructor() {}
 
-  public getFeatDisplayData(id: string): Promise<Feat> {
-    return this.getFeatData(id).then((data) => <Feat>data)
-  }
-
   public getFeatData(id: string): Promise<FeatData | undefined> {
     return this.readFeatsFromFile().then((data) => data.find((item) => item.id === id))
-  }
-
-  public getRaceFeatsDisplayWithQuery(level: number, race: Race): Promise<Feat[]> {
-    return this.getRaceFeatsWithQuery(level, race).then((data) => data.map((item) => <Feat>item))
   }
 
   public getRaceFeatsWithQuery(level: number, race: Race): Promise<FeatData[]> {
@@ -27,17 +19,13 @@ export class FeatFetcher {
     )
   }
 
-  public getClassFeatsDisplayWithQuery(level: number, charClass: Classes): Promise<Feat[]> {
-    return this.getClassFeatsWithQuery(level, charClass).then((data) => data.map((item) => <Feat>item))
-  }
-
   public getClassFeatsWithQuery(level: number, charClass: Classes): Promise<FeatData[]> {
     return this.readFeatsFromFile().then((data) =>
       data.filter((item) => item.level <= level && item.traits?.includes(charClass))
     )
   }
 
-  private readFeatsFromFile(): Promise<FeatData[]> {
+  private async readFeatsFromFile(): Promise<FeatData[]> {
     if (this.areFeatsLoaded) {
       console.log('returning feats from cache')
       return new Promise((resolve) => {
@@ -45,11 +33,32 @@ export class FeatFetcher {
       })
     }
 
-    console.log('fetching new feats data')
-    return fs.readFile(this.baseFeatUrl, 'utf8').then((data) => {
-      this.feats = JSON.parse(data)
-      this.areFeatsLoaded = true
-      return JSON.parse(data)
+    // console.log('fetching new feats data')
+    // return fs.readFile(this.baseFeatUrl, 'utf8').then((data) => {
+    //   this.feats = JSON.parse(data)
+    //   this.areFeatsLoaded = true
+    //   return JSON.parse(data)
+    // })
+    const featsFiles: string[] = await this.getFiles(this.dirName)
+
+    const promises = featsFiles.map((file) => fs.readFile(file, 'utf8').then((data) => JSON.parse(data)))
+    return new Promise((resolve, reject) => {
+      Promise.all(promises).then((data) => {
+        ;(this.feats = data.flat()), (this.areFeatsLoaded = true), resolve(data.flat())
+      })
     })
+  }
+
+  private async getFiles(directory: string) {
+    const subDirs = await fs.readdir(directory)
+    const files: string[] = (
+      await Promise.all(
+        subDirs.map(async (dir) => {
+          const file = path.resolve(directory, dir)
+          return (await fs.stat(file)).isDirectory() ? this.getFiles(file) : file
+        })
+      )
+    ).flat()
+    return files.reduce((array, file) => array.concat(file), [] as string[])
   }
 }

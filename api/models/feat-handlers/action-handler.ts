@@ -1,10 +1,14 @@
-import { Character } from 'rpg-app-shared-package/dist/public-api'
+import { Character, FeatEffect, GrantActionEffect, SeedCharacterData } from 'rpg-app-shared-package'
 import { FeatHandler } from '../feat-handler'
 
 export class ActionHandler extends FeatHandler {
-  public handleFeat(character: Character): void {
-    const action: string = this._payload.actionId
+  constructor(effect: FeatEffect) {
+    super(effect)
+  }
 
-    character.actions?.push(action)
+  public async handleFeat(character: Character, seedData: SeedCharacterData): Promise<void> {
+    const payload = (<GrantActionEffect>this._effect).payload
+
+    seedData.actions.push(payload.actionId)
   }
 }
