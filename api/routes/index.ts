@@ -6,12 +6,16 @@ import { backgroundsRouterFactory } from './backgroundsRouter'
 import { classesRouterFactory } from './classesRouter'
 import { traitsRouterFactory } from './traitsRouter'
 import { featsRouterFactory } from './featsRouter'
-import { FeatFetcher } from '../helpers/feat-fetcher'
+import { FeatFetcher } from '../services/feat-fetcher'
+import { TraitsLoader } from '../services/traits-loader'
+import { ClassDataLoader } from '../services/class-data-loader'
 
 const router = express.Router()
 
 // Declare service providers
+const classDataLoader = new ClassDataLoader()
 const featFetcher = new FeatFetcher()
+const traisLoader = new TraitsLoader()
 
 router.use('*', (req, res, next) => {
   console.log('connection on', req.baseUrl + req.url)
@@ -29,7 +33,7 @@ router.use('/api/characters', (req, res) => {
   res.send('characters')
 })
 
-router.use('/api/character', characterRouterFactory(featFetcher))
+router.use('/api/character', characterRouterFactory(classDataLoader, featFetcher))
 
 router.use('/api/spells', (req, res) => {
   res.send('spells')
@@ -53,9 +57,9 @@ router.use('/api/feat', (req, res) => {
   res.send('feat')
 })
 
-router.use('/api/traits', traitsRouterFactory())
+router.use('/api/traits', traitsRouterFactory(traisLoader))
 
-router.use('/api/classes', classesRouterFactory())
+router.use('/api/classes', classesRouterFactory(classDataLoader))
 
 router.use('/api/race', raceDataRouterFactory())
 

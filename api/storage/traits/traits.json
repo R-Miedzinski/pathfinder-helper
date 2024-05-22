@@ -1,0 +1,12 @@
+[
+  {
+    "id": "humanoid",
+    "name": "Humanoid",
+    "description": "This character is humanoid"
+  },
+  {
+    "id": "dwarf",
+    "name": "Dwarf",
+    "description": "This character is a dwarf"
+  }
+]

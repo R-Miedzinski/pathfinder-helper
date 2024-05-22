@@ -1,6 +1,6 @@
 import express, { Router } from 'express'
 import { Classes, Feat, FeatCategory, Race } from 'rpg-app-shared-package'
-import { FeatFetcher } from '../helpers/feat-fetcher'
+import { FeatFetcher } from '../services/feat-fetcher'
 
 export function featsRouterFactory(featFetcher: FeatFetcher): Router {
   const featsRouter = express.Router()

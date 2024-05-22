@@ -9,17 +9,20 @@ import {
   newCharacter,
 } from 'rpg-app-shared-package'
 import { raceData } from '../storage/raceData'
-import { classData } from '../storage/classData'
-import { FeatFetcher } from './feat-fetcher'
+import { FeatFetcher } from '../services/feat-fetcher'
 import { identifyEffects } from './identify-effects'
+import { ClassDataLoader } from '../services/class-data-loader'
 
 export class CharacterFactory {
   private character: Character
   private profToValMap: Map<Proficiency, number> = new Map()
   private seedData: SeedCharacterData
-  private featFetcher: FeatFetcher
 
-  constructor(characterData: SeedCharacterData, featFetcher: FeatFetcher) {
+  constructor(
+    characterData: SeedCharacterData,
+    private classDataLoader: ClassDataLoader,
+    private featFetcher: FeatFetcher
+  ) {
     this.character = newCharacter()
     this.featFetcher = featFetcher
     this.seedData = characterData
@@ -35,7 +38,7 @@ export class CharacterFactory {
     this.calculateEquipmentProficiencies()
     this.calculateSavingThrows()
     this.calculateSpeed()
-    this.calculateHealth()
+    await this.calculateHealth()
     this.calculateOtherStats()
   }
 
@@ -165,15 +168,17 @@ export class CharacterFactory {
     }
   }
 
-  private calculateHealth(): void {
-    this.character.hp.maximum =
-      this.seedData?.hp?.maximum ??
-      raceData.find((race) => race.name === this.character.race)!.baseHp +
-        this.character.level *
-          (classData.find((charClass) => charClass.name === this.character.class)!.baseHp +
-            this.character.abilities.find((ability) => ability.name === Abilities.con)!.modifier)
-    this.character.hp.current = this.seedData?.hp?.current ?? this.character.hp.maximum
-    this.character.hp.temporary = this.seedData?.hp?.temporary ?? 0
+  private async calculateHealth(): Promise<void> {
+    return this.classDataLoader.getClassData(this.character.class).then(({ baseHp }) => {
+      this.character.hp.maximum =
+        this.seedData?.hp?.maximum ??
+        raceData.find((race) => race.name === this.character.race)!.baseHp +
+          this.character.level *
+            (baseHp + this.character.abilities.find((ability) => ability.name === Abilities.con)!.modifier)
+
+      this.character.hp.current = this.seedData?.hp?.current ?? this.character.hp.maximum
+      this.character.hp.temporary = this.seedData?.hp?.temporary ?? 0
+    })
   }
 
   private calculateOtherStats(): void {

@@ -9,7 +9,7 @@ import { FlawHandler } from '../models/feat-handlers/flaw-handler'
 import { WeaponProficiencyHandler } from '../models/feat-handlers/weapon-proficiency-handler'
 import { ArmorProficiencyHandler } from '../models/feat-handlers/armor-proficiency-handler'
 import { SavingThrowHandler } from '../models/feat-handlers/saving-throw-handler'
-import { FeatFetcher } from './feat-fetcher'
+import { FeatFetcher } from '../services/feat-fetcher'
 
 export function identifyEffects(feat: FeatData, featFetcher: FeatFetcher): FeatHandler[] {
   return feat.effect.map((effect) => {

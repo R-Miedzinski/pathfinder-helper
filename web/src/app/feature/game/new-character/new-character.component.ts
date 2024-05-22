@@ -7,7 +7,7 @@ import * as GameSelectors from '../ngrx/game-selector';
 import { AbilitiesService } from '../services/abilities.service';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { GameDataService } from '../services/game-data.service';
-import { Subject, takeUntil } from 'rxjs';
+import { Observable, Subject, map, takeUntil } from 'rxjs';
 import { isEqual } from 'lodash';
 import { FeatsService } from '../services/feats.service';
 import {
@@ -54,6 +54,7 @@ export class NewCharacterComponent implements OnInit, OnDestroy {
   protected chosenRaceFeat?: Feat;
   protected chosenBackgroundFeats?: Feat[];
   protected chosenClassFeat?: Feat;
+  protected darkvision$: Observable<Feat> = new Observable();
 
   private abilities!: Ability[];
   private readonly ngDestroyed$: Subject<void> = new Subject();
@@ -92,6 +93,7 @@ export class NewCharacterComponent implements OnInit, OnDestroy {
 
           this.initBoostsForm(raceData.boosts, raceData.flaws);
           this.raceData = raceData;
+          this.getDarkvisionFeat();
           this.handleRaceFeatsFetch();
         },
       });
@@ -125,7 +127,9 @@ export class NewCharacterComponent implements OnInit, OnDestroy {
         classFeats: [this.chooseClassForm.get('feat')?.value],
         generalFeats: this.chosenBackground?.feats ?? [],
         skillFeats: [],
-        bonusFeats: [],
+        bonusFeats: this.raceData?.darkvision
+          ? [this.raceData?.darkvision]
+          : [],
         boosts: [
           ...this.boosts.value.map((item: { boost: Abilities }) => item.boost),
           ...this.backgroundForm
@@ -282,6 +286,7 @@ export class NewCharacterComponent implements OnInit, OnDestroy {
               this.chooseClassForm
                 .get('feat')
                 ?.setValue('', { emitEvent: false });
+              this.chosenClassFeat = undefined;
 
               this.chosenClass = data;
               this.initClassFeatsForm(this.chosenClass.name);
@@ -341,6 +346,15 @@ export class NewCharacterComponent implements OnInit, OnDestroy {
         next: backstory =>
           this.store.dispatch(GameActions.saveBackstoryAction({ backstory })),
       });
+  }
+
+  private getDarkvisionFeat(): void {
+    const darkvision = this.raceData?.darkvision;
+    if (darkvision) {
+      this.darkvision$ = this.featsService
+        .getFeats([darkvision])
+        .pipe(map(list => list[0]));
+    }
   }
 
   private handleRaceFeatsFetch(): void {

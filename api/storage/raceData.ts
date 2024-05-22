@@ -29,11 +29,7 @@ export const raceData: RaceData[] = [
     languages: ['Common', 'Dwarven'],
     traits: [Race.dwarf, 'Humanoid'],
     baseHp: 10,
-    darkvision: `You can see in darkness and 
-        dim light just as well as you can 
-        see in bright light, though your 
-        vision in darkness is in black 
-        and white`,
+    darkvision: 'darkvision',
   },
   {
     name: Race.elf,
@@ -63,10 +59,7 @@ export const raceData: RaceData[] = [
     languages: ['Common', 'Elven'],
     traits: [Race.elf, 'Humanoid'],
     baseHp: 6,
-    darkvision: `You can see in dim light as 
-        though it were bright light, 
-        so you ignore the concealed 
-        condition due to dim light.`,
+    darkvision: 'low-light-vision',
   },
   {
     name: Race.gnome,
@@ -96,10 +89,7 @@ export const raceData: RaceData[] = [
     languages: ['Common', 'Gnomish'],
     traits: [Race.gnome, 'Humanoid'],
     baseHp: 8,
-    darkvision: `You can see in dim light as 
-        though it were bright light, 
-        so you ignore the concealed 
-        condition due to dim light.`,
+    darkvision: 'low-light-vision',
   },
   {
     name: Race.goblin,
@@ -129,11 +119,7 @@ export const raceData: RaceData[] = [
     languages: ['Common', 'Goblin'],
     traits: [Race.goblin, 'Humanoid'],
     baseHp: 6,
-    darkvision: `You can see in darkness and 
-        dim light just as well as you 
-        can see in bright light, though 
-        your vision in darkness is in 
-        black and white.`,
+    darkvision: 'darkvision',
   },
   {
     name: Race.halfling,
@@ -163,20 +149,7 @@ export const raceData: RaceData[] = [
     languages: ['Common', 'Halfling'],
     traits: [Race.halfling, 'Humanoid'],
     baseHp: 6,
-    darkvision: `Your eyes are sharp, allowing 
-        you to make out small details 
-        about concealed or even 
-        invisible creatures that others 
-        might miss. You gain a +2 
-        circumstance bonus when using 
-        the Seek action to find hidden or 
-        undetected creatures within 30 
-        feet of you. When you target an 
-        opponent that is concealed from 
-        you or hidden from you, reduce 
-        the DC of the flat check to 3 for 
-        a concealed target or 9 for a 
-        hidden one`,
+    darkvision: 'keen-eyes',
   },
   {
     name: Race.human,

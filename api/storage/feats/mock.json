@@ -1,0 +1,166 @@
+[
+  {
+    "id": "G4",
+    "name": "General Feat 4",
+    "level": 1,
+    "category": "General Feat",
+    "description": "This is a description of test general feat 4",
+    "effect": [
+      {
+        "effectType": "Description"
+      }
+    ]
+  },
+  {
+    "id": "B6",
+    "name": "Bonus Feat 6",
+    "level": 1,
+    "category": "Bonus Feat",
+    "description": "This is a description of test bonus feat 6",
+    "effect": [
+      {
+        "effectType": "Description"
+      }
+    ]
+  },
+  {
+    "id": "S8",
+    "name": "Skill Feat 8",
+    "level": 1,
+    "category": "Skill Feat",
+    "description": "This is a description of test Skill feat 8",
+    "effect": [
+      {
+        "effectType": "Description"
+      }
+    ]
+  },
+  {
+    "id": "A1",
+    "name": "Ancestry Feat 1",
+    "level": 1,
+    "category": "Ancestry Feat",
+    "traits": ["dwarf"],
+    "description": "This is a description of test ancestry feat 1",
+    "effect": [
+      {
+        "effectType": "Description"
+      }
+    ]
+  },
+  {
+    "id": "A4",
+    "name": "Ancestry Feat 4",
+    "level": 1,
+    "category": "Ancestry Feat",
+    "traits": ["dwarf"],
+    "description": "This is a description of test ancestry feat 4. it grants A2 feat",
+    "effect": [
+      {
+        "effectType": "Feat",
+        "payload": {
+          "featId": "A2"
+        }
+      }
+    ]
+  },
+  {
+    "id": "A2",
+    "name": "Ancestry Feat 2",
+    "level": 1,
+    "category": "Ancestry Feat",
+    "traits": ["goblin"],
+    "description": "This is a description of test ancestry feat 2. Grants proficiency in survival",
+    "effect": [
+      {
+        "effectType": "Skill Proficiency",
+        "payload": {
+          "skill": "Survival",
+          "level": "Legendary"
+        }
+      }
+    ]
+  },
+  {
+    "id": "A3",
+    "name": "Ancestry Feat 3",
+    "level": 1,
+    "category": "Ancestry Feat",
+    "traits": ["elf"],
+    "description": "This is a description of test ancestry feat 3",
+    "effect": [
+      {
+        "effectType": "Description"
+      }
+    ]
+  },
+  {
+    "id": "C1",
+    "name": "Class Feat 1",
+    "level": 1,
+    "category": "Class Feat",
+    "traits": ["alchemist"],
+    "description": "This is a description of test class feat 1 it grants proficiency in unarmed",
+    "effect": [
+      {
+        "effectType": "Weapon Proficiency",
+        "payload": {
+          "weapon": "Unarmed",
+          "level": "Expert"
+        }
+      }
+    ]
+  },
+  {
+    "id": "C2",
+    "name": "Class Feat 2",
+    "level": 1,
+    "category": "Class Feat",
+    "traits": ["alchemist"],
+    "description": "This is a description of test class feat 2",
+    "effect": [
+      {
+        "effectType": "Description"
+      }
+    ]
+  },
+  {
+    "id": "C3",
+    "name": "Class Feat 3",
+    "level": 1,
+    "category": "Class Feat",
+    "traits": ["barbarian"],
+    "description": "This is a description of test class feat 3",
+    "effect": [
+      {
+        "effectType": "Description"
+      }
+    ]
+  },
+  {
+    "id": "C4",
+    "name": "Class Feat 4",
+    "level": 1,
+    "category": "Class Feat",
+    "traits": ["barbarian"],
+    "description": "This is a description of test class feat 4",
+    "effect": [
+      {
+        "effectType": "Description"
+      }
+    ]
+  },
+  {
+    "id": "C5",
+    "name": "Class Feat 5",
+    "level": 1,
+    "category": "Class Feat",
+    "traits": ["alchemist"],
+    "description": "This is a description of test class feat 5",
+    "effect": [
+      {
+        "effectType": "Description"
+      }
+    ]
+  }
+]

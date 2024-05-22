@@ -84,9 +84,9 @@
             </ul>
           </div>
         </form>
-        <div class="race__darkvision" *ngIf="raceData.darkvision">
+        <div class="race__darkvision" *ngIf="darkvision$ | async as darkvision">
           <h4>Darkvision:</h4>
-          <p>{{ raceData.darkvision }}</p>
+          <app-feat [feat]="darkvision" [cardOnly]="true"></app-feat>
         </div>
         <div class="race__feat">
           <form [formGroup]="chooseRaceForm">

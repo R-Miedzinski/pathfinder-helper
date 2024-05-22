@@ -1,29 +1,29 @@
 import express, { Router } from 'express'
-import { cloneDeep } from 'lodash'
-import { ClassData } from 'rpg-app-shared-package/dist/public-api'
-import { classData } from '../storage/classData'
+import { ClassDataLoader } from '../services/class-data-loader'
 
-export function classesRouterFactory(): Router {
+export function classesRouterFactory(classDataLoader: ClassDataLoader): Router {
   const classesRouter = express.Router()
 
-  const classDataArray: ClassData[] = cloneDeep(classData)
-  const classDataIdsArray: { id: string; name: string }[] = classDataArray.map((data) => ({
-    id: data.id,
-    name: data.name,
-  }))
-
   classesRouter.get('', (req, res) => {
-    res.send(classDataIdsArray)
+    classDataLoader
+      .getClassesData()
+      .then((data) => res.send(data.map((classData) => ({ id: classData.id, name: classData.name }))))
+      .catch((err) => res.status(500).send(err))
   })
 
-  classesRouter.get('/:id', (req, res, next) => {
-    const classData = classDataArray.find((data) => data.id === req.params.id)
-    if (!classData) {
-      const error = new Error('Requested Class not found')
-      next(error)
+  classesRouter.get('/:id', (req, res) => {
+    const id = req.params.id
+    if (!id) {
+      const err = new Error('Class id needed to get class data')
+      res.status(500).send(err)
     }
 
-    res.send(classData)
+    classDataLoader
+      .getClassData(id)
+      .then((data) => {
+        res.send(data)
+      })
+      .catch((err) => res.status(500).send(err))
   })
 
   return classesRouter

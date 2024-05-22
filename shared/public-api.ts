@@ -59,6 +59,7 @@ export { SavingThrow, newSavingThrows } from "./models/interfaces/saving-throw";
 export { SeedCharacterData } from "./models/interfaces/seed-character-data";
 export { Skill, newSkills } from "./models/interfaces/skill";
 export { Spell } from "./models/interfaces/spell";
+export { Trait } from "./models/interfaces/trait";
 export { WeaponProficiency } from "./models/interfaces/weapon-proficiency";
 export { Weapon } from "./models/interfaces/weapon";
 /* Utils */

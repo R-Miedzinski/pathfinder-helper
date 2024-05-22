@@ -1,6 +1,6 @@
 import { Character, FeatEffect, GrantFeatEffect, SeedCharacterData } from 'rpg-app-shared-package'
 import { FeatHandler } from '../feat-handler'
-import { FeatFetcher } from '../../helpers/feat-fetcher'
+import { FeatFetcher } from '../../services/feat-fetcher'
 import { identifyEffects } from '../../helpers/identify-effects'
 
 export class AddFeatHandler extends FeatHandler {

@@ -1,24 +1,20 @@
 import express, { Router } from 'express'
-import { cloneDeep } from 'lodash'
-import { traitsData } from '../storage/traitsData'
+import { TraitsLoader } from '../services/traits-loader'
 
-export function traitsRouterFactory(): Router {
+export function traitsRouterFactory(traitsLoader: TraitsLoader): Router {
   const traitsRouter = express.Router()
 
-  const traitsArray: { id: string; description: string }[] = cloneDeep(traitsData)
-
   traitsRouter.get('/:id', (req, res) => {
-    let traitData = traitsArray.find((data) => data.id === req.params.id)
-    if (!traitData) {
-      // const error = new Error('Requested trait not found')
-      // next(error)
-      traitData = {
-        id: req.params.id,
-        description: 'test trait description',
-      }
+    const id = req.params.id
+    if (!id) {
+      const err = new Error('Trait id parameter is required')
+      res.status(500).send(err)
     }
 
-    res.send(traitData)
+    traitsLoader
+      .getTrait(id.toLowerCase())
+      .then((trait) => res.send(trait))
+      .catch((err) => res.status(500).send(err))
   })
 
   return traitsRouter
