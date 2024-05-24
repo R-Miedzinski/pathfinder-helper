@@ -1,5 +1,4 @@
 import express from 'express'
-import PingController from '../controllers/ping'
 import { characterRouterFactory } from './characterRouter'
 import { raceDataRouterFactory } from './raceDataRouter'
 import { backgroundsRouterFactory } from './backgroundsRouter'
@@ -9,13 +8,20 @@ import { featsRouterFactory } from './featsRouter'
 import { FeatFetcher } from '../services/feat-fetcher'
 import { TraitsLoader } from '../services/traits-loader'
 import { ClassDataLoader } from '../services/class-data-loader'
+import { BackgroundDataLoader } from '../services/background-data-loader'
+import { RaceDataLoader } from '../services/race-data-loader'
+import { actionsRouterFactory } from './actionsRouter'
+import { ActionsLoader } from '../services/actions-loader'
 
 const router = express.Router()
 
 // Declare service providers
-const classDataLoader = new ClassDataLoader()
 const featFetcher = new FeatFetcher()
 const traisLoader = new TraitsLoader()
+const classDataLoader = new ClassDataLoader()
+const backgroundDataLoader = new BackgroundDataLoader()
+const raceDataLoader = new RaceDataLoader()
+const actionsLoader = new ActionsLoader()
 
 router.use('*', (req, res, next) => {
   console.log('connection on', req.baseUrl + req.url)
@@ -24,45 +30,22 @@ router.use('*', (req, res, next) => {
   setTimeout(next, 500)
 })
 
-router.get('/ping', async (_req, res) => {
-  const response = await PingController.getTestMessage()
-  return res.send(response.message)
-})
-
-router.use('/api/characters', (req, res) => {
-  res.send('characters')
-})
-
-router.use('/api/character', characterRouterFactory(classDataLoader, featFetcher))
+router.use('/api/character', characterRouterFactory(classDataLoader, raceDataLoader, featFetcher, actionsLoader))
 
 router.use('/api/spells', (req, res) => {
   res.send('spells')
 })
 
-router.use('/api/spell', (req, res) => {
-  res.send('spell')
-})
-
-router.use('/api/actions', (req, res) => {
-  res.send('actions')
-})
-
-router.use('/api/action', (req, res) => {
-  res.send('action')
-})
+router.use('/api/actions', actionsRouterFactory(actionsLoader))
 
 router.use('/api/feats', featsRouterFactory(featFetcher))
-
-router.use('/api/feat', (req, res) => {
-  res.send('feat')
-})
 
 router.use('/api/traits', traitsRouterFactory(traisLoader))
 
 router.use('/api/classes', classesRouterFactory(classDataLoader))
 
-router.use('/api/race', raceDataRouterFactory())
+router.use('/api/race', raceDataRouterFactory(raceDataLoader))
 
-router.use('/api/backgrounds', backgroundsRouterFactory())
+router.use('/api/backgrounds', backgroundsRouterFactory(backgroundDataLoader))
 
 export default router

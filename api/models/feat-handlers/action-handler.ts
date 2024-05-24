@@ -9,6 +9,6 @@ export class ActionHandler extends FeatHandler {
   public async handleFeat(character: Character, seedData: SeedCharacterData): Promise<void> {
     const payload = (<GrantActionEffect>this._effect).payload
 
-    seedData.actions.push(payload.actionId)
+    character.actions.push(payload.actionId)
   }
 }

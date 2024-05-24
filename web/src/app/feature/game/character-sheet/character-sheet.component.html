@@ -1,18 +1,23 @@
-<div>
-  <span>
-    Name: <strong>{{ character.characterName }}</strong> | Level:
-    <strong>{{ character.level }}</strong>
-  </span>
-  <br />
-  <span>
-    Class: <strong>{{ character.class }}</strong> | Race:
-    <strong>{{ character.race }}</strong>
-  </span>
-  <br />
-  <span>
-    App Mode: <strong>{{ mode }}</strong>
-  </span>
-  <br />
+<div class="container character-sheet__name-band">
+  <div class="character-sheet__block">
+    <span class="character-sheet__label">Name:</span>
+    <span class="character-sheet__data">{{ character.characterName }}</span>
+  </div>
+  <mat-divider [vertical]="true"></mat-divider>
+  <div class="character-sheet__block">
+    <span class="character-sheet__label">Level:</span>
+    <span class="character-sheet__data">{{ character.level }}</span>
+  </div>
+  <mat-divider [vertical]="true"></mat-divider>
+  <div class="character-sheet__block">
+    <span class="character-sheet__label">Race:</span>
+    <span class="character-sheet__data">{{ character.race }}</span>
+  </div>
+  <mat-divider [vertical]="true"></mat-divider>
+  <div class="character-sheet__block">
+    <span class="character-sheet__label">Class:</span>
+    <span class="character-sheet__data">{{ character.class }}</span>
+  </div>
 </div>
 <mat-tab-group>
   <mat-tab label="Main Page">
@@ -21,7 +26,6 @@
       [mode]="mode"
       [rowHeight]="rowHeight"
       [character]="character"
-      [actionsList]="actionsList | async"
       (healthChange)="handleHealthChange($event)" />
   </mat-tab>
   <mat-tab label="Feats & Inventory">
@@ -31,7 +35,7 @@
           <app-feats
             class="grid-field"
             [rowHeight]="rowHeight / 3"
-            [featList]="featsList | async" />
+            [featList]="featsList$ | async" />
         </mat-grid-tile>
         <mat-grid-tile [rowspan]="4">
           <app-inventory

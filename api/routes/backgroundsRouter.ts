@@ -1,29 +1,26 @@
 import express, { Router } from 'express'
-import { cloneDeep } from 'lodash'
-import { BackgroundData } from 'rpg-app-shared-package/dist/public-api'
-import { backgroundData } from '../storage/backgroundData'
+import { BackgroundDataLoader } from '../services/background-data-loader'
 
-export function backgroundsRouterFactory(): Router {
+export function backgroundsRouterFactory(backgroundDataLoader: BackgroundDataLoader): Router {
   const backgroundsRouter = express.Router()
 
-  const backgroundDataArray: BackgroundData[] = cloneDeep(backgroundData)
-  const backgroundDataIdsArray: { id: string; name: string }[] = backgroundDataArray.map((data) => ({
-    id: data.id,
-    name: data.name,
-  }))
-
   backgroundsRouter.get('', (req, res) => {
-    res.send(backgroundDataIdsArray)
+    backgroundDataLoader
+      .getBackgroundDataIdArray()
+      .then((data) => res.send(data))
+      .catch((err) => res.status(500).send(err))
   })
 
-  backgroundsRouter.get('/:id', (req, res, next) => {
-    const backgroundData = backgroundDataArray.find((data) => data.id === req.params.id)
-    if (!backgroundData) {
+  backgroundsRouter.get('/:id', (req, res) => {
+    const id = req.params.id
+    if (!id) {
       const error = new Error('Requested background not found')
-      next(error)
+      res.status(500).send(error)
     }
-
-    res.send(backgroundData)
+    backgroundDataLoader
+      .getBackroundData(id)
+      .then((data) => res.send(data))
+      .catch((err) => res.status(500).send(err))
   })
 
   return backgroundsRouter

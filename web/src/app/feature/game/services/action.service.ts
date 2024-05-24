@@ -1,74 +1,19 @@
-import { Injectable, OnDestroy } from '@angular/core';
-import { ReplaySubject, Subject, takeUntil } from 'rxjs';
-import { cloneDeep } from 'lodash';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 import {
   CharacterAction,
   CharacterActionType,
 } from 'rpg-app-shared-package/dist/public-api';
-
-const actionList: CharacterAction[] = [
-  {
-    id: '1',
-    name: 'action1',
-    description: 'description of action1',
-    type: CharacterActionType.base,
-    cost: 1,
-  },
-  {
-    id: '2',
-    name: 'action2',
-    description: 'description of action2',
-    type: CharacterActionType.exploration,
-    trigger: 'reaction',
-    cost: -1,
-  },
-  {
-    id: '3',
-    name: 'action3',
-    description: 'description of action3',
-    type: CharacterActionType.encounter,
-    traits: ['action', 'with', 'traits'],
-  },
-  {
-    id: '4',
-    name: 'action4',
-    description: 'description of action4',
-    type: CharacterActionType.downtime,
-    requirements: 'with some requirement',
-  },
-  {
-    id: '5',
-    name: 'action5 with long name',
-    description:
-      'description of action5. this is long description with some inner html <strong>some text</strong>',
-    type: CharacterActionType.downtime,
-  },
-];
+import { HttpCacheClientService } from 'src/app/shared/services/http-cache-client.service';
+import { environment } from 'src/environment/environment';
 
 @Injectable()
-export class ActionService implements OnDestroy {
-  public actionsList$: ReplaySubject<CharacterAction[]> = new ReplaySubject();
-  private actions: CharacterAction[] = [];
-  private readonly ngOnDestroy$ = new Subject<void>();
+export class ActionService {
+  constructor(private http: HttpCacheClientService) {}
 
-  constructor() {
-    this.actionsList$.pipe(takeUntil(this.ngOnDestroy$)).subscribe({
-      next: list => (this.actions = cloneDeep(list)),
-    });
-  }
+  public getActions(actionIds: string[]): Observable<CharacterAction[]> {
+    const url = `${environment.apiUrl}/api/actions/${actionIds.join('.')}`;
 
-  public ngOnDestroy(): void {
-    this.ngOnDestroy$.next();
-    this.ngOnDestroy$.complete();
-  }
-
-  public getActions(actionIds: string[]): void {
-    this.actionsList$.next(
-      actionIds.map(id => {
-        return (
-          actionList.find(action => action.id === id) || ({} as CharacterAction)
-        );
-      })
-    );
+    return this.http.get<CharacterAction[]>(url);
   }
 }

@@ -3,25 +3,30 @@ import {
   Abilities,
   Character,
   Proficiency,
+  RaceData,
   SeedCharacterData,
   Skill,
   createProfToValMap,
   newCharacter,
 } from 'rpg-app-shared-package'
-import { raceData } from '../storage/raceData'
 import { FeatFetcher } from '../services/feat-fetcher'
 import { identifyEffects } from './identify-effects'
 import { ClassDataLoader } from '../services/class-data-loader'
+import { RaceDataLoader } from '../services/race-data-loader'
+import { ActionsLoader } from '../services/actions-loader'
 
 export class CharacterFactory {
   private character: Character
   private profToValMap: Map<Proficiency, number> = new Map()
   private seedData: SeedCharacterData
+  private raceData!: RaceData
 
   constructor(
     characterData: SeedCharacterData,
     private classDataLoader: ClassDataLoader,
-    private featFetcher: FeatFetcher
+    private raceDataLoader: RaceDataLoader,
+    private featFetcher: FeatFetcher,
+    private actionsLoader: ActionsLoader
   ) {
     this.character = newCharacter()
     this.featFetcher = featFetcher
@@ -29,7 +34,9 @@ export class CharacterFactory {
   }
 
   public async buildNewCharacter(): Promise<void> {
-    this.assignConstantValues()
+    this.raceData = await this.raceDataLoader.getRaceData(this.character.race)
+
+    await this.assignConstantValues()
     await this.applyFeats()
     this.applyAbilityBoosts()
     this.applyEquipment()
@@ -46,7 +53,7 @@ export class CharacterFactory {
     return this.character
   }
 
-  private assignConstantValues(): void {
+  private async assignConstantValues(): Promise<void> {
     this.character.id = this.seedData.id
     this.character.characterName = this.seedData.name
     this.character.class = this.seedData.class
@@ -64,7 +71,8 @@ export class CharacterFactory {
     this.character.inventory = this.seedData.inventory
     this.character.equippedItems = this.seedData.equippedItems
     this.character.investedItems = this.seedData.investedItems
-    this.character.actions = this.seedData.actions
+    const baseActions = await this.actionsLoader.getBasicActionsIds()
+    this.character.actions = baseActions.concat(this.seedData.actions)
     this.character.backstory = this.seedData.backstory
 
     this.profToValMap = createProfToValMap(this.character.level)
@@ -164,7 +172,7 @@ export class CharacterFactory {
 
   private calculateSpeed(): void {
     this.character.speed = {
-      base: raceData.find((race) => race.name === this.character.race)?.baseSpeed ?? 0,
+      base: this.raceData.baseSpeed ?? 0,
     }
   }
 
@@ -172,7 +180,7 @@ export class CharacterFactory {
     return this.classDataLoader.getClassData(this.character.class).then(({ baseHp }) => {
       this.character.hp.maximum =
         this.seedData?.hp?.maximum ??
-        raceData.find((race) => race.name === this.character.race)!.baseHp +
+        this.raceData.baseHp +
           this.character.level *
             (baseHp + this.character.abilities.find((ability) => ability.name === Abilities.con)!.modifier)
 

@@ -1,21 +1,20 @@
 import express, { Router } from 'express'
-import { cloneDeep } from 'lodash'
-import { raceData } from '../storage/raceData'
-import { RaceData } from 'rpg-app-shared-package'
+import { RaceDataLoader } from '../services/race-data-loader'
 
-export function raceDataRouterFactory(): Router {
+export function raceDataRouterFactory(raceDataLoader: RaceDataLoader): Router {
   const raceDataRouter = express.Router()
 
-  const raceDataArray: RaceData[] = cloneDeep(raceData)
-
-  raceDataRouter.get('/:race', (req, res, next) => {
-    const chosenRace = raceDataArray.find((raceData) => raceData.name === req.params.race)
-    if (!chosenRace) {
+  raceDataRouter.get('/:race', (req, res) => {
+    const race = req.params.race
+    if (!race) {
       const error = new Error('Requested race not found')
-      next(error)
+      res.status(500).send(error)
     }
 
-    res.send(chosenRace)
+    raceDataLoader
+      .getRaceData(race)
+      .then((data) => res.send(data))
+      .catch((err) => res.status(500).send(err))
   })
 
   return raceDataRouter

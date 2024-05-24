@@ -361,6 +361,19 @@
   </mat-step>
   <mat-step>
     <form>
+      <ng-template matStepLabel>Remaining Choices</ng-template>
+      <ul>
+        <li>calculate modifiers</li>
+        <li>calculate other skill proficiencies to choose</li>
+        <li>calculate languages to choose</li>
+        <li>Choose remaining proficiencies and languages</li>
+      </ul>
+      <button mat-button matStepperPrevious>Back</button>
+      <button mat-button matStepperNext>Next</button>
+    </form>
+  </mat-step>
+  <mat-step>
+    <form>
       <ng-template matStepLabel>Buy Equipment</ng-template>
       <ul>
         <li>calculate modifiers</li>
@@ -506,7 +519,6 @@
   <mat-step>
     <form>
       <ng-template matStepLabel>Review</ng-template>
-      <p>Final character sheet overview</p>
       <app-character-sheet></app-character-sheet>
       <button mat-button matStepperPrevious>Back</button>
     </form>

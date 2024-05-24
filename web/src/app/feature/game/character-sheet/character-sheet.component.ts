@@ -11,7 +11,12 @@ import { FeatsService } from '../services/feats.service';
 import { ActionService } from '../services/action.service';
 import { SkillsService } from '../services/skills.service';
 import { AbilitiesService } from '../services/abilities.service';
-import { Character, CharacterSheetMode, Feat } from 'rpg-app-shared-package';
+import {
+  Character,
+  CharacterAction,
+  CharacterSheetMode,
+  Feat,
+} from 'rpg-app-shared-package';
 
 @Component({
   selector: 'app-character-sheet',
@@ -36,10 +41,7 @@ export class CharacterSheetComponent implements OnInit, OnDestroy {
   protected spellsList = this.spellsService.spellList$.pipe(
     takeUntil(this.ngDestroyed$)
   );
-  protected featsList: Observable<Feat[]> = new Observable();
-  protected actionsList = this.actionService.actionsList$.pipe(
-    takeUntil(this.ngDestroyed$)
-  );
+  protected featsList$: Observable<Feat[]> = new Observable();
 
   constructor(
     private store: Store<GameState>,
@@ -82,7 +84,7 @@ export class CharacterSheetComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.ngDestroyed$))
       .subscribe({
         next: (featIds: { id: string; name: string }[]) => {
-          this.featsList = this.featsService.getFeats(
+          this.featsList$ = this.featsService.getFeats(
             featIds.map(item => item.id)
           );
         },
@@ -96,17 +98,6 @@ export class CharacterSheetComponent implements OnInit, OnDestroy {
           this.spellsService.getSpells(spellIds);
         },
       });
-
-    this.store
-      .select(GameSelectors.getActions)
-      .pipe(takeUntil(this.ngDestroyed$))
-      .subscribe({
-        next: (actionIds: string[]) => {
-          this.actionService.getActions(actionIds);
-        },
-      });
-    // this.skillsService.recalculateSkills();
-    // this.abilitiesService.recalculateAbilities();
   }
 
   public ngOnDestroy(): void {

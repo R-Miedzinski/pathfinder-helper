@@ -1,0 +1,212 @@
+[
+  {
+    "name": "Dwarf",
+    "description": "Dwarves are a short, stocky people who are often stubborn, fierce, and devoted.",
+    "boosts": [
+      {
+        "type": "set",
+        "abilities": ["Constitution"]
+      },
+      {
+        "type": "set",
+        "abilities": ["Wisdom"]
+      },
+      {
+        "type": "free",
+        "abilities": []
+      }
+    ],
+    "flaws": [
+      {
+        "type": "set",
+        "abilities": ["Charisma"]
+      }
+    ],
+    "size": "Medium",
+    "baseSpeed": 20,
+    "languages": ["Common", "Dwarven"],
+    "traits": ["Dwarf", "Humanoid"],
+    "baseHp": 10,
+    "darkvision": "darkvision"
+  },
+  {
+    "name": "Elf",
+    "description": "Elves are a tall, slender, long-lived people with a strong tradition of art and magic.",
+    "boosts": [
+      {
+        "type": "set",
+        "abilities": ["Dexterity"]
+      },
+      {
+        "type": "set",
+        "abilities": ["Intelligence"]
+      },
+      {
+        "type": "free",
+        "abilities": []
+      }
+    ],
+    "flaws": [
+      {
+        "type": "set",
+        "abilities": ["Constitution"]
+      }
+    ],
+    "size": "Medium",
+    "baseSpeed": 30,
+    "languages": ["Common", "Elven"],
+    "traits": ["Elf", "Humanoid"],
+    "baseHp": 6,
+    "darkvision": "low-light-vision"
+  },
+  {
+    "name": "Gnome",
+    "description": "Gnomes are short and hardy folk, with an unquenchable curiosity and eccentric habits.",
+    "boosts": [
+      {
+        "type": "set",
+        "abilities": ["Constitution"]
+      },
+      {
+        "type": "set",
+        "abilities": ["Charisma"]
+      },
+      {
+        "type": "free",
+        "abilities": []
+      }
+    ],
+    "flaws": [
+      {
+        "type": "set",
+        "abilities": ["Strength"]
+      }
+    ],
+    "size": "Small",
+    "baseSpeed": 25,
+    "languages": ["Common", "Gnomish"],
+    "traits": ["Gnome", "Humanoid"],
+    "baseHp": 8,
+    "darkvision": "low-light-vision"
+  },
+  {
+    "name": "Goblin",
+    "description": "Goblins are a short, scrappy, energetic people who have spent millennia maligned and feared.",
+    "boosts": [
+      {
+        "type": "set",
+        "abilities": ["Dexterity"]
+      },
+      {
+        "type": "set",
+        "abilities": ["Charisma"]
+      },
+      {
+        "type": "free",
+        "abilities": []
+      }
+    ],
+    "flaws": [
+      {
+        "type": "set",
+        "abilities": ["Wisdom"]
+      }
+    ],
+    "size": "Small",
+    "baseSpeed": 25,
+    "languages": ["Common", "Goblin"],
+    "traits": ["Goblin", "Humanoid"],
+    "baseHp": 6,
+    "darkvision": "darkvision"
+  },
+  {
+    "name": "Halfling",
+    "description": "Halflings are a short, adaptable people who exhibit remarkable curiosity and humor.",
+    "boosts": [
+      {
+        "type": "set",
+        "abilities": ["Dexterity"]
+      },
+      {
+        "type": "set",
+        "abilities": ["Wisdom"]
+      },
+      {
+        "type": "free",
+        "abilities": []
+      }
+    ],
+    "flaws": [
+      {
+        "type": "set",
+        "abilities": ["Strength"]
+      }
+    ],
+    "size": "Small",
+    "baseSpeed": 25,
+    "languages": ["Common", "Halfling"],
+    "traits": ["Halfling", "Humanoid"],
+    "baseHp": 6,
+    "darkvision": "keen-eyes"
+  },
+  {
+    "name": "Human",
+    "description": "Humans are incredibly diverse. Some, such as half-elves and half-orcs, even have non-human ancestors.",
+    "boosts": [
+      {
+        "type": "free",
+        "abilities": []
+      },
+      {
+        "type": "free",
+        "abilities": []
+      }
+    ],
+    "flaws": [],
+    "size": "Small",
+    "baseSpeed": 25,
+    "languages": ["Common"],
+    "traits": ["Human", "Humanoid"],
+    "baseHp": 8
+  },
+  {
+    "name": "Half-elf",
+    "description": "A half-elf is born to an elf and a human, or to two half-elves. The life of a half-elf can be difficult, often marked by a struggle to fit in.",
+    "boosts": [
+      {
+        "type": "free",
+        "abilities": []
+      },
+      {
+        "type": "free",
+        "abilities": []
+      }
+    ],
+    "flaws": [],
+    "size": "Small",
+    "baseSpeed": 25,
+    "languages": ["Common"],
+    "traits": ["Human", "Half-elf", "Humanoid"],
+    "baseHp": 8
+  },
+  {
+    "name": "Half-orc",
+    "description": "A half-orc is the offspring of a human and an orc, or of two half-orcs. Because some intolerant people see orcs as more akin to monsters than people, they sometimes hate and fear half-orcs simply due to their lineage.",
+    "boosts": [
+      {
+        "type": "free",
+        "abilities": []
+      },
+      {
+        "type": "free",
+        "abilities": []
+      }
+    ],
+    "flaws": [],
+    "size": "Small",
+    "baseSpeed": 25,
+    "languages": ["Common"],
+    "traits": ["Human", "Half-orc", "Humanoid"],
+    "baseHp": 8
+  }
+]

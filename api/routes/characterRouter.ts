@@ -4,12 +4,19 @@ import { FeatFetcher } from '../services/feat-fetcher'
 import * as fs from 'fs'
 import path from 'path'
 import { ClassDataLoader } from '../services/class-data-loader'
+import { RaceDataLoader } from '../services/race-data-loader'
+import { ActionsLoader } from '../services/actions-loader'
 
-export function characterRouterFactory(classDataLoader: ClassDataLoader, featFetcher: FeatFetcher): Router {
+export function characterRouterFactory(
+  classDataLoader: ClassDataLoader,
+  raceDataLoader: RaceDataLoader,
+  featFetcher: FeatFetcher,
+  actionsLoader: ActionsLoader
+): Router {
   const characterRouter = express.Router()
 
   characterRouter.post('/new-character-preview', (req, res, next) => {
-    const characterFactory = new CharacterFactory(req.body, classDataLoader, featFetcher)
+    const characterFactory = new CharacterFactory(req.body, classDataLoader, raceDataLoader, featFetcher, actionsLoader)
 
     characterFactory
       .buildNewCharacter()
@@ -32,7 +39,13 @@ export function characterRouterFactory(classDataLoader: ClassDataLoader, featFet
         next(error)
       }
 
-      const characterFactory = new CharacterFactory(JSON.parse(data), classDataLoader, featFetcher)
+      const characterFactory = new CharacterFactory(
+        JSON.parse(data),
+        classDataLoader,
+        raceDataLoader,
+        featFetcher,
+        actionsLoader
+      )
 
       characterFactory
         .buildNewCharacter()

@@ -116,7 +116,7 @@ export class NewCharacterComponent implements OnInit, OnDestroy {
   }
 
   protected onStepChanged(event: StepperSelectionEvent): void {
-    if (event.selectedIndex === 5) {
+    if (event.selectedIndex === 6) {
       const characterData: SeedCharacterData = {
         id: '0',
         name: this.detailsForm.get('name')?.value,

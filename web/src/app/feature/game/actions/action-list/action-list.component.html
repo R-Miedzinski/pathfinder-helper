@@ -1,44 +1,72 @@
 <ul class="action-list" *ngIf="actions.length > 0">
-  <li class="action" *ngFor="let action of actions">
-    <app-hover-card position="top-left" [hoverCardWidth]="16">
-      <div hoverable class="action-item">
-        <span class="action-item__name">{{ action.name }}</span>
-        <span class="action-item__cost" *ngIf="action.cost !== undefined">
-          {{ action.cost }}
-        </span>
-      </div>
-      <div card-content class="action-hover">
-        <div class="action-hover__header">
-          <span class="action-hover__name">{{ action.name }}</span>
-          <span class="action-hover__cost" *ngIf="action.cost !== undefined">
+  <ng-container *ngFor="let action of actions">
+    <li
+      class="action"
+      *ngIf="
+        action.name
+          .toLowerCase()
+          .includes(filters?.name?.toLocaleLowerCase() ?? '') &&
+        (filters?.source?.includes(action.source) || !filters?.source?.length)
+      ">
+      <app-hover-card position="top-left" [hoverCardWidth]="28">
+        <div hoverable class="action-item">
+          <span class="action-item__name">{{ action.name }}</span>
+          <span class="action-item__cost" *ngIf="action.cost !== undefined">
             {{ action.cost }}
           </span>
         </div>
-        <mat-divider></mat-divider>
-        <div class="action-hover__traits">
-          <app-trait
-            *ngFor="let trait of action.traits"
-            [traitId]="trait"></app-trait>
-        </div>
-        <div class="action-hover__properties">
-          <div class="action-hover__property" *ngIf="action.requirements">
-            <span class="action-hover__property-label">Requirement:</span>
-            {{ action.requirements }}
+        <div card-content class="action-hover">
+          <div class="action-hover__header">
+            <span class="action-hover__name">{{ action.name }}</span>
+            <span class="action-hover__cost" *ngIf="action.cost !== undefined">
+              {{ action.cost }}
+            </span>
           </div>
-          <div class="action-hover__property" *ngIf="action.trigger">
-            <span class="action-hover__property-label">Trigger:</span>
-            {{ action.trigger }}
+          <mat-divider></mat-divider>
+          <div class="action-hover__traits">
+            <app-trait
+              *ngFor="let trait of action.traits"
+              [traitId]="trait"></app-trait>
           </div>
+          <div class="action-hover__properties">
+            <div class="action-hover__property" *ngIf="action.rules">
+              <span class="action-hover__property-label">Requirement:</span>
+              {{ action.rules }}
+            </div>
+            <div class="action-hover__property" *ngIf="action.trigger">
+              <span class="action-hover__property-label">Trigger:</span>
+              {{ action.trigger }}
+            </div>
+          </div>
+          <mat-divider
+            *ngIf="action.rules || action.trigger || action.traits?.length">
+          </mat-divider>
+          <div
+            class="action-hover__description"
+            [innerHTML]="action.description | sanitazeHTML"></div>
+          <ng-container *ngIf="action.effects">
+            <mat-divider></mat-divider>
+            <ul class="action-hover__effects">
+              <li *ngIf="action.effects?.criticalSuccess">
+                <span class="action-hover__effect">Critical Success: </span>
+                {{ action.effects.criticalSuccess }}
+              </li>
+              <li *ngIf="action.effects?.success">
+                <span class="action-hover__effect">Success: </span>
+                {{ action.effects.success }}
+              </li>
+              <li *ngIf="action.effects?.failure">
+                <span class="action-hover__effect">Failure: </span>
+                {{ action.effects.failure }}
+              </li>
+              <li *ngIf="action.effects?.criticalFailure">
+                <span class="action-hover__effect">Critical Failure: </span>
+                {{ action.effects.criticalFailure }}
+              </li>
+            </ul>
+          </ng-container>
         </div>
-        <mat-divider
-          *ngIf="
-            action.requirements || action.trigger || action.traits?.length
-          ">
-        </mat-divider>
-        <div
-          class="action-hover__description"
-          [innerHTML]="action.description | sanitazeHTML"></div>
-      </div>
-    </app-hover-card>
-  </li>
+      </app-hover-card>
+    </li>
+  </ng-container>
 </ul>

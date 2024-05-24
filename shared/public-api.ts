@@ -2,6 +2,7 @@
 export { Dice } from "./models/classes/dice";
 /* Enums */
 export { Abilities } from "./models/enums/abilities";
+export { ActionSource } from "./models/enums/action-source";
 export { Alignment } from "./models/enums/alignment";
 export { ArmorCategory } from "./models/enums/armor-category";
 export { ArmorGroup } from "./models/enums/armor-group";
@@ -25,6 +26,7 @@ export {
   AbilityBoost,
   AbilityBoostType,
 } from "./models/interfaces/ability-boost";
+export { ActionEffects } from "./models/interfaces/action-effects";
 export { ArmorProficiency } from "./models/interfaces/armor-proficiency";
 export { Armor } from "./models/interfaces/armor";
 export { BackgroundData } from "./models/interfaces/background-data";
@@ -44,17 +46,16 @@ export {
   GrantArmorProficiencyEffect,
   GrantSTProficiencyEffect,
 } from "./models/interfaces/feat-data";
-export {
-  Feat,
-  FeatConditions,
-  FeatRulePayload,
-  FeatRuleAbilityPayload,
-  FeatRuleFeatPayload,
-  FeatRuleProficiencyPayload,
-} from "./models/interfaces/feat";
+export { Feat, FeatConditions } from "./models/interfaces/feat";
 export { HP } from "./models/interfaces/hp";
 export { Item } from "./models/interfaces/item";
 export { RaceData } from "./models/interfaces/race-data";
+export {
+  RulePayload,
+  RuleAbilityPayload,
+  RuleFeatPayload,
+  RuleProficiencyPayload,
+} from "./models/interfaces/rule-payload";
 export { SavingThrow, newSavingThrows } from "./models/interfaces/saving-throw";
 export { SeedCharacterData } from "./models/interfaces/seed-character-data";
 export { Skill, newSkills } from "./models/interfaces/skill";

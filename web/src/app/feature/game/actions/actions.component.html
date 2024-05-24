@@ -1,34 +1,58 @@
 <mat-grid-list [cols]="12" rowHeight="{{ rowHeight }}rem">
-  <mat-grid-tile [rowspan]="1" [colspan]="6">
-    <div class="grid-field">Filter content</div>
-  </mat-grid-tile>
-  <mat-grid-tile [rowspan]="1" [colspan]="6">
+  <mat-grid-tile [rowspan]="1" [colspan]="12">
     <div class="grid-field">
-      <mat-button-toggle-group [(ngModel)]="columnsToShow" multiple>
-        <mat-button-toggle
-          *ngFor="let type of actionType | keyvalue : keepOrderLocal"
-          [value]="type.value">
-          {{ type.value }}
-        </mat-button-toggle>
-      </mat-button-toggle-group>
+      <h2>Filter content</h2>
+      <form class="actions__form" #filterForm="ngForm">
+        <div class="actions__filter-field">
+          <label for="name">Action Name</label>
+          <input
+            id="name"
+            type="text"
+            [(ngModel)]="filters.name"
+            name="name"
+            autocomplete="off" />
+        </div>
+        <div class="actions__filter-field">
+          <mat-button-toggle-group
+            [(ngModel)]="filters.source"
+            multiple
+            name="source">
+            <mat-button-toggle
+              *ngFor="let source of actionSource | keyvalue : keepOrderLocal"
+              [value]="source.value">
+              {{ source.value }}
+            </mat-button-toggle>
+          </mat-button-toggle-group>
+        </div>
+        <div class="actions__filter-field">
+          <mat-button-toggle-group
+            [(ngModel)]="filters.category"
+            multiple
+            name="category">
+            <mat-button-toggle
+              *ngFor="let type of actionType | keyvalue : keepOrderLocal"
+              [value]="type.value">
+              {{ type.value }}
+            </mat-button-toggle>
+          </mat-button-toggle-group>
+        </div>
+      </form>
     </div>
   </mat-grid-tile>
   <ng-container *ngFor="let type of actionType | keyvalue : keepOrderLocal">
     <mat-grid-tile
-      [rowspan]="1"
-      [colspan]="columnsToShow.length ? 12 / columnsToShow.length : 3"
-      *ngIf="columnsToShow.includes(type.value) || columnsToShow.length === 0">
-      <div class="grid-field">{{ type.value }} Actions</div>
-    </mat-grid-tile>
-  </ng-container>
-  <ng-container *ngFor="let type of actionType | keyvalue : keepOrderLocal">
-    <mat-grid-tile
-      [rowspan]="4"
-      [colspan]="columnsToShow.length ? 12 / columnsToShow.length : 3"
-      *ngIf="columnsToShow.includes(type.value) || columnsToShow.length === 0">
-      <app-action-list
-        class="grid-field"
-        [actions]="sortedActions[type.value]"></app-action-list>
+      [rowspan]="5"
+      [colspan]="filters.category.length ? 12 / filters.category.length : 3"
+      *ngIf="
+        filters.category.includes(type.value) || filters.category.length === 0
+      ">
+      <div class="grid-field">
+        {{ type.value }} Actions
+        <app-action-list
+          class="grid-field"
+          [actions]="sortedActions[type.value]"
+          [filters]="filters"></app-action-list>
+      </div>
     </mat-grid-tile>
   </ng-container>
 </mat-grid-list>

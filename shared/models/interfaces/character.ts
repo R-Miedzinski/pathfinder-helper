@@ -37,7 +37,7 @@ export interface Character {
   spells?: string[];
   equippedItems?: { itemId: string; count: number }[];
   investedItems?: { itemId: string; count: number }[];
-  actions?: string[];
+  actions: string[];
   backstory: Backstory;
   attacks: WeaponProficiency[];
   defences: ArmorProficiency[];
@@ -68,6 +68,7 @@ export function newCharacter(): Character {
     backstory: newBackstory(),
     attacks: [],
     defences: [],
+    actions: [],
   };
 
   return newCharacter;
