@@ -62,7 +62,7 @@ lub
 docker exec -it <CONTAINER_ID/NAME> bash
 ```
 
-**Odpalanie projektu lokalnie**
+## Odpalanie projektu lokalnie
 Najpierw trzeba zbudować i zalinkować rpg-app-shared-package. Żeby to zrobić trzeba:
 
 - wejść w folder `shared`
