@@ -11,15 +11,31 @@ export function classesRouterFactory(classDataLoader: ClassDataLoader): Router {
       .catch((err) => res.status(500).send(err))
   })
 
-  classesRouter.get('/:id', (req, res) => {
+  classesRouter.get('/init/:id', (req, res) => {
     const id = req.params.id
     if (!id) {
-      const err = new Error('Class id needed to get class data')
+      const err = new Error('Class id needed to get class initial data')
       res.status(500).send(err)
     }
 
     classDataLoader
-      .getClassData(id)
+      .getInitClassData(id)
+      .then((data) => {
+        res.send(data)
+      })
+      .catch((err) => res.status(500).send(err))
+  })
+
+  classesRouter.get('/level/:id', (req, res) => {
+    const id = req.params?.id
+
+    if (!id) {
+      const err = new Error('Class id needed to get class level up data')
+      res.status(500).send(err)
+    }
+
+    classDataLoader
+      .getLevelUpClassData(id)
       .then((data) => {
         res.send(data)
       })

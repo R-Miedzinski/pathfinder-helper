@@ -1,0 +1,29 @@
+<div>
+  <div class="form__info">
+    <div>
+      <h4>Proficiencies to add:</h4>
+      <span>
+        {{ toChange }}
+      </span>
+    </div>
+    <div>
+      <h4>Max Level:</h4>
+      <span>
+        {{ maxLevel }}
+      </span>
+    </div>
+    <div>
+      {{ disableIncrease }}
+      {{ currentProficiencies | json }}
+    </div>
+  </div>
+  <form *ngIf="skillsForm" class="form">
+    <app-skill-input
+      *ngFor="let control of skills.controls"
+      [formControl]="control"
+      [upgradeOnly]="upgradeOnly"
+      [disableIncrease]="disableIncrease"
+      [maxLevel]="maxLevel"
+      (levelChange)="onLevelChange($event)"></app-skill-input>
+  </form>
+</div>

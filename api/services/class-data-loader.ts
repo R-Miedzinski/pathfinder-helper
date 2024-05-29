@@ -1,4 +1,4 @@
-import { ClassData } from 'rpg-app-shared-package'
+import { ClassData, DisplayInitClassData, DisplayLevelUpClassData } from 'rpg-app-shared-package'
 import { JsonDataLoader } from './json-data-loader'
 
 export class ClassDataLoader extends JsonDataLoader<ClassData> {
@@ -11,7 +11,19 @@ export class ClassDataLoader extends JsonDataLoader<ClassData> {
     return this.loadDataFromFile()
   }
 
-  public getClassData(id: string): Promise<ClassData> {
-    return this.loadDataFromFile().then((data) => data.find((classData) => classData.id === id)!)
+  public getInitClassData(id: string): Promise<DisplayInitClassData> {
+    return this.loadDataFromFile().then((data) => {
+      const entry = data.find((classData) => classData.id === id)!
+
+      return { id: entry.id, name: entry.name, ...entry.initData }
+    })
+  }
+
+  public getLevelUpClassData(id: string): Promise<DisplayLevelUpClassData> {
+    return this.loadDataFromFile().then((data) => {
+      const entry = data.find((classData) => classData.id === id)!
+
+      return { id: entry.id, name: entry.name, ...entry.levelUpData }
+    })
   }
 }

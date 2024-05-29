@@ -1,9 +1,9 @@
+import { skillToAbilityMap } from "../../public-api";
 import { Abilities } from "../enums/abilities";
 import { Proficiency } from "../enums/proficiency";
 import { Skills } from "../enums/skills";
 
 export interface Skill {
-  id: string;
   name: Skills;
   level: Proficiency;
   value: number;
@@ -14,123 +14,106 @@ export interface Skill {
 export function newSkills(): Skill[] {
   return [
     {
-      id: Skills.acrobatics,
       name: Skills.acrobatics,
       level: Proficiency.U,
       value: 0,
-      ability: Abilities.dex,
+      ability: skillToAbilityMap[Skills.acrobatics],
     },
     {
-      id: Skills.arcana,
       name: Skills.arcana,
       level: Proficiency.U,
       value: 0,
-      ability: Abilities.int,
+      ability: skillToAbilityMap[Skills.arcana],
     },
     {
-      id: Skills.athletics,
       name: Skills.athletics,
       level: Proficiency.U,
       value: 0,
-      ability: Abilities.str,
+      ability: skillToAbilityMap[Skills.athletics],
     },
     {
-      id: Skills.crafting,
       name: Skills.crafting,
       level: Proficiency.U,
       value: 0,
-      ability: Abilities.int,
+      ability: skillToAbilityMap[Skills.crafting],
     },
     {
-      id: Skills.deception,
       name: Skills.deception,
       level: Proficiency.U,
       value: 0,
-      ability: Abilities.cha,
+      ability: skillToAbilityMap[Skills.deception],
     },
     {
-      id: Skills.diplomacy,
       name: Skills.diplomacy,
       level: Proficiency.U,
       value: 0,
-      ability: Abilities.cha,
+      ability: skillToAbilityMap[Skills.diplomacy],
     },
     {
-      id: Skills.intimidation,
       name: Skills.intimidation,
       level: Proficiency.U,
       value: 0,
-      ability: Abilities.cha,
+      ability: skillToAbilityMap[Skills.intimidation],
     },
     {
-      id: Skills.medicine,
       name: Skills.medicine,
       level: Proficiency.U,
       value: 0,
-      ability: Abilities.wis,
+      ability: skillToAbilityMap[Skills.medicine],
     },
     {
-      id: Skills.nature,
       name: Skills.nature,
       level: Proficiency.U,
       value: 0,
-      ability: Abilities.wis,
+      ability: skillToAbilityMap[Skills.nature],
     },
     {
-      id: Skills.occultism,
       name: Skills.occultism,
       level: Proficiency.U,
       value: 0,
-      ability: Abilities.int,
+      ability: skillToAbilityMap[Skills.occultism],
     },
     {
-      id: Skills.perception,
       name: Skills.perception,
       level: Proficiency.U,
       value: 0,
-      ability: Abilities.wis,
+      ability: skillToAbilityMap[Skills.perception],
     },
     {
-      id: Skills.performance,
       name: Skills.performance,
       level: Proficiency.U,
       value: 0,
-      ability: Abilities.cha,
+      ability: skillToAbilityMap[Skills.performance],
     },
     {
-      id: Skills.religion,
       name: Skills.religion,
       level: Proficiency.U,
       value: 0,
-      ability: Abilities.wis,
+      ability: skillToAbilityMap[Skills.religion],
     },
     {
-      id: Skills.society,
       name: Skills.society,
       level: Proficiency.U,
       value: 0,
-      ability: Abilities.int,
+      ability: skillToAbilityMap[Skills.society],
     },
     {
-      id: Skills.stealth,
       name: Skills.stealth,
       level: Proficiency.U,
       value: 0,
-      ability: Abilities.dex,
+      ability: skillToAbilityMap[Skills.stealth],
     },
     {
-      id: Skills.survival,
       name: Skills.survival,
       level: Proficiency.U,
       value: 0,
-      ability: Abilities.wis,
+      ability: skillToAbilityMap[Skills.survival],
     },
     {
-      id: Skills.thievery,
       name: Skills.thievery,
       level: Proficiency.U,
       value: 0,
-      ability: Abilities.dex,
+      ability: skillToAbilityMap[Skills.thievery],
     },
   ];
 }

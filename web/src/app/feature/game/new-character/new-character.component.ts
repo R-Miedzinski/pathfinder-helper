@@ -4,25 +4,30 @@ import { Store } from '@ngrx/store';
 import { GameState } from '../ngrx/game-reducer';
 import * as GameActions from '../ngrx/game-actions';
 import * as GameSelectors from '../ngrx/game-selector';
-import { AbilitiesService } from '../services/abilities.service';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  FormArray,
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { GameDataService } from '../services/game-data.service';
 import { Observable, Subject, map, takeUntil } from 'rxjs';
-import { isEqual } from 'lodash';
 import { FeatsService } from '../services/feats.service';
 import {
   Abilities,
-  Ability,
   AbilityBoost,
   AbilityBoostType,
   Alignment,
   BackgroundData,
-  ClassData,
   Classes,
   Feat,
   Race,
   RaceData,
   SeedCharacterData,
+  DisplayInitClassData,
+  Proficiency,
+  Skill,
 } from 'rpg-app-shared-package/dist/public-api';
 import { StepperSelectionEvent } from '@angular/cdk/stepper';
 
@@ -42,6 +47,7 @@ export class NewCharacterComponent implements OnInit, OnDestroy {
   protected chooseClassForm!: FormGroup;
   protected eqForm!: FormGroup;
   protected detailsForm!: FormGroup;
+  protected additionalSkills: FormControl = new FormControl<Skill[]>([]);
 
   protected raceData?: RaceData;
   protected raceFeats: Feat[] = [];
@@ -49,30 +55,30 @@ export class NewCharacterComponent implements OnInit, OnDestroy {
   protected backgrounds: { id: string; name: string }[] = [];
   protected chosenBackground?: BackgroundData;
   protected classes: { id: string; name: string }[] = [];
-  protected chosenClass?: ClassData;
+  protected chosenClass?: DisplayInitClassData;
+  protected chosenSkills: Skill[] = [];
+  protected skillsToChange: number = 0;
 
   protected chosenRaceFeat?: Feat;
   protected chosenBackgroundFeats?: Feat[];
   protected chosenClassFeat?: Feat;
   protected darkvision$: Observable<Feat> = new Observable();
+  protected abilityModifiers?: Record<Abilities, number>;
 
-  private abilities!: Ability[];
+  protected readonly proficiencies = Proficiency;
   private readonly ngDestroyed$: Subject<void> = new Subject();
 
   constructor(
     private fb: FormBuilder,
     private store: Store<GameState>,
-    private abilitiesService: AbilitiesService,
     private gameDataService: GameDataService,
     private featsService: FeatsService
   ) {}
 
   public ngOnInit(): void {
-    this.initCharacter();
     this.initRaceForm();
     this.initBackgroundForm();
     this.initClassForm();
-    this.initEqForm();
     this.initDetailsForm();
   }
 
@@ -116,7 +122,12 @@ export class NewCharacterComponent implements OnInit, OnDestroy {
   }
 
   protected onStepChanged(event: StepperSelectionEvent): void {
-    if (event.selectedIndex === 6) {
+    if (event.selectedIndex === 3) {
+      this.calculateModifiers();
+      this.resetRemainingChoicesForm();
+      this.initLanguageForm();
+      this.initAdditionalSkillsForm();
+    } else if (event.selectedIndex === 6) {
       const characterData: SeedCharacterData = {
         id: '0',
         name: this.detailsForm.get('name')?.value,
@@ -139,12 +150,9 @@ export class NewCharacterComponent implements OnInit, OnDestroy {
             .get('boosts')
             ?.value.map((item: { boost: Abilities }) => item.boost),
         ],
-        flaws: this.flaws.value.map((item: { boost: Abilities }) => item.boost),
+        flaws: this.flaws.value.map((item: { flaw: Abilities }) => item.flaw),
         savingThrows: [...(this.chosenClass?.savingThrows ?? [])],
-        skills: [
-          ...(this.chosenBackground?.proficiencies ?? []),
-          ...(this.chosenClass?.proficiencies ?? []),
-        ],
+        skills: this.additionalSkills.value,
         attacks: this.chosenClass?.weaponProficiencies ?? [],
         defences: this.chosenClass?.armorProficiencies ?? [],
         inventory: [],
@@ -166,20 +174,6 @@ export class NewCharacterComponent implements OnInit, OnDestroy {
           },
         });
     }
-  }
-
-  private initCharacter(): void {
-    this.store
-      .select(GameSelectors.getAbilities)
-      .pipe(takeUntil(this.ngDestroyed$))
-      .subscribe({
-        next: abilities => {
-          if (!isEqual(this.abilities, abilities)) {
-            this.abilities = abilities;
-            this.abilitiesService.recalculateAbilities();
-          }
-        },
-      });
   }
 
   private initRaceForm(): void {
@@ -281,7 +275,7 @@ export class NewCharacterComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (id: string) => {
           this.gameDataService.getClassData(id).subscribe({
-            next: (data: ClassData) => {
+            next: (data: DisplayInitClassData) => {
               this.initClassBoostsForm([]);
               this.chooseClassForm
                 .get('feat')
@@ -306,8 +300,6 @@ export class NewCharacterComponent implements OnInit, OnDestroy {
           )),
       });
   }
-
-  private initEqForm(): void {}
 
   private initDetailsForm(): void {
     this.detailsForm = this.fb.group({
@@ -426,5 +418,81 @@ export class NewCharacterComponent implements OnInit, OnDestroy {
           },
         });
     }
+  }
+
+  private calculateModifiers(): void {
+    const boosts: Abilities[] = [
+      ...this.boosts.value.map((item: { boost: Abilities }) => item.boost),
+      ...this.backgroundForm
+        .get('boosts')
+        ?.value.map((item: { boost: Abilities }) => item.boost),
+      ...this.chooseClassForm
+        .get('boosts')
+        ?.value.map((item: { boost: Abilities }) => item.boost),
+    ];
+    const flaws: Abilities[] = this.flaws.value.map(
+      (item: { flaw: Abilities }) => item.flaw
+    );
+
+    const getModifier = (count: number): number => {
+      let addedValue = 0;
+      if (count <= 4) {
+        addedValue = count * 2;
+      } else {
+        addedValue = 8 + (count - 4);
+      }
+
+      return Math.floor(addedValue / 2);
+    };
+
+    this.abilityModifiers = {
+      [Abilities.str]: getModifier(
+        boosts.filter(item => item === Abilities.str).length -
+          flaws.filter(item => item === Abilities.str).length
+      ),
+      [Abilities.dex]: getModifier(
+        boosts.filter(item => item === Abilities.dex).length -
+          flaws.filter(item => item === Abilities.dex).length
+      ),
+      [Abilities.con]: getModifier(
+        boosts.filter(item => item === Abilities.con).length -
+          flaws.filter(item => item === Abilities.con).length
+      ),
+      [Abilities.wis]: getModifier(
+        boosts.filter(item => item === Abilities.wis).length -
+          flaws.filter(item => item === Abilities.wis).length
+      ),
+      [Abilities.int]: getModifier(
+        boosts.filter(item => item === Abilities.int).length -
+          flaws.filter(item => item === Abilities.int).length
+      ),
+      [Abilities.cha]: getModifier(
+        boosts.filter(item => item === Abilities.cha).length -
+          flaws.filter(item => item === Abilities.cha).length
+      ),
+    };
+  }
+
+  private resetRemainingChoicesForm(): void {
+    this.chosenSkills = [];
+    this.skillsToChange = 0;
+    this.additionalSkills.setValue([]);
+  }
+
+  private initLanguageForm(): void {
+    //TODO
+  }
+
+  private initAdditionalSkillsForm(): void {
+    this.chosenSkills = (this.chosenBackground?.proficiencies ?? [])
+      .concat(this.chosenClass?.proficiencies ?? [])
+      .map(item => ({
+        value: 0,
+        ...item,
+      }));
+
+    this.skillsToChange =
+      (this.chosenClass?.additionalProficiencies ?? 0) +
+      (this.abilityModifiers ? this.abilityModifiers[Abilities.int] : 0);
   }
 }

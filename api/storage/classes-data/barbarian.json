@@ -1,0 +1,71 @@
+{
+  "id": "Barbarian",
+  "name": "Barbarian",
+  "initData": {
+    "boosts": [
+      {
+        "type": "set",
+        "abilities": ["Strength"]
+      }
+    ],
+    "keyAbility": "Strength",
+    "description": "The barbarian is a fearsome embodiment of rage, focusing the deadly power of their anger against anyone who stands in their way. A barbarian is quick to enter battle and, once their fury has been unleashed, is immensely strong, often unpredictable, and nearly unstoppable.",
+    "baseHp": 12,
+    "savingThrows": [
+      {
+        "name": "Fortitude",
+        "level": "Expert"
+      },
+      {
+        "name": "Reflex",
+        "level": "Trained"
+      },
+      {
+        "name": "Will",
+        "level": "Expert"
+      }
+    ],
+    "proficiencies": [
+      {
+        "name": "Perception",
+        "level": "Expert",
+        "ability": "Wisdom"
+      },
+      {
+        "name": "Athletics",
+        "level": "Trained",
+        "ability": "Strength"
+      }
+    ],
+    "weaponProficiencies": [
+      {
+        "type": "Simple",
+        "level": "Trained"
+      },
+      {
+        "type": "Martial",
+        "level": "Trained"
+      },
+      {
+        "type": "Unarmed",
+        "level": "Trained"
+      }
+    ],
+    "armorProficiencies": [
+      {
+        "type": "Light armor",
+        "level": "Trained"
+      },
+      {
+        "type": "Medium armor",
+        "level": "Trained"
+      },
+      {
+        "type": "Unarmored",
+        "level": "Trained"
+      }
+    ],
+    "additionalProficiencies": 3
+  },
+  "levelUpData": {}
+}

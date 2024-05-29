@@ -1,0 +1,74 @@
+<form *ngIf="_skill && skillForm" [formGroup]="skillForm">
+  <div class="form-group">
+    <label [for]="'skill-name-' + id">Name:</label>
+    <select name="skill-name" [id]="'skill-name-' + id" formControlName="name">
+      <option
+        *ngFor="let entry of skills | keyvalue : keepOrderLocal"
+        [value]="entry.value">
+        {{ entry.value }}
+      </option>
+    </select>
+  </div>
+  <div class="form-group">
+    <label [for]="'skill-level-' + id">Profciency Level:</label>
+    <div class="button-group">
+      <select
+        name="skill-level"
+        [id]="'skill-level-' + id"
+        formControlName="level">
+        <option
+          *ngFor="let entry of proficiencies | keyvalue : keepOrderLocal"
+          [value]="entry.value">
+          {{ entry.value }}
+        </option>
+      </select>
+      <button
+        (click)="increaseLevel()"
+        [disabled]="
+          skillForm.disabled ||
+          skillForm.get('level')?.value === maxLevel ||
+          disableIncrease
+        ">
+        +
+      </button>
+      <button
+        (click)="decreaseLevel()"
+        [disabled]="
+          skillForm.disabled ||
+          skillForm.get('level')?.value === proficiencies.U
+        ">
+        -
+      </button>
+    </div>
+  </div>
+  <div class="form-group">
+    <label [for]="'skill-ability-' + id">Ability:</label>
+    <select
+      name="skill-ability"
+      [id]="'skill-ability-' + id"
+      formControlName="ability">
+      <option
+        *ngFor="let entry of abilities | keyvalue : keepOrderLocal"
+        [value]="entry.value">
+        {{ entry.value }}
+      </option>
+    </select>
+  </div>
+  <div class="form-group">
+    <label [for]="'skill-has-specialty-' + id">Has specialty?</label>
+    <input
+      type="checkbox"
+      name="skill-has-specialty-"
+      [id]="'skill-has-specialty-' + id"
+      [formControl]="hasSpecialty" />
+  </div>
+  <div *ngIf="!hasSpecialty.value" class="form-group"></div>
+  <div *ngIf="hasSpecialty.value" class="form-group">
+    <label [for]="'skill-specialty-' + id">Specialty:</label>
+    <input
+      type="text"
+      name="skill-specialty"
+      [id]="'skill-specialty-' + id"
+      formControlName="specialty" />
+  </div>
+</form>

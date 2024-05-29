@@ -339,6 +339,9 @@
               </li>
             </ul>
           </div>
+          <div class="classes__features">
+            <h4 calss="classes__label">Class Features:</h4>
+          </div>
           <div class="classes__feat">
             <form [formGroup]="chooseClassForm">
               <label for="classFeats" class="required">Class feat:</label>
@@ -362,6 +365,12 @@
   <mat-step>
     <form>
       <ng-template matStepLabel>Remaining Choices</ng-template>
+      {{ abilityModifiers | json }}
+      <app-skill-proficiencies-form
+        [toChange]="skillsToChange"
+        [maxLevel]="proficiencies.T"
+        [currentProficiencies]="chosenSkills"
+        [formControl]="additionalSkills"></app-skill-proficiencies-form>
       <ul>
         <li>calculate modifiers</li>
         <li>calculate other skill proficiencies to choose</li>

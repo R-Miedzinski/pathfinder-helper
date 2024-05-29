@@ -10,6 +10,8 @@ import { TraitComponent } from './components/trait/trait.component';
 import { SanitazeHTMLPipe } from './pipes/sanitaze-html.pipe';
 import { BoostChoiceComponent } from './components/boost-choice/boost-choice.component';
 import { ToFormControlPipe } from './pipes/to-form-control.pipe';
+import { SkillProficienciesFormComponent } from './components/skill-proficiencies-form/skill-proficiencies-form.component';
+import { SkillInputComponent } from './components/skill-input/skill-input.component';
 
 @NgModule({
   declarations: [
@@ -21,6 +23,8 @@ import { ToFormControlPipe } from './pipes/to-form-control.pipe';
     SanitazeHTMLPipe,
     BoostChoiceComponent,
     ToFormControlPipe,
+    SkillProficienciesFormComponent,
+    SkillInputComponent,
   ],
   imports: [CommonModule, MaterialModule, FormsModule, ReactiveFormsModule],
   exports: [
@@ -36,6 +40,8 @@ import { ToFormControlPipe } from './pipes/to-form-control.pipe';
     HoverCardComponent,
     TraitComponent,
     BoostChoiceComponent,
+    SkillProficienciesFormComponent,
+    SkillInputComponent,
   ],
 })
 export class SharedModule {}

@@ -14,6 +14,7 @@ export { DamageType } from "./models/enums/damage-type";
 export { FeatCategory } from "./models/enums/feat-category";
 export { FeatEffectType } from "./models/enums/feat-effect-type";
 export { ItemType } from "./models/enums/item-type";
+export { LevelBonusCategory } from "./models/enums/level-bonus-category";
 export { Proficiency } from "./models/enums/proficiency";
 export { Race } from "./models/enums/race";
 export { SavingThrowName } from "./models/enums/saving-throw-names";
@@ -33,7 +34,13 @@ export { BackgroundData } from "./models/interfaces/background-data";
 export { Backstory, newBackstory } from "./models/interfaces/backstory";
 export { Character, newCharacter } from "./models/interfaces/character";
 export { CharacterAction } from "./models/interfaces/character-action";
-export { ClassData } from "./models/interfaces/class-data";
+export {
+  ClassData,
+  DisplayInitClassData,
+  InitClassData,
+  DisplayLevelUpClassData,
+  LevelUpClassData,
+} from "./models/interfaces/class-data";
 export {
   FeatData,
   FeatEffect,
@@ -49,6 +56,7 @@ export {
 export { Feat, FeatConditions } from "./models/interfaces/feat";
 export { HP } from "./models/interfaces/hp";
 export { Item } from "./models/interfaces/item";
+export { LevelBonus } from "./models/interfaces/level-bonus";
 export { RaceData } from "./models/interfaces/race-data";
 export {
   RulePayload,
@@ -65,4 +73,4 @@ export { WeaponProficiency } from "./models/interfaces/weapon-proficiency";
 export { Weapon } from "./models/interfaces/weapon";
 /* Utils */
 export { skillToAbilityMap } from "./utils/skill-to-ability-map";
-export { createProfToValMap } from "./utils/profToValMap";
+export { createProfToValMap, createValToProfMap } from "./utils/profToValMap";

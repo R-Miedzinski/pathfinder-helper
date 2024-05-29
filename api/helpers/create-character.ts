@@ -134,7 +134,6 @@ export class CharacterFactory {
 
     const characterSkills = savedSkills.map((skill) => {
       const characterSkill: Skill = {
-        id: skill.name,
         name: skill.name,
         ability: skill.ability,
         level: skill.level,
@@ -177,7 +176,7 @@ export class CharacterFactory {
   }
 
   private async calculateHealth(): Promise<void> {
-    return this.classDataLoader.getClassData(this.character.class).then(({ baseHp }) => {
+    return this.classDataLoader.getInitClassData(this.character.class).then(({ baseHp }) => {
       this.character.hp.maximum =
         this.seedData?.hp?.maximum ??
         this.raceData.baseHp +

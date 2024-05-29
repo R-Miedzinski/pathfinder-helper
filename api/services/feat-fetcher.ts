@@ -1,4 +1,4 @@
-import { Classes, FeatData, Race } from 'rpg-app-shared-package'
+import { Classes, FeatCategory, FeatData, Race } from 'rpg-app-shared-package'
 import { JsonDataLoader } from './json-data-loader'
 
 export class FeatFetcher extends JsonDataLoader<FeatData> {
@@ -19,7 +19,12 @@ export class FeatFetcher extends JsonDataLoader<FeatData> {
 
   public getClassFeatsWithQuery(level: number, charClass: Classes): Promise<FeatData[]> {
     return this.loadDataFromFile().then((data) =>
-      data.filter((item) => item.level <= level && item.traits?.includes(charClass.toLocaleLowerCase()))
+      data.filter(
+        (item) =>
+          item.level <= level &&
+          item.traits?.includes(charClass.toLocaleLowerCase()) &&
+          item.category === FeatCategory.class
+      )
     )
   }
 }

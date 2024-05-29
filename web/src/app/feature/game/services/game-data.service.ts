@@ -7,7 +7,7 @@ import { Injectable } from '@angular/core';
 import {
   BackgroundData,
   Character,
-  ClassData,
+  DisplayInitClassData,
   Race,
   RaceData,
   SeedCharacterData,
@@ -18,10 +18,6 @@ import { environment } from 'src/environment/environment';
 
 @Injectable()
 export class GameDataService {
-  private raceDataCache: Map<Race, RaceData> = new Map();
-  private backgroundDataCache: Map<string, BackgroundData> = new Map();
-  private classDataCache: Map<string, ClassData> = new Map();
-
   constructor(
     private httpClient: HttpClient,
     private httpCacheClient: HttpCacheClientService
@@ -75,10 +71,10 @@ export class GameDataService {
     );
   }
 
-  public getClassData(id: string): Observable<ClassData> {
-    const url = `${environment.apiUrl}/api/classes/${id}`;
+  public getClassData(id: string): Observable<DisplayInitClassData> {
+    const url = `${environment.apiUrl}/api/classes/init/${id}`;
 
-    return this.httpCacheClient.get<ClassData>(url);
+    return this.httpCacheClient.get<DisplayInitClassData>(url);
   }
 
   public previewNewCharacter(
