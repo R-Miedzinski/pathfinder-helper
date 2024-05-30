@@ -1,9 +1,10 @@
-import { Alignment } from '../enums/alignment';
+import { Alignment } from "../enums/alignment";
 
 export interface Backstory {
   id: string;
   alignment: Alignment;
   story: string;
+  languages: string[];
   notes?: string;
   image?: string;
   nationality?: string;
@@ -23,8 +24,9 @@ export interface Backstory {
 
 export function newBackstory(): Backstory {
   return {
-    id: '',
+    id: "",
     alignment: Alignment.N,
-    story: '',
+    story: "",
+    languages: [],
   };
 }

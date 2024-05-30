@@ -12,6 +12,8 @@ import { BoostChoiceComponent } from './components/boost-choice/boost-choice.com
 import { ToFormControlPipe } from './pipes/to-form-control.pipe';
 import { SkillProficienciesFormComponent } from './components/skill-proficiencies-form/skill-proficiencies-form.component';
 import { SkillInputComponent } from './components/skill-input/skill-input.component';
+import { LanguagesInputComponent } from './components/languages-input/languages-input.component';
+import { CustomFormControl } from './components/custom-form-control/custom-form-control.component';
 
 @NgModule({
   declarations: [
@@ -25,6 +27,7 @@ import { SkillInputComponent } from './components/skill-input/skill-input.compon
     ToFormControlPipe,
     SkillProficienciesFormComponent,
     SkillInputComponent,
+    LanguagesInputComponent,
   ],
   imports: [CommonModule, MaterialModule, FormsModule, ReactiveFormsModule],
   exports: [
@@ -42,6 +45,7 @@ import { SkillInputComponent } from './components/skill-input/skill-input.compon
     BoostChoiceComponent,
     SkillProficienciesFormComponent,
     SkillInputComponent,
+    LanguagesInputComponent,
   ],
 })
 export class SharedModule {}

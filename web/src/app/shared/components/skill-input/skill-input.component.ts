@@ -7,7 +7,6 @@ import {
   Output,
 } from '@angular/core';
 import {
-  ControlValueAccessor,
   FormBuilder,
   FormControl,
   FormGroup,
@@ -24,6 +23,7 @@ import {
 } from 'rpg-app-shared-package/dist/public-api';
 import keepOrder from '../../helpers/keepOrder';
 import { Subject, takeUntil } from 'rxjs';
+import { CustomFormControl } from '../custom-form-control/custom-form-control.component';
 
 @Component({
   selector: 'app-skill-input',
@@ -38,14 +38,13 @@ import { Subject, takeUntil } from 'rxjs';
   ],
 })
 export class SkillInputComponent
-  implements ControlValueAccessor, OnInit, OnDestroy
+  extends CustomFormControl<Skill>
+  implements OnInit, OnDestroy
 {
   public static id: number = 0;
   @Input() maxLevel: Proficiency = Proficiency.L;
   @Input() disableIncrease: boolean = false;
   @Input() upgradeOnly: boolean = false;
-  @Input() _skill: Skill;
-  @Output() skillChanged: EventEmitter<Skill> = new EventEmitter();
 
   @Output() levelChange: EventEmitter<1 | -1> = new EventEmitter();
 
@@ -59,9 +58,6 @@ export class SkillInputComponent
 
   protected keepOrderLocal = keepOrder;
 
-  private onTouched = () => {};
-  private onChange = (data: Skill) => {};
-
   private readonly valToProfMap: Map<number, Proficiency> =
     createValToProfMap(0);
   private readonly profToValMap: Map<Proficiency, number> =
@@ -69,10 +65,9 @@ export class SkillInputComponent
   private readonly ngDestroyed$: Subject<void> = new Subject();
 
   constructor(private fb: FormBuilder) {
+    super();
     SkillInputComponent.id += 1;
     this.id = SkillInputComponent.id;
-
-    this._skill = {} as Skill;
   }
 
   public ngOnInit(): void {
@@ -84,17 +79,9 @@ export class SkillInputComponent
     this.ngDestroyed$.complete();
   }
 
-  public writeValue(skill: Skill): void {
-    this._skill = skill;
-    this.setFormData(skill);
-  }
-
-  public registerOnChange(fn: any): void {
-    this.onChange = fn;
-  }
-
-  public registerOnTouched(fn: any): void {
-    this.onTouched = fn;
+  public override writeValue(value: Skill): void {
+    super.writeValue(value);
+    this.setFormData(value);
   }
 
   public setDisabledState(isDisabled: boolean): void {
@@ -102,7 +89,6 @@ export class SkillInputComponent
       this.skillForm?.disable();
     } else {
       this.skillForm?.get('level')?.enable();
-      this.skillForm?.get('specialty')?.enable();
     }
   }
 
@@ -132,11 +118,6 @@ export class SkillInputComponent
     }
   }
 
-  private dispatchChange(): void {
-    this.onChange(this._skill);
-    this.skillChanged.emit(this._skill);
-  }
-
   private initForm(): void {
     this.skillForm = this.fb.group({
       name: [null, Validators.required],
@@ -149,24 +130,10 @@ export class SkillInputComponent
     this.skillForm.valueChanges.pipe(takeUntil(this.ngDestroyed$)).subscribe({
       next: (skill: Skill) => {
         this.onTouched();
-        this._skill = { ...this._skill, ...skill };
-        this.dispatchChange();
+        this.value = { ...this.value, ...skill };
+        this.updateValue();
       },
     });
-
-    this.hasSpecialty.valueChanges
-      .pipe(takeUntil(this.ngDestroyed$))
-      .subscribe({
-        next: hasSpecialty => {
-          if (!hasSpecialty) {
-            this.skillForm?.get('specialty')?.setValue(null);
-            this.skillForm?.get('specialty')?.disable();
-          } else {
-            this.skillForm?.get('specialty')?.setValue('');
-            this.skillForm?.get('specialty')?.enable();
-          }
-        },
-      });
   }
 
   private setFormData(skill: Skill): void {
@@ -187,5 +154,7 @@ export class SkillInputComponent
 
     this.skillForm?.get('name')?.disable();
     this.skillForm?.get('ability')?.disable();
+    this.skillForm?.get('specialty')?.disable();
+    this.hasSpecialty.disable();
   }
 }

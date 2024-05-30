@@ -1,4 +1,4 @@
-<form [formGroup]="backstoryForm">
+<div>
   <mat-grid-list [cols]="6" rowHeight="{{ rowHeight }}rem">
     <mat-grid-tile [colspan]="2" [rowspan]="5">
       <img [src]="backstory.image" [alt]="'Portrait of ' + name" />
@@ -25,11 +25,14 @@
         </div>
       </div>
     </mat-grid-tile>
-    <mat-grid-tile
-      [colspan]="4"
-      [rowspan]="1"
-      *ngIf="backstory.nationality || backstory.ethnicity || backstory.deity">
+    <mat-grid-tile [colspan]="4" [rowspan]="1">
       <div class="backstory__row">
+        <div class="backstory__entry">
+          <label for="languages" class="backstory__label"> Languages: </label>
+          <div class="backstory__value">
+            {{ backstory.languages | json }}
+          </div>
+        </div>
         <div class="backstory__entry" *ngIf="backstory.nationality">
           <label for="nationality" class="backstory__label">
             Nationality:
@@ -117,4 +120,4 @@
       </div>
     </mat-grid-tile>
   </mat-grid-list>
-</form>
+</div>

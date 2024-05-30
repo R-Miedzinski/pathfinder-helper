@@ -1,0 +1,28 @@
+<div class="languages-form">
+  <div class="to-change__group">
+    <h4>Languages to add:</h4>
+    <span> {{ toAdd }} </span>
+  </div>
+  <mat-form-field appearance="outline">
+    <mat-label>Known Languages</mat-label>
+    <mat-chip-grid #chipGrid aria-label="Enter Languages">
+      <mat-chip-row
+        *ngFor="let language of value"
+        (removed)="remove(language)"
+        [editable]="!isInputDisabled"
+        (edited)="edit(language, $event)">
+        {{ language }}
+        <button matChipRemove [disabled]="isInputDisabled">
+          <mat-icon>cancel</mat-icon>
+        </button>
+      </mat-chip-row>
+      <input
+        [placeholder]="toAdd ? 'Type new Language' : ''"
+        [matChipInputFor]="chipGrid"
+        [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+        [matChipInputAddOnBlur]="true"
+        (matChipInputTokenEnd)="add($event)"
+        [disabled]="isInputDisabled || !toAdd" />
+    </mat-chip-grid>
+  </mat-form-field>
+</div>

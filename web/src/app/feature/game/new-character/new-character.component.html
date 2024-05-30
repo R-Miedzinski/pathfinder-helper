@@ -362,22 +362,20 @@
       <button mat-button matStepperNext>Next</button>
     </form>
   </mat-step>
-  <mat-step>
-    <form>
+  <mat-step [stepControl]="additionalSkills">
+    <form class="additional-info-form">
       <ng-template matStepLabel>Remaining Choices</ng-template>
-      {{ abilityModifiers | json }}
       <app-skill-proficiencies-form
         [toChange]="skillsToChange"
         [maxLevel]="proficiencies.T"
         [currentProficiencies]="chosenSkills"
         [formControl]="additionalSkills"></app-skill-proficiencies-form>
-      <ul>
-        <li>calculate languages to choose</li>
-        <li>Choose remaining languages</li>
-      </ul>
-      <button mat-button matStepperPrevious>Back</button>
-      <button mat-button matStepperNext>Next</button>
+      <app-languages-input
+        [formControl]="addLanguageControl"
+        [toAdd]="languagesToAdd"></app-languages-input>
     </form>
+    <button mat-button matStepperPrevious>Back</button>
+    <button mat-button matStepperNext>Next</button>
   </mat-step>
   <mat-step>
     <form>

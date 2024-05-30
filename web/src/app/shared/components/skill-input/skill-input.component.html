@@ -1,4 +1,4 @@
-<form *ngIf="_skill && skillForm" [formGroup]="skillForm">
+<form *ngIf="value && skillForm" [formGroup]="skillForm">
   <div class="form-group">
     <label [for]="'skill-name-' + id">Name:</label>
     <select name="skill-name" [id]="'skill-name-' + id" formControlName="name">
@@ -54,14 +54,14 @@
       </option>
     </select>
   </div>
-  <div class="form-group">
+  <!-- <div class="form-group">
     <label [for]="'skill-has-specialty-' + id">Has specialty?</label>
     <input
       type="checkbox"
       name="skill-has-specialty-"
       [id]="'skill-has-specialty-' + id"
       [formControl]="hasSpecialty" />
-  </div>
+  </div> -->
   <div *ngIf="!hasSpecialty.value" class="form-group"></div>
   <div *ngIf="hasSpecialty.value" class="form-group">
     <label [for]="'skill-specialty-' + id">Specialty:</label>

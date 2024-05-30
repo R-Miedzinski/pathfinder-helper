@@ -1,15 +1,12 @@
 import {
   Component,
-  EventEmitter,
   Input,
   OnChanges,
   OnDestroy,
   OnInit,
-  Output,
   SimpleChanges,
 } from '@angular/core';
 import {
-  ControlValueAccessor,
   FormArray,
   FormBuilder,
   FormControl,
@@ -18,13 +15,12 @@ import {
 } from '@angular/forms';
 import { cloneDeep } from 'lodash';
 import {
-  Abilities,
   Proficiency,
   Skill,
-  Skills,
   newSkills,
 } from 'rpg-app-shared-package/dist/public-api';
 import { Subject, takeUntil } from 'rxjs';
+import { CustomFormControl } from '../custom-form-control/custom-form-control.component';
 
 @Component({
   selector: 'app-skill-proficiencies-form',
@@ -39,25 +35,23 @@ import { Subject, takeUntil } from 'rxjs';
   ],
 })
 export class SkillProficienciesFormComponent
-  implements ControlValueAccessor, OnInit, OnDestroy, OnChanges
+  extends CustomFormControl<Skill[]>
+  implements OnInit, OnDestroy, OnChanges
 {
   @Input() maxLevel: Proficiency = Proficiency.L;
   @Input() toChange: number = 0;
   @Input({ required: false }) upgradeOnly: boolean = false;
   @Input() currentProficiencies: Skill[] = [];
-  @Input() _proficiencies: Skill[] = [];
-
-  @Output() proficienciesChanged: EventEmitter<Skill[]> = new EventEmitter();
 
   protected disableIncrease: boolean = false;
   protected skillsForm?: FormGroup;
 
-  private onTouched = () => {};
-  private onChange = (data: Skill[]) => {};
   private readonly basicProficiencies = newSkills();
   private readonly ngDestroyed$: Subject<void> = new Subject();
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: FormBuilder) {
+    super();
+  }
 
   public ngOnInit(): void {
     this.disableIncrease = this.toChange <= 0;
@@ -70,21 +64,32 @@ export class SkillProficienciesFormComponent
     const toChange = changes['toChange'];
 
     if (currentProficienciesChanges) {
+      const controlsToPush: FormControl<Skill | null>[] = [];
+      const idsToDisable: number[] = [];
+      this.skills?.controls.forEach(control => control.enable());
+
       (currentProficienciesChanges.currentValue as Skill[]).forEach(skill => {
-        const id = this.skills.value.findIndex(
-          item => item?.name === skill.name
+        const id = this.skills?.value.findIndex(
+          item =>
+            item?.name === skill.name &&
+            (item.specialty ?? '') === (skill.specialty ?? '')
         );
 
         if (id !== -1) {
           const control = this.skills.controls[id];
 
           control.setValue(skill);
-          control.disable();
+          idsToDisable.push(id);
         } else {
-          //TODO fix this push
-          this.skills.push(new FormControl(skill));
+          const control = new FormControl<Skill>(skill);
+
+          control.disable();
+          controlsToPush.push(control);
         }
       });
+
+      controlsToPush.forEach(ctrl => this.skills.push(ctrl));
+      idsToDisable.forEach(id => this.skills.controls[id].disable());
     }
 
     if (toChange) {
@@ -97,22 +102,16 @@ export class SkillProficienciesFormComponent
     this.ngDestroyed$.complete();
   }
 
-  public writeValue(obj: Skill[]): void {
-    obj.forEach(skill => {
+  public override writeValue(value: Skill[]): void {
+    value.forEach(skill => {
       const id = this.skills.value.findIndex(item => item?.name === skill.name);
 
       if (id !== -1) {
         this.skills.controls[id].setValue(skill);
       }
     });
-  }
 
-  public registerOnChange(fn: any): void {
-    this.onChange = fn;
-  }
-
-  public registerOnTouched(fn: any): void {
-    this.onTouched = fn;
+    this.updateValue();
   }
 
   public setDisabledState(isDisabled: boolean): void {
@@ -133,13 +132,13 @@ export class SkillProficienciesFormComponent
     this.disableIncrease = this.toChange <= 0;
   }
 
-  private dispatchChange(): void {
-    const upgradedSkills = this._proficiencies.filter(
+  protected override updateValue(): void {
+    const upgradedSkills = this.value.filter(
       skill => skill.level !== Proficiency.U
     );
 
     this.onChange(upgradedSkills);
-    this.proficienciesChanged.emit(upgradedSkills);
+    this.valueChange.emit(upgradedSkills);
   }
 
   private initProficienciesForm(): void {
@@ -150,29 +149,22 @@ export class SkillProficienciesFormComponent
         !savedSkills.map(skill => skill.name).some(name => name === skill.name)
     );
 
-    this._proficiencies = basicSkills.concat(savedSkills);
+    this.value = basicSkills.concat(savedSkills);
 
     this.skillsForm = this.fb.group({
-      skills: this.fb.array(
-        this._proficiencies.map(skill => new FormControl(skill))
-      ),
+      skills: this.fb.array(this.value.map(skill => new FormControl(skill))),
     });
 
-    this.skillsForm
-      .get('skills')
-      ?.valueChanges.pipe(takeUntil(this.ngDestroyed$))
-      .subscribe({
-        next: skills => {
-          const newSkills = this._proficiencies.reduce((acc, curr) => {
-            const item = skills.find(
-              (skill: Skill) => skill.name === curr.name
-            );
-            return acc.concat(Object.assign(curr, item));
-          }, [] as Skill[]);
+    this.skills?.valueChanges.pipe(takeUntil(this.ngDestroyed$)).subscribe({
+      next: skills => {
+        const newSkills = this.value.reduce((acc, curr) => {
+          const item = skills.find(skill => skill?.name === curr.name);
+          return acc.concat(Object.assign(curr, item));
+        }, [] as Skill[]);
 
-          this._proficiencies = newSkills;
-          this.dispatchChange();
-        },
-      });
+        this.value = newSkills;
+        this.updateValue();
+      },
+    });
   }
 }

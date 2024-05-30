@@ -48,6 +48,7 @@ export class NewCharacterComponent implements OnInit, OnDestroy {
   protected eqForm!: FormGroup;
   protected detailsForm!: FormGroup;
   protected additionalSkills: FormControl = new FormControl<Skill[]>([]);
+  protected addLanguageControl: FormControl = new FormControl<string[]>([]);
 
   protected raceData?: RaceData;
   protected raceFeats: Feat[] = [];
@@ -58,6 +59,7 @@ export class NewCharacterComponent implements OnInit, OnDestroy {
   protected chosenClass?: DisplayInitClassData;
   protected chosenSkills: Skill[] = [];
   protected skillsToChange: number = 0;
+  protected languagesToAdd: number = 0;
 
   protected chosenRaceFeat?: Feat;
   protected chosenBackgroundFeats?: Feat[];
@@ -128,6 +130,11 @@ export class NewCharacterComponent implements OnInit, OnDestroy {
       this.initLanguageForm();
       this.initAdditionalSkillsForm();
     } else if (event.selectedIndex === 6) {
+      this.detailsForm
+        .get('backstory')
+        ?.get('languages')
+        ?.setValue(this.addLanguageControl.value);
+
       const characterData: SeedCharacterData = {
         id: '0',
         name: this.detailsForm.get('name')?.value,
@@ -307,6 +314,7 @@ export class NewCharacterComponent implements OnInit, OnDestroy {
       backstory: this.fb.group({
         story: ['', Validators.required],
         alignment: [Alignment.N, Validators.required],
+        languages: [[]],
         nationality: [''],
         ethnicity: [''],
         deity: [''],
@@ -477,10 +485,15 @@ export class NewCharacterComponent implements OnInit, OnDestroy {
     this.chosenSkills = [];
     this.skillsToChange = 0;
     this.additionalSkills.setValue([]);
+    this.addLanguageControl.setValue([]);
   }
 
   private initLanguageForm(): void {
-    //TODO
+    this.languagesToAdd = this.abilityModifiers
+      ? this.abilityModifiers[Abilities.int]
+      : 0;
+
+    this.addLanguageControl.setValue(this.raceData?.languages);
   }
 
   private initAdditionalSkillsForm(): void {
