@@ -7,6 +7,8 @@ import { Classes } from "../enums/classes";
 import { Race } from "../enums/race";
 import { WeaponProficiency } from "./weapon-proficiency";
 import { ArmorProficiency } from "./armor-proficiency";
+import { Abilities } from "../enums/abilities";
+import { ClassDC } from "./class-dc";
 
 export interface Character {
   id: string;
@@ -41,6 +43,7 @@ export interface Character {
   backstory: Backstory;
   attacks: WeaponProficiency[];
   defences: ArmorProficiency[];
+  classDC?: ClassDC;
 }
 
 export function newCharacter(): Character {

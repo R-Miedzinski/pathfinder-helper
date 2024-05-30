@@ -23,8 +23,6 @@ import {
 })
 export class SavingThrowsComponent implements OnInit {
   @Input() savingThrows: SavingThrow[] = [];
-  @Input({ required: true }) mode!: CharacterSheetMode;
-  protected modes = CharacterSheetMode;
   protected savingThrowsForm!: FormGroup;
   protected proficiencies = Proficiency;
   protected keepOrderLocal = keepOrder;

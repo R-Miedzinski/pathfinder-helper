@@ -41,6 +41,7 @@ export {
   DisplayLevelUpClassData,
   LevelUpClassData,
 } from "./models/interfaces/class-data";
+export { ClassDC } from "./models/interfaces/class-dc";
 export {
   FeatData,
   FeatEffect,

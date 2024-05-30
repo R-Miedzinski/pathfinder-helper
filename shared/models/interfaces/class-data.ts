@@ -30,6 +30,10 @@ export interface InitClassData {
   weaponProficiencies: WeaponProficiency[];
   armorProficiencies: ArmorProficiency[];
   additionalProficiencies: number;
+  classDC?: {
+    savingThrow?: Proficiency;
+    attack?: Proficiency;
+  };
 }
 
 export interface DisplayInitClassData extends InitClassData {

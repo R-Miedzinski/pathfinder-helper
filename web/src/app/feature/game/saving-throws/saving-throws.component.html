@@ -1,21 +1,8 @@
 <form [formGroup]="savingThrowsForm" class="saving-throws-form">
   <div class="saving-throw" *ngFor="let savingThrow of savingThrows">
     <label [for]="savingThrow.name">{{ savingThrow.name }}</label>
-    <div *ngIf="mode !== modes.edit" class="proficiency">
+    <div class="proficiency">
       {{ savingThrow.proficiency }}
-    </div>
-    <div *ngIf="mode === modes.edit">
-      <select
-        type="select"
-        [id]="savingThrow.name"
-        [formControlName]="savingThrow.name"
-        (change)="valueChanged(savingThrow)">
-        <option
-          *ngFor="let profLevel of proficiencies | keyvalue : keepOrderLocal"
-          [value]="profLevel.value">
-          {{ profLevel.value }}
-        </option>
-      </select>
     </div>
     <div>{{ savingThrow.value }}</div>
     <div>{{ savingThrow.ability }}</div>

@@ -61,6 +61,9 @@
         "level": "Trained"
       }
     ],
+    "classDC": {
+      "savingThrow": "Trained"
+    },
     "additionalProficiencies": 3
   },
   "levelUpData": {}

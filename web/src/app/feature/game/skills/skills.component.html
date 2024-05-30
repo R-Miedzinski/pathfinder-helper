@@ -4,25 +4,12 @@
       <span *ngIf="skill.specialty">{{ skill.specialty }}</span>
       {{ skill.name }}
     </label>
-    <div *ngIf="mode !== modes.edit" class="proficiency">{{ skill.level }}</div>
-    <div *ngIf="mode === modes.edit">
-      <select
-        type="select"
-        [id]="skill.name"
-        [formControlName]="skill.name"
-        (change)="valueChanged(skill)">
-        <option
-          *ngFor="let profLevel of proficiencies | keyvalue : keepOrderLocal"
-          [value]="profLevel.value">
-          {{ profLevel.value }}
-        </option>
-      </select>
-    </div>
+    <div class="proficiency">{{ skill.level }}</div>
     <div>{{ skill.value }}</div>
     <div>{{ skill.ability }}</div>
   </div>
 </form>
-<div class="eq-block">
+<div class="block">
   <h3>Weapon Proficiencies:</h3>
   <ul>
     <li *ngFor="let weapon of weapons" class="skill">
@@ -41,6 +28,25 @@
       </label>
       <div class="proficiency">{{ armor.level }}</div>
       <div>{{ profToValMap.get(armor.level) }}</div>
+    </li>
+  </ul>
+</div>
+<div class="block" *ngIf="classDC">
+  <h3>Class Proficiencies:</h3>
+  <ul>
+    <li class="skill">
+      <label>Key Ability: </label>
+      <div class="proficiency">{{ classDC.ability }}</div>
+    </li>
+    <li class="skill" *ngIf="classDC.savingThrow">
+      <label> Class DC </label>
+      <div class="proficiency">{{ classDC.savingThrow.level }}</div>
+      <div>{{ classDC.savingThrow.value }}</div>
+    </li>
+    <li class="skill" *ngIf="classDC.attack">
+      <label> Class Attack Bonus </label>
+      <div class="proficiency">{{ classDC.attack.level }}</div>
+      <div>{{ classDC.attack.value }}</div>
     </li>
   </ul>
 </div>

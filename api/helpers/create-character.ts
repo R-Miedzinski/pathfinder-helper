@@ -2,6 +2,8 @@ import { cloneDeep } from 'lodash'
 import {
   Abilities,
   Character,
+  ClassDC,
+  InitClassData,
   Proficiency,
   RaceData,
   SeedCharacterData,
@@ -18,25 +20,25 @@ import { ActionsLoader } from '../services/actions-loader'
 export class CharacterFactory {
   private character: Character
   private profToValMap: Map<Proficiency, number> = new Map()
-  private seedData: SeedCharacterData
-  private raceData!: RaceData
+  private raceData?: RaceData
+  private classData?: InitClassData
 
   constructor(
-    characterData: SeedCharacterData,
+    private seedData: SeedCharacterData,
     private classDataLoader: ClassDataLoader,
     private raceDataLoader: RaceDataLoader,
     private featFetcher: FeatFetcher,
     private actionsLoader: ActionsLoader
   ) {
     this.character = newCharacter()
-    this.featFetcher = featFetcher
-    this.seedData = characterData
   }
 
   public async buildNewCharacter(): Promise<void> {
-    this.raceData = await this.raceDataLoader.getRaceData(this.character.race)
-
     await this.assignConstantValues()
+
+    this.raceData = await this.raceDataLoader.getRaceData(this.character.race)
+    this.classData = await this.classDataLoader.getInitClassData(this.character.class)
+
     await this.applyFeats()
     this.applyAbilityBoosts()
     this.applyEquipment()
@@ -44,8 +46,9 @@ export class CharacterFactory {
     this.calculateSkillProficiencies()
     this.calculateEquipmentProficiencies()
     this.calculateSavingThrows()
+    this.calculateClassDC()
     this.calculateSpeed()
-    await this.calculateHealth()
+    this.calculateHealth()
     this.calculateOtherStats()
   }
 
@@ -169,23 +172,50 @@ export class CharacterFactory {
     })
   }
 
-  private calculateSpeed(): void {
-    this.character.speed = {
-      base: this.raceData.baseSpeed ?? 0,
+  private calculateClassDC(): void {
+    if (this.classData) {
+      const classDC: ClassDC = {
+        ability: this.classData!.keyAbility,
+      }
+
+      const abilityMod = this.character.abilities.find((ability) => ability.name === classDC.ability)?.modifier ?? 0
+      const savingThrow = this.character.classDC?.savingThrow?.level ?? this.classData.classDC?.savingThrow
+      const attack = this.character.classDC?.attack?.level ?? this.classData.classDC?.attack
+
+      if (savingThrow) {
+        classDC.savingThrow = {
+          level: savingThrow,
+          value: abilityMod + (this.profToValMap.get(savingThrow) ?? 0),
+        }
+      }
+
+      if (attack) {
+        classDC.attack = {
+          level: attack,
+          value: abilityMod + (this.profToValMap.get(attack) ?? 0),
+        }
+      }
+
+      this.character.classDC = classDC
     }
   }
 
-  private async calculateHealth(): Promise<void> {
-    return this.classDataLoader.getInitClassData(this.character.class).then(({ baseHp }) => {
-      this.character.hp.maximum =
-        this.seedData?.hp?.maximum ??
-        this.raceData.baseHp +
-          this.character.level *
-            (baseHp + this.character.abilities.find((ability) => ability.name === Abilities.con)!.modifier)
+  private calculateSpeed(): void {
+    this.character.speed = {
+      base: this.raceData?.baseSpeed ?? 0,
+    }
+  }
 
-      this.character.hp.current = this.seedData?.hp?.current ?? this.character.hp.maximum
-      this.character.hp.temporary = this.seedData?.hp?.temporary ?? 0
-    })
+  private calculateHealth(): void {
+    this.character.hp.maximum =
+      this.seedData?.hp?.maximum ??
+      (this.raceData?.baseHp ?? 0) +
+        this.character.level *
+          ((this.classData?.baseHp ?? 0) +
+            this.character.abilities.find((ability) => ability.name === Abilities.con)!.modifier)
+
+    this.character.hp.current = this.seedData?.hp?.current ?? this.character.hp.maximum
+    this.character.hp.temporary = this.seedData?.hp?.temporary ?? 0
   }
 
   private calculateOtherStats(): void {

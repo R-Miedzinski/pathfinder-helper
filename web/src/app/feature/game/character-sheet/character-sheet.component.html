@@ -23,7 +23,6 @@
   <mat-tab label="Main Page">
     <app-main-character-page
       class="container"
-      [mode]="mode"
       [rowHeight]="rowHeight"
       [character]="character"
       (healthChange)="handleHealthChange($event)" />
@@ -54,8 +53,7 @@
         [name]="character.characterName"
         [race]="character.race"
         [backstory]="character.backstory"
-        [rowHeight]="rowHeight / 4"
-        [mode]="mode" />
+        [rowHeight]="rowHeight / 4" />
     </div>
   </mat-tab>
   <mat-tab label="Spell Book">

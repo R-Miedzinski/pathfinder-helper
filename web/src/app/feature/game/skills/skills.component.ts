@@ -14,6 +14,7 @@ import { SkillsService } from '../services/skills.service';
 import {
   ArmorProficiency,
   CharacterSheetMode,
+  ClassDC,
   Proficiency,
   Skill,
   WeaponProficiency,
@@ -30,9 +31,8 @@ export class SkillsComponent implements OnChanges, OnInit {
   @Input() skills: Skill[] = [];
   @Input() weapons: WeaponProficiency[] = [];
   @Input() armores: ArmorProficiency[] = [];
+  @Input() classDC?: ClassDC;
   @Input() level: number = 0;
-  @Input({ required: true }) mode!: CharacterSheetMode;
-  protected modes = CharacterSheetMode;
   protected skillsForm!: FormGroup;
   protected proficiencies = Proficiency;
   protected profToValMap: Map<Proficiency, number> = new Map();

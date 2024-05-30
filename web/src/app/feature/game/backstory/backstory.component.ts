@@ -29,8 +29,6 @@ export class BackstoryComponent implements OnInit, OnDestroy {
   @Input({ required: true }) race!: Race;
   @Input() rowHeight!: number;
   @Input() name: string = '';
-  @Input({ required: true }) mode!: CharacterSheetMode;
-  protected modes = CharacterSheetMode;
   protected backstoryForm!: FormGroup;
   protected alignments = Alignment;
   private readonly ngDestroyed$: Subject<void> = new Subject();

@@ -11,12 +11,7 @@ import { FeatsService } from '../services/feats.service';
 import { ActionService } from '../services/action.service';
 import { SkillsService } from '../services/skills.service';
 import { AbilitiesService } from '../services/abilities.service';
-import {
-  Character,
-  CharacterAction,
-  CharacterSheetMode,
-  Feat,
-} from 'rpg-app-shared-package';
+import { Character, Feat } from 'rpg-app-shared-package';
 
 @Component({
   selector: 'app-character-sheet',
@@ -25,7 +20,6 @@ import {
 })
 export class CharacterSheetComponent implements OnInit, OnDestroy {
   public readonly rowHeight = 19.6;
-  protected mode: CharacterSheetMode = CharacterSheetMode.view;
   protected character!: Character;
   private readonly ngDestroyed$: Subject<void> = new Subject();
 
@@ -54,13 +48,6 @@ export class CharacterSheetComponent implements OnInit, OnDestroy {
   ) {}
 
   public ngOnInit(): void {
-    this.store
-      .select(GameSelectors.getMode)
-      .pipe(takeUntil(this.ngDestroyed$))
-      .subscribe({
-        next: (mode: CharacterSheetMode) => (this.mode = mode),
-      });
-
     this.store
       .select(GameSelectors.getCharacter)
       .pipe(takeUntil(this.ngDestroyed$))

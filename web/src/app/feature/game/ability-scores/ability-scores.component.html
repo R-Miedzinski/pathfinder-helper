@@ -1,25 +1,10 @@
 <form [formGroup]="abilitiesForm" class="ability__list">
   <div class="ability__card" *ngFor="let ability of abilityScores">
     <label [for]="ability.id" class="ability__key">{{ ability.name }}</label>
-    <ng-container *ngIf="mode !== modes.edit">
-      <span class="ability__value"> {{ ability.score }}</span>
-      <span class="ability__modifier">
-        {{ ability.score | modifierPlusMinus }}
-        {{ ability.modifier }}
-      </span>
-    </ng-container>
-    <ng-container *ngIf="mode === modes.edit">
-      <span class="ability__value">
-        {{ ability.score | modifierPlusMinus }}{{ ability.modifier }}
-      </span>
-      <span class="ability__modifier">
-        <input
-          type="number"
-          [id]="ability.id"
-          [formControlName]="ability.id"
-          min="0"
-          (change)="valueChanged(ability)" />
-      </span>
-    </ng-container>
+    <span class="ability__value"> {{ ability.score }}</span>
+    <span class="ability__modifier">
+      {{ ability.score | modifierPlusMinus }}
+      {{ ability.modifier }}
+    </span>
   </div>
 </form>

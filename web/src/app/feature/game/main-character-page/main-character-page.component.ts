@@ -12,12 +12,10 @@ import {
 export class MainCharacterPageComponent implements OnInit {
   @Input() rowHeight!: number;
   @Input() character: Character = {} as Character;
-  @Input() mode!: CharacterSheetMode;
   @Output() healthChange: EventEmitter<{
     change: number;
     addTemp: boolean;
   }> = new EventEmitter<{ change: number; addTemp: boolean }>();
-  protected modes = CharacterSheetMode;
 
   public ngOnInit(): void {
     if (this.rowHeight === undefined) {

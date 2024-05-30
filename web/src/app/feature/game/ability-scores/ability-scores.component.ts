@@ -21,8 +21,6 @@ import {
 })
 export class AbilityScoresComponent implements OnInit {
   @Input() abilityScores: Ability[] = [];
-  @Input({ required: true }) mode!: CharacterSheetMode;
-  protected modes = CharacterSheetMode;
   protected abilitiesForm!: FormGroup;
   protected keepOrderLocal = keepOrder;
 
