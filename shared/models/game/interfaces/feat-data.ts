@@ -32,6 +32,7 @@ export interface GrantSkillProficiencyEffect extends FeatEffect {
   payload: {
     skill: Skills;
     level: Proficiency;
+    specialty?: string;
   };
 }
 

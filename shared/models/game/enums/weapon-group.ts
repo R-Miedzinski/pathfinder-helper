@@ -1,5 +1,6 @@
 export enum WeaponGroup {
   axe = "Axe",
+  battleaxe = "Battle axe",
   bomb = "Bomb",
   bow = "Bow",
   brawling = "Brawling",
@@ -14,6 +15,7 @@ export enum WeaponGroup {
   sling = "Sling",
   spear = "Spear",
   sword = "Sword",
+  warhammer = "Warhammer",
   simple = "Simple",
   martial = "Martial",
   unarmed = "Unarmed",

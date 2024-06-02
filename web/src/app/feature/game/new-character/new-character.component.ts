@@ -37,12 +37,8 @@ import { StepperSelectionEvent } from '@angular/cdk/stepper';
   styleUrls: ['./new-character.component.scss'],
 })
 export class NewCharacterComponent implements OnInit, OnDestroy {
-  protected races = Race;
   protected alignments = Alignment;
   protected boostTypes = AbilityBoostType;
-  protected keepOrderLocal = keepOrder;
-  protected chooseRaceForm!: FormGroup;
-  protected boostsForm!: FormGroup;
   protected backgroundForm!: FormGroup;
   protected chooseClassForm!: FormGroup;
   protected eqForm!: FormGroup;
@@ -52,7 +48,6 @@ export class NewCharacterComponent implements OnInit, OnDestroy {
   protected gameIdControl: FormControl = new FormControl<string>('1');
 
   protected raceData?: RaceData;
-  protected raceFeats: Feat[] = [];
   protected classFeats: Feat[] = [];
   protected backgrounds: { id: string; name: string }[] = [];
   protected chosenBackground?: BackgroundData;
@@ -62,12 +57,17 @@ export class NewCharacterComponent implements OnInit, OnDestroy {
   protected skillsToChange: number = 0;
   protected languagesToAdd: number = 0;
 
+  protected raceBoosts?: Abilities[];
+  protected raceFlaws?: Abilities[];
+  protected chosenHeritageFeat?: Feat;
   protected chosenRaceFeat?: Feat;
+
   protected chosenBackgroundFeats?: Feat[];
   protected chosenClassFeat?: Feat;
   protected darkvision$: Observable<Feat> = new Observable();
   protected abilityModifiers?: Record<Abilities, number>;
 
+  protected readonly keepOrderLocal = keepOrder;
   protected readonly proficiencies = Proficiency;
   private characterData?: SeedCharacterData;
   private readonly ngDestroyed$: Subject<void> = new Subject();
@@ -80,7 +80,6 @@ export class NewCharacterComponent implements OnInit, OnDestroy {
   ) {}
 
   public ngOnInit(): void {
-    this.initRaceForm();
     this.initBackgroundForm();
     this.initClassForm();
     this.initDetailsForm();
@@ -91,30 +90,24 @@ export class NewCharacterComponent implements OnInit, OnDestroy {
     this.ngDestroyed$.complete();
   }
 
-  protected raceChange(): void {
-    this.gameDataService
-      .getRaceBonuses(this.chooseRaceForm.get('race')!.value)
-      .pipe(takeUntil(this.ngDestroyed$))
-      .subscribe({
-        next: raceData => {
-          this.raceData = undefined;
-          this.initBoostsForm([], []);
-          this.chooseRaceForm.get('feat')?.setValue('');
-
-          this.initBoostsForm(raceData.boosts, raceData.flaws);
-          this.raceData = raceData;
-          this.getDarkvisionFeat();
-          this.handleRaceFeatsFetch();
-        },
-      });
+  public onRace(event: RaceData | undefined): void {
+    this.raceData = event;
   }
 
-  protected get boosts(): FormArray {
-    return this.boostsForm.get('boostsArray') as FormArray;
+  public onRaceFeat(event: Feat | undefined): void {
+    this.chosenRaceFeat = event;
   }
 
-  protected get flaws(): FormArray {
-    return this.boostsForm.get('flawsArray') as FormArray;
+  public onHeritageFeat(event: Feat | undefined): void {
+    this.chosenHeritageFeat = event;
+  }
+
+  public onRaceAbilities(event: {
+    boosts?: Abilities[];
+    flaws?: Abilities[];
+  }): void {
+    this.raceBoosts = event?.boosts;
+    this.raceFlaws = event?.flaws;
   }
 
   protected get backgroundBoosts(): FormArray {
@@ -143,7 +136,7 @@ export class NewCharacterComponent implements OnInit, OnDestroy {
         class: this.chosenClass!.name,
         race: this.raceData!.name,
         level: 1,
-        ancestryFeats: [this.chooseRaceForm.get('feat')?.value],
+        ancestryFeats: [this.chosenHeritageFeat?.id!, this.chosenRaceFeat?.id!],
         classFeats: [this.chooseClassForm.get('feat')?.value],
         generalFeats: this.chosenBackground?.feats ?? [],
         skillFeats: [],
@@ -151,7 +144,7 @@ export class NewCharacterComponent implements OnInit, OnDestroy {
           ? [this.raceData?.darkvision]
           : [],
         boosts: [
-          ...this.boosts.value.map((item: { boost: Abilities }) => item.boost),
+          ...(this.raceBoosts ?? []),
           ...this.backgroundForm
             .get('boosts')
             ?.value.map((item: { boost: Abilities }) => item.boost),
@@ -159,7 +152,7 @@ export class NewCharacterComponent implements OnInit, OnDestroy {
             .get('boosts')
             ?.value.map((item: { boost: Abilities }) => item.boost),
         ],
-        flaws: this.flaws.value.map((item: { flaw: Abilities }) => item.flaw),
+        flaws: this.raceFlaws ?? [],
         savingThrows: [...(this.chosenClass?.savingThrows ?? [])],
         skills: this.additionalSkills.value,
         attacks: this.chosenClass?.weaponProficiencies ?? [],
@@ -200,56 +193,6 @@ export class NewCharacterComponent implements OnInit, OnDestroy {
           next: res => console.log(res),
         });
     }
-  }
-
-  private initRaceForm(): void {
-    this.chooseRaceForm = this.fb.group({
-      race: ['', Validators.required],
-      feat: ['', Validators.required],
-    });
-
-    this.chooseRaceForm
-      .get('feat')
-      ?.valueChanges.pipe(takeUntil(this.ngDestroyed$))
-      .subscribe({
-        next: featId =>
-          (this.chosenRaceFeat = this.raceFeats.find(
-            feat => feat.id === featId
-          )),
-      });
-  }
-
-  private initBoostsForm(boosts: AbilityBoost[], flaws: AbilityBoost[]): void {
-    this.boostsForm = this.fb.group({
-      boostsArray: this.fb.array([]),
-      flawsArray: this.fb.array([]),
-    });
-
-    boosts.forEach(boost =>
-      this.boosts?.push(
-        this.fb.group({
-          boost: [
-            boost.type === AbilityBoostType.free
-              ? Abilities.str
-              : boost.abilities[0],
-            Validators.required,
-          ],
-        })
-      )
-    );
-
-    flaws.forEach(flaw =>
-      this.flaws?.push(
-        this.fb.group({
-          flaw: [
-            flaw.type === AbilityBoostType.free
-              ? Abilities.str
-              : flaw.abilities[0],
-            Validators.required,
-          ],
-        })
-      )
-    );
   }
 
   private initBackgroundForm(): void {
@@ -367,30 +310,6 @@ export class NewCharacterComponent implements OnInit, OnDestroy {
       });
   }
 
-  private getDarkvisionFeat(): void {
-    const darkvision = this.raceData?.darkvision;
-    if (darkvision) {
-      this.darkvision$ = this.featsService
-        .getFeats([darkvision])
-        .pipe(map(list => list[0]));
-    }
-  }
-
-  private handleRaceFeatsFetch(): void {
-    if (this.raceData) {
-      this.raceFeats = [];
-
-      this.featsService
-        .getRaceFeatsToAdd(1, this.raceData.name)
-        .pipe(takeUntil(this.ngDestroyed$))
-        .subscribe({
-          next: (feats: Feat[]) => {
-            this.raceFeats = feats;
-          },
-        });
-    }
-  }
-
   private initBackgroundBoostsForm(boosts: AbilityBoost[]): void {
     this.backgroundBoosts.clear();
     boosts.forEach(boost => {
@@ -449,7 +368,7 @@ export class NewCharacterComponent implements OnInit, OnDestroy {
 
   private calculateModifiers(): void {
     const boosts: Abilities[] = [
-      ...this.boosts.value.map((item: { boost: Abilities }) => item.boost),
+      ...(this.raceBoosts ?? []),
       ...this.backgroundForm
         .get('boosts')
         ?.value.map((item: { boost: Abilities }) => item.boost),
@@ -457,9 +376,7 @@ export class NewCharacterComponent implements OnInit, OnDestroy {
         .get('boosts')
         ?.value.map((item: { boost: Abilities }) => item.boost),
     ];
-    const flaws: Abilities[] = this.flaws.value.map(
-      (item: { flaw: Abilities }) => item.flaw
-    );
+    const flaws: Abilities[] = this.raceFlaws ?? [];
 
     const getModifier = (count: number): number => {
       let addedValue = 0;

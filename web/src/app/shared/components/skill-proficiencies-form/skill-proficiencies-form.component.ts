@@ -71,8 +71,7 @@ export class SkillProficienciesFormComponent
       (currentProficienciesChanges.currentValue as Skill[]).forEach(skill => {
         const id = this.skills?.value.findIndex(
           item =>
-            item?.name === skill.name &&
-            (item.specialty ?? '') === (skill.specialty ?? '')
+            item?.name === skill.name && item?.specialty === skill?.specialty
         );
 
         if (id !== -1) {
@@ -81,10 +80,11 @@ export class SkillProficienciesFormComponent
           control.setValue(skill);
           idsToDisable.push(id);
         } else {
-          const control = new FormControl<Skill>(skill);
+          const control = this.fb.control(skill);
 
-          control.disable();
           controlsToPush.push(control);
+          idsToDisable.push(this.skills?.value.length);
+          this.value = this.value.concat(skill);
         }
       });
 
@@ -146,7 +146,7 @@ export class SkillProficienciesFormComponent
 
     const basicSkills = this.basicProficiencies.filter(
       skill =>
-        !savedSkills.map(skill => skill.name).some(name => name === skill.name)
+        !savedSkills.map(entry => entry.name).some(name => name === skill.name)
     );
 
     this.value = basicSkills.concat(savedSkills);
@@ -158,7 +158,10 @@ export class SkillProficienciesFormComponent
     this.skills?.valueChanges.pipe(takeUntil(this.ngDestroyed$)).subscribe({
       next: skills => {
         const newSkills = this.value.reduce((acc, curr) => {
-          const item = skills.find(skill => skill?.name === curr.name);
+          const item = skills.find(
+            skill =>
+              skill?.name === curr.name && skill?.specialty === curr?.specialty
+          );
           return acc.concat(Object.assign(curr, item));
         }, [] as Skill[]);
 

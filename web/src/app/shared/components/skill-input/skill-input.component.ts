@@ -148,8 +148,8 @@ export class SkillInputComponent
         ability: skill.ability,
         value: skill.value,
         specialty: skill?.specialty,
-      },
-      { emitEvent: false }
+      }
+      // { emitEvent: false }
     );
 
     this.skillForm?.get('name')?.disable();

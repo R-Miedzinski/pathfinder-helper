@@ -48,6 +48,12 @@ export class FeatsService implements OnDestroy {
     return this.http.get<Feat[]>(url);
   }
 
+  public getHeritageFeats(race: Race): Observable<Feat[]> {
+    const url = `${environment.apiUrl}/api/feats/heritage-feats?race=${race}`;
+
+    return this.http.get<Feat[]>(url);
+  }
+
   public getClassFeatsToAdd(
     level: number,
     charClass: Classes

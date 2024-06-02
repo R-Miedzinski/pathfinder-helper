@@ -36,35 +36,6 @@
     ]
   },
   {
-    "id": "A1",
-    "name": "Ancestry Feat 1",
-    "level": 1,
-    "category": "Ancestry Feat",
-    "traits": ["dwarf"],
-    "description": "This is a description of test ancestry feat 1",
-    "effect": [
-      {
-        "effectType": "Description"
-      }
-    ]
-  },
-  {
-    "id": "A4",
-    "name": "Ancestry Feat 4",
-    "level": 1,
-    "category": "Ancestry Feat",
-    "traits": ["dwarf"],
-    "description": "This is a description of test ancestry feat 4. it grants A2 feat",
-    "effect": [
-      {
-        "effectType": "Feat",
-        "payload": {
-          "featId": "A2"
-        }
-      }
-    ]
-  },
-  {
     "id": "A2",
     "name": "Ancestry Feat 2",
     "level": 1,

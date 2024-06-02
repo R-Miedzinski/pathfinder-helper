@@ -31,6 +31,7 @@ import { SkillsService } from './services/skills.service';
 import { AbilitiesService } from './services/abilities.service';
 import { ExcludeForFreeBoostPipe } from './pipes/exclude-for-free-boost.pipe';
 import { FeatComponent } from './feats/feat/feat.component';
+import { ChooseRaceFormComponent } from './new-character/choose-race-form/choose-race-form.component';
 
 @NgModule({
   declarations: [
@@ -54,6 +55,7 @@ import { FeatComponent } from './feats/feat/feat.component';
     ModifierPlusMinusPipe,
     ExcludeForFreeBoostPipe,
     FeatComponent,
+    ChooseRaceFormComponent,
   ],
   providers: [
     GameDataService,
