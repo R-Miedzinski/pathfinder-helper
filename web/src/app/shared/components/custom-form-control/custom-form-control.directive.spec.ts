@@ -1,8 +1,12 @@
-import { CustomFormControlDirective } from './custom-form-control.component';
+import { CustomFormControl } from './custom-form-control.component';
 
-describe('CustomFormControlDirective', () => {
+class TestClass extends CustomFormControl<any> {
+  public override setDisabledState(isDisabled: boolean): void {}
+}
+
+describe('CustomFormControl', () => {
   it('should create an instance', () => {
-    const directive = new CustomFormControlDirective();
-    expect(directive).toBeTruthy();
+    const object = new TestClass();
+    expect(object).toBeTruthy();
   });
 });

@@ -84,4 +84,18 @@ export class GameDataService {
 
     return this.httpCacheClient.post<Character>(url, characterData);
   }
+
+  public saveNewCharacter(
+    characterData: SeedCharacterData,
+    userId: string,
+    gameId: string
+  ): Observable<Character> {
+    const url = `${environment.apiUrl}/api/character/save-new-character`;
+
+    return this.httpCacheClient.post<Character>(url, {
+      data: characterData,
+      userId,
+      gameId,
+    });
+  }
 }

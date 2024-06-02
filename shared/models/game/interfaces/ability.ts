@@ -1,4 +1,4 @@
-import { Abilities } from '../enums/abilities';
+import { Abilities } from "../enums/abilities";
 
 export interface Ability {
   id: string;

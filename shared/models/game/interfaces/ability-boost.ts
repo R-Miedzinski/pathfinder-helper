@@ -1,4 +1,4 @@
-import { Abilities } from '../enums/abilities';
+import { Abilities } from "../enums/abilities";
 
 export interface AbilityBoost {
   type: AbilityBoostType;
@@ -6,7 +6,7 @@ export interface AbilityBoost {
 }
 
 export enum AbilityBoostType {
-  free = 'free',
-  choice = 'choice',
-  set = 'set',
+  free = "free",
+  choice = "choice",
+  set = "set",
 }

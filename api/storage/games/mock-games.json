@@ -1,0 +1,44 @@
+[
+  {
+    "id": "1",
+    "name": "some first game",
+    "gameMaster": "Me",
+    "characters": ["TEST-1-1", "TEST-2-1"],
+    "description": "super awesome first game"
+  },
+  {
+    "id": "2",
+    "name": "some other game",
+    "gameMaster": "Me",
+    "characters": ["TEST-1-2"],
+    "description": "super awesome second game"
+  },
+  {
+    "id": "3",
+    "name": "this game does not include user 1",
+    "gameMaster": "Me",
+    "characters": ["TEST-2-3"],
+    "description": "the best game ever"
+  },
+  {
+    "id": "4",
+    "name": "TEST",
+    "gameMaster": "Me",
+    "characters": ["TEST-1-4"],
+    "description": "TEST"
+  },
+  {
+    "id": "5",
+    "name": "TEST",
+    "gameMaster": "Me",
+    "characters": ["TEST-1-5"],
+    "description": "TEST"
+  },
+  {
+    "id": "6",
+    "name": "TEST",
+    "gameMaster": "Me",
+    "characters": ["TEST-1-6"],
+    "description": "TEST"
+  }
+]

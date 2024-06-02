@@ -1,0 +1,62 @@
+{
+  "id": "TEST-1-1",
+  "name": "asdasdasd",
+  "class": "Alchemist",
+  "race": "Dwarf",
+  "level": 1,
+  "ancestryFeats": ["A1"],
+  "classFeats": ["C1"],
+  "generalFeats": ["student-of-the-canon"],
+  "skillFeats": [],
+  "bonusFeats": ["darkvision"],
+  "boosts": ["Constitution", "Wisdom", "Strength", "Intelligence", "Strength", "Intelligence"],
+  "flaws": ["Charisma"],
+  "savingThrows": [
+    { "name": "Fortitude", "level": "Expert" },
+    { "name": "Reflex", "level": "Expert" },
+    { "name": "Will", "level": "Trained" }
+  ],
+  "skills": [
+    { "name": "Acrobatics", "level": "Trained", "value": 0, "ability": "Dexterity" },
+    { "name": "Arcana", "level": "Trained", "value": 0, "ability": "Intelligence" },
+    { "name": "Athletics", "level": "Trained", "value": 0, "ability": "Strength" },
+    { "name": "Crafting", "level": "Trained", "value": 0, "ability": "Intelligence" },
+    { "name": "Perception", "level": "Trained", "value": 0, "ability": "Wisdom" },
+    { "name": "Religion", "level": "Trained", "value": 0, "ability": "Wisdom" },
+    { "name": "Survival", "level": "Trained", "value": 0, "ability": "Wisdom" },
+    { "name": "Thievery", "level": "Trained", "value": 0, "ability": "Dexterity" }
+  ],
+  "attacks": [
+    { "type": "Simple", "level": "Trained" },
+    { "type": "Bomb", "level": "Trained" },
+    { "type": "Unarmed", "level": "Trained" }
+  ],
+  "defences": [
+    { "type": "Light armor", "level": "Trained" },
+    { "type": "Unarmored", "level": "Trained" }
+  ],
+  "inventory": [],
+  "equippedItems": [],
+  "investedItems": [],
+  "spells": [],
+  "actions": [],
+  "backstory": {
+    "story": "asdasadfgafgagadagafafagagag",
+    "alignment": "Neutral",
+    "languages": ["Common", "Dwarven", "another", "one"],
+    "nationality": "",
+    "ethnicity": "",
+    "deity": "",
+    "age": "",
+    "gender": "",
+    "pronouns": "",
+    "height": "",
+    "weight": "",
+    "appearence": "",
+    "attitude": "",
+    "beliefs": "",
+    "likes": "",
+    "dislikes": "",
+    "notes": ""
+  }
+}

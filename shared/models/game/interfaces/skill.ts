@@ -1,4 +1,4 @@
-import { skillToAbilityMap } from "../../public-api";
+import { skillToAbilityMap } from "../../../public-api";
 import { Abilities } from "../enums/abilities";
 import { Proficiency } from "../enums/proficiency";
 import { Skills } from "../enums/skills";

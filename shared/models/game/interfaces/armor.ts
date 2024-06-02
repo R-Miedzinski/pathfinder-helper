@@ -1,6 +1,6 @@
-import { ArmorCategory } from '../enums/armor-category';
-import { ArmorGroup } from '../enums/armor-group';
-import { Item } from './item';
+import { ArmorCategory } from "../enums/armor-category";
+import { ArmorGroup } from "../enums/armor-group";
+import { Item } from "./item";
 
 export interface Armor extends Item {
   category: ArmorCategory;

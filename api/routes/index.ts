@@ -12,10 +12,14 @@ import { BackgroundDataLoader } from '../services/background-data-loader'
 import { RaceDataLoader } from '../services/race-data-loader'
 import { actionsRouterFactory } from './actionsRouter'
 import { ActionsLoader } from '../services/actions-loader'
+import { userRouterFactory } from './userRouter'
+import { GamesLoader } from '../services/games-data-loader'
 
 const router = express.Router()
 
 // Declare service providers
+const gamesLoader = new GamesLoader()
+
 const featFetcher = new FeatFetcher()
 const traisLoader = new TraitsLoader()
 const classDataLoader = new ClassDataLoader()
@@ -29,6 +33,8 @@ router.use('*', (req, res, next) => {
 
   setTimeout(next, 500)
 })
+
+router.use('/api/user', userRouterFactory(gamesLoader))
 
 router.use('/api/character', characterRouterFactory(classDataLoader, raceDataLoader, featFetcher, actionsLoader))
 

@@ -5,17 +5,17 @@ import { FeatFetcher } from '../services/feat-fetcher'
 export function featsRouterFactory(featFetcher: FeatFetcher): Router {
   const featsRouter = express.Router()
 
-  featsRouter.get('/race-feats', (req, res, next) => {
+  featsRouter.get('/race-feats', (req, res) => {
     const race: Race | null = <Race>req.query.race ?? null
     const level: number = <number>(<unknown>req.query.level) ?? 0
 
     if (!race) {
       const err = new Error('Race is required to fetch race feats')
-      next(err)
+      res.status(500).send(err)
     }
 
     featFetcher
-      .getRaceFeatsWithQuery(level, race)
+      .getAncestryFeats(race, level)
       .then((data) => {
         if (data.length) {
           res.send(data)
@@ -23,20 +23,40 @@ export function featsRouterFactory(featFetcher: FeatFetcher): Router {
           throw Error('No feats were found')
         }
       })
-      .catch(next)
+      .catch((err) => res.status(500).send(err))
   })
 
-  featsRouter.get('/class-feats', (req, res, next) => {
+  featsRouter.get('/heritage-feats', (req, res) => {
+    const race: Race | null = <Race>req.query.race ?? null
+
+    if (!race) {
+      const err = new Error('Race is required to fetch race feats')
+      res.status(500).send(err)
+    }
+
+    featFetcher
+      .getHeritageFeats(race)
+      .then((data) => {
+        if (data.length) {
+          res.send(data)
+        } else {
+          throw Error('No feats were found')
+        }
+      })
+      .catch((err) => res.status(500).send(err))
+  })
+
+  featsRouter.get('/class-feats', (req, res) => {
     const charClass: Classes | null = <Classes>req.query.class ?? null
     const level: number = <number>(<unknown>req.query.level) ?? 0
 
     if (!charClass) {
       const err = new Error('Character class is required to fetch class feats')
-      next(err)
+      res.status(500).send(err)
     }
 
     featFetcher
-      .getClassFeatsWithQuery(level, charClass)
+      .getClassFeats(charClass, level)
       .then((data) => {
         if (data.length) {
           res.send(data)
@@ -44,10 +64,10 @@ export function featsRouterFactory(featFetcher: FeatFetcher): Router {
           throw Error('No feats were found')
         }
       })
-      .catch(next)
+      .catch((err) => res.status(500).send(err))
   })
 
-  featsRouter.get('/:id', (req, res, next) => {
+  featsRouter.get('/:id', (req, res) => {
     const featMock: Feat = {
       id: req.params.id,
       name: 'mock feat 1',
@@ -61,7 +81,7 @@ export function featsRouterFactory(featFetcher: FeatFetcher): Router {
       .then((data) => {
         res.send(data ?? featMock)
       })
-      .catch(next)
+      .catch((err) => res.status(500).send(err))
   })
 
   return featsRouter

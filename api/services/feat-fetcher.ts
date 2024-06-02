@@ -11,19 +11,41 @@ export class FeatFetcher extends JsonDataLoader<FeatData> {
     return this.loadDataFromFile().then((data) => data.find((item) => item.id === id))
   }
 
-  public getRaceFeatsWithQuery(level: number, race: Race): Promise<FeatData[]> {
-    return this.loadDataFromFile().then((data) =>
-      data.filter((item) => item.level <= level && item.traits?.includes(race.toLocaleLowerCase()))
-    )
-  }
-
-  public getClassFeatsWithQuery(level: number, charClass: Classes): Promise<FeatData[]> {
+  public getAncestryFeats(race: Race, level: number): Promise<FeatData[]> {
     return this.loadDataFromFile().then((data) =>
       data.filter(
         (item) =>
-          item.level <= level &&
+          item.category === FeatCategory.ancestry &&
+          +item.level === +level &&
+          item.traits?.includes(race.toLocaleLowerCase())
+      )
+    )
+  }
+
+  public getHeritageFeats(race: Race): Promise<FeatData[]> {
+    return this.loadDataFromFile().then((data) =>
+      data.filter((item) => item.category === FeatCategory.heritage && item.traits?.includes(race.toLocaleLowerCase()))
+    )
+  }
+
+  public getClassFeats(charClass: Classes, level: number): Promise<FeatData[]> {
+    return this.loadDataFromFile().then((data) =>
+      data.filter(
+        (item) =>
+          +item.level === +level &&
           item.traits?.includes(charClass.toLocaleLowerCase()) &&
           item.category === FeatCategory.class
+      )
+    )
+  }
+
+  public getClassFeatures(charClass: Classes, level: number): Promise<FeatData[]> {
+    return this.loadDataFromFile().then((data) =>
+      data.filter(
+        (item) =>
+          +item.level === +level &&
+          item.traits?.includes(charClass.toLocaleLowerCase()) &&
+          item.category === FeatCategory.feature
       )
     )
   }

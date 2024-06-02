@@ -49,6 +49,7 @@ export class NewCharacterComponent implements OnInit, OnDestroy {
   protected detailsForm!: FormGroup;
   protected additionalSkills: FormControl = new FormControl<Skill[]>([]);
   protected addLanguageControl: FormControl = new FormControl<string[]>([]);
+  protected gameIdControl: FormControl = new FormControl<string>('1');
 
   protected raceData?: RaceData;
   protected raceFeats: Feat[] = [];
@@ -68,6 +69,7 @@ export class NewCharacterComponent implements OnInit, OnDestroy {
   protected abilityModifiers?: Record<Abilities, number>;
 
   protected readonly proficiencies = Proficiency;
+  private characterData?: SeedCharacterData;
   private readonly ngDestroyed$: Subject<void> = new Subject();
 
   constructor(
@@ -135,7 +137,7 @@ export class NewCharacterComponent implements OnInit, OnDestroy {
         ?.get('languages')
         ?.setValue(this.addLanguageControl.value);
 
-      const characterData: SeedCharacterData = {
+      this.characterData = {
         id: '0',
         name: this.detailsForm.get('name')?.value,
         class: this.chosenClass!.name,
@@ -170,15 +172,32 @@ export class NewCharacterComponent implements OnInit, OnDestroy {
         backstory: this.detailsForm.get('backstory')?.value,
       };
 
-      console.log(characterData);
+      console.log(this.characterData);
 
       this.gameDataService
-        .previewNewCharacter(characterData)
+        .previewNewCharacter(this.characterData)
         .pipe(takeUntil(this.ngDestroyed$))
         .subscribe({
           next: character => {
             this.store.dispatch(GameActions.saveCharacterAction({ character }));
           },
+        });
+    }
+  }
+
+  protected saveCharacter(): void {
+    if (this.characterData) {
+      let gameId = this.gameIdControl.value;
+
+      if (!gameId) {
+        gameId = '1';
+      }
+
+      this.gameDataService
+        .saveNewCharacter(this.characterData, '1', gameId)
+        .pipe(takeUntil(this.ngDestroyed$))
+        .subscribe({
+          next: res => console.log(res),
         });
     }
   }
