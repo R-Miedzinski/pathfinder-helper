@@ -86,7 +86,6 @@ export class ChooseRaceFormComponent implements OnInit, OnDestroy {
             this.race.emit(raceData);
 
             this.initBoostsForm(raceData.boosts, raceData.flaws);
-
             this.getDarkvisionFeat();
             this.handleRaceFeatsFetch();
           },
@@ -172,13 +171,28 @@ export class ChooseRaceFormComponent implements OnInit, OnDestroy {
       )
     );
 
+    if (this.boosts.valid && this.flaws.valid) {
+      this.abilities.emit({
+        boosts: this.boosts.value.map(
+          (item: { boost: Abilities }) => item.boost
+        ),
+        flaws: this.flaws.value.map((item: { flaw: Abilities }) => item.flaw),
+      });
+    }
+
     this.boostsForm.valueChanges.pipe(takeUntil(this.ngDestroyed$)).subscribe({
       next: boostData => {
         if (this.boosts.valid && this.flaws.valid) {
           this.abilities.emit({
-            boosts: this.boosts.value,
-            flaws: this.flaws.value,
+            boosts: this.boosts.value.map(
+              (item: { boost: Abilities }) => item.boost
+            ),
+            flaws: this.flaws.value.map(
+              (item: { flaw: Abilities }) => item.flaw
+            ),
           });
+        } else {
+          this.abilities.emit(undefined);
         }
       },
     });

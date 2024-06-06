@@ -3,6 +3,7 @@ import {
   Abilities,
   Character,
   ClassDC,
+  FeatEffect,
   InitClassData,
   Proficiency,
   RaceData,
@@ -16,6 +17,7 @@ import { identifyEffects } from './identify-effects'
 import { ClassDataLoader } from '../services/class-data-loader'
 import { RaceDataLoader } from '../services/race-data-loader'
 import { ActionsLoader } from '../services/actions-loader'
+import { BackgroundDataLoader } from '../services/background-data-loader'
 
 export class CharacterFactory {
   private character: Character
@@ -28,7 +30,8 @@ export class CharacterFactory {
     private classDataLoader: ClassDataLoader,
     private raceDataLoader: RaceDataLoader,
     private featFetcher: FeatFetcher,
-    private actionsLoader: ActionsLoader
+    private actionsLoader: ActionsLoader,
+    private backgroundDataLoader: BackgroundDataLoader
   ) {
     this.character = newCharacter()
   }
@@ -60,13 +63,12 @@ export class CharacterFactory {
     this.character.id = this.seedData.id
     this.character.characterName = this.seedData.name
     this.character.class = this.seedData.class
+    this.character.background = await this.backgroundDataLoader
+      .getBackroundData(this.seedData.background)
+      .then((data) => data.name)
 
-    this.character.feats = ([] as { id: string; name: string }[])
-      .concat(this.seedData.ancestryFeats.map((id) => ({ id, name: 'Feat: ' + id })))
-      .concat(this.seedData.classFeats.map((id) => ({ id, name: 'Feat: ' + id })))
-      .concat(this.seedData.skillFeats.map((id) => ({ id, name: 'Feat: ' + id })))
-      .concat(this.seedData.bonusFeats.map((id) => ({ id, name: 'Feat: ' + id })))
-      .concat(this.seedData.generalFeats.map((id) => ({ id, name: 'Feat: ' + id })))
+    this.character.feats = this.seedData.feats.filter(Boolean)
+    this.character.featChoices = this.seedData.featChoices
 
     this.character.race = this.seedData.race
     this.character.level = this.seedData.level
@@ -87,18 +89,26 @@ export class CharacterFactory {
   }
 
   private async applyFeats(): Promise<void[]> {
+    const featToChoice = new Map<string, FeatEffect[]>(
+      this.character.featChoices.map((choice) => [choice.featId, choice.effect])
+    )
+
     const promises = this.character.feats.map((feat) => {
       return new Promise<void>((resolve, reject) => {
         this.featFetcher
-          .getFeatData(feat.id)
+          .getFeatData(feat)
           .then(async (data) => {
             if (data) {
               console.log(
                 'handling feat: ',
-                feat.id,
+                feat,
                 data.effect.map((item) => item.effectType)
               )
-              const featHandlers = identifyEffects(data, this.featFetcher)
+              const choiceEffects = featToChoice.get(data.id)
+              if (choiceEffects?.length) {
+                data.effect.concat(choiceEffects)
+              }
+              const featHandlers = identifyEffects(data.effect, this.featFetcher)
               const handlerPromises = featHandlers.map(
                 async (handler) => await handler.handleFeat(this.character, this.seedData)
               )

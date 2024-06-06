@@ -44,7 +44,6 @@ export {
 } from "./models/game/interfaces/class-data";
 export { ClassDC } from "./models/game/interfaces/class-dc";
 export {
-  FeatData,
   FeatEffect,
   GrantActionEffect,
   GrantFeatEffect,
@@ -54,6 +53,7 @@ export {
   GrantWeaponProficiencyEffect,
   GrantArmorProficiencyEffect,
   GrantSTProficiencyEffect,
+  FeatChoiceEffect,
 } from "./models/game/interfaces/feat-data";
 export { Feat, FeatConditions } from "./models/game/interfaces/feat";
 export { HP } from "./models/game/interfaces/hp";

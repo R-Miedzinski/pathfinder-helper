@@ -1,4 +1,4 @@
-import { FeatData, FeatEffectType } from 'rpg-app-shared-package'
+import { FeatEffect, FeatEffectType } from 'rpg-app-shared-package'
 import { FeatHandler } from '../models/feat-handler'
 import { ActionHandler } from '../models/feat-handlers/action-handler'
 import { AddFeatHandler } from '../models/feat-handlers/add-feat-handler'
@@ -11,8 +11,8 @@ import { ArmorProficiencyHandler } from '../models/feat-handlers/armor-proficien
 import { SavingThrowHandler } from '../models/feat-handlers/saving-throw-handler'
 import { FeatFetcher } from '../services/feat-fetcher'
 
-export function identifyEffects(feat: FeatData, featFetcher: FeatFetcher): FeatHandler[] {
-  return feat.effect.map((effect) => {
+export function identifyEffects(effect: FeatEffect[], featFetcher: FeatFetcher): FeatHandler[] {
+  return effect.map((effect) => {
     switch (effect.effectType) {
       case FeatEffectType.action:
         return new ActionHandler(effect)

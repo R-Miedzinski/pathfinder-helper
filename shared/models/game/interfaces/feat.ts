@@ -1,7 +1,5 @@
-import { Abilities } from "../enums/abilities";
 import { FeatCategory } from "../enums/feat-category";
-import { Proficiency } from "../enums/proficiency";
-import { Skills } from "../enums/skills";
+import { FeatEffect } from "./feat-data";
 import { RulePayload } from "./rule-payload";
 
 export interface Feat {
@@ -12,6 +10,8 @@ export interface Feat {
   traits?: string[];
   description: string;
   rules?: RulePayload[];
+  effect: FeatEffect[];
+  overwrites?: string;
 }
 
 export enum FeatConditions {

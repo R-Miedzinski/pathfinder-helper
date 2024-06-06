@@ -1,5 +1,5 @@
 import express, { Router } from 'express'
-import { Classes, Feat, FeatCategory, Race } from 'rpg-app-shared-package'
+import { Classes, Race } from 'rpg-app-shared-package'
 import { FeatFetcher } from '../services/feat-fetcher'
 
 export function featsRouterFactory(featFetcher: FeatFetcher): Router {
@@ -68,18 +68,14 @@ export function featsRouterFactory(featFetcher: FeatFetcher): Router {
   })
 
   featsRouter.get('/:id', (req, res) => {
-    const featMock: Feat = {
-      id: req.params.id,
-      name: 'mock feat 1',
-      level: 1,
-      category: FeatCategory.special,
-      description: 'this is a test feat',
-    }
-
     featFetcher
       .getFeatData(req.params.id)
       .then((data) => {
-        res.send(data ?? featMock)
+        if (data) {
+          res.send(data)
+        } else {
+          throw Error(`No feat with id ${req.params.id} found`)
+        }
       })
       .catch((err) => res.status(500).send(err))
   })

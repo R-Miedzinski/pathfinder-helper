@@ -10,12 +10,6 @@
   }
 }
 
-.additional-info-form {
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-}
-
 .backstory {
   &__form {
     display: flex;
@@ -39,9 +33,6 @@
     &.third-width {
       width: 33.33%;
     }
-  }
-
-  &__input {
   }
 }
 

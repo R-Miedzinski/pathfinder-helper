@@ -7,12 +7,13 @@ import { Injectable } from '@angular/core';
 import {
   BackgroundData,
   Character,
+  Classes,
   DisplayInitClassData,
   Race,
   RaceData,
   SeedCharacterData,
 } from 'rpg-app-shared-package/dist/public-api';
-import { Observable, catchError, of } from 'rxjs';
+import { EMPTY, Observable, catchError, of } from 'rxjs';
 import { HttpCacheClientService } from 'src/app/shared/services/http-cache-client.service';
 import { environment } from 'src/environment/environment';
 
@@ -60,13 +61,13 @@ export class GameDataService {
     return this.httpCacheClient.get<BackgroundData>(url);
   }
 
-  public getClasses(): Observable<{ id: string; name: string }[]> {
+  public getClasses(): Observable<{ id: string; name: Classes }[]> {
     const url = `${environment.apiUrl}/api/classes`;
 
-    return this.httpClient.get<{ id: string; name: string }[]>(url).pipe(
+    return this.httpClient.get<{ id: string; name: Classes }[]>(url).pipe(
       catchError((err: HttpErrorResponse) => {
         console.error('error in getting classes', err.message);
-        return of([]);
+        return EMPTY;
       })
     );
   }

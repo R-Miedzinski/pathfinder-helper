@@ -1,0 +1,34 @@
+.new-character-form {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+
+  & > * {
+    flex-basis: 100%;
+    padding: 0.8rem 1.6rem;
+    border: 1px solid black;
+  }
+}
+
+.required::after {
+  content: '*';
+  color: red;
+}
+
+.background {
+  &__choice {
+    display: flex;
+    flex-direction: column;
+    align-items: baseline;
+    gap: 0.4rem;
+  }
+
+  &__feats {
+    ul {
+      width: 60%;
+      display: flex;
+      justify-content: space-between;
+      gap: 0.8rem;
+    }
+  }
+}

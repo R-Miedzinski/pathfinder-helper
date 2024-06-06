@@ -7,14 +7,16 @@ import { Classes } from "../enums/classes";
 import { Race } from "../enums/race";
 import { WeaponProficiency } from "./weapon-proficiency";
 import { ArmorProficiency } from "./armor-proficiency";
-import { Abilities } from "../enums/abilities";
 import { ClassDC } from "./class-dc";
+import { FeatChoice } from "./feat-choice";
 
 export interface Character {
   id: string;
   characterName: string;
   class: Classes;
-  feats: { id: string; name: string }[];
+  background: string;
+  feats: string[];
+  featChoices: FeatChoice[];
   race: Race;
   level: number;
   abilities: Ability[];
@@ -51,7 +53,9 @@ export function newCharacter(): Character {
     id: "",
     characterName: "",
     class: Classes.fighter,
+    background: "",
     feats: [],
+    featChoices: [],
     race: Race.human,
     level: 1,
     abilities: newAbilities(),

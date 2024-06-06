@@ -8,4 +8,5 @@ export enum FeatEffectType {
   boost = "Ability Boost",
   flaw = "Ability Flaw",
   feat = "Feat",
+  choice = "Choice",
 }

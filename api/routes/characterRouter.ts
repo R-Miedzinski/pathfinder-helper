@@ -6,17 +6,20 @@ import path from 'path'
 import { ClassDataLoader } from '../services/class-data-loader'
 import { RaceDataLoader } from '../services/race-data-loader'
 import { ActionsLoader } from '../services/actions-loader'
+import { BackgroundDataLoader } from '../services/background-data-loader'
+import { SeedCharacterData } from 'rpg-app-shared-package/dist/public-api'
 
 export function characterRouterFactory(
   classDataLoader: ClassDataLoader,
   raceDataLoader: RaceDataLoader,
   featFetcher: FeatFetcher,
-  actionsLoader: ActionsLoader
+  actionsLoader: ActionsLoader,
+  backgroundDataLoader: BackgroundDataLoader
 ): Router {
   const characterRouter = express.Router()
 
   characterRouter.post('/save-new-character', (req, res) => {
-    const seedData = req.body.data
+    const seedData: SeedCharacterData = req.body.data
     const userId = req.body.userId
     const gameId = req.body.gameId
 
@@ -35,12 +38,13 @@ export function characterRouterFactory(
 
       const id = `TEST-${userId}-${gameId}`
       seedData.id = id
+      seedData.feats = seedData.feats.filter(Boolean)
 
       fs.writeFile(newCharacterFile, JSON.stringify(seedData), { flag: 'w+' }, (error) => {
         if (error) {
           res.status(500).send(error)
         } else {
-          res.send('success in saving file')
+          res.status(200).send(`<p>success in saving character: ${id}</p>`)
         }
       })
     } else {
@@ -51,7 +55,14 @@ export function characterRouterFactory(
   })
 
   characterRouter.post('/new-character-preview', (req, res) => {
-    const characterFactory = new CharacterFactory(req.body, classDataLoader, raceDataLoader, featFetcher, actionsLoader)
+    const characterFactory = new CharacterFactory(
+      req.body,
+      classDataLoader,
+      raceDataLoader,
+      featFetcher,
+      actionsLoader,
+      backgroundDataLoader
+    )
 
     characterFactory
       .buildNewCharacter()
@@ -79,7 +90,8 @@ export function characterRouterFactory(
         classDataLoader,
         raceDataLoader,
         featFetcher,
-        actionsLoader
+        actionsLoader,
+        backgroundDataLoader
       )
 
       characterFactory

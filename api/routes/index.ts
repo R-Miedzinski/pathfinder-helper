@@ -36,7 +36,10 @@ router.use('*', (req, res, next) => {
 
 router.use('/api/user', userRouterFactory(gamesLoader))
 
-router.use('/api/character', characterRouterFactory(classDataLoader, raceDataLoader, featFetcher, actionsLoader))
+router.use(
+  '/api/character',
+  characterRouterFactory(classDataLoader, raceDataLoader, featFetcher, actionsLoader, backgroundDataLoader)
+)
 
 router.use('/api/spells', (req, res) => {
   res.send('spells')

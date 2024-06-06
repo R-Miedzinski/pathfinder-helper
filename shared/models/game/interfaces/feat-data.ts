@@ -5,11 +5,7 @@ import { Proficiency } from "../enums/proficiency";
 import { SavingThrowName } from "../enums/saving-throw-names";
 import { Skills } from "../enums/skills";
 import { WeaponGroup } from "../enums/weapon-group";
-import { Feat } from "./feat";
-
-export interface FeatData extends Feat {
-  effect: FeatEffect[];
-}
+import { FeatChoiceType } from "./feat-choice";
 
 export interface FeatEffect {
   effectType: FeatEffectType;
@@ -66,5 +62,12 @@ export interface GrantBoostEffect extends FeatEffect {
 export interface GrantFlawEffect extends FeatEffect {
   payload: {
     flaw: Abilities;
+  };
+}
+
+export interface FeatChoiceEffect extends FeatEffect {
+  payload: {
+    choiceType: FeatChoiceType;
+    data: unknown;
   };
 }

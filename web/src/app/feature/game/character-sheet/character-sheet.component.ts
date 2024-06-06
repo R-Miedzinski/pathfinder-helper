@@ -70,10 +70,8 @@ export class CharacterSheetComponent implements OnInit, OnDestroy {
       .select(GameSelectors.getFeats)
       .pipe(takeUntil(this.ngDestroyed$))
       .subscribe({
-        next: (featIds: { id: string; name: string }[]) => {
-          this.featsList$ = this.featsService.getFeats(
-            featIds.map(item => item.id)
-          );
+        next: (featIds: string[]) => {
+          this.featsList$ = this.featsService.getFeats(featIds);
         },
       });
 

@@ -1,14 +1,11 @@
 {
   "id": "TEST-1-1",
-  "name": "asdasdasd",
+  "name": "Not ORK",
   "class": "Alchemist",
   "race": "Dwarf",
+  "background": "acolyte",
   "level": 1,
-  "ancestryFeats": ["A1"],
-  "classFeats": ["C1"],
-  "generalFeats": ["student-of-the-canon"],
-  "skillFeats": [],
-  "bonusFeats": ["darkvision"],
+  "feats": ["ancient-blooded-dwarf", "dwarven-lore", "C5", "student-of-the-canon", "darkvision"],
   "boosts": ["Constitution", "Wisdom", "Strength", "Intelligence", "Strength", "Intelligence"],
   "flaws": ["Charisma"],
   "savingThrows": [
@@ -17,14 +14,15 @@
     { "name": "Will", "level": "Trained" }
   ],
   "skills": [
-    { "name": "Acrobatics", "level": "Trained", "value": 0, "ability": "Dexterity" },
-    { "name": "Arcana", "level": "Trained", "value": 0, "ability": "Intelligence" },
     { "name": "Athletics", "level": "Trained", "value": 0, "ability": "Strength" },
     { "name": "Crafting", "level": "Trained", "value": 0, "ability": "Intelligence" },
+    { "name": "Diplomacy", "level": "Trained", "value": 0, "ability": "Charisma" },
+    { "name": "Occultism", "level": "Trained", "value": 0, "ability": "Intelligence" },
     { "name": "Perception", "level": "Trained", "value": 0, "ability": "Wisdom" },
+    { "name": "Performance", "level": "Trained", "value": 0, "ability": "Charisma" },
     { "name": "Religion", "level": "Trained", "value": 0, "ability": "Wisdom" },
     { "name": "Survival", "level": "Trained", "value": 0, "ability": "Wisdom" },
-    { "name": "Thievery", "level": "Trained", "value": 0, "ability": "Dexterity" }
+    { "value": 0, "name": "Lore", "level": "Trained", "specialty": "Scribing", "ability": "Intelligence" }
   ],
   "attacks": [
     { "type": "Simple", "level": "Trained" },
@@ -41,9 +39,9 @@
   "spells": [],
   "actions": [],
   "backstory": {
-    "story": "asdasadfgafgagadagafafagagag",
-    "alignment": "Neutral",
-    "languages": ["Common", "Dwarven", "another", "one"],
+    "story": "Really. Not an ORK.",
+    "alignment": "Chaotic Evil",
+    "languages": ["Common", "Dwarven", "ORK", "WAAAAAGH!!!"],
     "nationality": "",
     "ethnicity": "",
     "deity": "",

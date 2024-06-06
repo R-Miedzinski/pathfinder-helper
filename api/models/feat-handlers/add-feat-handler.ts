@@ -16,8 +16,10 @@ export class AddFeatHandler extends FeatHandler {
 
     await this.featFetcher.getFeatData((<GrantFeatEffect>this._effect).payload.featId).then((data) => {
       if (data) {
-        character.feats.push(data)
-        identifyEffects(data, this.featFetcher).forEach(async (effect) => await effect.handleFeat(character, seedData))
+        character.feats.push(data.id)
+        identifyEffects(data.effect, this.featFetcher).forEach(
+          async (effect) => await effect.handleFeat(character, seedData)
+        )
       }
     })
   }

@@ -1,35 +1,56 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import keepOrder from 'src/app/shared/helpers/keepOrder';
 import { Store } from '@ngrx/store';
 import { GameState } from '../ngrx/game-reducer';
 import * as GameActions from '../ngrx/game-actions';
 import * as GameSelectors from '../ngrx/game-selector';
 import {
-  FormArray,
   FormBuilder,
   FormControl,
   FormGroup,
   Validators,
 } from '@angular/forms';
 import { GameDataService } from '../services/game-data.service';
-import { Observable, Subject, map, takeUntil } from 'rxjs';
-import { FeatsService } from '../services/feats.service';
+import { Subject, takeUntil } from 'rxjs';
 import {
   Abilities,
-  AbilityBoost,
-  AbilityBoostType,
-  Alignment,
   BackgroundData,
-  Classes,
   Feat,
-  Race,
   RaceData,
   SeedCharacterData,
   DisplayInitClassData,
   Proficiency,
   Skill,
+  Backstory,
+  FeatEffectType,
+  GrantSkillProficiencyEffect,
+  skillToAbilityMap,
 } from 'rpg-app-shared-package/dist/public-api';
 import { StepperSelectionEvent } from '@angular/cdk/stepper';
+import { FeatsService } from '../services/feats.service';
+
+interface RaceChoiceControl {
+  raceData?: RaceData;
+  heritageFeat?: Feat;
+  raceFeat?: Feat;
+  boosts?: Abilities[];
+  flaws?: Abilities[];
+}
+
+interface BackgroundChoiceControl {
+  background?: BackgroundData;
+  boosts?: Abilities[];
+}
+
+interface ClassChoiceControl {
+  classData?: DisplayInitClassData;
+  boosts?: Abilities[];
+  classFeat?: Feat;
+}
+
+interface BackstoryChoiceControl {
+  backstory?: Backstory;
+  name?: string;
+}
 
 @Component({
   selector: 'app-new-character',
@@ -37,37 +58,21 @@ import { StepperSelectionEvent } from '@angular/cdk/stepper';
   styleUrls: ['./new-character.component.scss'],
 })
 export class NewCharacterComponent implements OnInit, OnDestroy {
-  protected alignments = Alignment;
-  protected boostTypes = AbilityBoostType;
-  protected backgroundForm!: FormGroup;
-  protected chooseClassForm!: FormGroup;
-  protected eqForm!: FormGroup;
-  protected detailsForm!: FormGroup;
-  protected additionalSkills: FormControl = new FormControl<Skill[]>([]);
-  protected addLanguageControl: FormControl = new FormControl<string[]>([]);
-  protected gameIdControl: FormControl = new FormControl<string>('1');
-
-  protected raceData?: RaceData;
-  protected classFeats: Feat[] = [];
-  protected backgrounds: { id: string; name: string }[] = [];
-  protected chosenBackground?: BackgroundData;
-  protected classes: { id: string; name: string }[] = [];
-  protected chosenClass?: DisplayInitClassData;
+  protected featSkills: Skill[] = [];
   protected chosenSkills: Skill[] = [];
   protected skillsToChange: number = 0;
   protected languagesToAdd: number = 0;
-
-  protected raceBoosts?: Abilities[];
-  protected raceFlaws?: Abilities[];
-  protected chosenHeritageFeat?: Feat;
-  protected chosenRaceFeat?: Feat;
-
-  protected chosenBackgroundFeats?: Feat[];
-  protected chosenClassFeat?: Feat;
-  protected darkvision$: Observable<Feat> = new Observable();
   protected abilityModifiers?: Record<Abilities, number>;
 
-  protected readonly keepOrderLocal = keepOrder;
+  protected raceChoiceControl: FormGroup = new FormGroup({});
+  protected backgroundChoiceControl: FormGroup = new FormGroup({});
+  protected classChoiceControl: FormGroup = new FormGroup({});
+  protected additionalSkills: FormControl = new FormControl<Skill[]>([]);
+  protected addLanguageControl: FormControl = new FormControl<string[]>([]);
+  protected equipmentControl: FormGroup = new FormGroup({});
+  protected backstoryControl: FormGroup = new FormGroup({});
+  protected gameIdControl: FormControl = new FormControl<string>('1');
+
   protected readonly proficiencies = Proficiency;
   private characterData?: SeedCharacterData;
   private readonly ngDestroyed$: Subject<void> = new Subject();
@@ -80,6 +85,7 @@ export class NewCharacterComponent implements OnInit, OnDestroy {
   ) {}
 
   public ngOnInit(): void {
+    this.initRaceChoiceForm();
     this.initBackgroundForm();
     this.initClassForm();
     this.initDetailsForm();
@@ -91,31 +97,78 @@ export class NewCharacterComponent implements OnInit, OnDestroy {
   }
 
   public onRace(event: RaceData | undefined): void {
-    this.raceData = event;
+    this.raceChoiceControl.get('raceData')?.setValue(event);
   }
 
   public onRaceFeat(event: Feat | undefined): void {
-    this.chosenRaceFeat = event;
+    this.raceChoiceControl.get('raceFeat')?.setValue(event);
   }
 
   public onHeritageFeat(event: Feat | undefined): void {
-    this.chosenHeritageFeat = event;
+    this.raceChoiceControl.get('heritageFeat')?.setValue(event);
   }
 
   public onRaceAbilities(event: {
     boosts?: Abilities[];
     flaws?: Abilities[];
   }): void {
-    this.raceBoosts = event?.boosts;
-    this.raceFlaws = event?.flaws;
+    this.raceChoiceControl.get('boosts')?.setValue(event?.boosts);
+    this.raceChoiceControl.get('flaws')?.setValue(event?.flaws);
   }
 
-  protected get backgroundBoosts(): FormArray {
-    return this.backgroundForm.get('boosts') as FormArray;
+  public onBackground(event: BackgroundData): void {
+    this.backgroundChoiceControl.get('background')?.setValue(event);
   }
 
-  protected get classBoosts(): FormArray {
-    return this.chooseClassForm.get('boosts') as FormArray;
+  public onBackgroundBoosts(event: Abilities[]): void {
+    this.backgroundChoiceControl.get('boosts')?.setValue(event);
+  }
+
+  public onClassData(event: DisplayInitClassData): void {
+    this.classChoiceControl.get('classData')?.setValue(event);
+  }
+
+  public onClassBoosts(event: Abilities[]): void {
+    this.classChoiceControl.get('boosts')?.setValue(event);
+  }
+
+  public onClassFeat(event: Feat): void {
+    this.classChoiceControl.get('classFeat')?.setValue(event);
+  }
+
+  public onBackstory(event: Backstory): void {
+    this.backstoryControl.get('backstory')?.setValue(event);
+  }
+
+  public onName(event: string): void {
+    this.backstoryControl.get('name')?.setValue(event);
+  }
+
+  public get raceChoice(): RaceChoiceControl {
+    return this.raceChoiceControl.value;
+  }
+
+  public get backgroundChoice(): BackgroundChoiceControl {
+    return this.backgroundChoiceControl.value;
+  }
+
+  public get classChoice(): ClassChoiceControl {
+    return this.classChoiceControl.value;
+  }
+
+  public get backstoryChoice(): BackstoryChoiceControl {
+    return this.backstoryControl.value;
+  }
+
+  public characterFeats(): string[] {
+    const featIds = [
+      this.raceChoice!.heritageFeat!.id,
+      this.raceChoice!.raceFeat!.id,
+      ...(this.backgroundChoice.background?.feats ?? []),
+      this.classChoice!.classFeat!.id,
+    ];
+
+    return featIds;
   }
 
   protected onStepChanged(event: StepperSelectionEvent): void {
@@ -125,45 +178,12 @@ export class NewCharacterComponent implements OnInit, OnDestroy {
       this.initLanguageForm();
       this.initAdditionalSkillsForm();
     } else if (event.selectedIndex === 6) {
-      this.detailsForm
+      this.backgroundChoiceControl
         .get('backstory')
         ?.get('languages')
         ?.setValue(this.addLanguageControl.value);
 
-      this.characterData = {
-        id: '0',
-        name: this.detailsForm.get('name')?.value,
-        class: this.chosenClass!.name,
-        race: this.raceData!.name,
-        level: 1,
-        ancestryFeats: [this.chosenHeritageFeat?.id!, this.chosenRaceFeat?.id!],
-        classFeats: [this.chooseClassForm.get('feat')?.value],
-        generalFeats: this.chosenBackground?.feats ?? [],
-        skillFeats: [],
-        bonusFeats: this.raceData?.darkvision
-          ? [this.raceData?.darkvision]
-          : [],
-        boosts: [
-          ...(this.raceBoosts ?? []),
-          ...this.backgroundForm
-            .get('boosts')
-            ?.value.map((item: { boost: Abilities }) => item.boost),
-          ...this.chooseClassForm
-            .get('boosts')
-            ?.value.map((item: { boost: Abilities }) => item.boost),
-        ],
-        flaws: this.raceFlaws ?? [],
-        savingThrows: [...(this.chosenClass?.savingThrows ?? [])],
-        skills: this.additionalSkills.value,
-        attacks: this.chosenClass?.weaponProficiencies ?? [],
-        defences: this.chosenClass?.armorProficiencies ?? [],
-        inventory: [],
-        equippedItems: [],
-        investedItems: [],
-        spells: [],
-        actions: [],
-        backstory: this.detailsForm.get('backstory')?.value,
-      };
+      this.characterData = this.gatherCharacterData();
 
       console.log(this.characterData);
 
@@ -195,188 +215,85 @@ export class NewCharacterComponent implements OnInit, OnDestroy {
     }
   }
 
+  private initRaceChoiceForm(): void {
+    this.raceChoiceControl = this.fb.group({
+      raceData: [undefined, Validators.required],
+      heritageFeat: [undefined, Validators.required],
+      raceFeat: [undefined, Validators.required],
+      boosts: [undefined, Validators.required],
+      flaws: [undefined, Validators.required],
+    });
+  }
+
   private initBackgroundForm(): void {
-    this.backgroundForm = this.fb.group({
-      background: ['', Validators.required],
-      boosts: this.fb.array([]),
+    this.backgroundChoiceControl = this.fb.group({
+      background: [undefined, Validators.required],
+      boosts: [undefined, Validators.required],
     });
-
-    this.gameDataService.getBackgrounds().subscribe({
-      next: (value: { id: string; name: string }[]) => {
-        this.backgrounds = value;
-      },
-    });
-
-    this.backgroundForm
-      .get('background')
-      ?.valueChanges.pipe(takeUntil(this.ngDestroyed$))
-      .subscribe({
-        next: (id: string) => {
-          this.gameDataService.getBackgorundData(id).subscribe({
-            next: (data: BackgroundData) => {
-              this.initBackgroundBoostsForm([]);
-
-              this.chosenBackground = data;
-              this.getBackgroundFeats(this.chosenBackground.feats ?? []);
-              this.initBackgroundBoostsForm(this.chosenBackground.boosts);
-            },
-          });
-        },
-      });
   }
 
   private initClassForm(): void {
-    this.chooseClassForm = this.fb.group({
-      class: ['', Validators.required],
-      boosts: this.fb.array([]),
-      feat: ['', Validators.required],
+    this.classChoiceControl = this.fb.group({
+      classData: [undefined, Validators.required],
+      boosts: [undefined, Validators.required],
+      classFeat: [undefined, Validators.required],
     });
-
-    this.gameDataService.getClasses().subscribe({
-      next: (value: { id: string; name: string }[]) => {
-        this.classes = value;
-      },
-    });
-
-    this.chooseClassForm
-      .get('class')
-      ?.valueChanges.pipe(takeUntil(this.ngDestroyed$))
-      .subscribe({
-        next: (id: string) => {
-          this.gameDataService.getClassData(id).subscribe({
-            next: (data: DisplayInitClassData) => {
-              this.initClassBoostsForm([]);
-              this.chooseClassForm
-                .get('feat')
-                ?.setValue('', { emitEvent: false });
-              this.chosenClassFeat = undefined;
-
-              this.chosenClass = data;
-              this.initClassFeatsForm(this.chosenClass.name);
-              this.initClassBoostsForm(this.chosenClass.boosts);
-            },
-          });
-        },
-      });
-
-    this.chooseClassForm
-      .get('feat')
-      ?.valueChanges.pipe(takeUntil(this.ngDestroyed$))
-      .subscribe({
-        next: featId =>
-          (this.chosenClassFeat = this.classFeats.find(
-            feat => feat.id === featId
-          )),
-      });
   }
 
   private initDetailsForm(): void {
-    this.detailsForm = this.fb.group({
-      name: ['', Validators.required],
-      backstory: this.fb.group({
-        story: ['', Validators.required],
-        alignment: [Alignment.N, Validators.required],
-        languages: [[]],
-        nationality: [''],
-        ethnicity: [''],
-        deity: [''],
-        age: [''],
-        gender: [''],
-        pronouns: [''],
-        height: [''],
-        weight: [''],
-        appearence: [''],
-        attitude: [''],
-        beliefs: [''],
-        likes: [''],
-        dislikes: [''],
-        notes: [''],
-      }),
-    });
-
-    this.detailsForm
-      .get('name')
-      ?.valueChanges.pipe(takeUntil(this.ngDestroyed$))
-      .subscribe({
-        next: name => this.store.dispatch(GameActions.saveNameAction({ name })),
-      });
-
-    this.detailsForm
-      .get('backstory')
-      ?.valueChanges.pipe(takeUntil(this.ngDestroyed$))
-      .subscribe({
-        next: backstory =>
-          this.store.dispatch(GameActions.saveBackstoryAction({ backstory })),
-      });
-  }
-
-  private initBackgroundBoostsForm(boosts: AbilityBoost[]): void {
-    this.backgroundBoosts.clear();
-    boosts.forEach(boost => {
-      this.backgroundBoosts.push(
-        this.fb.group({
-          boost: [
-            boost.type === AbilityBoostType.free
-              ? Abilities.str
-              : boost.abilities[0],
-            Validators.required,
-          ],
-        })
-      );
+    this.backstoryControl = this.fb.group({
+      name: [undefined, Validators.required],
+      backstory: [undefined, Validators.required],
     });
   }
 
-  private getBackgroundFeats(ids: string[]): void {
-    if (ids.length) {
-      this.featsService
-        .getFeats(ids)
-        .pipe(takeUntil(this.ngDestroyed$))
-        .subscribe({
-          next: feats => (this.chosenBackgroundFeats = feats),
-        });
-    }
-  }
-
-  private initClassBoostsForm(boosts: AbilityBoost[]): void {
-    this.classBoosts.clear();
-    boosts.forEach(boost => {
-      this.classBoosts.push(
-        this.fb.group({
-          boost: [
-            boost.type === AbilityBoostType.free
-              ? Abilities.str
-              : boost.abilities[0],
-            Validators.required,
-          ],
-        })
-      );
-    });
-  }
-
-  private initClassFeatsForm(charClass: Classes): void {
-    if (this.chosenClass) {
-      this.featsService
-        .getClassFeatsToAdd(1, charClass)
-        .pipe(takeUntil(this.ngDestroyed$))
-        .subscribe({
-          next: data => {
-            this.classFeats = data;
-          },
-        });
-    }
+  private gatherCharacterData(): SeedCharacterData {
+    return {
+      id: '0',
+      name: this.backstoryChoice!.name!,
+      class: this.classChoice!.classData!.name,
+      race: this.raceChoice!.raceData!.name,
+      background: this.backgroundChoice!.background!.id,
+      level: 1,
+      featChoices: [],
+      feats: [
+        this.raceChoice!.heritageFeat!.id,
+        this.raceChoice!.raceFeat!.id,
+        this.classChoice.classFeat?.id ?? '',
+        ...(this.backgroundChoice?.background?.feats ?? []),
+        this.raceChoice!.raceData?.darkvision ?? '',
+      ],
+      boosts: [
+        ...(this.raceChoice.boosts ?? []),
+        ...(this.backgroundChoice.boosts ?? []),
+        ...(this.classChoice.boosts ?? []),
+      ],
+      flaws: this.raceChoice.flaws ?? [],
+      savingThrows: [...(this.classChoice.classData?.savingThrows ?? [])],
+      skills: this.additionalSkills.value.filter(
+        (el: Skill) =>
+          !this.featSkills
+            // .map(skill => ({ name: skill.name, specialty: skill.specialty }))
+            .includes(el) //{ name: el.name, specialty: el.specialty })
+      ),
+      attacks: this.classChoice.classData?.weaponProficiencies ?? [],
+      defences: this.classChoice.classData?.armorProficiencies ?? [],
+      inventory: [],
+      equippedItems: [],
+      investedItems: [],
+      spells: [],
+      actions: [],
+      backstory: this.backstoryChoice!.backstory!,
+    };
   }
 
   private calculateModifiers(): void {
     const boosts: Abilities[] = [
-      ...(this.raceBoosts ?? []),
-      ...this.backgroundForm
-        .get('boosts')
-        ?.value.map((item: { boost: Abilities }) => item.boost),
-      ...this.chooseClassForm
-        .get('boosts')
-        ?.value.map((item: { boost: Abilities }) => item.boost),
+      ...(this.raceChoice.boosts ?? []),
+      ...(this.backgroundChoice.boosts ?? []),
+      ...(this.classChoice.boosts ?? []),
     ];
-    const flaws: Abilities[] = this.raceFlaws ?? [];
+    const flaws: Abilities[] = this.raceChoice.flaws ?? [];
 
     const getModifier = (count: number): number => {
       let addedValue = 0;
@@ -429,19 +346,53 @@ export class NewCharacterComponent implements OnInit, OnDestroy {
       ? this.abilityModifiers[Abilities.int]
       : 0;
 
-    this.addLanguageControl.setValue(this.raceData?.languages);
+    this.addLanguageControl.setValue(this.raceChoice?.raceData?.languages);
   }
 
+  // TODO: resolve feat skill profs for additional skill select
+  // TODO: resolve repeating skills
   private initAdditionalSkillsForm(): void {
-    this.chosenSkills = (this.chosenBackground?.proficiencies ?? [])
-      .concat(this.chosenClass?.proficiencies ?? [])
-      .map(item => ({
-        value: 0,
-        ...item,
-      }));
+    this.featsService
+      .getFeats(this.characterFeats())
+      .pipe(takeUntil(this.ngDestroyed$))
+      .subscribe({
+        next: characterFeats => {
+          this.featSkills = characterFeats
+            .map(feat =>
+              feat.effect
+                .filter(effect => effect.effectType === FeatEffectType.skill)
+                .map(effect => {
+                  const skill = (effect as GrantSkillProficiencyEffect).payload;
+                  const mappedSkill: Skill = {
+                    name: skill.skill,
+                    level: skill.level,
+                    value: 0,
+                    ability: skillToAbilityMap[skill.skill],
+                  };
 
-    this.skillsToChange =
-      (this.chosenClass?.additionalProficiencies ?? 0) +
-      (this.abilityModifiers ? this.abilityModifiers[Abilities.int] : 0);
+                  if (skill.specialty) {
+                    mappedSkill.specialty = skill.specialty;
+                  }
+
+                  return mappedSkill;
+                })
+            )
+            .flat();
+
+          this.chosenSkills = (
+            this.backgroundChoice?.background?.proficiencies ?? []
+          )
+            .concat(this.classChoice.classData?.proficiencies ?? [])
+            .map(item => ({
+              value: 0,
+              ...item,
+            }))
+            .concat(this.featSkills);
+
+          this.skillsToChange =
+            (this.classChoice.classData?.additionalProficiencies ?? 0) +
+            (this.abilityModifiers ? this.abilityModifiers[Abilities.int] : 0);
+        },
+      });
   }
 }
