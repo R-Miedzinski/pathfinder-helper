@@ -1,18 +1,18 @@
 import {
   Character,
-  FeatEffect,
+  CharacterEffect,
   GrantWeaponProficiencyEffect,
   SeedCharacterData,
   createProfToValMap,
 } from 'rpg-app-shared-package'
-import { FeatHandler } from '../feat-handler'
+import { EffectHandler } from '../feat-handler'
 
-export class WeaponProficiencyHandler extends FeatHandler {
-  constructor(effect: FeatEffect) {
+export class WeaponProficiencyHandler extends EffectHandler {
+  constructor(effect: CharacterEffect) {
     super(effect)
   }
 
-  public async handleFeat(character: Character, seedData: SeedCharacterData): Promise<void> {
+  public async handleEffect(character: Character, seedData: SeedCharacterData): Promise<void> {
     const profToValMap = createProfToValMap(0)
     const payload = (<GrantWeaponProficiencyEffect>this._effect).payload
 

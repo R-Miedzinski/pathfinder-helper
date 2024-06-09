@@ -3,7 +3,7 @@ import {
   Abilities,
   Character,
   ClassDC,
-  FeatEffect,
+  CharacterEffect,
   InitClassData,
   Proficiency,
   RaceData,
@@ -13,7 +13,7 @@ import {
   newCharacter,
 } from 'rpg-app-shared-package'
 import { FeatFetcher } from '../services/feat-fetcher'
-import { identifyEffects } from './identify-effects'
+import { identifyEffect } from './identify-effects'
 import { ClassDataLoader } from '../services/class-data-loader'
 import { RaceDataLoader } from '../services/race-data-loader'
 import { ActionsLoader } from '../services/actions-loader'
@@ -42,7 +42,7 @@ export class CharacterFactory {
     this.raceData = await this.raceDataLoader.getRaceData(this.character.race)
     this.classData = await this.classDataLoader.getInitClassData(this.character.class)
 
-    await this.applyFeats()
+    await this.applyEffects()
     this.applyAbilityBoosts()
     this.applyEquipment()
     this.calculateAbilityBonuses()
@@ -88,41 +88,32 @@ export class CharacterFactory {
     this.seedData.flaws.forEach((flaw) => this.applyFlaw(flaw))
   }
 
-  private async applyFeats(): Promise<void[]> {
-    const featToChoice = new Map<string, FeatEffect[]>(
+  private async applyEffects(): Promise<void> {
+    const featToChoice = new Map<string, CharacterEffect[]>(
       this.character.featChoices.map((choice) => [choice.featId, choice.effect])
     )
 
-    const promises = this.character.feats.map((feat) => {
-      return new Promise<void>((resolve, reject) => {
-        this.featFetcher
-          .getFeatData(feat)
-          .then(async (data) => {
-            if (data) {
-              console.log(
-                'handling feat: ',
-                feat,
-                data.effect.map((item) => item.effectType)
-              )
-              const choiceEffects = featToChoice.get(data.id)
-              if (choiceEffects?.length) {
-                data.effect.concat(choiceEffects)
-              }
-              const featHandlers = identifyEffects(data.effect, this.featFetcher)
-              const handlerPromises = featHandlers.map(
-                async (handler) => await handler.handleFeat(this.character, this.seedData)
-              )
-              await Promise.all(handlerPromises)
-              resolve()
-            } else {
-              reject()
+    const featEffects = await this.character.feats
+      .map(async (feat) => {
+        return await this.featFetcher.getFeatData(feat).then(async (data) => {
+          if (data) {
+            const choiceEffects = featToChoice.get(data.id)
+            if (choiceEffects?.length) {
+              return data.effect.concat(choiceEffects)
             }
-          })
-          .catch(reject)
+            return data.effect
+          }
+        })
       })
-    })
+      .reduce(async (acc, curr) => {
+        const currList = await curr
+        const accList = await acc
+        return (accList ?? []).concat(currList ?? [])
+      })
 
-    return Promise.all(promises)
+    return featEffects?.forEach(async (effect) => {
+      return await identifyEffect(effect, this.featFetcher).handleEffect(this.character, this.seedData)
+    })
   }
 
   private applyEquipment(): void {

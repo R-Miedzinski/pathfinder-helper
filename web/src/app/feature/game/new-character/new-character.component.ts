@@ -21,7 +21,7 @@ import {
   Proficiency,
   Skill,
   Backstory,
-  FeatEffectType,
+  CharacterEffectType,
   GrantSkillProficiencyEffect,
   skillToAbilityMap,
 } from 'rpg-app-shared-package/dist/public-api';
@@ -360,7 +360,9 @@ export class NewCharacterComponent implements OnInit, OnDestroy {
           this.featSkills = characterFeats
             .map(feat =>
               feat.effect
-                .filter(effect => effect.effectType === FeatEffectType.skill)
+                .filter(
+                  effect => effect.effectType === CharacterEffectType.skill
+                )
                 .map(effect => {
                   const skill = (effect as GrantSkillProficiencyEffect).payload;
                   const mappedSkill: Skill = {

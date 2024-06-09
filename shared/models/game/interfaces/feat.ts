@@ -1,5 +1,5 @@
 import { FeatCategory } from "../enums/feat-category";
-import { FeatEffect } from "./feat-data";
+import { CharacterEffect } from "./character-effect";
 import { RulePayload } from "./rule-payload";
 
 export interface Feat {
@@ -10,7 +10,7 @@ export interface Feat {
   traits?: string[];
   description: string;
   rules?: RulePayload[];
-  effect: FeatEffect[];
+  effect: CharacterEffect[];
   overwrites?: string;
 }
 

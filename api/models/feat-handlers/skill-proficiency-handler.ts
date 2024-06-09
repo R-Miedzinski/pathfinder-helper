@@ -1,7 +1,7 @@
 import {
   Abilities,
   Character,
-  FeatEffect,
+  CharacterEffect,
   GrantSkillProficiencyEffect,
   Proficiency,
   SeedCharacterData,
@@ -9,14 +9,14 @@ import {
   createProfToValMap,
   skillToAbilityMap,
 } from 'rpg-app-shared-package'
-import { FeatHandler } from '../feat-handler'
+import { EffectHandler } from '../feat-handler'
 
-export class SkillProficiencyHandler extends FeatHandler {
-  constructor(effect: FeatEffect) {
+export class SkillProficiencyHandler extends EffectHandler {
+  constructor(effect: CharacterEffect) {
     super(effect)
   }
 
-  public async handleFeat(character: Character, seedData: SeedCharacterData): Promise<void> {
+  public async handleEffect(character: Character, seedData: SeedCharacterData): Promise<void> {
     const profToValMap = createProfToValMap(0)
     const payload = (<GrantSkillProficiencyEffect>this._effect).payload
 

@@ -1,12 +1,12 @@
-import { Character, FeatEffect, SeedCharacterData } from 'rpg-app-shared-package'
-import { FeatHandler } from '../feat-handler'
+import { Character, CharacterEffect, SeedCharacterData } from 'rpg-app-shared-package'
+import { EffectHandler } from '../feat-handler'
 
-export class DescriptionHandler extends FeatHandler {
-  constructor(effect: FeatEffect) {
+export class DescriptionHandler extends EffectHandler {
+  constructor(effect: CharacterEffect) {
     super(effect)
   }
 
-  public async handleFeat(character: Character, seedData: SeedCharacterData): Promise<void> {
+  public async handleEffect(character: Character, seedData: SeedCharacterData): Promise<void> {
     // TODO: add descritpion feat handler
   }
 }

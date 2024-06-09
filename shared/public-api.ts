@@ -13,7 +13,7 @@ export { Classes } from "./models/game/enums/classes";
 export { CreatureSize } from "./models/game/enums/creature-size";
 export { DamageType } from "./models/game/enums/damage-type";
 export { FeatCategory } from "./models/game/enums/feat-category";
-export { FeatEffectType } from "./models/game/enums/feat-effect-type";
+export { CharacterEffectType } from "./models/game/enums/character-effect-type";
 export { ItemType } from "./models/game/enums/item-type";
 export { LevelBonusCategory } from "./models/game/enums/level-bonus-category";
 export { Proficiency } from "./models/game/enums/proficiency";
@@ -44,7 +44,7 @@ export {
 } from "./models/game/interfaces/class-data";
 export { ClassDC } from "./models/game/interfaces/class-dc";
 export {
-  FeatEffect,
+  CharacterEffect,
   GrantActionEffect,
   GrantFeatEffect,
   GrantBoostEffect,
@@ -54,7 +54,7 @@ export {
   GrantArmorProficiencyEffect,
   GrantSTProficiencyEffect,
   FeatChoiceEffect,
-} from "./models/game/interfaces/feat-data";
+} from "./models/game/interfaces/character-effect";
 export { Feat, FeatConditions } from "./models/game/interfaces/feat";
 export { HP } from "./models/game/interfaces/hp";
 export { Item } from "./models/game/interfaces/item";

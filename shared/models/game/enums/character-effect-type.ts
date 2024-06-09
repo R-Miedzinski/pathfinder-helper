@@ -1,4 +1,4 @@
-export enum FeatEffectType {
+export enum CharacterEffectType {
   armor = "Armor Proficiency",
   weapon = "Weapon Proficiency",
   savingThrow = "Saving Throw Proficiency",

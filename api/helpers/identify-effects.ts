@@ -1,5 +1,5 @@
-import { FeatEffect, FeatEffectType } from 'rpg-app-shared-package'
-import { FeatHandler } from '../models/feat-handler'
+import { CharacterEffect, CharacterEffectType } from 'rpg-app-shared-package'
+import { EffectHandler } from '../models/feat-handler'
 import { ActionHandler } from '../models/feat-handlers/action-handler'
 import { AddFeatHandler } from '../models/feat-handlers/add-feat-handler'
 import { SkillProficiencyHandler } from '../models/feat-handlers/skill-proficiency-handler'
@@ -11,27 +11,27 @@ import { ArmorProficiencyHandler } from '../models/feat-handlers/armor-proficien
 import { SavingThrowHandler } from '../models/feat-handlers/saving-throw-handler'
 import { FeatFetcher } from '../services/feat-fetcher'
 
-export function identifyEffects(effect: FeatEffect[], featFetcher: FeatFetcher): FeatHandler[] {
-  return effect.map((effect) => {
-    switch (effect.effectType) {
-      case FeatEffectType.action:
-        return new ActionHandler(effect)
-      case FeatEffectType.feat:
-        return new AddFeatHandler(effect, featFetcher)
-      case FeatEffectType.skill:
-        return new SkillProficiencyHandler(effect)
-      case FeatEffectType.weapon:
-        return new WeaponProficiencyHandler(effect)
-      case FeatEffectType.armor:
-        return new ArmorProficiencyHandler(effect)
-      case FeatEffectType.savingThrow:
-        return new SavingThrowHandler(effect)
-      case FeatEffectType.boost:
-        return new BoostHandler(effect)
-      case FeatEffectType.flaw:
-        return new FlawHandler(effect)
-      default:
-        return new DescriptionHandler(effect)
-    }
-  })
+export function identifyEffect(effect: CharacterEffect, featFetcher: FeatFetcher): EffectHandler {
+  // return effect.map((effect) => {
+  switch (effect.effectType) {
+    case CharacterEffectType.action:
+      return new ActionHandler(effect)
+    case CharacterEffectType.feat:
+      return new AddFeatHandler(effect, featFetcher)
+    case CharacterEffectType.skill:
+      return new SkillProficiencyHandler(effect)
+    case CharacterEffectType.weapon:
+      return new WeaponProficiencyHandler(effect)
+    case CharacterEffectType.armor:
+      return new ArmorProficiencyHandler(effect)
+    case CharacterEffectType.savingThrow:
+      return new SavingThrowHandler(effect)
+    case CharacterEffectType.boost:
+      return new BoostHandler(effect)
+    case CharacterEffectType.flaw:
+      return new FlawHandler(effect)
+    default:
+      return new DescriptionHandler(effect)
+  }
+  // })
 }

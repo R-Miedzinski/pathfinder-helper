@@ -10,6 +10,9 @@
     class="feat">
     <div hoverable class="feat__box">
       {{ feat.name }}
+      <ng-container *ngIf="choiceData">
+        ({{ choiceData.choiceName }})
+      </ng-container>
     </div>
     <ng-container
       card-content
@@ -20,7 +23,12 @@
 <ng-template #featCard let-feat="feat">
   <div class="feat__card">
     <div class="feat__header">
-      <span class="feat__name">{{ feat.name }}</span>
+      <span class="feat__name">
+        {{ feat.name }}
+        <ng-container *ngIf="choiceData">
+          ({{ choiceData.choiceName }})
+        </ng-container>
+      </span>
       <span class="feat__level"> Feat {{ feat.level }}</span>
     </div>
     <mat-divider></mat-divider>
@@ -41,7 +49,12 @@
       </div>
     </div>
     <mat-divider *ngIf="feat.rules?.length"></mat-divider>
-    <div
-      class="feat__description"
-      [innerHTML]="feat.description | sanitazeHTML"></div></div
-></ng-template>
+    <div class="feat__description">
+      {{ feat.description }}
+      <ng-container *ngIf="choiceData">
+        <span class="feat__choice-label">{{ choiceData.choiceName }}:</span>
+        {{ choiceData.description }}
+      </ng-container>
+    </div>
+  </div>
+</ng-template>

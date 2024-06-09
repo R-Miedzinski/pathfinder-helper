@@ -1,9 +1,10 @@
-import { FeatEffect } from "./feat-data";
+import { CharacterEffect } from "./character-effect";
 
 export interface FeatChoice {
   featId: string;
   choiceName: string;
-  effect: FeatEffect[];
+  description: string;
+  effect: CharacterEffect[];
 }
 
 export enum FeatChoiceType {}

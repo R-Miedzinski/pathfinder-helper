@@ -38,6 +38,7 @@
         <mat-grid-tile [rowspan]="5">
           <app-feats
             class="grid-field"
+            [featChoices]="featChoices"
             [rowHeight]="rowHeight / 3"
             [featList]="featsList$ | async" />
         </mat-grid-tile>

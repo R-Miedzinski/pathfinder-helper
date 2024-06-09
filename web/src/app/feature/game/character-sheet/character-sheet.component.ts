@@ -12,6 +12,7 @@ import { ActionService } from '../services/action.service';
 import { SkillsService } from '../services/skills.service';
 import { AbilitiesService } from '../services/abilities.service';
 import { Character, Feat } from 'rpg-app-shared-package';
+import { FeatChoice } from 'rpg-app-shared-package/dist/models/game/interfaces/feat-choice';
 
 @Component({
   selector: 'app-character-sheet',
@@ -21,6 +22,7 @@ import { Character, Feat } from 'rpg-app-shared-package';
 export class CharacterSheetComponent implements OnInit, OnDestroy {
   public readonly rowHeight = 19.6;
   protected character!: Character;
+  protected featChoices: Map<string, FeatChoice> = new Map();
   private readonly ngDestroyed$: Subject<void> = new Subject();
 
   protected inventoryWithItems = this.itemsService.itemsInInventory$.pipe(
@@ -54,6 +56,8 @@ export class CharacterSheetComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (character: Character) => {
           this.character = character;
+
+          this.setupChoicesMap();
         },
       });
 
@@ -131,5 +135,13 @@ export class CharacterSheetComponent implements OnInit, OnDestroy {
     if (event.action === 'deinvest') {
       this.itemsService.deinvestItem(event.itemId);
     }
+  }
+
+  private setupChoicesMap(): void {
+    this.featChoices = new Map();
+
+    this.character.featChoices.forEach(choice => {
+      this.featChoices.set(choice.featId, choice);
+    });
   }
 }

@@ -6,6 +6,27 @@
   "background": "acolyte",
   "level": 1,
   "feats": ["ancient-blooded-dwarf", "dwarven-lore", "C5", "student-of-the-canon", "darkvision"],
+  "featChoices": [
+    {
+      "featId": "C5",
+      "choiceName": "Choice Name",
+      "description": "This choice grants boost to strength and flaw to charisma",
+      "effect": [
+        {
+          "effectType": "Ability Boost",
+          "payload": {
+            "boost": "Strength"
+          }
+        },
+        {
+          "effectType": "Ability Flaw",
+          "payload": {
+            "flaw": "Charisma"
+          }
+        }
+      ]
+    }
+  ],
   "boosts": ["Constitution", "Wisdom", "Strength", "Intelligence", "Strength", "Intelligence"],
   "flaws": ["Charisma"],
   "savingThrows": [

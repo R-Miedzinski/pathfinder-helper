@@ -1,11 +1,11 @@
-import { Character, FeatEffect, SeedCharacterData } from 'rpg-app-shared-package/dist/public-api'
+import { Character, CharacterEffect, SeedCharacterData } from 'rpg-app-shared-package/dist/public-api'
 
-export abstract class FeatHandler {
-  protected _effect: FeatEffect
+export abstract class EffectHandler {
+  protected _effect: CharacterEffect
 
-  constructor(effect: FeatEffect) {
+  constructor(effect: CharacterEffect) {
     this._effect = effect
   }
 
-  abstract handleFeat(character: Character, seedData: SeedCharacterData): Promise<void>
+  abstract handleEffect(character: Character, seedData: SeedCharacterData): Promise<void>
 }
