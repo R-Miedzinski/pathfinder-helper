@@ -12,7 +12,10 @@ import {
   AbilityBoostType,
   Classes,
   DisplayInitClassData,
+  EffectChoice,
   Feat,
+  LevelBonus,
+  LevelBonusCategory,
 } from 'rpg-app-shared-package/dist/public-api';
 import { Subject, takeUntil } from 'rxjs';
 import { GameDataService } from '../../services/game-data.service';
@@ -33,6 +36,7 @@ export class ChooseClassFormComponent implements OnInit, OnDestroy {
   protected classFeats: Feat[] = [];
   protected chosenClassFeat?: Feat;
   protected chosenClass?: DisplayInitClassData;
+  protected classFeatures?: LevelBonus[];
 
   protected readonly boostTypes = AbilityBoostType;
   private readonly ngDestroyed$: Subject<void> = new Subject();
@@ -55,6 +59,8 @@ export class ChooseClassFormComponent implements OnInit, OnDestroy {
   public get classBoosts(): FormArray {
     return this.chooseClassForm.get('boosts') as FormArray;
   }
+
+  public onClassFeatEffect(event: EffectChoice): void {}
 
   private initClassForm(): void {
     this.chooseClassForm = this.fb.group({
@@ -82,6 +88,7 @@ export class ChooseClassFormComponent implements OnInit, OnDestroy {
               this.classData.emit(this.chosenClass);
               this.initClassFeatsForm(this.chosenClass.name);
               this.initClassBoostsForm(this.chosenClass.boosts);
+              this.initClassFeaturesForm(this.chosenClass.name);
             },
           });
         },
@@ -109,6 +116,8 @@ export class ChooseClassFormComponent implements OnInit, OnDestroy {
 
     this.chooseClassForm.get('feat')?.setValue(undefined, { emitEvent: false });
     this.classFeat.emit(undefined);
+
+    this.classFeatures = undefined;
   }
 
   private initClassBoostsForm(boosts: AbilityBoost[]): void {
@@ -152,5 +161,16 @@ export class ChooseClassFormComponent implements OnInit, OnDestroy {
           },
         });
     }
+  }
+
+  private initClassFeaturesForm(className: string): void {
+    this.gameDataService
+      .getClassLevelData(className, 1)
+      .pipe(takeUntil(this.ngDestroyed$))
+      .subscribe({
+        next: data => {
+          this.classFeatures = data;
+        },
+      });
   }
 }

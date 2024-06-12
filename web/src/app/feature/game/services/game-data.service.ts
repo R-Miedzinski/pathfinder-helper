@@ -9,11 +9,13 @@ import {
   Character,
   Classes,
   DisplayInitClassData,
+  DisplayLevelUpClassData,
+  LevelBonus,
   Race,
   RaceData,
   SeedCharacterData,
 } from 'rpg-app-shared-package/dist/public-api';
-import { EMPTY, Observable, catchError, of } from 'rxjs';
+import { EMPTY, Observable, catchError, of, map } from 'rxjs';
 import { HttpCacheClientService } from 'src/app/shared/services/http-cache-client.service';
 import { environment } from 'src/environment/environment';
 
@@ -76,6 +78,20 @@ export class GameDataService {
     const url = `${environment.apiUrl}/api/classes/init/${id}`;
 
     return this.httpCacheClient.get<DisplayInitClassData>(url);
+  }
+
+  public getClassLevelData(
+    id: string,
+    level: number
+  ): Observable<LevelBonus[]> {
+    const url = `${environment.apiUrl}/api/classes/level/${id}`;
+
+    return this.httpCacheClient.get<DisplayLevelUpClassData>(url).pipe(
+      map(data => {
+        const levelBonus = data[level];
+        return levelBonus ?? [];
+      })
+    );
   }
 
   public previewNewCharacter(

@@ -11,8 +11,7 @@ import { FeatsService } from '../services/feats.service';
 import { ActionService } from '../services/action.service';
 import { SkillsService } from '../services/skills.service';
 import { AbilitiesService } from '../services/abilities.service';
-import { Character, Feat } from 'rpg-app-shared-package';
-import { FeatChoice } from 'rpg-app-shared-package/dist/models/game/interfaces/feat-choice';
+import { Character, Feat, EffectChoice } from 'rpg-app-shared-package';
 
 @Component({
   selector: 'app-character-sheet',
@@ -22,7 +21,7 @@ import { FeatChoice } from 'rpg-app-shared-package/dist/models/game/interfaces/f
 export class CharacterSheetComponent implements OnInit, OnDestroy {
   public readonly rowHeight = 19.6;
   protected character!: Character;
-  protected featChoices: Map<string, FeatChoice> = new Map();
+  protected featChoices: Map<string, EffectChoice> = new Map();
   private readonly ngDestroyed$: Subject<void> = new Subject();
 
   protected inventoryWithItems = this.itemsService.itemsInInventory$.pipe(

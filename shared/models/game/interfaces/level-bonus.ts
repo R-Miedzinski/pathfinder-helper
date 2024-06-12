@@ -3,11 +3,12 @@ import { LevelBonusCategory } from "../enums/level-bonus-category";
 
 export interface LevelBonus {
   category: LevelBonusCategory;
+  payload: any;
 }
 
 export interface AddFeatLevelBonus extends LevelBonus {
   payload: {
-    featId: string;
+    featId: string[];
   };
 }
 

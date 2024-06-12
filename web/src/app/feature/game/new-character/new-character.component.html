@@ -5,7 +5,9 @@
       (race)="onRace($event)"
       (abilities)="onRaceAbilities($event)"
       (heritageFeat)="onHeritageFeat($event)"
-      (ancestryFeat)="onRaceFeat($event)"></app-choose-race-form>
+      (heritageEffect)="onHeritageEffect($event)"
+      (ancestryFeat)="onRaceFeat($event)"
+      (ancestryEffect)="onAncestryEffect($event)"></app-choose-race-form>
     <button mat-button matStepperNext>Next</button>
   </mat-step>
   <mat-step [stepControl]="backgroundChoiceControl">

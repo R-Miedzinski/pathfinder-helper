@@ -66,5 +66,58 @@
     },
     "additionalProficiencies": 3
   },
-  "levelUpData": {}
+  "levelUpData": {
+    "1": [
+      {
+        "category": "Add Feat",
+        "payload": {
+          "featId": ["alchemy", "formula-book", "research-field"]
+        }
+      },
+      {
+        "category": "Class Feat"
+      }
+    ],
+    "2": [
+      {
+        "category": "Class Feat"
+      },
+      {
+        "category": "Skill Feat"
+      }
+    ],
+    "3": [
+      {
+        "category": "General Feat"
+      },
+      {
+        "category": "Skill Increase"
+      }
+    ],
+    "4": [
+      {
+        "category": "Class Feat"
+      },
+      {
+        "category": "Skill Feat"
+      }
+    ],
+    "5": [
+      {
+        "category": "Ability Boost"
+      },
+      {
+        "category": "Ancestry Feat"
+      },
+      {
+        "category": "Add Feat",
+        "payload": {
+          "featId": ["field-discovery"]
+        }
+      },
+      {
+        "category": "Skill Increase"
+      }
+    ]
+  }
 }

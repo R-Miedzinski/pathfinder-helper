@@ -14,6 +14,9 @@ import { SkillProficienciesFormComponent } from './components/skill-proficiencie
 import { SkillInputComponent } from './components/skill-input/skill-input.component';
 import { LanguagesInputComponent } from './components/languages-input/languages-input.component';
 import { CustomFormControl } from './components/custom-form-control/custom-form-control.component';
+import { FeatChoiceComponent } from './components/feat-choice/feat-choice.component';
+import { FeatComponent } from './components/feat/feat.component';
+import { LevelBonusComponent } from './components/level-bonus/level-bonus.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +31,9 @@ import { CustomFormControl } from './components/custom-form-control/custom-form-
     SkillProficienciesFormComponent,
     SkillInputComponent,
     LanguagesInputComponent,
+    FeatComponent,
+    FeatChoiceComponent,
+    LevelBonusComponent,
   ],
   imports: [CommonModule, MaterialModule, FormsModule, ReactiveFormsModule],
   exports: [
@@ -46,6 +52,9 @@ import { CustomFormControl } from './components/custom-form-control/custom-form-
     SkillProficienciesFormComponent,
     SkillInputComponent,
     LanguagesInputComponent,
+    FeatComponent,
+    FeatChoiceComponent,
+    LevelBonusComponent,
   ],
 })
 export class SharedModule {}

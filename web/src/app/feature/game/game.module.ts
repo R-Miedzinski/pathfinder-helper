@@ -30,7 +30,6 @@ import { MainCharacterPageComponent } from './main-character-page/main-character
 import { SkillsService } from './services/skills.service';
 import { AbilitiesService } from './services/abilities.service';
 import { ExcludeForFreeBoostPipe } from './pipes/exclude-for-free-boost.pipe';
-import { FeatComponent } from './feats/feat/feat.component';
 import { ChooseRaceFormComponent } from './new-character/choose-race-form/choose-race-form.component';
 import { ChooseBackgroundFormComponent } from './new-character/choose-background-form/choose-background-form.component';
 import { ChooseClassFormComponent } from './new-character/choose-class-form/choose-class-form.component';
@@ -57,7 +56,6 @@ import { BackstoryFormComponent } from './new-character/backstory-form/backstory
     MainCharacterPageComponent,
     ModifierPlusMinusPipe,
     ExcludeForFreeBoostPipe,
-    FeatComponent,
     ChooseRaceFormComponent,
     ChooseBackgroundFormComponent,
     ChooseClassFormComponent,

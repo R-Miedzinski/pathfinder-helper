@@ -5,22 +5,23 @@ import { Proficiency } from "../enums/proficiency";
 import { SavingThrowName } from "../enums/saving-throw-names";
 import { Skills } from "../enums/skills";
 import { WeaponGroup } from "../enums/weapon-group";
-import { FeatChoiceType } from "./feat-choice";
+import { EffectChoiceType } from "./effect-choice";
 
 export interface CharacterEffect {
   effectType: CharacterEffectType;
+  level?: number;
   payload?: unknown;
 }
 
 export interface GrantActionEffect extends CharacterEffect {
   payload: {
-    actionId: string;
+    actionId: string | string[];
   };
 }
 
 export interface GrantFeatEffect extends CharacterEffect {
   payload: {
-    featId: string;
+    featId: string | string[];
   };
 }
 
@@ -65,9 +66,9 @@ export interface GrantFlawEffect extends CharacterEffect {
   };
 }
 
-export interface FeatChoiceEffect extends CharacterEffect {
+export interface EffectChoiceData extends CharacterEffect {
   payload: {
-    choiceType: FeatChoiceType;
+    choiceType: EffectChoiceType;
     data: unknown;
   };
 }

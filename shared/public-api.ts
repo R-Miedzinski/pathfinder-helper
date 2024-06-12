@@ -44,6 +44,12 @@ export {
 } from "./models/game/interfaces/class-data";
 export { ClassDC } from "./models/game/interfaces/class-dc";
 export {
+  EffectChoice,
+  EffectChoiceType,
+  FeatChoiceEffect,
+  EffectChoiceEffect,
+} from "./models/game/interfaces/effect-choice";
+export {
   CharacterEffect,
   GrantActionEffect,
   GrantFeatEffect,
@@ -53,12 +59,17 @@ export {
   GrantWeaponProficiencyEffect,
   GrantArmorProficiencyEffect,
   GrantSTProficiencyEffect,
-  FeatChoiceEffect,
+  EffectChoiceData,
 } from "./models/game/interfaces/character-effect";
 export { Feat, FeatConditions } from "./models/game/interfaces/feat";
 export { HP } from "./models/game/interfaces/hp";
 export { Item } from "./models/game/interfaces/item";
-export { LevelBonus } from "./models/game/interfaces/level-bonus";
+export {
+  LevelBonus,
+  AddFeatLevelBonus,
+  ChooseFeatLevelBonus,
+  ReplaceFeatLevelBonus,
+} from "./models/game/interfaces/level-bonus";
 export { RaceData } from "./models/game/interfaces/race-data";
 export {
   RulePayload,

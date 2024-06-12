@@ -111,9 +111,11 @@ export class CharacterFactory {
         return (accList ?? []).concat(currList ?? [])
       })
 
-    return featEffects?.forEach(async (effect) => {
-      return await identifyEffect(effect, this.featFetcher).handleEffect(this.character, this.seedData)
-    })
+    return featEffects
+      ?.filter((effect) => effect?.level ?? 0 <= this.character.level)
+      ?.forEach(async (effect) => {
+        return await identifyEffect(effect, this.featFetcher).handleEffect(this.character, this.seedData)
+      })
   }
 
   private applyEquipment(): void {

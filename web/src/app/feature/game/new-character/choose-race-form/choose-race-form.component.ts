@@ -9,6 +9,7 @@ import {
   Abilities,
   AbilityBoost,
   AbilityBoostType,
+  EffectChoice,
   Feat,
   Race,
   RaceData,
@@ -31,7 +32,9 @@ export class ChooseRaceFormComponent implements OnInit, OnDestroy {
     flaws: Abilities[];
   }> = new EventEmitter();
   @Output() heritageFeat: EventEmitter<Feat> = new EventEmitter();
+  @Output() heritageEffect: EventEmitter<EffectChoice> = new EventEmitter();
   @Output() ancestryFeat: EventEmitter<Feat> = new EventEmitter();
+  @Output() ancestryEffect: EventEmitter<EffectChoice> = new EventEmitter();
 
   protected chooseRaceForm: FormGroup = new FormGroup({});
   protected boostsForm: FormGroup = new FormGroup({});
@@ -91,6 +94,14 @@ export class ChooseRaceFormComponent implements OnInit, OnDestroy {
           },
         });
     }
+  }
+
+  protected onHeritageEffect(event: EffectChoice): void {
+    this.heritageEffect.emit(event);
+  }
+
+  protected onAncestryEffect(event: EffectChoice): void {
+    this.ancestryEffect.emit(event);
   }
 
   private initRaceForm(): void {

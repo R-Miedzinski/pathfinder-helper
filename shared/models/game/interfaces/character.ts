@@ -8,7 +8,7 @@ import { Race } from "../enums/race";
 import { WeaponProficiency } from "./weapon-proficiency";
 import { ArmorProficiency } from "./armor-proficiency";
 import { ClassDC } from "./class-dc";
-import { FeatChoice } from "./feat-choice";
+import { EffectChoice } from "./effect-choice";
 
 export interface Character {
   id: string;
@@ -16,7 +16,7 @@ export interface Character {
   class: Classes;
   background: string;
   feats: string[];
-  featChoices: FeatChoice[];
+  featChoices: EffectChoice[];
   race: Race;
   level: number;
   abilities: Ability[];

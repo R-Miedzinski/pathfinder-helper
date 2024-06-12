@@ -1,0 +1,82 @@
+[
+  {
+    "id": "alchemy",
+    "name": "Alchemy",
+    "level": 1,
+    "category": "Class Feature",
+    "description": "You understand the complex interactions of natural and unnatural substances and can concoct alchemical items to meet your needs. You can do this using normal reagents and the Craft activity, or you can use special infused reagents that allow you to craft temporary items quickly and at no cost. Over time, you can create more and more alchemical items for free, and since each of them becomes more and more powerful, you advance in power dramatically, leaving behind those who don’t understand your strange science.You gain the Alchemical Crafting feat (page 258), even if you don’t meet that feat’s prerequisites, and you gain the four common 1st-level alchemical formulas granted by that feat. The catalog of alchemical items begins on page 543. You can use this feat to create alchemical items as long as you have the items’ formulas in your formula book.",
+    "effect": [
+      {
+        "effectType": "Feat",
+        "payload": {
+          "featId": "alchemical-crafting"
+        }
+      },
+      {
+        "effectType": "Action",
+        "payload": {
+          "featId": ["infused-reagents", "advanced-alchemy", "quick-alchemy"]
+        }
+      }
+    ]
+  },
+  {
+    "id": "formula-book",
+    "name": "Formula Book",
+    "level": 1,
+    "category": "Class Feature",
+    "description": "An alchemist keeps meticulous records of the formulas for every item they can create. You start with a standard formula book worth 10 sp or less (as detailed on page 290) for free. The formula book contains the formulas for two common 1st-level alchemical items of your choice, in addition to those you gained from Alchemical Crafting and your research field. The catalog of alchemical items begins on page 543.Each time you gain a level, you can add the formulas for two common alchemical items to your formula book. These new formulas can be for any level of item you can create. You learn these formulas automatically, but it’s also possible to find or buy additional formulas in settlements or from other alchemists, or to invent them with the Inventor feat (page 262).",
+    "effect": [
+      {
+        "effectType": "Description"
+      }
+    ]
+  },
+  {
+    "id": "research-field",
+    "name": "Research Field",
+    "level": 1,
+    "category": "Class Feature",
+    "description": "Your inquiries into the alchemical nature of the universe have led you to focus on a particular field of research. You might have a degree from an scientific institute, correspond with other researchers in your field, or work as a genius loner.",
+    "effect": [
+      {
+        "effectType": "Choice",
+        "payload": {
+          "choiceType": "Effects",
+          "data": [
+            {
+              "featId": "research-field",
+              "choiceName": "Bomber",
+              "description": "You specialize in explosions and other violent alchemical reactions. You start with the formulas for two 1st-level alchemical bombs in your formula book, in addition to your other formulas.When throwing an alchemical bomb with the splash trait, you can deal splash damage to only your primary target instead of the usual splash area.",
+              "effect": [
+                {
+                  "effectType": "Description"
+                }
+              ]
+            },
+            {
+              "featId": "research-field",
+              "choiceName": "Chirurgeon",
+              "description": "You concentrate on healing others with alchemy. You start with the formulas for two of the following in your formula book, in addition to your other formulas: lesser antidote, lesser antiplague, or lesser elixir of life.As long as your proficiency rank in Medicine is trained or better, you can attempt a Crafting check instead of a Medicine check for any of Medicine’s untrained and trained uses.",
+              "effect": [
+                {
+                  "effectType": "Description"
+                }
+              ]
+            },
+            {
+              "featId": "research-field",
+              "choiceName": "Mutagenist",
+              "description": "You focus on bizarre mutagenic transformations that sacrifice one aspect of a creature’s physical or psychological being in order to strengthen another. You start with the formulas for two 1st-level mutagens in your formula book, in addition to your other formulas.You can gain the benefit of any mutagen, even if it wasn’t specifically brewed for you. Whenever your proficiency rank for simple weapons increases, your proficiency rank for unarmed attacks increases to the same rank unless it’s already better.",
+              "effect": [
+                {
+                  "effectType": "Description"
+                }
+              ]
+            }
+          ]
+        }
+      }
+    ]
+  }
+]

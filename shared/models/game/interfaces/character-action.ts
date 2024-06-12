@@ -10,6 +10,7 @@ export interface CharacterAction {
   source: ActionSource;
   effects?: ActionEffects;
   cost?: number;
+  materials?: string;
   traits?: string[];
   trigger?: string;
   rules?: string;

@@ -24,6 +24,7 @@ import {
   CharacterEffectType,
   GrantSkillProficiencyEffect,
   skillToAbilityMap,
+  EffectChoice,
 } from 'rpg-app-shared-package/dist/public-api';
 import { StepperSelectionEvent } from '@angular/cdk/stepper';
 import { FeatsService } from '../services/feats.service';
@@ -31,7 +32,9 @@ import { FeatsService } from '../services/feats.service';
 interface RaceChoiceControl {
   raceData?: RaceData;
   heritageFeat?: Feat;
+  heritageEffect?: EffectChoice;
   raceFeat?: Feat;
+  ancestryEffect?: EffectChoice;
   boosts?: Abilities[];
   flaws?: Abilities[];
 }
@@ -45,6 +48,9 @@ interface ClassChoiceControl {
   classData?: DisplayInitClassData;
   boosts?: Abilities[];
   classFeat?: Feat;
+  classEffect?: EffectChoice;
+  // classFeatures?: Feat[];
+  // featureEffects?: EffectChoice[];
 }
 
 interface BackstoryChoiceControl {
@@ -102,10 +108,34 @@ export class NewCharacterComponent implements OnInit, OnDestroy {
 
   public onRaceFeat(event: Feat | undefined): void {
     this.raceChoiceControl.get('raceFeat')?.setValue(event);
+
+    event?.effect.some(
+      effect => effect.effectType === CharacterEffectType.choice
+    )
+      ? this.raceChoiceControl
+          .get('ancestryEffect')
+          ?.setValidators(Validators.required)
+      : this.raceChoiceControl.get('ancestryEffect')?.clearValidators();
+  }
+
+  public onAncestryEffect(event: EffectChoice | undefined): void {
+    this.raceChoiceControl.get('ancestryEffect')?.setValue(event);
   }
 
   public onHeritageFeat(event: Feat | undefined): void {
     this.raceChoiceControl.get('heritageFeat')?.setValue(event);
+
+    event?.effect.some(
+      effect => effect.effectType === CharacterEffectType.choice
+    )
+      ? this.raceChoiceControl
+          .get('heritageEffect')
+          ?.setValidators(Validators.required)
+      : this.raceChoiceControl.get('heritageEffect')?.clearValidators();
+  }
+
+  public onHeritageEffect(event: EffectChoice | undefined): void {
+    this.raceChoiceControl.get('heritageEffect')?.setValue(event);
   }
 
   public onRaceAbilities(event: {
@@ -219,7 +249,9 @@ export class NewCharacterComponent implements OnInit, OnDestroy {
     this.raceChoiceControl = this.fb.group({
       raceData: [undefined, Validators.required],
       heritageFeat: [undefined, Validators.required],
+      heritageEffect: [undefined],
       raceFeat: [undefined, Validators.required],
+      ancestryEffect: [undefined],
       boosts: [undefined, Validators.required],
       flaws: [undefined, Validators.required],
     });
@@ -248,6 +280,16 @@ export class NewCharacterComponent implements OnInit, OnDestroy {
   }
 
   private gatherCharacterData(): SeedCharacterData {
+    const featChoices: EffectChoice[] = [];
+
+    if (this.raceChoice.ancestryEffect) {
+      featChoices.push(this.raceChoice.ancestryEffect);
+    }
+
+    if (this.raceChoice.heritageEffect) {
+      featChoices.push(this.raceChoice.heritageEffect);
+    }
+
     return {
       id: '0',
       name: this.backstoryChoice!.name!,
@@ -255,7 +297,7 @@ export class NewCharacterComponent implements OnInit, OnDestroy {
       race: this.raceChoice!.raceData!.name,
       background: this.backgroundChoice!.background!.id,
       level: 1,
-      featChoices: [],
+      featChoices: featChoices,
       feats: [
         this.raceChoice!.heritageFeat!.id,
         this.raceChoice!.raceFeat!.id,

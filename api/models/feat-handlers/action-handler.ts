@@ -9,6 +9,12 @@ export class ActionHandler extends EffectHandler {
   public async handleEffect(character: Character, seedData: SeedCharacterData): Promise<void> {
     const payload = (<GrantActionEffect>this._effect).payload
 
-    character.actions.push(payload.actionId)
+    if (Array.isArray(payload.actionId)) {
+      payload.actionId.forEach((id) => {
+        character.actions.push(id)
+      })
+    } else {
+      character.actions.push(payload.actionId)
+    }
   }
 }

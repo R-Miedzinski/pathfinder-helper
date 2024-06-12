@@ -85,33 +85,17 @@
       <h4>Darkvision:</h4>
       <app-feat [feat]="darkvision" [cardOnly]="true"></app-feat>
     </div>
-    <div class="race__feat">
-      <form [formGroup]="chooseRaceForm">
-        <label for="heritageFeats" class="required">Heritage feat:</label>
-        <select id="heritageFeats" formControlName="heritageFeat">
-          <option value="" disabled selected hidden>Choose a Feat</option>
-          <option *ngFor="let feat of heritageFeats" [value]="feat.id">
-            {{ feat.name }}
-          </option>
-        </select>
-      </form>
-      <div *ngIf="chosenHeritageFeat">
-        <app-feat [feat]="chosenHeritageFeat" [cardOnly]="true"></app-feat>
-      </div>
-    </div>
-    <div class="race__feat">
-      <form [formGroup]="chooseRaceForm">
-        <label for="raceFeats" class="required">Ancestry feat:</label>
-        <select id="raceFeats" formControlName="ancestryFeat">
-          <option value="" disabled selected hidden>Choose a Feat</option>
-          <option *ngFor="let feat of raceFeats" [value]="feat.id">
-            {{ feat.name }}
-          </option>
-        </select>
-      </form>
-      <div *ngIf="chosenAncestryFeat">
-        <app-feat [feat]="chosenAncestryFeat" [cardOnly]="true"></app-feat>
-      </div>
-    </div>
+    <ng-container [formGroup]="chooseRaceForm">
+      <app-feat-choice
+        [feats]="heritageFeats"
+        label="Heritage"
+        formControlName="heritageFeat"
+        (effectChoice)="onHeritageEffect($event)"></app-feat-choice>
+      <app-feat-choice
+        [feats]="raceFeats"
+        label="Ancestry"
+        formControlName="ancestryFeat"
+        (effectChoice)="onAncestryEffect($event)"></app-feat-choice>
+    </ng-container>
   </ng-container>
 </div>

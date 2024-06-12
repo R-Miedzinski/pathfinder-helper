@@ -6,8 +6,11 @@ import {
   OnInit,
   SimpleChanges,
 } from '@angular/core';
-import { FeatChoice } from 'rpg-app-shared-package/dist/models/game/interfaces/feat-choice';
-import { Feat, FeatCategory } from 'rpg-app-shared-package/dist/public-api';
+import {
+  Feat,
+  FeatCategory,
+  EffectChoice,
+} from 'rpg-app-shared-package/dist/public-api';
 
 @Component({
   selector: 'app-feats',
@@ -18,7 +21,7 @@ import { Feat, FeatCategory } from 'rpg-app-shared-package/dist/public-api';
 export class FeatsComponent implements OnInit, OnChanges {
   @Input() rowHeight!: number;
   @Input() featList: Feat[] | null = [];
-  @Input() featChoices: Map<string, FeatChoice> = new Map();
+  @Input() featChoices: Map<string, EffectChoice> = new Map();
   classFeats: Feat[] = [];
   ancestryFeats: Feat[] = [];
   skillFeats: Feat[] = [];

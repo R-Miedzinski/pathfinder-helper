@@ -117,24 +117,17 @@
     </div>
     <div class="classes__features">
       <h4 calss="classes__label">Class Features:</h4>
+      <app-level-bonus
+        *ngFor="let bonus of classFeatures"
+        [levelBonus]="bonus"></app-level-bonus>
     </div>
-    <div class="classes__feat">
-      <form [formGroup]="chooseClassForm">
-        <label for="classFeats classes__label" class="required">
-          Class Feat:
-        </label>
-        <select id="classFeats" formControlName="feat">
-          <option [value]="undefined" disabled selected hidden>
-            Choose a Feat
-          </option>
-          <option *ngFor="let feat of classFeats" [value]="feat.id">
-            {{ feat.name }}
-          </option>
-        </select>
-      </form>
-      <div *ngIf="chosenClassFeat">
-        <app-feat [feat]="chosenClassFeat" [cardOnly]="true"></app-feat>
-      </div>
-    </div>
+    <ng-container [formGroup]="chooseClassForm">
+      <app-feat-choice
+        [feats]="classFeats"
+        formControlName="feat"
+        label="Class"
+        (effectChoice)="onClassFeatEffect($event)">
+      </app-feat-choice>
+    </ng-container>
   </ng-container>
 </form>

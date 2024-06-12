@@ -1,0 +1,13 @@
+<ng-container *ngIf="levelBonus">
+  <div [ngSwitch]="levelBonus.category">
+    <div *ngSwitchCase="bonusCategory.addFeat">Add Feat</div>
+    <div *ngSwitchCase="bonusCategory.classFeat">Class Feat</div>
+    <div *ngSwitchCase="bonusCategory.ancestralFeat">Ancestral Feat</div>
+    <div *ngSwitchCase="bonusCategory.generalFeat">General Feat</div>
+    <div *ngSwitchCase="bonusCategory.skillFeat">Skill Feat</div>
+    <div *ngSwitchCase="bonusCategory.replaceFeat">Replace Feat</div>
+    <div *ngSwitchCase="bonusCategory.boost">Ability Boosts</div>
+    <div *ngSwitchCase="bonusCategory.skill">Skill Increases</div>
+    <div *ngSwitchDefault>Default</div>
+  </div>
+</ng-container>

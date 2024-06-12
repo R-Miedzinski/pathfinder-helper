@@ -6,7 +6,7 @@ import { SavingThrowName } from "../enums/saving-throw-names";
 import { Skills } from "../enums/skills";
 import { ArmorProficiency } from "./armor-proficiency";
 import { Backstory } from "./backstory";
-import { FeatChoice } from "./feat-choice";
+import { EffectChoice } from "./effect-choice";
 import { WeaponProficiency } from "./weapon-proficiency";
 
 export interface SeedCharacterData {
@@ -15,7 +15,7 @@ export interface SeedCharacterData {
   class: Classes;
   background: string;
   feats: string[];
-  featChoices: FeatChoice[];
+  featChoices: EffectChoice[];
   race: Race;
   level: number;
   boosts: Abilities[];
