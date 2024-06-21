@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { LevelBonusComponent } from './level-bonus.component';
+import { LevelBonusComponent } from './LevelBonusComponent';
 
 describe('LevelBonusComponent', () => {
   let component: LevelBonusComponent;
@@ -8,7 +8,7 @@ describe('LevelBonusComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [LevelBonusComponent]
+      declarations: [LevelBonusComponent],
     });
     fixture = TestBed.createComponent(LevelBonusComponent);
     component = fixture.componentInstance;

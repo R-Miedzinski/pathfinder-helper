@@ -70,5 +70,11 @@
     },
     "additionalProficiencies": 3
   },
-  "levelUpData": {}
+  "levelUpData": {
+    "1": [
+      {
+        "category": "Class Feat"
+      }
+    ]
+  }
 }

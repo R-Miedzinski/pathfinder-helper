@@ -1,5 +1,5 @@
 import express, { Router } from 'express'
-import { Classes, Race } from 'rpg-app-shared-package'
+import { Classes, FeatCategory, Race } from 'rpg-app-shared-package'
 import { FeatFetcher } from '../services/feat-fetcher'
 
 export function featsRouterFactory(featFetcher: FeatFetcher): Router {
@@ -57,6 +57,28 @@ export function featsRouterFactory(featFetcher: FeatFetcher): Router {
 
     featFetcher
       .getClassFeats(charClass, level)
+      .then((data) => {
+        if (data.length) {
+          res.send(data)
+        } else {
+          throw Error('No feats were found')
+        }
+      })
+      .catch((err) => res.status(500).send(err))
+  })
+
+  featsRouter.get('/query', (req, res) => {
+    const level: number = <number>(<unknown>req.query.level) ?? 0
+    const category: FeatCategory = <FeatCategory>(<unknown>req.query.category)
+    const trait: string | undefined = <string>req.query.trait
+
+    if (!level || !category) {
+      const err = new Error('Level and category is required to fetch feats')
+      res.status(500).send(err)
+    }
+
+    featFetcher
+      .getFeatsByQuery(level, category, trait)
       .then((data) => {
         if (data.length) {
           res.send(data)

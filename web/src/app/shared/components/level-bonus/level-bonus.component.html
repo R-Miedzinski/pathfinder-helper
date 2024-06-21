@@ -1,13 +1,57 @@
 <ng-container *ngIf="levelBonus">
-  <div [ngSwitch]="levelBonus.category">
-    <div *ngSwitchCase="bonusCategory.addFeat">Add Feat</div>
-    <div *ngSwitchCase="bonusCategory.classFeat">Class Feat</div>
-    <div *ngSwitchCase="bonusCategory.ancestralFeat">Ancestral Feat</div>
-    <div *ngSwitchCase="bonusCategory.generalFeat">General Feat</div>
-    <div *ngSwitchCase="bonusCategory.skillFeat">Skill Feat</div>
-    <div *ngSwitchCase="bonusCategory.replaceFeat">Replace Feat</div>
-    <div *ngSwitchCase="bonusCategory.boost">Ability Boosts</div>
-    <div *ngSwitchCase="bonusCategory.skill">Skill Increases</div>
-    <div *ngSwitchDefault>Default</div>
-  </div>
+  <ng-container [ngSwitch]="levelBonus.category" [formGroup]="valueControl">
+    {{ levelBonus | json }}
+    {{ feats$ | async }}
+    <ng-container *ngSwitchCase="bonusCategory.addFeat">
+      <div *ngFor="let feat of feats$ | async">
+        <app-feat-choice label="Add" [feats]="[feat]"></app-feat-choice>
+      </div>
+    </ng-container>
+    <ng-container *ngSwitchCase="bonusCategory.classFeat">
+      <div *ngIf="feats$ | async as feats">
+        <app-feat-choice
+          label="Class"
+          [feats]="feats"
+          [formControl]="valueControl.get('data')! | toFormControl">
+        </app-feat-choice>
+      </div>
+    </ng-container>
+    <ng-container *ngSwitchCase="bonusCategory.ancestralFeat">
+      <div *ngIf="feats$ | async as feats">
+        <app-feat-choice
+          label="Ancestral"
+          [feats]="feats"
+          [formControl]="valueControl.get('data')! | toFormControl">
+        </app-feat-choice>
+      </div>
+    </ng-container>
+    <ng-container *ngSwitchCase="bonusCategory.generalFeat">
+      <div *ngIf="feats$ | async as feats">
+        <app-feat-choice
+          label="General"
+          [feats]="feats"
+          [formControl]="valueControl.get('data')! | toFormControl">
+        </app-feat-choice>
+      </div>
+    </ng-container>
+    <ng-container *ngSwitchCase="bonusCategory.skillFeat">
+      <div *ngIf="feats$ | async as feats">
+        <app-feat-choice
+          label="Skill"
+          [feats]="feats"
+          [formControl]="valueControl.get('data')! | toFormControl">
+        </app-feat-choice>
+      </div>
+    </ng-container>
+    <ng-container *ngSwitchCase="bonusCategory.replaceFeat">
+      Replace Feat
+    </ng-container>
+    <ng-container *ngSwitchCase="bonusCategory.boost">
+      Ability Boosts
+    </ng-container>
+    <ng-container *ngSwitchCase="bonusCategory.skill">
+      Skill Increases
+    </ng-container>
+    <ng-container *ngSwitchDefault> Default </ng-container>
+  </ng-container>
 </ng-container>

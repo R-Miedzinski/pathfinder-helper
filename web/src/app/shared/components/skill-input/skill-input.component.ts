@@ -5,6 +5,7 @@ import {
   OnDestroy,
   OnInit,
   Output,
+  forwardRef,
 } from '@angular/core';
 import {
   FormBuilder,
@@ -33,7 +34,7 @@ import { CustomFormControl } from '../custom-form-control/custom-form-control.co
     {
       provide: NG_VALUE_ACCESSOR,
       multi: true,
-      useExisting: SkillInputComponent,
+      useExisting: forwardRef(() => SkillInputComponent),
     },
   ],
 })

@@ -5,6 +5,7 @@ import {
   OnDestroy,
   OnInit,
   SimpleChanges,
+  forwardRef,
 } from '@angular/core';
 import keepOrder from '../../helpers/keepOrder';
 import {
@@ -26,7 +27,7 @@ import { Abilities } from 'rpg-app-shared-package/dist/public-api';
     {
       provide: NG_VALUE_ACCESSOR,
       multi: true,
-      useExisting: BoostChoiceComponent,
+      useExisting: forwardRef(() => BoostChoiceComponent),
     },
   ],
 })

@@ -49,4 +49,15 @@ export class FeatFetcher extends JsonDataLoader<Feat> {
       )
     )
   }
+
+  public getFeatsByQuery(level: number, category: FeatCategory, trait?: string): Promise<Feat[]> {
+    return this.loadDataFromFile().then((data) =>
+      data.filter(
+        (item) =>
+          +item.level === +level &&
+          item.category === category &&
+          (!trait || item.traits?.includes(trait.toLocaleLowerCase()))
+      )
+    )
+  }
 }

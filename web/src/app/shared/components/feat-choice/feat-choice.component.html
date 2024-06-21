@@ -1,10 +1,12 @@
-<div class="feat-choice">
+<div class="feat-choice" *ngIf="feats">
   <div class="feat-choice__form-block">
     <form class="feat-choice__form">
-      <label [for]="label + '-feat'" class="required">{{ label }} Feat:</label>
+      <label [for]="label + '-feat'" [ngClass]="{ required: feats.length > 1 }">
+        {{ label }} Feat:
+      </label>
       <select [id]="label + '-feat'" [formControl]="featControl">
         <option value="" disabled selected hidden>Choose a Feat</option>
-        <option *ngFor="let feat of feats" [value]="feat.id">
+        <option *ngFor="let feat of featsData" [value]="feat.id">
           {{ feat.name }}
         </option>
       </select>

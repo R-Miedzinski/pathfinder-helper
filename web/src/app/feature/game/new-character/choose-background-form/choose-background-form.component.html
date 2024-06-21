@@ -64,13 +64,11 @@
         </li>
       </ul>
     </div>
-    <div class="background__feats" *ngIf="chosenBackgroundFeats?.length">
-      <h4 class="background__label">Feats Gained:</h4>
-      <ul>
-        <li class="background__feat" *ngFor="let feat of chosenBackgroundFeats">
-          <app-feat [feat]="feat" [cardOnly]="true"></app-feat>
-        </li>
-      </ul>
+    <div *ngIf="chosenBackground.feats?.length">
+      <app-feat-choice
+        *ngFor="let feat of chosenBackground.feats"
+        [feats]="[feat]"
+        label="Background"></app-feat-choice>
     </div>
   </ng-container>
 </form>

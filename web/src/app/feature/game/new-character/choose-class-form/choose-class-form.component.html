@@ -115,12 +115,22 @@
         </li>
       </ul>
     </div>
-    <div class="classes__features">
-      <h4 calss="classes__label">Class Features:</h4>
-      <app-level-bonus
-        *ngFor="let bonus of classFeatures"
-        [levelBonus]="bonus"></app-level-bonus>
-    </div>
+    <ng-container *ngIf="featuresArray.length">
+      <ng-container
+        *ngFor="
+          let feature of featuresArray;
+          let i = index;
+          trackBy: trackByFn
+        ">
+        <app-level-bonus
+          class="classes__features"
+          [formControl]="feature"
+          [charClass]="chosenClass.name"
+          [level]="1"
+          [levelBonus]="classFeatures![i]"></app-level-bonus>
+        {{ feature.value | json }}
+      </ng-container>
+    </ng-container>
     <ng-container [formGroup]="chooseClassForm">
       <app-feat-choice
         [feats]="classFeats"

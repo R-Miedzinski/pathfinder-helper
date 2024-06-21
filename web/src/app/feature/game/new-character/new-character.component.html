@@ -1,5 +1,5 @@
 <mat-stepper #stepper (selectionChange)="onStepChanged($event)" linear="true">
-  <mat-step [stepControl]="raceChoiceControl">
+  <mat-step [completed]="newCharacterService.raceChoiceCompleted">
     <ng-template matStepLabel>Select Ancestry</ng-template>
     <app-choose-race-form
       (race)="onRace($event)"
@@ -10,7 +10,7 @@
       (ancestryEffect)="onAncestryEffect($event)"></app-choose-race-form>
     <button mat-button matStepperNext>Next</button>
   </mat-step>
-  <mat-step [stepControl]="backgroundChoiceControl">
+  <mat-step [completed]="newCharacterService.backgroundChoiceCompleted">
     <ng-template matStepLabel>Pick Background</ng-template>
     <app-choose-background-form
       (background)="onBackground($event)"
@@ -18,7 +18,7 @@
     <button mat-button matStepperPrevious>Back</button>
     <button mat-button matStepperNext>Next</button>
   </mat-step>
-  <mat-step [stepControl]="classChoiceControl">
+  <mat-step [completed]="newCharacterService.classChoiceCompleted">
     <ng-template matStepLabel>Choose a Class</ng-template>
     <app-choose-class-form
       (classData)="onClassData($event)"
@@ -27,7 +27,7 @@
     <button mat-button matStepperPrevious>Back</button>
     <button mat-button matStepperNext>Next</button>
   </mat-step>
-  <mat-step [stepControl]="additionalSkills">
+  <mat-step [completed]="newCharacterService.additionalChoicesCompleted">
     <form class="additional-info-form">
       <ng-template matStepLabel>Remaining Choices</ng-template>
       <app-skill-proficiencies-form
@@ -44,15 +44,29 @@
   </mat-step>
   <mat-step>
     <form>
-      <ng-template matStepLabel>Buy Equipment</ng-template>
+      <ng-template matStepLabel>Spells</ng-template>
       <ul>
-        <li>calculate modifiers</li>
+        <li>Choose spells</li>
       </ul>
       <button mat-button matStepperPrevious>Back</button>
       <button mat-button matStepperNext>Next</button>
     </form>
   </mat-step>
-  <mat-step [stepControl]="backstoryControl">
+  <mat-step>
+    <form>
+      <ng-template matStepLabel>Equipment</ng-template>
+      <ul>
+        <li>Buy equipment</li>
+      </ul>
+      <button mat-button matStepperPrevious>Back</button>
+      <button mat-button matStepperNext>Next</button>
+    </form>
+  </mat-step>
+  <mat-step
+    [completed]="
+      newCharacterService.backstoryCompleted &&
+      newCharacterService.newCaracterCompleted
+    ">
     <ng-template matStepLabel>Finishing details</ng-template>
     <app-backstory-form
       (name)="onName($event)"

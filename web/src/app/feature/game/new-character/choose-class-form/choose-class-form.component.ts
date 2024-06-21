@@ -1,11 +1,18 @@
 import {
   Component,
   EventEmitter,
+  Input,
   OnDestroy,
   OnInit,
   Output,
 } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  FormArray,
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import {
   Abilities,
   AbilityBoost,
@@ -15,7 +22,7 @@ import {
   EffectChoice,
   Feat,
   LevelBonus,
-  LevelBonusCategory,
+  Race,
 } from 'rpg-app-shared-package/dist/public-api';
 import { Subject, takeUntil } from 'rxjs';
 import { GameDataService } from '../../services/game-data.service';
@@ -29,14 +36,15 @@ import { FeatsService } from '../../services/feats.service';
 export class ChooseClassFormComponent implements OnInit, OnDestroy {
   @Output() classData: EventEmitter<DisplayInitClassData> = new EventEmitter();
   @Output() boosts: EventEmitter<Abilities[]> = new EventEmitter();
-  @Output() classFeat: EventEmitter<Feat> = new EventEmitter();
+  @Output() classFeat: EventEmitter<string> = new EventEmitter();
 
   protected chooseClassForm: FormGroup = new FormGroup({});
   protected classes: { id: string; name: Classes }[] = [];
-  protected classFeats: Feat[] = [];
-  protected chosenClassFeat?: Feat;
+  protected classFeats: string[] = [];
+  protected chosenClassFeat?: string;
   protected chosenClass?: DisplayInitClassData;
   protected classFeatures?: LevelBonus[];
+  protected featuresArray: FormControl[] = [];
 
   protected readonly boostTypes = AbilityBoostType;
   private readonly ngDestroyed$: Subject<void> = new Subject();
@@ -61,6 +69,10 @@ export class ChooseClassFormComponent implements OnInit, OnDestroy {
   }
 
   public onClassFeatEffect(event: EffectChoice): void {}
+
+  protected trackByFn(index: any, item: any): typeof index {
+    return index;
+  }
 
   private initClassForm(): void {
     this.chooseClassForm = this.fb.group({
@@ -99,9 +111,7 @@ export class ChooseClassFormComponent implements OnInit, OnDestroy {
       ?.valueChanges.pipe(takeUntil(this.ngDestroyed$))
       .subscribe({
         next: featId => {
-          this.chosenClassFeat = this.classFeats.find(
-            feat => feat.id === featId
-          );
+          this.chosenClassFeat = featId;
           this.classFeat.emit(this.chosenClassFeat);
         },
       });
@@ -118,6 +128,8 @@ export class ChooseClassFormComponent implements OnInit, OnDestroy {
     this.classFeat.emit(undefined);
 
     this.classFeatures = undefined;
+
+    this.featuresArray = [];
   }
 
   private initClassBoostsForm(boosts: AbilityBoost[]): void {
@@ -157,12 +169,13 @@ export class ChooseClassFormComponent implements OnInit, OnDestroy {
         .pipe(takeUntil(this.ngDestroyed$))
         .subscribe({
           next: data => {
-            this.classFeats = data;
+            this.classFeats = data.map(feat => feat.id);
           },
         });
     }
   }
 
+  // keep handling in Record<BonusLevelCategory, () => void?>
   private initClassFeaturesForm(className: string): void {
     this.gameDataService
       .getClassLevelData(className, 1)
@@ -170,6 +183,15 @@ export class ChooseClassFormComponent implements OnInit, OnDestroy {
       .subscribe({
         next: data => {
           this.classFeatures = data;
+
+          this.classFeatures.forEach(item => {
+            const entry = new FormControl({
+              bonusCategory: '',
+              data: undefined,
+            });
+
+            this.featuresArray.push(entry);
+          });
         },
       });
   }

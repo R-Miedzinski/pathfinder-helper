@@ -1,5 +1,5 @@
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
-import { Component, Input } from '@angular/core';
+import { Component, Input, forwardRef } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { MatChipEditedEvent, MatChipInputEvent } from '@angular/material/chips';
 import { CustomFormControl } from '../custom-form-control/custom-form-control.component';
@@ -12,7 +12,7 @@ import { CustomFormControl } from '../custom-form-control/custom-form-control.co
     {
       provide: NG_VALUE_ACCESSOR,
       multi: true,
-      useExisting: LanguagesInputComponent,
+      useExisting: forwardRef(() => LanguagesInputComponent),
     },
   ],
 })

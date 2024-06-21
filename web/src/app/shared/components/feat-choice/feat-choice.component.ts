@@ -7,6 +7,7 @@ import {
   OnInit,
   Output,
   SimpleChanges,
+  forwardRef,
 } from '@angular/core';
 import { FormControl, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { CustomFormControl } from '../custom-form-control/custom-form-control.component';
@@ -27,7 +28,7 @@ import { Subject, takeUntil } from 'rxjs';
     {
       provide: NG_VALUE_ACCESSOR,
       multi: true,
-      useExisting: FeatChoiceComponent,
+      useExisting: forwardRef(() => FeatChoiceComponent),
     },
   ],
 })
@@ -35,33 +36,35 @@ export class FeatChoiceComponent
   extends CustomFormControl<string>
   implements OnInit, OnDestroy, OnChanges
 {
-  @Input() feats: Feat[] = [];
+  @Input() feats: string[] | null = [];
   @Input() label: string = 'Choose';
   @Output() effectChoice: EventEmitter<EffectChoice> = new EventEmitter();
 
+  protected readonly: boolean = false;
   protected featControl: FormControl<string> = new FormControl();
   protected chosenFeat?: Feat;
   protected choiceControl: FormControl<string> = new FormControl();
   protected featChoices?: EffectChoice[];
   protected chosenEffect?: EffectChoice;
+  protected featsData?: Feat[];
 
   private readonly ngDestroyed$: Subject<void> = new Subject();
 
+  constructor(private featsService: FeatsService) {
+    super();
+  }
+
   public ngOnInit(): void {
     this.resetFeatControl();
+    this.getFeats();
     this.handleFeatControlChanges();
     this.handleChoiceControlChanges();
-    if (this.feats.length === 1) {
-      this.initWithChosenFeat();
-    }
   }
 
   public ngOnChanges(changes: SimpleChanges): void {
     if (changes['feats']) {
       this.resetFeatControl();
-      if (this.feats.length === 1) {
-        this.initWithChosenFeat();
-      }
+      this.getFeats();
     }
   }
 
@@ -71,21 +74,19 @@ export class FeatChoiceComponent
   }
 
   public override setDisabledState(isDisabled: boolean): void {
-    if (isDisabled) {
-      this.featControl.disable();
-    } else {
-      this.featControl.enable();
-    }
+    // if (isDisabled) {
+    //   this.featControl.disable();
+    //   } else {
+    //     this.featControl.enable();
+    //     }
+    this.readonly = isDisabled;
   }
 
   private resetFeatControl(): void {
     this.featControl.reset('');
+    this.setDisabledState(false);
 
     this.chosenFeat = undefined;
-  }
-
-  private initWithChosenFeat(): void {
-    this.featControl.setValue(this.feats[0].id);
   }
 
   private handleFeatControlChanges(): void {
@@ -95,7 +96,7 @@ export class FeatChoiceComponent
         this.updateValue();
 
         this.resetFeatChoices();
-        this.chosenFeat = this.feats.find(feat => feat.id === id);
+        this.chosenFeat = this.featsData?.find(feat => feat.id === id);
         const effectChoices = (
           this.chosenFeat?.effect.find(
             effect => effect.effectType === CharacterEffectType.choice
@@ -126,5 +127,25 @@ export class FeatChoiceComponent
     this.choiceControl.reset('');
 
     this.featChoices = undefined;
+  }
+
+  private getFeats(): void {
+    this.featsService
+      .getFeats(this.feats ?? [])
+      .pipe(takeUntil(this.ngDestroyed$))
+      .subscribe({
+        next: feats => {
+          this.featsData = feats;
+
+          if (this.feats?.length === 1) {
+            this.initWithChosenFeat();
+          }
+        },
+      });
+  }
+
+  private initWithChosenFeat(): void {
+    this.featControl.setValue(this.feats ? this.feats[0] : '');
+    this.setDisabledState(true);
   }
 }

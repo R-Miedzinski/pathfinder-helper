@@ -11,7 +11,12 @@ import { cloneDeep } from 'lodash';
 import { GameState } from '../ngrx/game-reducer';
 import * as GameActions from '../ngrx/game-actions';
 import { Store } from '@ngrx/store';
-import { Classes, Feat, Race } from 'rpg-app-shared-package/dist/public-api';
+import {
+  Classes,
+  Feat,
+  FeatCategory,
+  Race,
+} from 'rpg-app-shared-package/dist/public-api';
 import { HttpCacheClientService } from 'src/app/shared/services/http-cache-client.service';
 import { environment } from 'src/environment/environment';
 
@@ -59,6 +64,20 @@ export class FeatsService implements OnDestroy {
     charClass: Classes
   ): Observable<Feat[]> {
     const url = `${environment.apiUrl}/api/feats/class-feats?class=${charClass}&level=${level}`;
+
+    return this.http.get<Feat[]>(url);
+  }
+
+  public getFeatsQuery(
+    level: number,
+    category: FeatCategory,
+    trait?: string
+  ): Observable<Feat[]> {
+    const url = `${
+      environment.apiUrl
+    }/api/feats/query?category=${category}&level=${level}${
+      trait ? `&trait=${trait}` : ''
+    }`;
 
     return this.http.get<Feat[]>(url);
   }

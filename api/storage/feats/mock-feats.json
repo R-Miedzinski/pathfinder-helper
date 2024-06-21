@@ -36,6 +36,40 @@
     ]
   },
   {
+    "id": "A1",
+    "name": "Ancestry Feat 1 with choices",
+    "level": 1,
+    "category": "Ancestry Feat",
+    "traits": ["dwarf"],
+    "description": "This is a description of test ancestry feat 1. Allows a chopice between effect1 and effect2",
+    "effect": [
+      {
+        "effectType": "Choice",
+        "payload": {
+          "choiceType": "Effects",
+          "data": [
+            {
+              "featId": "A1",
+              "choiceName": "effect1",
+              "description": "effect1 grants some effect",
+              "effect": {
+                "effectType": "Description"
+              }
+            },
+            {
+              "featId": "A1",
+              "choiceName": "effect2",
+              "description": "effect2 grants some effect other than effect1",
+              "effect": {
+                "effectType": "Description"
+              }
+            }
+          ]
+        }
+      }
+    ]
+  },
+  {
     "id": "A2",
     "name": "Ancestry Feat 2",
     "level": 1,

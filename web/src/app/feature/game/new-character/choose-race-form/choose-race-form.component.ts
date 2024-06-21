@@ -31,18 +31,18 @@ export class ChooseRaceFormComponent implements OnInit, OnDestroy {
     boosts: Abilities[];
     flaws: Abilities[];
   }> = new EventEmitter();
-  @Output() heritageFeat: EventEmitter<Feat> = new EventEmitter();
+  @Output() heritageFeat: EventEmitter<string> = new EventEmitter();
   @Output() heritageEffect: EventEmitter<EffectChoice> = new EventEmitter();
-  @Output() ancestryFeat: EventEmitter<Feat> = new EventEmitter();
+  @Output() ancestryFeat: EventEmitter<string> = new EventEmitter();
   @Output() ancestryEffect: EventEmitter<EffectChoice> = new EventEmitter();
 
   protected chooseRaceForm: FormGroup = new FormGroup({});
   protected boostsForm: FormGroup = new FormGroup({});
   protected raceData?: RaceData;
-  protected chosenHeritageFeat?: Feat;
-  protected chosenAncestryFeat?: Feat;
-  protected heritageFeats: Feat[] = [];
-  protected raceFeats: Feat[] = [];
+  protected chosenHeritageFeat?: string;
+  protected chosenAncestryFeat?: string;
+  protected heritageFeats: string[] = [];
+  protected raceFeats: string[] = [];
   protected darkvision$: Observable<Feat> = new Observable();
 
   protected readonly keepOrderLocal = keepOrder;
@@ -116,9 +116,7 @@ export class ChooseRaceFormComponent implements OnInit, OnDestroy {
       ?.valueChanges.pipe(takeUntil(this.ngDestroyed$))
       .subscribe({
         next: featId => {
-          this.chosenHeritageFeat = this.heritageFeats.find(
-            feat => feat.id === featId
-          );
+          this.chosenHeritageFeat = featId;
           this.heritageFeat.emit(this.chosenHeritageFeat);
         },
       });
@@ -128,9 +126,7 @@ export class ChooseRaceFormComponent implements OnInit, OnDestroy {
       ?.valueChanges.pipe(takeUntil(this.ngDestroyed$))
       .subscribe({
         next: featId => {
-          this.chosenAncestryFeat = this.raceFeats.find(
-            feat => feat.id === featId
-          );
+          this.chosenAncestryFeat = featId;
           this.ancestryFeat.emit(this.chosenAncestryFeat);
         },
       });
@@ -228,7 +224,7 @@ export class ChooseRaceFormComponent implements OnInit, OnDestroy {
         .pipe(takeUntil(this.ngDestroyed$))
         .subscribe({
           next: (feats: Feat[]) => {
-            this.raceFeats = feats;
+            this.raceFeats = feats.map(feat => feat.id);
           },
         });
 
@@ -237,7 +233,7 @@ export class ChooseRaceFormComponent implements OnInit, OnDestroy {
         .pipe(takeUntil(this.ngDestroyed$))
         .subscribe({
           next: (feats: Feat[]) => {
-            this.heritageFeats = feats;
+            this.heritageFeats = feats.map(feat => feat.id);
           },
         });
     }

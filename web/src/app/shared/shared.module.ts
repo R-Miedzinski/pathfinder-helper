@@ -13,7 +13,6 @@ import { ToFormControlPipe } from './pipes/to-form-control.pipe';
 import { SkillProficienciesFormComponent } from './components/skill-proficiencies-form/skill-proficiencies-form.component';
 import { SkillInputComponent } from './components/skill-input/skill-input.component';
 import { LanguagesInputComponent } from './components/languages-input/languages-input.component';
-import { CustomFormControl } from './components/custom-form-control/custom-form-control.component';
 import { FeatChoiceComponent } from './components/feat-choice/feat-choice.component';
 import { FeatComponent } from './components/feat/feat.component';
 import { LevelBonusComponent } from './components/level-bonus/level-bonus.component';
