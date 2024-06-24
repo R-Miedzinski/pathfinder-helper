@@ -17,14 +17,13 @@ import {
 import {
   Abilities,
   Proficiency,
-  Skill,
   Skills,
   createProfToValMap,
   createValToProfMap,
 } from 'rpg-app-shared-package/dist/public-api';
 import keepOrder from '../../helpers/keepOrder';
-import { Subject, takeUntil } from 'rxjs';
 import { CustomFormControl } from '../custom-form-control/custom-form-control.component';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-skill-input',
@@ -39,13 +38,16 @@ import { CustomFormControl } from '../custom-form-control/custom-form-control.co
   ],
 })
 export class SkillInputComponent
-  extends CustomFormControl<Skill>
+  extends CustomFormControl<Proficiency>
   implements OnInit, OnDestroy
 {
   public static id: number = 0;
   @Input() maxLevel: Proficiency = Proficiency.L;
   @Input() disableIncrease: boolean = false;
-  @Input() upgradeOnly: boolean = false;
+  @Input() disableDecrease: boolean = false;
+  @Input() skillName?: Skills;
+  @Input() skillAbility?: Abilities;
+  @Input() skillSpecialty?: string;
 
   @Output() levelChange: EventEmitter<1 | -1> = new EventEmitter();
 
@@ -80,7 +82,7 @@ export class SkillInputComponent
     this.ngDestroyed$.complete();
   }
 
-  public override writeValue(value: Skill): void {
+  public override writeValue(value: Proficiency): void {
     super.writeValue(value);
     this.setFormData(value);
   }
@@ -121,41 +123,21 @@ export class SkillInputComponent
 
   private initForm(): void {
     this.skillForm = this.fb.group({
-      name: [null, Validators.required],
-      level: [null, Validators.required],
-      ability: [null, Validators.required],
-      value: [null, Validators.required],
-      specialty: null,
+      level: [this.value, Validators.required],
     });
 
-    this.skillForm.valueChanges.pipe(takeUntil(this.ngDestroyed$)).subscribe({
-      next: (skill: Skill) => {
-        this.onTouched();
-        this.value = { ...this.value, ...skill };
-        this.updateValue();
-      },
-    });
+    this.skillForm
+      .get('level')
+      ?.valueChanges.pipe(takeUntil(this.ngDestroyed$))
+      .subscribe({
+        next: level => {
+          this.value = level;
+          this.updateValue();
+        },
+      });
   }
 
-  private setFormData(skill: Skill): void {
-    if (skill.specialty) {
-      this.hasSpecialty.setValue(true);
-    }
-
-    this.skillForm?.patchValue(
-      {
-        name: skill.name,
-        level: skill.level,
-        ability: skill.ability,
-        value: skill.value,
-        specialty: skill?.specialty,
-      }
-      // { emitEvent: false }
-    );
-
-    this.skillForm?.get('name')?.disable();
-    this.skillForm?.get('ability')?.disable();
-    this.skillForm?.get('specialty')?.disable();
-    this.hasSpecialty.disable();
+  private setFormData(skill: Proficiency): void {
+    this.skillForm?.get('level')?.setValue(skill, { emitEvent: false });
   }
 }

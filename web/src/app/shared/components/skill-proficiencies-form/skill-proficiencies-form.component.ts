@@ -16,12 +16,14 @@ import {
 } from '@angular/forms';
 import { cloneDeep } from 'lodash';
 import {
+  Abilities,
   Proficiency,
   Skill,
   newSkills,
 } from 'rpg-app-shared-package/dist/public-api';
-import { Subject, takeUntil } from 'rxjs';
+import { Subject, retry, takeUntil } from 'rxjs';
 import { CustomFormControl } from '../custom-form-control/custom-form-control.component';
+import { P } from '@angular/cdk/keycodes';
 
 @Component({
   selector: 'app-skill-proficiencies-form',
@@ -41,9 +43,9 @@ export class SkillProficienciesFormComponent
 {
   @Input() maxLevel: Proficiency = Proficiency.L;
   @Input() toChange: number = 0;
-  @Input({ required: false }) upgradeOnly: boolean = false;
   @Input() currentProficiencies: Skill[] = [];
 
+  protected availableSkills: Skill[] = [];
   protected disableIncrease: boolean = false;
   protected skillsForm?: FormGroup;
 
@@ -65,32 +67,7 @@ export class SkillProficienciesFormComponent
     const toChange = changes['toChange'];
 
     if (currentProficienciesChanges) {
-      const controlsToPush: FormControl<Skill | null>[] = [];
-      const idsToDisable: number[] = [];
-      this.skills?.controls.forEach(control => control.enable());
-
-      (currentProficienciesChanges.currentValue as Skill[]).forEach(skill => {
-        const id = this.skills?.value.findIndex(
-          item =>
-            item?.name === skill.name && item?.specialty === skill?.specialty
-        );
-
-        if (id !== -1) {
-          const control = this.skills.controls[id];
-
-          control.setValue(skill);
-          idsToDisable.push(id);
-        } else {
-          const control = this.fb.control(skill);
-
-          controlsToPush.push(control);
-          idsToDisable.push(this.skills?.value.length);
-          this.value = this.value.concat(skill);
-        }
-      });
-
-      controlsToPush.forEach(ctrl => this.skills.push(ctrl));
-      idsToDisable.forEach(id => this.skills.controls[id].disable());
+      this.initProficienciesForm();
     }
 
     if (toChange) {
@@ -103,18 +80,6 @@ export class SkillProficienciesFormComponent
     this.ngDestroyed$.complete();
   }
 
-  public override writeValue(value: Skill[]): void {
-    value.forEach(skill => {
-      const id = this.skills.value.findIndex(item => item?.name === skill.name);
-
-      if (id !== -1) {
-        this.skills.controls[id].setValue(skill);
-      }
-    });
-
-    this.updateValue();
-  }
-
   public setDisabledState(isDisabled: boolean): void {
     if (isDisabled) {
       this.skillsForm?.disable();
@@ -123,23 +88,34 @@ export class SkillProficienciesFormComponent
     }
   }
 
-  protected get skills(): FormArray<FormControl<Skill | null>> {
-    return this.skillsForm?.get('skills') as FormArray;
-  }
-
   protected onLevelChange(event: 1 | -1): void {
     this.toChange -= event;
 
     this.disableIncrease = this.toChange <= 0;
+    this.updateValue();
   }
 
   protected override updateValue(): void {
-    const upgradedSkills = this.value.filter(
-      skill => skill.level !== Proficiency.U
+    const upgradedSkills = this.availableSkills?.filter(
+      skill =>
+        skill.level !== Proficiency.U &&
+        !this.currentProficiencies.some(
+          item =>
+            item.name === skill.name && item?.specialty === item?.specialty
+        )
     );
 
     this.onChange(upgradedSkills);
     this.valueChange.emit(upgradedSkills);
+  }
+
+  protected canDecrease(skill: Skill): boolean {
+    return (
+      skill.level === Proficiency.U ||
+      this.currentProficiencies.some(
+        item => item.name === skill.name && item?.specialty === skill?.specialty
+      )
+    );
   }
 
   private initProficienciesForm(): void {
@@ -147,28 +123,29 @@ export class SkillProficienciesFormComponent
 
     const basicSkills = this.basicProficiencies.filter(
       skill =>
-        !savedSkills.map(entry => entry.name).some(name => name === skill.name)
+        !savedSkills.some(
+          item =>
+            item.name === skill.name &&
+            (item?.specialty ?? '') === (skill?.specialty ?? '')
+        )
     );
 
-    this.value = basicSkills.concat(savedSkills);
+    this.availableSkills = basicSkills
+      .concat(savedSkills)
+      .sort(this.compareSkills);
+  }
 
-    this.skillsForm = this.fb.group({
-      skills: this.fb.array(this.value.map(skill => new FormControl(skill))),
-    });
-
-    this.skills?.valueChanges.pipe(takeUntil(this.ngDestroyed$)).subscribe({
-      next: skills => {
-        const newSkills = this.value.reduce((acc, curr) => {
-          const item = skills.find(
-            skill =>
-              skill?.name === curr.name && skill?.specialty === curr?.specialty
-          );
-          return acc.concat(Object.assign(curr, item));
-        }, [] as Skill[]);
-
-        this.value = newSkills;
-        this.updateValue();
-      },
-    });
+  private compareSkills(a: Skill, b: Skill): number {
+    if (a.name > b.name) {
+      return 1;
+    } else if (b.name > a.name) {
+      return -1;
+    } else if ((a.specialty ?? '') > (b.specialty ?? '')) {
+      return 1;
+    } else if ((b.specialty ?? '') > (a.specialty ?? '')) {
+      return -1;
+    } else {
+      return 0;
+    }
   }
 }

@@ -125,14 +125,5 @@
         [level]="1"
         [levelBonus]="classFeatures![i]"></app-level-bonus>
     </ng-container>
-    {{ featuresArray.value | json }}
-  </ng-container>
-  <ng-container [formGroup]="chooseClassForm">
-    <app-feat-choice
-      [feats]="classFeats"
-      formControlName="feat"
-      label="Class"
-      (effectChoice)="onClassFeatEffect($event)">
-    </app-feat-choice>
   </ng-container>
 </form>

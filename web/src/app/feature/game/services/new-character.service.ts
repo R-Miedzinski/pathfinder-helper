@@ -24,7 +24,6 @@ export class NewCharacterService {
   private _backstory?: Backstory;
   private _classData?: DisplayInitClassData;
   private _classBoosts?: Abilities[];
-  private _classFeat?: string;
   private _background?: BackgroundData;
   private _backgroundBoosts?: Abilities[];
   private _race?: RaceData;
@@ -33,6 +32,11 @@ export class NewCharacterService {
   private _heritageEffect?: EffectChoice;
   private _ancestryFeat?: string;
   private _ancestryEffect?: EffectChoice;
+  private _skills?: Skill[];
+  private _languages?: string[];
+
+  private languagesToAdd: number = 0;
+  private skillsToAdd: number = 0;
 
   constructor(private levelUpBonusesService: LevelUpBonusesService) {}
 
@@ -45,9 +49,7 @@ export class NewCharacterService {
   }
 
   public set languages(languages: string[] | undefined) {
-    if (this._backstory && languages?.length) {
-      this._backstory.languages = languages;
-    }
+    this._languages = languages;
   }
 
   public set classData(data: DisplayInitClassData | undefined) {
@@ -56,10 +58,6 @@ export class NewCharacterService {
 
   public set classBoosts(data: Abilities[] | undefined) {
     this._classBoosts = data;
-  }
-
-  public set classFeat(feat: string | undefined) {
-    this._classFeat = feat;
   }
 
   public set background(data: BackgroundData | undefined) {
@@ -96,6 +94,10 @@ export class NewCharacterService {
     this._ancestryEffect = data;
   }
 
+  public set skills(data: Skill[] | undefined) {
+    this._skills = data;
+  }
+
   public get raceChoiceCompleted(): boolean {
     return (
       !!this._race &&
@@ -118,7 +120,16 @@ export class NewCharacterService {
   }
 
   public get additionalChoicesCompleted(): boolean {
-    return true;
+    return (
+      this.raceChoiceCompleted &&
+      this.backgroundChoiceCompleted &&
+      this.classChoiceCompleted &&
+      this.languagesToAdd +
+        (this._race?.languages.length ?? 0) -
+        (this._languages?.length ?? 0) ===
+        0 &&
+      this.skillsToAdd - (this._skills?.length ?? 0) === 0
+    );
   }
 
   public get backstoryCompleted(): boolean {
@@ -148,13 +159,7 @@ export class NewCharacterService {
       boosts: this.gatherBoosts(),
       flaws: this.gatherFlaws(),
       savingThrows: [...(this._classData?.savingThrows ?? [])],
-      skills: [],
-      // this.additionalSkills.value.filter(
-      //   (el: Skill) =>
-      //     !this.featSkills
-      //       // .map(skill => ({ name: skill.name, specialty: skill.specialty }))
-      //       .includes(el) //{ name: el.name, specialty: el.specialty })
-      // ),
+      skills: this.gatherSkills(),
       attacks: this._classData?.weaponProficiencies ?? [],
       defences: this._classData?.armorProficiencies ?? [],
       inventory: [],
@@ -213,10 +218,6 @@ export class NewCharacterService {
   public gatherFeats(): string[] {
     const feats: string[] = [];
 
-    if (this._classFeat) {
-      feats.push(this._classFeat);
-    }
-
     if (this._background?.feats) {
       feats.push(...this._background.feats);
     }
@@ -241,13 +242,13 @@ export class NewCharacterService {
     languagesToAdd: number;
     initialLanguages: string[];
   } {
-    const languagesToAdd = this.abilityModifiers
+    this.languagesToAdd = this.abilityModifiers
       ? this.abilityModifiers[Abilities.int]
       : 0;
 
-    const initialLanguages = this._race?.languages ?? [];
+    const initialLanguages = [...(this._race?.languages ?? [])];
 
-    return { languagesToAdd, initialLanguages };
+    return { languagesToAdd: this.languagesToAdd, initialLanguages };
   }
 
   public initAdditionalSkills(characterFeats: Feat[]): {
@@ -276,19 +277,55 @@ export class NewCharacterService {
       )
       .flat();
 
-    const chosenSkills = (this._background?.proficiencies ?? [])
+    const effectSkills = this.gatherChoices()
+      .map(choice => choice.effect)
+      .flat()
+      .filter(effect => effect.effectType === CharacterEffectType.skill)
+      .map(effect => {
+        const skill = (effect as GrantSkillProficiencyEffect).payload;
+        const mappedSkill: Skill = {
+          name: skill.skill,
+          level: skill.level,
+          value: 0,
+          ability: skillToAbilityMap[skill.skill],
+        };
+
+        if (skill.specialty) {
+          mappedSkill.specialty = skill.specialty;
+        }
+
+        return mappedSkill;
+      });
+
+    const allChosenSkills = (this._background?.proficiencies ?? [])
       .concat(this._classData?.proficiencies ?? [])
       .map(item => ({
         value: 0,
         ...item,
       }))
-      .concat(featSkills);
+      .concat(featSkills)
+      .concat(effectSkills);
 
-    const skillsToChange =
+    const chosenSkills = allChosenSkills.reduce((acc, curr) => {
+      const id = acc.findIndex(
+        item => item.name === curr.name && item.specialty === curr.specialty
+      );
+
+      if (id === -1) {
+        acc.push(curr);
+      }
+
+      return acc;
+    }, [] as Skill[]);
+
+    let repeating = allChosenSkills.length - chosenSkills.length;
+
+    this.skillsToAdd =
+      repeating +
       (this._classData?.additionalProficiencies ?? 0) +
       (this.abilityModifiers ? this.abilityModifiers[Abilities.int] : 0);
 
-    return { skillsToChange, chosenSkills };
+    return { skillsToChange: this.skillsToAdd, chosenSkills };
   }
 
   private gatherChoices(): EffectChoice[] {
@@ -340,7 +377,22 @@ export class NewCharacterService {
 
   private gatherBackstory(): Backstory {
     const backstory = this._backstory;
+    if (backstory) {
+      backstory.languages = this._languages ?? [];
+    }
 
     return backstory ? backstory : ({} as Backstory);
+  }
+
+  private gatherSkills(): Skill[] {
+    const skills = this._skills ?? [];
+
+    if (this._background?.proficiencies?.length) {
+      skills.push(
+        ...this._background.proficiencies.map(item => ({ ...item, value: 0 }))
+      );
+    }
+
+    return skills;
   }
 }

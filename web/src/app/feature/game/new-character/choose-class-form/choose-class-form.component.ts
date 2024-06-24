@@ -29,12 +29,9 @@ import { LevelUpBonusesService } from '../../services/level-up-bonuses.service';
 export class ChooseClassFormComponent implements OnInit, OnDestroy {
   @Output() classData: EventEmitter<DisplayInitClassData> = new EventEmitter();
   @Output() boosts: EventEmitter<Abilities[]> = new EventEmitter();
-  @Output() classFeat: EventEmitter<string> = new EventEmitter();
 
   protected chooseClassForm: FormGroup = new FormGroup({});
   protected classes: { id: string; name: Classes }[] = [];
-  protected classFeats: string[] = [];
-  protected chosenClassFeat?: string;
   protected chosenClass?: DisplayInitClassData;
   protected classFeatures?: LevelBonus[];
   protected featuresArrayForm: FormGroup = new FormGroup({});
@@ -44,7 +41,6 @@ export class ChooseClassFormComponent implements OnInit, OnDestroy {
 
   constructor(
     private gameDataService: GameDataService,
-    private featsService: FeatsService,
     private fb: FormBuilder,
     private levelUpBonusesService: LevelUpBonusesService
   ) {}
@@ -66,13 +62,10 @@ export class ChooseClassFormComponent implements OnInit, OnDestroy {
     return this.featuresArrayForm.get('features') as FormArray;
   }
 
-  public onClassFeatEffect(event: EffectChoice): void {}
-
   private initClassForm(): void {
     this.chooseClassForm = this.fb.group({
       class: ['', Validators.required],
       boosts: this.fb.array([]),
-      feat: ['', Validators.required],
     });
 
     this.featuresArrayForm = this.fb.group({
@@ -96,21 +89,10 @@ export class ChooseClassFormComponent implements OnInit, OnDestroy {
 
               this.chosenClass = data;
               this.initClassFeaturesForm(this.chosenClass.name);
-              this.initClassFeatsForm(this.chosenClass.name);
               this.initClassBoostsForm(this.chosenClass.boosts);
               this.classData.emit(this.chosenClass);
             },
           });
-        },
-      });
-
-    this.chooseClassForm
-      .get('feat')
-      ?.valueChanges.pipe(takeUntil(this.ngDestroyed$))
-      .subscribe({
-        next: featId => {
-          this.chosenClassFeat = featId;
-          this.classFeat.emit(this.chosenClassFeat);
         },
       });
   }
@@ -121,9 +103,6 @@ export class ChooseClassFormComponent implements OnInit, OnDestroy {
 
     this.initClassBoostsForm([]);
     this.boosts.emit(undefined);
-
-    this.chooseClassForm.get('feat')?.setValue(undefined, { emitEvent: false });
-    this.classFeat.emit(undefined);
 
     this.classFeatures = undefined;
 
@@ -158,19 +137,6 @@ export class ChooseClassFormComponent implements OnInit, OnDestroy {
         }
       },
     });
-  }
-
-  private initClassFeatsForm(charClass: Classes): void {
-    if (this.chosenClass) {
-      this.featsService
-        .getClassFeatsToAdd(1, charClass)
-        .pipe(takeUntil(this.ngDestroyed$))
-        .subscribe({
-          next: data => {
-            this.classFeats = data.map(feat => feat.id);
-          },
-        });
-    }
   }
 
   private initClassFeaturesForm(className: string): void {

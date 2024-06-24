@@ -46,7 +46,9 @@ export class NewCharacterComponent implements OnInit, OnDestroy {
     private featsService: FeatsService
   ) {}
 
-  public ngOnInit(): void {}
+  public ngOnInit(): void {
+    this.initAdditionalChoicesForm();
+  }
 
   public ngOnDestroy(): void {
     this.ngDestroyed$.next();
@@ -96,10 +98,6 @@ export class NewCharacterComponent implements OnInit, OnDestroy {
     this.newCharacterService.classBoosts = event;
   }
 
-  public onClassFeat(event: string): void {
-    this.newCharacterService.classFeat = event;
-  }
-
   public onBackstory(event: Backstory): void {
     this.newCharacterService.backstory = event;
   }
@@ -113,7 +111,7 @@ export class NewCharacterComponent implements OnInit, OnDestroy {
       this.newCharacterService.calculateModifiers();
       this.resetRemainingChoicesForm();
       this.initLanguageForm();
-      this.initAdditionalSkillsForm();
+      this.gatherSkillProficiencies();
     } else if (event.selectedIndex === 7) {
       this.newCharacterService.languages = this.addLanguageControl.value;
 
@@ -149,11 +147,32 @@ export class NewCharacterComponent implements OnInit, OnDestroy {
     }
   }
 
+  private initAdditionalChoicesForm(): void {
+    this.additionalSkills.valueChanges
+      .pipe(takeUntil(this.ngDestroyed$))
+      .subscribe({
+        next: skills => {
+          this.newCharacterService.skills = skills;
+        },
+      });
+
+    this.addLanguageControl.valueChanges
+      .pipe(takeUntil(this.ngDestroyed$))
+      .subscribe({
+        next: languages => {
+          this.newCharacterService.languages = languages;
+        },
+      });
+  }
+
+  // TODO: Handle reset correctly
   private resetRemainingChoicesForm(): void {
     this.chosenSkills = [];
     this.skillsToChange = 0;
-    this.additionalSkills.reset();
-    this.addLanguageControl.reset();
+    this.additionalSkills.setValue([]);
+
+    this.languagesToAdd = 0;
+    this.addLanguageControl.setValue([]);
   }
 
   private initLanguageForm(): void {
@@ -164,9 +183,7 @@ export class NewCharacterComponent implements OnInit, OnDestroy {
     this.addLanguageControl.setValue(initialLanguages);
   }
 
-  // TODO: resolve feat skill profs for additional skill select
-  // TODO: resolve repeating skills
-  private initAdditionalSkillsForm(): void {
+  private gatherSkillProficiencies() {
     this.featsService
       .getFeats(this.newCharacterService.gatherFeats())
       .pipe(takeUntil(this.ngDestroyed$))

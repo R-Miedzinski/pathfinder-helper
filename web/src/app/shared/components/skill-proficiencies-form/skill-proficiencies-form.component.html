@@ -13,13 +13,17 @@
       </span>
     </div>
   </div>
-  <form *ngIf="skillsForm" class="form">
-    <app-skill-input
-      *ngFor="let control of skills.controls"
-      [formControl]="control"
-      [upgradeOnly]="upgradeOnly"
-      [disableIncrease]="disableIncrease"
-      [maxLevel]="maxLevel"
-      (levelChange)="onLevelChange($event)"></app-skill-input>
+  <form class="form">
+    <ng-container *ngFor="let skill of availableSkills; index as i">
+      <app-skill-input
+        [(value)]="skill.level"
+        [skillName]="skill.name"
+        [skillAbility]="skill.ability"
+        [skillSpecialty]="skill.specialty"
+        [disableIncrease]="disableIncrease"
+        [disableDecrease]="canDecrease(skill)"
+        [maxLevel]="maxLevel"
+        (levelChange)="onLevelChange($event)"></app-skill-input>
+    </ng-container>
   </form>
 </div>
