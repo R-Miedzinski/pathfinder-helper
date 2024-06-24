@@ -13,6 +13,7 @@ import {
   Skill,
   skillToAbilityMap,
 } from 'rpg-app-shared-package/dist/public-api';
+import { LevelUpBonusesService } from './level-up-bonuses.service';
 
 @Injectable({
   providedIn: 'root',
@@ -33,7 +34,7 @@ export class NewCharacterService {
   private _ancestryFeat?: string;
   private _ancestryEffect?: EffectChoice;
 
-  constructor() {}
+  constructor(private levelUpBonusesService: LevelUpBonusesService) {}
 
   public set characterName(name: string | undefined) {
     this._characterName = name;
@@ -109,7 +110,11 @@ export class NewCharacterService {
   }
 
   public get classChoiceCompleted(): boolean {
-    return !!this._classData && !!this._classBoosts && !!this._classFeat;
+    return (
+      !!this._classData &&
+      !!this._classBoosts &&
+      !!this.levelUpBonusesService.feats.length
+    );
   }
 
   public get additionalChoicesCompleted(): boolean {
@@ -225,7 +230,24 @@ export class NewCharacterService {
       feats.push(this._race.darkvision);
     }
 
+    if (this.levelUpBonusesService.feats.length) {
+      feats.push(...this.levelUpBonusesService.feats);
+    }
+
     return feats;
+  }
+
+  public initLanguages(): {
+    languagesToAdd: number;
+    initialLanguages: string[];
+  } {
+    const languagesToAdd = this.abilityModifiers
+      ? this.abilityModifiers[Abilities.int]
+      : 0;
+
+    const initialLanguages = this._race?.languages ?? [];
+
+    return { languagesToAdd, initialLanguages };
   }
 
   public initAdditionalSkills(characterFeats: Feat[]): {
@@ -277,6 +299,10 @@ export class NewCharacterService {
       choices.push(this._heritageEffect);
     }
 
+    if (this.levelUpBonusesService.effects.length) {
+      choices.push(...this.levelUpBonusesService.effects);
+    }
+
     return choices;
   }
 
@@ -293,6 +319,10 @@ export class NewCharacterService {
 
     if (this._raceAbilities?.boosts.length) {
       boosts.push(...this._raceAbilities.boosts);
+    }
+
+    if (this.levelUpBonusesService.boosts.length) {
+      boosts.push(...this.levelUpBonusesService.boosts);
     }
 
     return boosts;

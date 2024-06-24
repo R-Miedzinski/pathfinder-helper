@@ -55,10 +55,10 @@ export class FeatChoiceComponent
   }
 
   public ngOnInit(): void {
-    this.resetFeatControl();
-    this.getFeats();
     this.handleFeatControlChanges();
     this.handleChoiceControlChanges();
+    this.resetFeatControl();
+    this.getFeats();
   }
 
   public ngOnChanges(changes: SimpleChanges): void {
@@ -74,11 +74,6 @@ export class FeatChoiceComponent
   }
 
   public override setDisabledState(isDisabled: boolean): void {
-    // if (isDisabled) {
-    //   this.featControl.disable();
-    //   } else {
-    //     this.featControl.enable();
-    //     }
     this.readonly = isDisabled;
   }
 

@@ -31,7 +31,7 @@ router.use('*', (req, res, next) => {
   console.log('connection on', req.baseUrl + req.url)
   console.log('method: ', req.method)
 
-  setTimeout(next, 500)
+  next()
 })
 
 router.use('/api/user', userRouterFactory(gamesLoader))

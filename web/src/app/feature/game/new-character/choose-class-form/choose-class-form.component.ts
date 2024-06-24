@@ -1,18 +1,11 @@
 import {
   Component,
   EventEmitter,
-  Input,
   OnDestroy,
   OnInit,
   Output,
 } from '@angular/core';
-import {
-  FormArray,
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {
   Abilities,
   AbilityBoost,
@@ -20,13 +13,13 @@ import {
   Classes,
   DisplayInitClassData,
   EffectChoice,
-  Feat,
   LevelBonus,
-  Race,
+  LevelBonusCategory,
 } from 'rpg-app-shared-package/dist/public-api';
 import { Subject, takeUntil } from 'rxjs';
 import { GameDataService } from '../../services/game-data.service';
 import { FeatsService } from '../../services/feats.service';
+import { LevelUpBonusesService } from '../../services/level-up-bonuses.service';
 
 @Component({
   selector: 'app-choose-class-form',
@@ -44,7 +37,7 @@ export class ChooseClassFormComponent implements OnInit, OnDestroy {
   protected chosenClassFeat?: string;
   protected chosenClass?: DisplayInitClassData;
   protected classFeatures?: LevelBonus[];
-  protected featuresArray: FormControl[] = [];
+  protected featuresArrayForm: FormGroup = new FormGroup({});
 
   protected readonly boostTypes = AbilityBoostType;
   private readonly ngDestroyed$: Subject<void> = new Subject();
@@ -52,7 +45,8 @@ export class ChooseClassFormComponent implements OnInit, OnDestroy {
   constructor(
     private gameDataService: GameDataService,
     private featsService: FeatsService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private levelUpBonusesService: LevelUpBonusesService
   ) {}
 
   public ngOnInit(): void {
@@ -64,21 +58,25 @@ export class ChooseClassFormComponent implements OnInit, OnDestroy {
     this.ngDestroyed$.complete();
   }
 
-  public get classBoosts(): FormArray {
+  public get classBoosts(): FormArray<FormGroup> {
     return this.chooseClassForm.get('boosts') as FormArray;
   }
 
-  public onClassFeatEffect(event: EffectChoice): void {}
-
-  protected trackByFn(index: any, item: any): typeof index {
-    return index;
+  public get featuresArray(): FormArray {
+    return this.featuresArrayForm.get('features') as FormArray;
   }
+
+  public onClassFeatEffect(event: EffectChoice): void {}
 
   private initClassForm(): void {
     this.chooseClassForm = this.fb.group({
       class: ['', Validators.required],
       boosts: this.fb.array([]),
       feat: ['', Validators.required],
+    });
+
+    this.featuresArrayForm = this.fb.group({
+      features: this.fb.array([]),
     });
 
     this.gameDataService.getClasses().subscribe({
@@ -97,10 +95,10 @@ export class ChooseClassFormComponent implements OnInit, OnDestroy {
               this.resetData();
 
               this.chosenClass = data;
-              this.classData.emit(this.chosenClass);
+              this.initClassFeaturesForm(this.chosenClass.name);
               this.initClassFeatsForm(this.chosenClass.name);
               this.initClassBoostsForm(this.chosenClass.boosts);
-              this.initClassFeaturesForm(this.chosenClass.name);
+              this.classData.emit(this.chosenClass);
             },
           });
         },
@@ -129,7 +127,7 @@ export class ChooseClassFormComponent implements OnInit, OnDestroy {
 
     this.classFeatures = undefined;
 
-    this.featuresArray = [];
+    this.featuresArray.reset();
   }
 
   private initClassBoostsForm(boosts: AbilityBoost[]): void {
@@ -175,7 +173,6 @@ export class ChooseClassFormComponent implements OnInit, OnDestroy {
     }
   }
 
-  // keep handling in Record<BonusLevelCategory, () => void?>
   private initClassFeaturesForm(className: string): void {
     this.gameDataService
       .getClassLevelData(className, 1)
@@ -184,14 +181,32 @@ export class ChooseClassFormComponent implements OnInit, OnDestroy {
         next: data => {
           this.classFeatures = data;
 
-          this.classFeatures.forEach(item => {
-            const entry = new FormControl({
-              bonusCategory: '',
-              data: undefined,
-            });
+          this.featuresArrayForm = this.fb.group({
+            features: this.fb.array(
+              this.classFeatures.map(item => {
+                const entry = this.fb.group({
+                  bonusCategory: item.category,
+                  data: null,
+                });
 
-            this.featuresArray.push(entry);
+                return entry;
+              })
+            ),
           });
+
+          this.featuresArrayForm
+            .get('features')
+            ?.valueChanges.pipe(takeUntil(this.ngDestroyed$))
+            .subscribe({
+              next: (
+                levelBonuses: {
+                  bonusCategory: LevelBonusCategory;
+                  data: any;
+                }[]
+              ) => {
+                this.levelUpBonusesService.selectedBonuses = levelBonuses;
+              },
+            });
         },
       });
   }

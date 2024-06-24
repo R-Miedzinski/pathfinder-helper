@@ -15,9 +15,6 @@ import {
   Proficiency,
   Skill,
   Backstory,
-  CharacterEffectType,
-  GrantSkillProficiencyEffect,
-  skillToAbilityMap,
   EffectChoice,
 } from 'rpg-app-shared-package/dist/public-api';
 import { StepperSelectionEvent } from '@angular/cdk/stepper';
@@ -160,13 +157,11 @@ export class NewCharacterComponent implements OnInit, OnDestroy {
   }
 
   private initLanguageForm(): void {
-    this.languagesToAdd = this.newCharacterService.abilityModifiers
-      ? this.newCharacterService.abilityModifiers[Abilities.int]
-      : 0;
+    const { languagesToAdd, initialLanguages } =
+      this.newCharacterService.initLanguages();
+    this.languagesToAdd = languagesToAdd;
 
-    this.addLanguageControl.setValue(
-      this.newCharacterService['_race']?.languages
-    );
+    this.addLanguageControl.setValue(initialLanguages);
   }
 
   // TODO: resolve feat skill profs for additional skill select

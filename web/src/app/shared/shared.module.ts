@@ -16,6 +16,7 @@ import { LanguagesInputComponent } from './components/languages-input/languages-
 import { FeatChoiceComponent } from './components/feat-choice/feat-choice.component';
 import { FeatComponent } from './components/feat/feat.component';
 import { LevelBonusComponent } from './components/level-bonus/level-bonus.component';
+import { ToFormGroupPipe } from './pipes/to-form-group.pipe';
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import { LevelBonusComponent } from './components/level-bonus/level-bonus.compon
     SanitazeHTMLPipe,
     BoostChoiceComponent,
     ToFormControlPipe,
+    ToFormGroupPipe,
     SkillProficienciesFormComponent,
     SkillInputComponent,
     LanguagesInputComponent,
@@ -42,6 +44,7 @@ import { LevelBonusComponent } from './components/level-bonus/level-bonus.compon
     ReactiveFormsModule,
     CastPipe,
     ToFormControlPipe,
+    ToFormGroupPipe,
     SanitazeHTMLPipe,
     ItemComponent,
     SpellComponent,

@@ -4,5 +4,5 @@ export interface AppState {
 }
 
 export const initialState: AppState = {
-  showSideNav: true,
+  showSideNav: false,
 };

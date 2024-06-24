@@ -1,16 +1,5 @@
 import { Injectable, OnDestroy } from '@angular/core';
-import {
-  BehaviorSubject,
-  Observable,
-  Subject,
-  combineLatest,
-  of,
-  takeUntil,
-} from 'rxjs';
-import { cloneDeep } from 'lodash';
-import { GameState } from '../ngrx/game-reducer';
-import * as GameActions from '../ngrx/game-actions';
-import { Store } from '@ngrx/store';
+import { Observable, Subject, combineLatest } from 'rxjs';
 import {
   Classes,
   Feat,
@@ -22,15 +11,9 @@ import { environment } from 'src/environment/environment';
 
 @Injectable()
 export class FeatsService implements OnDestroy {
-  public featList$: BehaviorSubject<Feat[]> = new BehaviorSubject<Feat[]>([]);
-  private feats: Feat[] = [];
   private readonly ngOnDestroy$ = new Subject<void>();
 
-  constructor(private http: HttpCacheClientService) {
-    this.featList$.pipe(takeUntil(this.ngOnDestroy$)).subscribe({
-      next: list => (this.feats = cloneDeep(list)),
-    });
-  }
+  constructor(private http: HttpCacheClientService) {}
 
   public ngOnDestroy(): void {
     this.ngOnDestroy$.next();

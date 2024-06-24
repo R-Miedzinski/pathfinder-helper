@@ -1,13 +1,13 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import {
   Classes,
+  EffectChoice,
   FeatCategory,
   LevelBonus,
   LevelBonusCategory,
   Race,
 } from 'rpg-app-shared-package/dist/public-api';
-import { CustomFormControl } from '../custom-form-control/custom-form-control.component';
-import { Observable, Subject, map, of, takeUntil } from 'rxjs';
+import { Observable, Subject, map, of, takeUntil, tap } from 'rxjs';
 import { FeatsService } from 'src/app/feature/game/services/feats.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
 
@@ -16,33 +16,32 @@ import { FormBuilder, FormGroup } from '@angular/forms';
   templateUrl: './level-bonus.component.html',
   styleUrls: ['./level-bonus.component.scss'],
 })
-export class LevelBonusComponent
-  extends CustomFormControl<{ bonusCategory: string; data: any }>
-  implements OnInit, OnDestroy
-{
+export class LevelBonusComponent implements OnInit, OnDestroy {
   @Input() levelBonus?: LevelBonus;
   @Input() charClass?: Classes;
   @Input() level: number = 1;
   @Input() race?: Race;
+  @Input() valueControl!: FormGroup;
 
   protected feats$: Observable<string[]> = new Observable();
-  protected valueControl: FormGroup = new FormGroup({});
+  protected addFeatChoice: EffectChoice[] = [];
 
   protected readonly bonusCategory = LevelBonusCategory;
   private readonly ngDestroyed$: Subject<void> = new Subject();
 
-  constructor(private featsService: FeatsService, private fb: FormBuilder) {
-    super();
-  }
+  constructor(private featsService: FeatsService, private fb: FormBuilder) {}
 
   public ngOnInit(): void {
-    // TODO: identify bonus type
-    // TODO: create form for identified data type
-    this.initValueControl();
-
     switch (this.levelBonus?.category) {
       case LevelBonusCategory.addFeat:
-        this.feats$ = of(this.levelBonus.payload!.featId);
+        this.feats$ = of(this.levelBonus.payload!.featId).pipe(
+          tap(feats =>
+            this.valueControl.get('data')?.setValue({
+              feats,
+              choices: [],
+            })
+          )
+        );
         return;
       case LevelBonusCategory.classFeat:
         this.feats$ = this.featsService
@@ -80,7 +79,26 @@ export class LevelBonusComponent
     this.ngDestroyed$.complete();
   }
 
-  public override setDisabledState(isDisabled: boolean): void {}
+  protected onAddFeatEffectChoice(choice: EffectChoice, feat: string): void {
+    if (!!choice) {
+      const currentId = this.addFeatChoice?.findIndex(
+        item => item?.featId === feat
+      );
+
+      if (currentId === -1) {
+        this.addFeatChoice.push(choice);
+      } else {
+        this.addFeatChoice[currentId] = choice;
+      }
+
+      const feats = this.valueControl.get('data')?.value.feats;
+
+      this.valueControl.get('data')?.setValue({
+        feats,
+        choices: this.addFeatChoice,
+      });
+    }
+  }
 
   private initFeatsChoice(category: FeatCategory, trait?: string): void {
     this.feats$ = this.featsService
@@ -89,30 +107,5 @@ export class LevelBonusComponent
         takeUntil(this.ngDestroyed$),
         map(feats => feats.map(item => item.id))
       );
-  }
-
-  private initValueControl(): void {
-    this.value = {
-      bonusCategory: '',
-      data: null,
-    };
-
-    this.valueControl = this.fb.group({
-      bonusCategory: this.levelBonus?.category,
-      data: undefined,
-    });
-
-    this.value.bonusCategory = this.levelBonus?.category ?? '';
-
-    this.valueControl
-      .get('data')
-      ?.valueChanges.pipe(takeUntil(this.ngDestroyed$))
-      .subscribe({
-        next: data => {
-          console.log('data changed for:', this.levelBonus, data);
-          this.value.data = data;
-          this.updateValue();
-        },
-      });
   }
 }

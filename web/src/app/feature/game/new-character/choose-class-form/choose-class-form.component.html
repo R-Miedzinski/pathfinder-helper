@@ -11,133 +11,128 @@
       </option>
     </select>
   </div>
-  <ng-container *ngIf="chosenClass">
-    <div class="classes__name">
-      <h4 class="classes__label">Chosen Class:</h4>
-      {{ chosenClass.name }}
+</form>
+<form *ngIf="chosenClass" class="new-character-form class-form">
+  <div class="classes__name">
+    <h4 class="classes__label">Chosen Class:</h4>
+    {{ chosenClass.name }}
+  </div>
+  <div class="classes__description">
+    <h4 class="classes__label">Description:</h4>
+    {{ chosenClass.description }}
+  </div>
+  <div class="classes__details">
+    <div>
+      <h4>Hit Points Granted:</h4>
+      {{ chosenClass.baseHp }}
     </div>
-    <div class="classes__description">
-      <h4 class="classes__label">Description:</h4>
-      {{ chosenClass.description }}
+    <div>
+      <h4>Key Ability:</h4>
+      {{ chosenClass.keyAbility }}
     </div>
-    <div class="classes__details">
-      <div>
-        <h4>Hit Points Granted:</h4>
-        {{ chosenClass.baseHp }}
-      </div>
-      <div>
-        <h4>Key Ability:</h4>
-        {{ chosenClass.keyAbility }}
-      </div>
-    </div>
-    <div class="classes__abilities">
-      <h4 class="classes__label">Ability Boosts Gained:</h4>
-      <ul formArrayName="boosts">
-        <li *ngFor="let boost of classBoosts.controls; let i = index">
-          <div [formGroupName]="i" [ngSwitch]="chosenClass.boosts[i].type">
-            <app-boost-choice
-              [formControl]="boost.get('boost')! | toFormControl"
-              [exclude]="classBoosts.value | excludeForFreeBoost : i"
-              *ngSwitchCase="boostTypes.free"></app-boost-choice>
-            <app-boost-choice
-              [formControl]="boost.get('boost')! | toFormControl"
-              [exclude]="classBoosts.value | excludeForFreeBoost : i"
-              [enableOnly]="chosenClass.boosts[i].abilities"
-              *ngSwitchCase="boostTypes.choice"></app-boost-choice>
-            <app-boost-choice
-              [formControl]="boost.get('boost')! | toFormControl"
-              [enableOnly]="chosenClass.boosts[i].abilities"
-              *ngSwitchCase="boostTypes.set"></app-boost-choice>
-          </div>
-        </li>
-      </ul>
-    </div>
-    <div class="classes__skills" *ngIf="chosenClass.proficiencies?.length">
-      <h4 class="classes__label">Saving Throws Proficiencies Gained:</h4>
-      <ul>
-        <li *ngFor="let proficiency of chosenClass?.savingThrows">
-          You become
-          <strong>
-            {{ proficiency.level }}
-          </strong>
-          in
-          <strong>
-            {{ proficiency.name }}
-          </strong>
-        </li>
-      </ul>
-    </div>
-    <div class="classes__skills" *ngIf="chosenClass.proficiencies?.length">
-      <h4 class="classes__label">Skill Proficiencies Gained:</h4>
-      <ul>
-        <li *ngFor="let proficiency of chosenClass?.proficiencies">
-          You become
-          <strong>
-            {{ proficiency.level }}
-          </strong>
-          in
-          <strong>
-            <ng-container *ngIf="proficiency.specialty">
-              {{ proficiency.specialty }}
-            </ng-container>
-            {{ proficiency.name }}
-          </strong>
-        </li>
-      </ul>
-    </div>
-    <div class="classes__skills" *ngIf="chosenClass.proficiencies?.length">
-      <h4 class="classes__label">Weapon Proficiencies Gained:</h4>
-      <ul>
-        <li *ngFor="let proficiency of chosenClass?.weaponProficiencies">
-          You become
-          <strong>
-            {{ proficiency.level }}
-          </strong>
-          in
-          <strong>
-            {{ proficiency.type }}
-          </strong>
-        </li>
-      </ul>
-    </div>
-    <div class="classes__skills" *ngIf="chosenClass.proficiencies?.length">
-      <h4 class="classes__label">Armor Proficiencies Gained:</h4>
-      <ul>
-        <li *ngFor="let proficiency of chosenClass?.armorProficiencies">
-          You become
-          <strong>
-            {{ proficiency.level }}
-          </strong>
-          in
-          <strong>
-            {{ proficiency.type }}
-          </strong>
-        </li>
-      </ul>
-    </div>
-    <ng-container *ngIf="featuresArray.length">
-      <ng-container
-        *ngFor="
-          let feature of featuresArray;
-          let i = index;
-          trackBy: trackByFn
-        ">
-        <app-level-bonus
-          class="classes__features"
-          [formControl]="feature"
-          [charClass]="chosenClass.name"
-          [level]="1"
-          [levelBonus]="classFeatures![i]"></app-level-bonus>
-        {{ feature.value | json }}
-      </ng-container>
+  </div>
+  <div class="classes__abilities" [formGroup]="chooseClassForm">
+    <h4 class="classes__label">Ability Boosts Gained:</h4>
+    <ul formArrayName="boosts">
+      <li *ngFor="let boost of classBoosts.controls; let i = index">
+        <div [formGroupName]="i" [ngSwitch]="chosenClass.boosts[i].type">
+          <app-boost-choice
+            [formControl]="boost.get('boost')! | toFormControl"
+            [exclude]="classBoosts.value | excludeForFreeBoost : i"
+            *ngSwitchCase="boostTypes.free"></app-boost-choice>
+          <app-boost-choice
+            [formControl]="boost.get('boost')! | toFormControl"
+            [exclude]="classBoosts.value | excludeForFreeBoost : i"
+            [enableOnly]="chosenClass.boosts[i].abilities"
+            *ngSwitchCase="boostTypes.choice"></app-boost-choice>
+          <app-boost-choice
+            [formControl]="boost.get('boost')! | toFormControl"
+            [enableOnly]="chosenClass.boosts[i].abilities"
+            *ngSwitchCase="boostTypes.set"></app-boost-choice>
+        </div>
+      </li>
+    </ul>
+  </div>
+  <div class="classes__skills" *ngIf="chosenClass.proficiencies?.length">
+    <h4 class="classes__label">Saving Throws Proficiencies Gained:</h4>
+    <ul>
+      <li *ngFor="let proficiency of chosenClass?.savingThrows">
+        You become
+        <strong>
+          {{ proficiency.level }}
+        </strong>
+        in
+        <strong>
+          {{ proficiency.name }}
+        </strong>
+      </li>
+    </ul>
+  </div>
+  <div class="classes__skills" *ngIf="chosenClass.proficiencies?.length">
+    <h4 class="classes__label">Skill Proficiencies Gained:</h4>
+    <ul>
+      <li *ngFor="let proficiency of chosenClass?.proficiencies">
+        You become
+        <strong>
+          {{ proficiency.level }}
+        </strong>
+        in
+        <strong>
+          <ng-container *ngIf="proficiency.specialty">
+            {{ proficiency.specialty }}
+          </ng-container>
+          {{ proficiency.name }}
+        </strong>
+      </li>
+    </ul>
+  </div>
+  <div class="classes__skills" *ngIf="chosenClass.proficiencies?.length">
+    <h4 class="classes__label">Weapon Proficiencies Gained:</h4>
+    <ul>
+      <li *ngFor="let proficiency of chosenClass?.weaponProficiencies">
+        You become
+        <strong>
+          {{ proficiency.level }}
+        </strong>
+        in
+        <strong>
+          {{ proficiency.type }}
+        </strong>
+      </li>
+    </ul>
+  </div>
+  <div class="classes__skills" *ngIf="chosenClass.proficiencies?.length">
+    <h4 class="classes__label">Armor Proficiencies Gained:</h4>
+    <ul>
+      <li *ngFor="let proficiency of chosenClass?.armorProficiencies">
+        You become
+        <strong>
+          {{ proficiency.level }}
+        </strong>
+        in
+        <strong>
+          {{ proficiency.type }}
+        </strong>
+      </li>
+    </ul>
+  </div>
+  <ng-container *ngIf="featuresArray.controls.length">
+    <ng-container *ngFor="let feature of featuresArray.controls; let i = index">
+      <app-level-bonus
+        class="classes__features"
+        [valueControl]="feature | toFormGroup"
+        [charClass]="chosenClass.name"
+        [level]="1"
+        [levelBonus]="classFeatures![i]"></app-level-bonus>
     </ng-container>
-    <ng-container [formGroup]="chooseClassForm">
-      <app-feat-choice
-        [feats]="classFeats"
-        formControlName="feat"
-        label="Class"
-        (effectChoice)="onClassFeatEffect($event)">
-      </app-feat-choice>
-    </ng-container>
+    {{ featuresArray.value | json }}
+  </ng-container>
+  <ng-container [formGroup]="chooseClassForm">
+    <app-feat-choice
+      [feats]="classFeats"
+      formControlName="feat"
+      label="Class"
+      (effectChoice)="onClassFeatEffect($event)">
+    </app-feat-choice>
   </ng-container>
 </form>
