@@ -1,0 +1,39 @@
+<div class="modal">
+  <mat-stepper #stepper (selectionChange)="onStepChanged($event)" linear="true">
+    <mat-step [completed]="isFormValid">
+      <ng-template matStepLabel>Select Bonuses</ng-template>
+      <ng-container *ngIf="bonusesArray.controls.length">
+        <div *ngFor="let bonus of bonusesArray.controls; let i = index">
+          <app-level-bonus
+            [valueControl]="bonus | toFormGroup"
+            [charClass]="data.charClass"
+            [level]="data.level"
+            [race]="data.race"
+            [levelBonus]="data.bonuses[i]"></app-level-bonus>
+        </div>
+      </ng-container>
+      <button mat-raised-button color="primary" matStepperNext>Next</button>
+    </mat-step>
+    <mat-step>
+      <ng-template matStepLabel>Preview</ng-template>
+      <app-character-sheet></app-character-sheet>
+      <button mat-raised-button color="secondary" matStepperPrevious>
+        Back
+      </button>
+    </mat-step>
+  </mat-stepper>
+
+  <div class="modal__navigation">
+    <button mat-raised-button color="tertiary" (click)="closeDialog(false)">
+      Cancel
+    </button>
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="closeDialog(true)"
+      [disabled]="!(isFormValid && characterData)"
+      cdkFocusInitial>
+      Submit
+    </button>
+  </div>
+</div>

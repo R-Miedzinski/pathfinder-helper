@@ -15,6 +15,11 @@ export class LevelUpBonusesService implements OnDestroy {
   private _effects: EffectChoice[] = [];
   private _boosts: Abilities[] = [];
   private _skills: Skill[] = [];
+  private _featReplacements: {
+    replacement: string;
+    toReplace: string;
+    choices?: EffectChoice[];
+  }[] = [];
 
   private _selectedBonuses: BehaviorSubject<
     { bonusCategory: LevelBonusCategory; data: any }[]
@@ -52,9 +57,21 @@ export class LevelUpBonusesService implements OnDestroy {
     return this._skills;
   }
 
+  public get featReplacements(): {
+    replacement: string;
+    toReplace: string;
+    choices?: EffectChoice[];
+  }[] {
+    return this._featReplacements;
+  }
+
   public ngOnDestroy(): void {
     this.ngDestroyed$.next();
     this.ngDestroyed$.complete();
+  }
+
+  public reset(): void {
+    this._selectedBonuses.next([]);
   }
 
   private createHandlersMap(): Record<LevelBonusCategory, (data: any) => void> {
@@ -98,9 +115,21 @@ export class LevelUpBonusesService implements OnDestroy {
     this._feats.push(data);
   };
 
-  private replaceFeatHandler = (data: any): void => {};
+  private replaceFeatHandler = (data: {
+    replacement: string;
+    toReplace: string;
+    choices?: EffectChoice[];
+  }): void => {
+    if (data) {
+      this._featReplacements.push(data);
+    }
+  };
 
-  private boostHandler = (data: any): void => {};
+  private boostHandler = (data: Abilities[]): void => {
+    if (data?.length) {
+      this._boosts.push(...data);
+    }
+  };
 
   private skillHandler = (data: any): void => {};
 
@@ -109,5 +138,6 @@ export class LevelUpBonusesService implements OnDestroy {
     this._effects = [];
     this._boosts = [];
     this._skills = [];
+    this._featReplacements = [];
   }
 }

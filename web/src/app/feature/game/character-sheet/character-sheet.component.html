@@ -1,27 +1,34 @@
-<div class="container character-sheet__name-band">
-  <div class="character-sheet__block">
-    <span class="character-sheet__label">Name:</span>
-    <span class="character-sheet__data">{{ character.characterName }}</span>
+<div class="container">
+  <div class="character-sheet__name-band">
+    <div class="character-sheet__block">
+      <span class="character-sheet__label">Name:</span>
+      <span class="character-sheet__data">{{ character.characterName }}</span>
+    </div>
+    <mat-divider [vertical]="true"></mat-divider>
+    <div class="character-sheet__block">
+      <span class="character-sheet__label">Level:</span>
+      <span class="character-sheet__data">{{ character.level }}</span>
+    </div>
+    <mat-divider [vertical]="true"></mat-divider>
+    <div class="character-sheet__block">
+      <span class="character-sheet__label">Race:</span>
+      <span class="character-sheet__data">{{ character.race }}</span>
+    </div>
+    <mat-divider [vertical]="true"></mat-divider>
+    <div class="character-sheet__block">
+      <span class="character-sheet__label">Background:</span>
+      <span class="character-sheet__data">{{ character.background }}</span>
+    </div>
+    <mat-divider [vertical]="true"></mat-divider>
+    <div class="character-sheet__block">
+      <span class="character-sheet__label">Class:</span>
+      <span class="character-sheet__data">{{ character.class }}</span>
+    </div>
   </div>
-  <mat-divider [vertical]="true"></mat-divider>
-  <div class="character-sheet__block">
-    <span class="character-sheet__label">Level:</span>
-    <span class="character-sheet__data">{{ character.level }}</span>
-  </div>
-  <mat-divider [vertical]="true"></mat-divider>
-  <div class="character-sheet__block">
-    <span class="character-sheet__label">Race:</span>
-    <span class="character-sheet__data">{{ character.race }}</span>
-  </div>
-  <mat-divider [vertical]="true"></mat-divider>
-  <div class="character-sheet__block">
-    <span class="character-sheet__label">Background:</span>
-    <span class="character-sheet__data">{{ character.background }}</span>
-  </div>
-  <mat-divider [vertical]="true"></mat-divider>
-  <div class="character-sheet__block">
-    <span class="character-sheet__label">Class:</span>
-    <span class="character-sheet__data">{{ character.class }}</span>
+  <div *ngIf="canLevelUp">
+    <button mat-raised-button color="primary" (click)="handleLevelUp()">
+      Level Up
+    </button>
   </div>
 </div>
 <mat-tab-group>

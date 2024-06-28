@@ -16,7 +16,7 @@ export class FeatFetcher extends JsonDataLoader<Feat> {
       data.filter(
         (item) =>
           item.category === FeatCategory.ancestry &&
-          +item.level === +level &&
+          +item.level <= +level &&
           item.traits?.includes(race.toLocaleLowerCase())
       )
     )
@@ -32,7 +32,7 @@ export class FeatFetcher extends JsonDataLoader<Feat> {
     return this.loadDataFromFile().then((data) =>
       data.filter(
         (item) =>
-          +item.level === +level &&
+          +item.level <= +level &&
           item.traits?.includes(charClass.toLocaleLowerCase()) &&
           item.category === FeatCategory.class
       )
@@ -43,7 +43,7 @@ export class FeatFetcher extends JsonDataLoader<Feat> {
     return this.loadDataFromFile().then((data) =>
       data.filter(
         (item) =>
-          +item.level === +level &&
+          +item.level <= +level &&
           item.traits?.includes(charClass.toLocaleLowerCase()) &&
           item.category === FeatCategory.feature
       )
@@ -54,7 +54,7 @@ export class FeatFetcher extends JsonDataLoader<Feat> {
     return this.loadDataFromFile().then((data) =>
       data.filter(
         (item) =>
-          +item.level === +level &&
+          +item.level <= +level &&
           item.category === category &&
           (!trait || item.traits?.includes(trait.toLocaleLowerCase()))
       )

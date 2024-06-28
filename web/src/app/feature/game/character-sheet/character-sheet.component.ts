@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { GameState } from '../ngrx/game-reducer';
 import * as GameActions from '../ngrx/game-actions';
@@ -12,6 +12,9 @@ import { ActionService } from '../services/action.service';
 import { SkillsService } from '../services/skills.service';
 import { AbilitiesService } from '../services/abilities.service';
 import { Character, Feat, EffectChoice } from 'rpg-app-shared-package';
+import { MatDialog } from '@angular/material/dialog';
+import { LevelUpModalComponent } from '../level-up-modal/level-up-modal.component';
+import { GameDataService } from '../services/game-data.service';
 
 @Component({
   selector: 'app-character-sheet',
@@ -19,6 +22,7 @@ import { Character, Feat, EffectChoice } from 'rpg-app-shared-package';
   styleUrls: ['./character-sheet.component.scss'],
 })
 export class CharacterSheetComponent implements OnInit, OnDestroy {
+  @Input() canLevelUp: boolean = false;
   public readonly rowHeight = 19.6;
   protected character!: Character;
   protected featChoices: Map<string, EffectChoice> = new Map();
@@ -40,12 +44,14 @@ export class CharacterSheetComponent implements OnInit, OnDestroy {
 
   constructor(
     private store: Store<GameState>,
+    private gameDataService: GameDataService,
     private itemsService: ItemsService,
     private spellsService: SpellsService,
     private featsService: FeatsService,
     private actionService: ActionService,
     private skillsService: SkillsService,
-    private abilitiesService: AbilitiesService
+    private abilitiesService: AbilitiesService,
+    private dialog: MatDialog
   ) {}
 
   public ngOnInit(): void {
@@ -91,6 +97,41 @@ export class CharacterSheetComponent implements OnInit, OnDestroy {
   public ngOnDestroy(): void {
     this.ngDestroyed$.next();
     this.ngDestroyed$.complete();
+  }
+
+  public handleLevelUp(): void {
+    this.gameDataService
+      .getClassLevelData(this.character.class, this.character.level + 1)
+      .pipe(takeUntil(this.ngDestroyed$))
+      .subscribe({
+        next: levelBonuses => {
+          const character: Character = cloneDeep(this.character);
+
+          const dialogRef = this.dialog.open(LevelUpModalComponent, {
+            disableClose: true,
+            data: {
+              bonuses: levelBonuses,
+              charClass: character.class,
+              race: character.race,
+              level: character.level + 1,
+              id: character.id,
+            },
+          });
+
+          dialogRef
+            .afterClosed()
+            .pipe(takeUntil(this.ngDestroyed$))
+            .subscribe({
+              next: (data: { characterChanged: boolean }) => {
+                if (!data.characterChanged) {
+                  this.store.dispatch(
+                    GameActions.saveCharacterAction({ character })
+                  );
+                }
+              },
+            });
+        },
+      });
   }
 
   public handleHealthChange(hpChange: {

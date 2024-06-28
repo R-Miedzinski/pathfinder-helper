@@ -40,7 +40,7 @@ export function characterRouterFactory(
       seedData.id = id
       seedData.feats = seedData.feats.filter(Boolean)
 
-      fs.writeFile(newCharacterFile, JSON.stringify(seedData), { flag: 'w+' }, (error) => {
+      fs.writeFile(newCharacterFile, JSON.stringify([seedData]), { flag: 'w+' }, (error) => {
         if (error) {
           res.status(500).send(error)
         } else {
@@ -72,13 +72,72 @@ export function characterRouterFactory(
       .catch((err) => res.status(500).send(err))
   })
 
-  characterRouter.get('', (req, res) => {
-    if (!req?.query?.gameId || !req?.query?.userId) {
+  characterRouter.get('/seed-character-data', (req, res) => {
+    const userId = req.query.userId
+    const gameId = req.query.gameId
+
+    if (!userId || !gameId) {
+      const err = new Error('No user or game ID provided')
+
+      res.status(500).send(err)
+    }
+
+    const characterUrl = path.join(__dirname, `../storage/characters/${userId}/${gameId}.json`)
+
+    fs.readFile(characterUrl, 'utf8', (error, data) => {
+      if (error) {
+        res.status(500).send(error)
+      }
+
+      res.send(JSON.parse(data).at(-1))
+    })
+  })
+
+  characterRouter.put('/:id', (req, res) => {
+    const gameId = req?.body?.gameId
+    const userId = req?.body?.userId
+    if (!gameId || !userId) {
       const error = new Error('Query parameters: gameId and userId are required')
       res.status(500).send(error)
     }
 
-    const characterUrl = path.join(__dirname, `../storage/characters/${req.query.userId}/${req.query.gameId}.json`) //`)
+    const characterUrl = path.join(__dirname, `../storage/characters/${userId}/${gameId}.json`)
+
+    fs.readFile(characterUrl, 'utf8', (error, data) => {
+      if (error) {
+        res.status(500).send(error)
+      } else if (!req?.body?.characterData) {
+        const err = new Error('no character data received')
+
+        res.status(500).send(err)
+      }
+
+      const characterData: SeedCharacterData[] = JSON.parse(data)
+
+      characterData.push(req.body.characterData)
+
+      fs.writeFile(characterUrl, JSON.stringify(characterData), { flag: 'w+' }, (error) => {
+        if (error) {
+          res.status(500).send(error)
+        } else {
+          res.status(200).send({
+            ok: true,
+            message: `Character patched: ${gameId}/${userId}`,
+          })
+        }
+      })
+    })
+  })
+
+  characterRouter.get('', (req, res) => {
+    const gameId = req?.query?.gameId
+    const userId = req?.query?.userId
+    if (!gameId || !userId) {
+      const error = new Error('Query parameters: gameId and userId are required')
+      res.status(500).send(error)
+    }
+
+    const characterUrl = path.join(__dirname, `../storage/characters/${userId}/${gameId}.json`) //`)
 
     fs.readFile(characterUrl, 'utf8', (error, data) => {
       if (error) {
@@ -86,7 +145,7 @@ export function characterRouterFactory(
       }
 
       const characterFactory = new CharacterFactory(
-        JSON.parse(data),
+        JSON.parse(data).at(-1),
         classDataLoader,
         raceDataLoader,
         featFetcher,

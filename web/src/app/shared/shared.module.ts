@@ -18,6 +18,7 @@ import { FeatComponent } from './components/feat/feat.component';
 import { LevelBonusComponent } from './components/level-bonus/level-bonus.component';
 import { ToFormGroupPipe } from './pipes/to-form-group.pipe';
 import { ToFormArrayPipe } from './pipes/to-form-array.pipe';
+import { ExcludeForFreeBoostPipe } from './pipes/exclude-for-free-boost.pipe';
 
 @NgModule({
   declarations: [
@@ -37,6 +38,7 @@ import { ToFormArrayPipe } from './pipes/to-form-array.pipe';
     FeatComponent,
     FeatChoiceComponent,
     LevelBonusComponent,
+    ExcludeForFreeBoostPipe,
   ],
   imports: [CommonModule, MaterialModule, FormsModule, ReactiveFormsModule],
   exports: [
@@ -60,6 +62,7 @@ import { ToFormArrayPipe } from './pipes/to-form-array.pipe';
     FeatComponent,
     FeatChoiceComponent,
     LevelBonusComponent,
+    ExcludeForFreeBoostPipe,
   ],
 })
 export class SharedModule {}

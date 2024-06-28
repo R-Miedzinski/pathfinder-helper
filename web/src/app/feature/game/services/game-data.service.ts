@@ -2,6 +2,7 @@ import {
   HttpClient,
   HttpErrorResponse,
   HttpHeaders,
+  HttpResponse,
 } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import {
@@ -19,25 +20,48 @@ import { EMPTY, Observable, catchError, of, map } from 'rxjs';
 import { HttpCacheClientService } from 'src/app/shared/services/http-cache-client.service';
 import { environment } from 'src/environment/environment';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class GameDataService {
+  private _userId: string = '';
+  private _gameId: string = '';
+
   constructor(
     private httpClient: HttpClient,
     private httpCacheClient: HttpCacheClientService
   ) {}
 
-  public getCharacter(
-    gameId: string,
-    userId: string
-  ): Observable<Character | 'NEW'> {
-    if (Number(gameId) > 0) {
-      // return of(characterMock);
-      const url = `${environment.apiUrl}/api/character?gameId=${gameId}&userId=${userId}`;
+  public set userId(id: string) {
+    this._userId = id;
+  }
+
+  public set gameId(id: string) {
+    this._gameId = id;
+  }
+
+  public get userId(): string | undefined {
+    return this._userId;
+  }
+
+  public get gameId(): string | undefined {
+    return this._gameId;
+  }
+
+  public getCharacter(): Observable<Character | 'NEW'> {
+    if (Number(this._gameId) > 0 && this._userId) {
+      const url = `${environment.apiUrl}/api/character?gameId=${this._gameId}&userId=${this._userId}`;
       const headers = new HttpHeaders();
       return this.httpClient.get<Character>(url);
     } else {
       return of('NEW');
     }
+  }
+
+  public getSeedData(): Observable<SeedCharacterData> {
+    const url = `${environment.apiUrl}/api/character/seed-character-data?gameId=${this._gameId}&userId=${this._userId}`;
+
+    return this.httpClient.get<SeedCharacterData>(url);
   }
 
   public getRaceBonuses(race: Race): Observable<RaceData> {
@@ -113,6 +137,18 @@ export class GameDataService {
       data: characterData,
       userId,
       gameId,
+    });
+  }
+
+  public patchCharacterData(
+    characterData: SeedCharacterData
+  ): Observable<HttpResponse<string>> {
+    const url = `${environment.apiUrl}/api/character/TEST`;
+
+    return this.httpClient.put<HttpResponse<string>>(url, {
+      characterData,
+      gameId: this._gameId,
+      userId: this._userId,
     });
   }
 }

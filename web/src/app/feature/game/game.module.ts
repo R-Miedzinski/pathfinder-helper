@@ -29,11 +29,11 @@ import { ActionListComponent } from './actions/action-list/action-list.component
 import { MainCharacterPageComponent } from './main-character-page/main-character-page.component';
 import { SkillsService } from './services/skills.service';
 import { AbilitiesService } from './services/abilities.service';
-import { ExcludeForFreeBoostPipe } from './pipes/exclude-for-free-boost.pipe';
 import { ChooseRaceFormComponent } from './new-character/choose-race-form/choose-race-form.component';
 import { ChooseBackgroundFormComponent } from './new-character/choose-background-form/choose-background-form.component';
 import { ChooseClassFormComponent } from './new-character/choose-class-form/choose-class-form.component';
 import { BackstoryFormComponent } from './new-character/backstory-form/backstory-form.component';
+import { LevelUpModalComponent } from './level-up-modal/level-up-modal.component';
 
 @NgModule({
   declarations: [
@@ -55,14 +55,13 @@ import { BackstoryFormComponent } from './new-character/backstory-form/backstory
     ActionListComponent,
     MainCharacterPageComponent,
     ModifierPlusMinusPipe,
-    ExcludeForFreeBoostPipe,
     ChooseRaceFormComponent,
     ChooseBackgroundFormComponent,
     ChooseClassFormComponent,
     BackstoryFormComponent,
+    LevelUpModalComponent,
   ],
   providers: [
-    GameDataService,
     ItemsService,
     SpellsService,
     FeatsService,

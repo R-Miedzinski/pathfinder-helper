@@ -50,7 +50,17 @@
       Replace Feat
     </ng-container>
     <ng-container *ngSwitchCase="bonusCategory.boost">
-      Ability Boosts
+      <h4 class="required">Ability Boosts:</h4>
+      <ul>
+        <li *ngFor="let boost of boostsArray.controls; let i = index">
+          <div>
+            <app-boost-choice
+              [formControl]="boost.get('boost')! | toFormControl"
+              [exclude]="boostsArray.value | excludeForFreeBoost : i">
+            </app-boost-choice>
+          </div>
+        </li>
+      </ul>
     </ng-container>
     <ng-container *ngSwitchCase="bonusCategory.skill">
       Skill Increases

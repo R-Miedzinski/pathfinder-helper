@@ -1,5 +1,6 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import {
+  Abilities,
   Classes,
   EffectChoice,
   FeatCategory,
@@ -9,7 +10,13 @@ import {
 } from 'rpg-app-shared-package/dist/public-api';
 import { Observable, Subject, map, of, takeUntil, tap } from 'rxjs';
 import { FeatsService } from 'src/app/feature/game/services/feats.service';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import {
+  Form,
+  FormArray,
+  FormBuilder,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 
 @Component({
   selector: 'app-level-bonus',
@@ -25,6 +32,7 @@ export class LevelBonusComponent implements OnInit, OnDestroy {
 
   protected feats$: Observable<string[]> = new Observable();
   protected addFeatChoice: EffectChoice[] = [];
+  protected boostsArrayForm: FormGroup = new FormGroup({});
 
   protected readonly bonusCategory = LevelBonusCategory;
   private readonly ngDestroyed$: Subject<void> = new Subject();
@@ -63,6 +71,7 @@ export class LevelBonusComponent implements OnInit, OnDestroy {
       case LevelBonusCategory.replaceFeat:
         return;
       case LevelBonusCategory.boost:
+        this.initBoostsChoice();
         return;
       case LevelBonusCategory.skill:
         return;
@@ -77,6 +86,10 @@ export class LevelBonusComponent implements OnInit, OnDestroy {
   public ngOnDestroy(): void {
     this.ngDestroyed$.next();
     this.ngDestroyed$.complete();
+  }
+
+  protected get boostsArray(): FormArray {
+    return this.boostsArrayForm.get('boosts') as FormArray;
   }
 
   protected onAddFeatEffectChoice(choice: EffectChoice, feat: string): void {
@@ -107,5 +120,31 @@ export class LevelBonusComponent implements OnInit, OnDestroy {
         takeUntil(this.ngDestroyed$),
         map(feats => feats.map(item => item.id))
       );
+  }
+
+  private initBoostsChoice(): void {
+    this.boostsArrayForm = this.fb.group({
+      boosts: this.fb.array([]),
+    });
+
+    for (let index = 0; index < 4; index++) {
+      this.boostsArray.push(
+        this.fb.group({
+          boost: [null, Validators.required],
+        })
+      );
+    }
+
+    this.boostsArray.valueChanges.pipe(takeUntil(this.ngDestroyed$)).subscribe({
+      next: (data: { boost: Abilities }[]) => {
+        if (this.boostsArray.valid) {
+          this.valueControl
+            .get('data')
+            ?.setValue(data.map(entry => entry.boost));
+        } else {
+          this.valueControl.get('data')?.setValue(null);
+        }
+      },
+    });
   }
 }
