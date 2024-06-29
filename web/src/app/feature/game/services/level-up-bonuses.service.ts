@@ -131,7 +131,17 @@ export class LevelUpBonusesService implements OnDestroy {
     }
   };
 
-  private skillHandler = (data: any): void => {};
+  private skillHandler = (data: Skill): void => {
+    const id = this._skills.findIndex(item => {
+      item.name === data.name && item.specialty === data.specialty;
+    });
+
+    if (id !== -1) {
+      this._skills[id] = data;
+    } else {
+      this._skills.push(data);
+    }
+  };
 
   private resetData(): void {
     this._feats = [];

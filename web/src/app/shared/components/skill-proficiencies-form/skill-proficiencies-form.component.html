@@ -21,7 +21,7 @@
         [skillAbility]="skill.ability"
         [skillSpecialty]="skill.specialty"
         [disableIncrease]="disableIncrease"
-        [disableDecrease]="canDecrease(skill)"
+        [disableDecrease]="!canDecrease(skill)"
         [maxLevel]="maxLevel"
         (levelChange)="onLevelChange($event)"></app-skill-input>
     </ng-container>

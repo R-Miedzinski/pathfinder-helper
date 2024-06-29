@@ -6,7 +6,9 @@ import {
   FeatCategory,
   LevelBonus,
   LevelBonusCategory,
+  Proficiency,
   Race,
+  Skill,
 } from 'rpg-app-shared-package/dist/public-api';
 import { Observable, Subject, map, of, takeUntil, tap } from 'rxjs';
 import { FeatsService } from 'src/app/feature/game/services/feats.service';
@@ -14,6 +16,7 @@ import {
   Form,
   FormArray,
   FormBuilder,
+  FormControl,
   FormGroup,
   Validators,
 } from '@angular/forms';
@@ -29,10 +32,14 @@ export class LevelBonusComponent implements OnInit, OnDestroy {
   @Input() level: number = 1;
   @Input() race?: Race;
   @Input() valueControl!: FormGroup;
+  @Input({ required: false }) skills: Skill[] = [];
 
   protected feats$: Observable<string[]> = new Observable();
   protected addFeatChoice: EffectChoice[] = [];
+  protected featReplaceForm: FormGroup = new FormGroup({});
   protected boostsArrayForm: FormGroup = new FormGroup({});
+  protected maxSkillLevel: Proficiency = Proficiency.U;
+  protected skillIncreaseControl: FormControl = new FormControl();
 
   protected readonly bonusCategory = LevelBonusCategory;
   private readonly ngDestroyed$: Subject<void> = new Subject();
@@ -69,11 +76,13 @@ export class LevelBonusComponent implements OnInit, OnDestroy {
         this.initFeatsChoice(FeatCategory.skill);
         return;
       case LevelBonusCategory.replaceFeat:
+        this.initFeatReplace();
         return;
       case LevelBonusCategory.boost:
         this.initBoostsChoice();
         return;
       case LevelBonusCategory.skill:
+        this.initSkillIncrease();
         return;
       default:
         console.log(
@@ -113,6 +122,12 @@ export class LevelBonusComponent implements OnInit, OnDestroy {
     }
   }
 
+  protected onFeatReplaceChoice(event: EffectChoice): void {
+    if (!!event) {
+      this.featReplaceForm.get('choices')?.setValue(event);
+    }
+  }
+
   private initFeatsChoice(category: FeatCategory, trait?: string): void {
     this.feats$ = this.featsService
       .getFeatsQuery(this.level, category, trait)
@@ -120,6 +135,26 @@ export class LevelBonusComponent implements OnInit, OnDestroy {
         takeUntil(this.ngDestroyed$),
         map(feats => feats.map(item => item.id))
       );
+  }
+
+  private initFeatReplace(): void {
+    this.featReplaceForm = this.fb.group({
+      toReplace: [this.levelBonus?.payload!.toReplace, Validators.required],
+      replacement: [this.levelBonus?.payload!.toReplace, Validators.required],
+      choices: undefined,
+    });
+
+    this.featReplaceForm.valueChanges
+      .pipe(takeUntil(this.ngDestroyed$))
+      .subscribe({
+        next: data => {
+          if (this.featReplaceForm.valid) {
+            this.valueControl.get('data')?.setValue(data);
+          } else {
+            this.valueControl.get('data')?.setValue(null);
+          }
+        },
+      });
   }
 
   private initBoostsChoice(): void {
@@ -146,5 +181,29 @@ export class LevelBonusComponent implements OnInit, OnDestroy {
         }
       },
     });
+  }
+
+  private initSkillIncrease(): void {
+    if (this.level < 7) {
+      this.maxSkillLevel = Proficiency.E;
+    } else if (this.level < 15) {
+      this.maxSkillLevel = Proficiency.M;
+    } else {
+      this.maxSkillLevel = Proficiency.L;
+    }
+
+    this.skillIncreaseControl = this.fb.control([], Validators.required);
+
+    this.skillIncreaseControl.valueChanges
+      .pipe(takeUntil(this.ngDestroyed$))
+      .subscribe({
+        next: skill => {
+          if (this.skillIncreaseControl.valid) {
+            this.valueControl.get('data')?.setValue(skill[0]);
+          } else {
+            this.valueControl.get('data')?.setValue(null);
+          }
+        },
+      });
   }
 }

@@ -115,6 +115,7 @@ export class CharacterSheetComponent implements OnInit, OnDestroy {
               race: character.race,
               level: character.level + 1,
               id: character.id,
+              skills: this.character.skills,
             },
           });
 

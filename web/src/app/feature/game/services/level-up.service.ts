@@ -2,13 +2,13 @@ import { Injectable } from '@angular/core';
 import { LevelUpBonusesService } from './level-up-bonuses.service';
 import { SeedCharacterData } from 'rpg-app-shared-package/dist/public-api';
 import { GameDataService } from './game-data.service';
-import { Observable, map } from 'rxjs';
+import { Observable, map, tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class LevelUpService {
-  private _newCharacterData?: SeedCharacterData;
+  private _characterSeedData?: SeedCharacterData;
 
   constructor(
     private levelUpBonusesService: LevelUpBonusesService,
@@ -60,5 +60,17 @@ export class LevelUpService {
     characterData.featChoices.push(...this.levelUpBonusesService.effects);
   }
 
-  private updateSkills(characterData: SeedCharacterData): void {}
+  private updateSkills(characterData: SeedCharacterData): void {
+    this.levelUpBonusesService.skills.forEach(skill => {
+      const id = characterData.skills.findIndex(
+        item => item.name === skill.name && item?.specialty === skill?.specialty
+      );
+
+      if (id !== -1) {
+        characterData.skills[id] = skill;
+      } else {
+        characterData.skills.push(skill);
+      }
+    });
+  }
 }

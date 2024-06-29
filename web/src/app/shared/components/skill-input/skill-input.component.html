@@ -4,18 +4,9 @@
     <span>{{ skillName }}</span>
   </div>
   <div class="form-group">
-    <label [for]="'skill-level-' + id">Profciency Level:</label>
+    <span>Profciency Level:</span>
     <div class="button-group">
-      <select
-        name="skill-level"
-        [id]="'skill-level-' + id"
-        formControlName="level">
-        <option
-          *ngFor="let entry of proficiencies | keyvalue : keepOrderLocal"
-          [value]="entry.value">
-          {{ entry.value }}
-        </option>
-      </select>
+      <span>{{ skillForm.get('level')?.value }}</span>
       <button
         (click)="increaseLevel()"
         [disabled]="

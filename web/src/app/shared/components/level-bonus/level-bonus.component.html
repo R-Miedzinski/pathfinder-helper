@@ -47,7 +47,17 @@
       </ng-container>
     </ng-container>
     <ng-container *ngSwitchCase="bonusCategory.replaceFeat">
-      Replace Feat
+      <form [formGroup]="featReplaceForm">
+        <app-feat-choice
+          label="Replace"
+          [feats]="[levelBonus.payload!.toReplace]"
+          formControlName="toReplace"></app-feat-choice>
+        <app-feat-choice
+          label="New"
+          [feats]="[levelBonus.payload!.replacement]"
+          formControlName="replacement"
+          (effectChoice)="onFeatReplaceChoice($event)"></app-feat-choice>
+      </form>
     </ng-container>
     <ng-container *ngSwitchCase="bonusCategory.boost">
       <h4 class="required">Ability Boosts:</h4>
@@ -63,7 +73,12 @@
       </ul>
     </ng-container>
     <ng-container *ngSwitchCase="bonusCategory.skill">
-      Skill Increases
+      <app-skill-proficiencies-form
+        *ngIf="skills?.length"
+        [currentProficiencies]="skills"
+        [toChange]="1"
+        [maxLevel]="maxSkillLevel"
+        [formControl]="skillIncreaseControl"></app-skill-proficiencies-form>
     </ng-container>
     <ng-container *ngSwitchDefault> Default </ng-container>
   </ng-container>

@@ -7,23 +7,16 @@ import {
   SimpleChanges,
   forwardRef,
 } from '@angular/core';
-import {
-  FormArray,
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  NG_VALUE_ACCESSOR,
-} from '@angular/forms';
+import { FormBuilder, FormGroup, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { cloneDeep } from 'lodash';
 import {
-  Abilities,
   Proficiency,
   Skill,
+  createProfToValMap,
   newSkills,
 } from 'rpg-app-shared-package/dist/public-api';
-import { Subject, retry, takeUntil } from 'rxjs';
+import { Subject } from 'rxjs';
 import { CustomFormControl } from '../custom-form-control/custom-form-control.component';
-import { P } from '@angular/cdk/keycodes';
 
 @Component({
   selector: 'app-skill-proficiencies-form',
@@ -49,6 +42,7 @@ export class SkillProficienciesFormComponent
   protected disableIncrease: boolean = false;
   protected skillsForm?: FormGroup;
 
+  private readonly profToValue = createProfToValMap(0);
   private readonly basicProficiencies = newSkills();
   private readonly ngDestroyed$: Subject<void> = new Subject();
 
@@ -97,12 +91,7 @@ export class SkillProficienciesFormComponent
 
   protected override updateValue(): void {
     const upgradedSkills = this.availableSkills?.filter(
-      skill =>
-        skill.level !== Proficiency.U &&
-        !this.currentProficiencies.some(
-          item =>
-            item.name === skill.name && item?.specialty === item?.specialty
-        )
+      this.filterUnchangedSkill
     );
 
     this.onChange(upgradedSkills);
@@ -110,12 +99,7 @@ export class SkillProficienciesFormComponent
   }
 
   protected canDecrease(skill: Skill): boolean {
-    return (
-      skill.level === Proficiency.U ||
-      this.currentProficiencies.some(
-        item => item.name === skill.name && item?.specialty === skill?.specialty
-      )
-    );
+    return this.filterUnchangedSkill(skill);
   }
 
   private initProficienciesForm(): void {
@@ -148,4 +132,19 @@ export class SkillProficienciesFormComponent
       return 0;
     }
   }
+
+  private filterUnchangedSkill = (skill: Skill): boolean => {
+    return (
+      skill.level !== Proficiency.U &&
+      (!this.currentProficiencies.some(
+        item => item.name === skill.name && item?.specialty === item?.specialty
+      ) ||
+        (this.profToValue.get(
+          this.currentProficiencies.find(
+            item =>
+              item.name === skill.name && item?.specialty === item?.specialty
+          )!.level
+        ) ?? 0) < (this.profToValue.get(skill.level) ?? 0))
+    );
+  };
 }

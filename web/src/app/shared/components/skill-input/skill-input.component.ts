@@ -91,7 +91,7 @@ export class SkillInputComponent
     if (isDisabled) {
       this.skillForm?.disable();
     } else {
-      this.skillForm?.get('level')?.enable();
+      this.skillForm?.enable();
     }
   }
 

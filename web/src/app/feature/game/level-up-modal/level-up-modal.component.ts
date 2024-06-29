@@ -2,12 +2,13 @@ import { StepperSelectionEvent } from '@angular/cdk/stepper';
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import {
-  Character,
   Classes,
   LevelBonus,
   LevelBonusCategory,
+  Proficiency,
   Race,
   SeedCharacterData,
+  Skill,
 } from 'rpg-app-shared-package/dist/public-api';
 import * as GameActions from '../ngrx/game-actions';
 import { GameDataService } from '../services/game-data.service';
@@ -26,8 +27,10 @@ import { LevelUpService } from '../services/level-up.service';
 export class LevelUpModalComponent implements OnDestroy, OnInit {
   protected bonusesArrayForm: FormGroup = new FormGroup({});
   protected isFormValid: boolean = false;
+  protected skills: Skill[] = [];
 
   protected characterData?: SeedCharacterData;
+  protected readonly bonusCategory = LevelBonusCategory;
   private readonly ngDestroyed$: Subject<void> = new Subject();
 
   constructor(
@@ -38,6 +41,7 @@ export class LevelUpModalComponent implements OnDestroy, OnInit {
       race: Race;
       level: number;
       id: string;
+      skills: Skill[];
     },
     private dialogRef: MatDialogRef<LevelUpModalComponent>,
     private fb: FormBuilder,
@@ -53,6 +57,7 @@ export class LevelUpModalComponent implements OnDestroy, OnInit {
 
   public ngOnInit(): void {
     this.levelUpBonusesService.reset();
+    this.skills = this.data.skills.filter(item => item.level !== Proficiency.U);
 
     this.bonusesArrayForm = this.fb.group({
       bonuses: this.fb.array(

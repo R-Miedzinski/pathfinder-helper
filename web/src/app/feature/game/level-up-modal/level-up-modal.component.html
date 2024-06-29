@@ -9,7 +9,12 @@
             [charClass]="data.charClass"
             [level]="data.level"
             [race]="data.race"
-            [levelBonus]="data.bonuses[i]"></app-level-bonus>
+            [levelBonus]="data.bonuses[i]"
+            [skills]="
+              data.bonuses[i].category === bonusCategory.skill
+                ? data.skills
+                : []
+            "></app-level-bonus>
         </div>
       </ng-container>
       <button mat-raised-button color="primary" matStepperNext>Next</button>
@@ -31,8 +36,7 @@
       mat-raised-button
       color="primary"
       (click)="closeDialog(true)"
-      [disabled]="!(isFormValid && characterData)"
-      cdkFocusInitial>
+      [disabled]="!(isFormValid && characterData)">
       Submit
     </button>
   </div>
