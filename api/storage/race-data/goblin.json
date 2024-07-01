@@ -1,0 +1,31 @@
+{
+  "id": "goblin",
+  "name": "Goblin",
+  "description": "Goblins are a short, scrappy, energetic people who have spent millennia maligned and feared.",
+  "boosts": [
+    {
+      "type": "set",
+      "abilities": ["Dexterity"]
+    },
+    {
+      "type": "set",
+      "abilities": ["Charisma"]
+    },
+    {
+      "type": "free",
+      "abilities": []
+    }
+  ],
+  "flaws": [
+    {
+      "type": "set",
+      "abilities": ["Wisdom"]
+    }
+  ],
+  "size": "Small",
+  "baseSpeed": 25,
+  "languages": ["Common", "Goblin"],
+  "traits": ["Goblin", "Humanoid"],
+  "baseHp": 6,
+  "darkvision": "darkvision"
+}

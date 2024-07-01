@@ -6,10 +6,10 @@
     "race": "Dwarf",
     "background": "acolyte",
     "level": 1,
-    "feats": ["ancient-blooded-dwarf", "dwarven-lore", "C5", "student-of-the-canon", "darkvision"],
+    "feats": ["ancient-blooded-dwarf", "dwarven-lore", "c5", "student-of-the-canon", "darkvision"],
     "featChoices": [
       {
-        "featId": "C5",
+        "featId": "c5",
         "choiceName": "Choice Name",
         "description": "This choice grants boost to strength and flaw to charisma",
         "effect": [

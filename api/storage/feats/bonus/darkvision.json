@@ -1,0 +1,12 @@
+{
+  "id": "darkvision",
+  "name": " Darkvision",
+  "level": 1,
+  "category": "Special Feat",
+  "description": "You can see in darkness and dim light just as well as you can see in bright light, though your vision in darkness is in black and white.",
+  "effect": [
+    {
+      "effectType": "Description"
+    }
+  ]
+}

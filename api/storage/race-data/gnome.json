@@ -1,0 +1,31 @@
+{
+  "id": "gnome",
+  "name": "Gnome",
+  "description": "Gnomes are short and hardy folk, with an unquenchable curiosity and eccentric habits.",
+  "boosts": [
+    {
+      "type": "set",
+      "abilities": ["Constitution"]
+    },
+    {
+      "type": "set",
+      "abilities": ["Charisma"]
+    },
+    {
+      "type": "free",
+      "abilities": []
+    }
+  ],
+  "flaws": [
+    {
+      "type": "set",
+      "abilities": ["Strength"]
+    }
+  ],
+  "size": "Small",
+  "baseSpeed": 25,
+  "languages": ["Common", "Gnomish"],
+  "traits": ["Gnome", "Humanoid"],
+  "baseHp": 8,
+  "darkvision": "low-light-vision"
+}

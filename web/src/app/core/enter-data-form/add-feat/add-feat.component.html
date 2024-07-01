@@ -1,0 +1,69 @@
+<form [formGroup]="newFeatForm">
+  <mat-form-field class="form-field required">
+    <mat-label>Name:</mat-label>
+    <input matInput type="text" formControlName="name" />
+  </mat-form-field>
+  <mat-form-field class="form-field required">
+    <mat-label>Level:</mat-label>
+    <input matInput type="number" formControlName="level" />
+  </mat-form-field>
+  <mat-form-field class="required">
+    <mat-label>Feat Category:</mat-label>
+    <mat-select
+      formControlName="category"
+      placeholder="Select feat category...">
+      <mat-option *ngFor="let val of featCategories" [value]="val">
+        {{ val }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field class="form-field">
+    <mat-label>Traits:</mat-label>
+    <mat-chip-grid #chipGrid formControlName="traits">
+      <ng-container *ngFor="let trait of traits">
+        <mat-chip-row (removed)="removeTrait(trait)">
+          {{ trait }}
+          <button matChipRemove>
+            <mat-icon>cancel</mat-icon>
+          </button>
+        </mat-chip-row>
+      </ng-container>
+    </mat-chip-grid>
+    <input
+      placeholder="New trait..."
+      [matChipInputFor]="chipGrid"
+      (matChipInputTokenEnd)="add($event)" />
+  </mat-form-field>
+  <mat-form-field class="required">
+    <mat-label>Description:</mat-label>
+    <textarea matInput formControlName="description"></textarea>
+  </mat-form-field>
+  <div formArrayName="effect">
+    <mat-label>Feat effects:</mat-label>
+    <div
+      *ngFor="let control of effects.controls; let i = index"
+      [formGroup]="control | toFormGroup">
+      <button (click)="removeEffect(i)"><mat-icon>cancel</mat-icon></button>
+      <mat-form-field>
+        <mat-label>Effect</mat-label>
+        <mat-select
+          formControlName="effectType"
+          placeholder="Choose effect type...">
+          <mat-option *ngFor="let type of effectTypes" [value]="type">
+            {{ type }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <app-add-effect
+        *ngIf="control.get('effectType')?.value"
+        formControlName="payload"
+        [effectType]="control.get('effectType')?.value"></app-add-effect>
+    </div>
+    <button (click)="addEffect()">+ Add Effect</button>
+  </div>
+  <mat-form-field>
+    <mat-label>Rules:</mat-label>
+    <textarea matInput formControlName="rules"></textarea>
+  </mat-form-field>
+</form>
+{{ newFeatForm.value | json }}

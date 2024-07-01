@@ -1,0 +1,34 @@
+{
+  "id": "dwarven-weapon-familiarity",
+  "name": "Dwarven Weapon Familiarity",
+  "level": 1,
+  "category": "Ancestry Feat",
+  "traits": ["dwarf"],
+  "description": "Your kin have instilled in you an affinity for hard-hitting weapons, and you prefer these to more elegant arms. You are trained with the battle axe, pick, and warhammer.You also gain access to all uncommon dwarf weapons. For the purpose of determining your proficiency, martial dwarf weapons are simple weapons and advanced dwarf weapons are martial weapons.",
+  "effect": [
+    {
+      "effectType": "Weapon Proficiency",
+      "payload": {
+        "weapon": "Battle axe",
+        "level": "Trained"
+      }
+    },
+    {
+      "effectType": "Weapon Proficiency",
+      "payload": {
+        "weapon": "Pick",
+        "level": "Trained"
+      }
+    },
+    {
+      "effectType": "Weapon Proficiency",
+      "payload": {
+        "weapon": "Warhammer",
+        "level": "Trained"
+      }
+    },
+    {
+      "effectType": "Description"
+    }
+  ]
+}

@@ -26,3 +26,9 @@ export interface RuleFeatPayload extends RulePayload {
     feats: string[];
   };
 }
+
+export interface RuleDescriptionPayload extends RulePayload {
+  payload: {
+    rule: string;
+  };
+}

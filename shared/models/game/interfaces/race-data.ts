@@ -3,6 +3,7 @@ import { Race } from "../enums/race";
 import { AbilityBoost } from "./ability-boost";
 
 export interface RaceData {
+  id: string;
   name: Race;
   description: string;
   boosts: AbilityBoost[];

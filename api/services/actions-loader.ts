@@ -14,17 +14,6 @@ export class ActionsLoader extends JsonDataLoader<CharacterAction> {
     })
   }
 
-  public getAction(id: string): Promise<CharacterAction> {
-    return this.loadDataFromFile().then((data) => {
-      const action = data.find((entry) => entry.id === id)
-      if (!action) {
-        throw Error(`No action with id ${id} no found`)
-      }
-
-      return action
-    })
-  }
-
   public getBasicActionsIds(): Promise<string[]> {
     return this.loadDataFromFile().then((data) => data.map((entry) => entry.id).filter((id) => id.includes('base-')))
   }

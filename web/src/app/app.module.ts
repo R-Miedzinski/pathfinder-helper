@@ -16,6 +16,9 @@ import { SideNavComponent } from './core/side-nav/side-nav.component';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpCacheClientService } from './shared/services/http-cache-client.service';
+import { EnterDataFormComponent } from './core/enter-data-form/enter-data-form.component';
+import { AddFeatComponent } from './core/enter-data-form/add-feat/add-feat.component';
+import { AddEffectComponent } from './core/enter-data-form/add-effect/add-effect.component';
 
 @NgModule({
   declarations: [
@@ -27,6 +30,9 @@ import { HttpCacheClientService } from './shared/services/http-cache-client.serv
     MainComponent,
     ToolbarComponent,
     SideNavComponent,
+    EnterDataFormComponent,
+    AddFeatComponent,
+    AddEffectComponent,
   ],
   imports: [
     BrowserModule,

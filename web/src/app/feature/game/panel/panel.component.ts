@@ -32,7 +32,7 @@ export class PanelComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute
   ) {}
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.route.params.pipe(takeUntil(this.ngDestroyed$)).subscribe(params => {
       this.currentGame = params['id'];
       this.gameData.gameId = this.currentGame;

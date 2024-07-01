@@ -7,11 +7,11 @@ import { Router } from '@angular/router';
   styleUrls: ['./side-nav.component.scss'],
 })
 export class SideNavComponent {
-  routeToNavigate: string = '';
+  public routeToNavigate: string = '';
 
   constructor(private router: Router) {}
 
-  navigateTo(route: string) {
+  public navigateTo(route: string) {
     this.router.navigate([`${route}`]);
   }
 }

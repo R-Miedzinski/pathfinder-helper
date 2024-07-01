@@ -1,0 +1,26 @@
+<mat-button-toggle-group [formControl]="categoryControl">
+  <mat-button-toggle *ngFor="let val of dataCategories" [value]="val">
+    {{ val }}
+  </mat-button-toggle>
+</mat-button-toggle-group>
+{{ categoryControl.value }}
+{{ categoryControl.value === categories.Feat }}
+<div [ngSwitch]="categoryControl.value">
+  <ng-container *ngSwitchCase="categories.Feat">
+    <app-add-feat [(value)]="data"></app-add-feat>
+  </ng-container>
+
+  <ng-container *ngSwitchDefault> Default </ng-container>
+</div>
+
+{{ data | json }}
+
+<div *ngIf="categoryControl.value">
+  <button mat-raised-button color="primary" (click)="submitData()">
+    Submit
+  </button>
+</div>
+
+<div *ngIf="responseMsg">
+  <p>Response received on submit: {{ responseMsg | json }}</p>
+</div>

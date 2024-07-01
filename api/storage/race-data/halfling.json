@@ -1,0 +1,31 @@
+{
+  "id": "halfling",
+  "name": "Halfling",
+  "description": "Halflings are a short, adaptable people who exhibit remarkable curiosity and humor.",
+  "boosts": [
+    {
+      "type": "set",
+      "abilities": ["Dexterity"]
+    },
+    {
+      "type": "set",
+      "abilities": ["Wisdom"]
+    },
+    {
+      "type": "free",
+      "abilities": []
+    }
+  ],
+  "flaws": [
+    {
+      "type": "set",
+      "abilities": ["Strength"]
+    }
+  ],
+  "size": "Small",
+  "baseSpeed": 25,
+  "languages": ["Common", "Halfling"],
+  "traits": ["Halfling", "Humanoid"],
+  "baseHp": 6,
+  "darkvision": "keen-eyes"
+}

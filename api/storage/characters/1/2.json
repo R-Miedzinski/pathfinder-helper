@@ -1,0 +1,80 @@
+[
+  {
+    "id": "TEST-1-2",
+    "name": "NOT ORK name",
+    "class": "Alchemist",
+    "race": "Dwarf",
+    "background": "acolyte",
+    "level": 1,
+    "featChoices": [
+      {
+        "featId": "research-field",
+        "choiceName": "Bomber",
+        "description": "You specialize in explosions and other violent alchemical reactions. You start with the formulas for two 1st-level alchemical bombs in your formula book, in addition to your other formulas.When throwing an alchemical bomb with the splash trait, you can deal splash damage to only your primary target instead of the usual splash area.",
+        "effect": [{ "effectType": "Description" }]
+      }
+    ],
+    "feats": [
+      "student-of-the-canon",
+      "ancient-blooded-dwarf",
+      "dwarven-lore",
+      "darkvision",
+      "alchemy",
+      "formula-book",
+      "research-field",
+      "c5"
+    ],
+    "boosts": ["Intelligence", "Intelligence", "Strength", "Constitution", "Wisdom", "Intelligence"],
+    "flaws": ["Charisma"],
+    "savingThrows": [
+      { "name": "Fortitude", "level": "Expert" },
+      { "name": "Reflex", "level": "Expert" },
+      { "name": "Will", "level": "Trained" }
+    ],
+    "skills": [
+      { "name": "Athletics", "level": "Trained", "value": 0, "ability": "Strength" },
+      { "name": "Medicine", "level": "Trained", "value": 0, "ability": "Wisdom" },
+      { "name": "Nature", "level": "Trained", "value": 0, "ability": "Wisdom" },
+      { "name": "Occultism", "level": "Trained", "value": 0, "ability": "Intelligence" },
+      { "name": "Society", "level": "Trained", "value": 0, "ability": "Intelligence" },
+      { "name": "Stealth", "level": "Trained", "value": 0, "ability": "Dexterity" },
+      { "name": "Survival", "level": "Trained", "value": 0, "ability": "Wisdom" },
+      { "name": "Thievery", "level": "Trained", "value": 0, "ability": "Dexterity" },
+      { "name": "Religion", "level": "Trained", "ability": "Wisdom", "value": 0 },
+      { "name": "Lore", "level": "Trained", "specialty": "Scribing", "ability": "Intelligence", "value": 0 }
+    ],
+    "attacks": [
+      { "type": "Simple", "level": "Trained" },
+      { "type": "Bomb", "level": "Trained" },
+      { "type": "Unarmed", "level": "Trained" }
+    ],
+    "defences": [
+      { "type": "Light armor", "level": "Trained" },
+      { "type": "Unarmored", "level": "Trained" }
+    ],
+    "inventory": [],
+    "equippedItems": [],
+    "investedItems": [],
+    "spells": [],
+    "actions": [],
+    "backstory": {
+      "story": "Went to WAAAGH!! returned. And went ot another WAAAGH!! another day. Life is good",
+      "alignment": "Chaotic Evil",
+      "languages": ["Common", "Dwarven", "not dwarven", "not ork", "ork"],
+      "nationality": "",
+      "ethnicity": "",
+      "deity": "",
+      "age": "",
+      "gender": "",
+      "pronouns": "",
+      "height": "",
+      "weight": "",
+      "appearence": "",
+      "attitude": "",
+      "beliefs": "",
+      "likes": "",
+      "dislikes": "",
+      "notes": ""
+    }
+  }
+]

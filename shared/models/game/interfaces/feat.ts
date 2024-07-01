@@ -11,11 +11,11 @@ export interface Feat {
   description: string;
   rules?: RulePayload[];
   effect: CharacterEffect[];
-  overwrites?: string;
 }
 
 export enum FeatConditions {
   proficiency = "skill-proficiency",
   ability = "ability-score",
   feat = "has-feat",
+  description = "description",
 }

@@ -1,0 +1,12 @@
+<ng-container [ngSwitch]="effectType">
+  <div *ngSwitchCase="effectTypes.action"></div>
+  <div *ngSwitchCase="effectTypes.armor"></div>
+  <div *ngSwitchCase="effectTypes.boost"></div>
+  <div *ngSwitchCase="effectTypes.choice"></div>
+  <div *ngSwitchCase="effectTypes.description"></div>
+  <div *ngSwitchCase="effectTypes.feat"></div>
+  <div *ngSwitchCase="effectTypes.flaw"></div>
+  <div *ngSwitchCase="effectTypes.savingThrow"></div>
+  <div *ngSwitchCase="effectTypes.skill"></div>
+  <div *ngSwitchCase="effectTypes.weapon"></div>
+</ng-container>
