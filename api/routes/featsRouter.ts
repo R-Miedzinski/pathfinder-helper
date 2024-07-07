@@ -1,6 +1,7 @@
 import express, { Router } from 'express'
 import { Classes, Feat, FeatCategory, Race } from 'rpg-app-shared-package'
 import { FeatFetcher } from '../services/feat-fetcher'
+import { createCrud } from '../helpers/crud-initiator'
 
 function createId(feat: Feat): string {
   return feat.name.toLowerCase().split(' ').join('-')
@@ -93,58 +94,7 @@ export function featsRouterFactory(featFetcher: FeatFetcher): Router {
       .catch((err) => res.status(500).send(err))
   })
 
-  featsRouter.get('/:id', (req, res) => {
-    try {
-      const feat = featFetcher.read(req.params.id)
-
-      res.send(feat)
-    } catch (err) {
-      res.status(500).send(err)
-    }
-  })
-
-  featsRouter.put('/:id', (req, res) => {
-    try {
-      const id = req.params.id
-      const value: Feat = req.body
-
-      const response = featFetcher.update(id, value)
-
-      res.send(response)
-    } catch (err) {
-      res.status(500).send(err)
-    }
-  })
-
-  featsRouter.post('', (req, res) => {
-    try {
-      console.log('post received with payload:', req.body)
-
-      const feat: Feat = req.body
-
-      feat.id = createId(feat)
-
-      console.log('id created:', feat.id)
-
-      const response = featFetcher.create(feat)
-
-      console.log('create response:', response)
-
-      res.send(response)
-    } catch (err) {
-      res.status(500).send(err)
-    }
-  })
-
-  featsRouter.delete('/:id', (req, res) => {
-    try {
-      const response = featFetcher.delete(req.params.id)
-
-      res.send(response)
-    } catch (err) {
-      res.status(500).send(err)
-    }
-  })
+  createCrud(featsRouter, featFetcher, createId)
 
   return featsRouter
 }

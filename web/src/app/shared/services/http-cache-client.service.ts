@@ -38,6 +38,23 @@ export class HttpCacheClientService {
   }
 
   public post<T>(url: string, payload: any): Observable<T> {
-    return this.http.post<T>(url, payload);
+    return this.http.post<T>(url, payload).pipe(
+      tap(response => {
+        console.log('clearing cash for urls starting from: ', url);
+        this.clearCache(url);
+      })
+    );
+  }
+
+  public clearCache(param?: string): void {
+    if (param) {
+      for (const key of this.requestCache.keys()) {
+        if (key.includes(param)) {
+          this.requestCache.delete(key);
+        }
+      }
+    } else {
+      this.requestCache.clear();
+    }
   }
 }

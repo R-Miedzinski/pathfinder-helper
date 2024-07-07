@@ -14,7 +14,7 @@
     {
       "effectType": "Action",
       "payload": {
-        "featId": ["infused-reagents", "advanced-alchemy", "quick-alchemy"]
+        "actionId": ["infused-reagents", "advanced-alchemy", "quick-alchemy"]
       }
     }
   ]

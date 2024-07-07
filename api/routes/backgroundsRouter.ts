@@ -1,5 +1,11 @@
 import express, { Router } from 'express'
 import { BackgroundDataLoader } from '../services/background-data-loader'
+import { createCrud } from '../helpers/crud-initiator'
+import { BackgroundData } from 'rpg-app-shared-package/dist/public-api'
+
+function createId(bg: BackgroundData): string {
+  return bg.name.toLowerCase().split(' ').join('-')
+}
 
 export function backgroundsRouterFactory(backgroundDataLoader: BackgroundDataLoader): Router {
   const backgroundsRouter = express.Router()
@@ -11,17 +17,7 @@ export function backgroundsRouterFactory(backgroundDataLoader: BackgroundDataLoa
       .catch((err) => res.status(500).send(err))
   })
 
-  backgroundsRouter.get('/:id', (req, res) => {
-    const id = req.params.id
-    if (!id) {
-      const error = new Error('Requested background not found')
-      res.status(500).send(error)
-    }
-    backgroundDataLoader
-      .getBackroundData(id)
-      .then((data) => res.send(data))
-      .catch((err) => res.status(500).send(err))
-  })
+  createCrud(backgroundsRouter, backgroundDataLoader, createId)
 
   return backgroundsRouter
 }

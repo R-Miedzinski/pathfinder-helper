@@ -8,7 +8,6 @@
     {
       "effectType": "Choice",
       "payload": {
-        "choiceType": "Effects",
         "data": [
           {
             "featId": "research-field",

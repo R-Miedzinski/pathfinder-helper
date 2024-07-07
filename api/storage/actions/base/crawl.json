@@ -1,0 +1,10 @@
+{
+  "id": "crawl",
+  "name": "Crawl",
+  "description": "You move 5 feet by crawling and continue to stay prone.",
+  "type": "Base",
+  "source": "basic",
+  "cost": "1",
+  "traits": ["move"],
+  "rules": "You are prone and your Speed is at least 10 feet."
+}

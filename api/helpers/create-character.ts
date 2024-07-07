@@ -76,8 +76,10 @@ export class CharacterFactory {
     this.character.inventory = this.seedData.inventory
     this.character.equippedItems = this.seedData.equippedItems
     this.character.investedItems = this.seedData.investedItems
-    const baseActions = await this.actionsLoader.getBasicActionsIds()
-    this.character.actions = baseActions.concat(this.seedData.actions)
+    this.character.actions = this.actionsLoader.getBasicActionsIds().filter(Boolean)
+    if (this.seedData.actions.length) {
+      this.character.actions.push(...this.seedData.actions)
+    }
     this.character.backstory = this.seedData.backstory
 
     this.profToValMap = createProfToValMap(this.character.level)

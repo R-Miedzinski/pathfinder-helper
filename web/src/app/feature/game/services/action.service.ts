@@ -12,7 +12,7 @@ export class ActionService {
   constructor(private http: HttpCacheClientService) {}
 
   public getActions(actionIds: string[]): Observable<CharacterAction[]> {
-    const url = `${environment.apiUrl}/api/actions/${actionIds.join('.')}`;
+    const url = `${environment.apiUrl}/api/actions/list/${actionIds.join('.')}`;
 
     return this.http.get<CharacterAction[]>(url);
   }

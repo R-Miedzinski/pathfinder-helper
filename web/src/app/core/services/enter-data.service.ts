@@ -1,8 +1,8 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environment/environment';
 import { DataCategory, DataCategoryUrl } from '../model/data-entry-category';
+import { HttpCacheClientService } from 'src/app/shared/services/http-cache-client.service';
 
 @Injectable({
   providedIn: 'root',
@@ -10,7 +10,7 @@ import { DataCategory, DataCategoryUrl } from '../model/data-entry-category';
 export class EnterDataService {
   private baseUrl = environment.apiUrl;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpCacheClientService) {}
 
   public create<T>(entry: T, category: DataCategory): Observable<string> {
     const url = this.baseUrl + DataCategoryUrl[category];

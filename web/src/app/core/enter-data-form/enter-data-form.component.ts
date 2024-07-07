@@ -22,6 +22,7 @@ export class EnterDataFormComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
     this.clearData();
+    this.initControl();
   }
 
   public ngOnDestroy(): void {
@@ -46,11 +47,21 @@ export class EnterDataFormComponent implements OnInit, OnDestroy {
 
   private clearData(): void {
     this.data = undefined;
+  }
 
+  private initControl(): void {
     if (this.dataCategories.length === 1) {
       this.categoryControl.setValue(this.dataCategories[0]);
     } else {
       this.categoryControl.setValue(undefined);
     }
+
+    this.categoryControl.valueChanges
+      .pipe(takeUntil(this.ngDestroyed$))
+      .subscribe({
+        next: data => {
+          this.clearData();
+        },
+      });
   }
 }

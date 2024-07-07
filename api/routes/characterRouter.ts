@@ -156,9 +156,13 @@ export function characterRouterFactory(
       characterFactory
         .buildNewCharacter()
         .then(() => {
-          res.send(characterFactory.createNewCharacter())
+          const character = characterFactory.createNewCharacter()
+
+          res.send(character)
         })
-        .catch((err) => res.status(500).send(err))
+        .catch((err) => {
+          res.status(500).send(err)
+        })
     })
   })
 

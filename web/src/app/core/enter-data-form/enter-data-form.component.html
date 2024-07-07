@@ -3,20 +3,40 @@
     {{ val }}
   </mat-button-toggle>
 </mat-button-toggle-group>
-{{ categoryControl.value }}
-{{ categoryControl.value === categories.Feat }}
 <div [ngSwitch]="categoryControl.value">
   <ng-container *ngSwitchCase="categories.Feat">
     <app-add-feat [(value)]="data"></app-add-feat>
   </ng-container>
+  <ng-container *ngSwitchCase="categories.Trait">
+    <app-add-trait [(value)]="data"></app-add-trait>
+  </ng-container>
+  <ng-container *ngSwitchCase="categories.Action">
+    <app-add-action></app-add-action
+  ></ng-container>
+  <ng-container *ngSwitchCase="categories.Background">
+    <app-add-background></app-add-background>
+  </ng-container>
+  <ng-container *ngSwitchCase="categories.Item">
+    <app-add-item></app-add-item>
+  </ng-container>
+  <ng-container *ngSwitchCase="categories.Spell">
+    <app-add-spell></app-add-spell>
+  </ng-container>
 
-  <ng-container *ngSwitchDefault> Default </ng-container>
+  <ng-container *ngSwitchDefault>
+    Select data type above to open apropriate data entry form.
+  </ng-container>
 </div>
 
+{{ categoryControl.value }}
 {{ data | json }}
 
 <div *ngIf="categoryControl.value">
-  <button mat-raised-button color="primary" (click)="submitData()">
+  <button
+    mat-raised-button
+    color="primary"
+    (click)="submitData()"
+    [disabled]="!data || categoryControl.invalid">
     Submit
   </button>
 </div>

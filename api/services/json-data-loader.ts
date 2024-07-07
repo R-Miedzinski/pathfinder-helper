@@ -20,12 +20,30 @@ export abstract class JsonDataLoader<T extends { id: string }> implements CRUDCo
   }
 
   public read(id: string): T {
-    const fileUrl = `${this.dirName}/${id}.json`
-
     try {
-      return JSON.parse(fs.readFileSync(fileUrl, { encoding: 'utf8' }))
+      const files = fs.readdirSync(`${this.dirName}`, { recursive: true, encoding: 'utf8' })
+
+      const fileUrl = files.find((url) => url.endsWith(`${id}.json`))
+
+      if (fileUrl) {
+        return JSON.parse(fs.readFileSync(this.dirName + fileUrl, { encoding: 'utf8' }))
+      } else {
+        throw new Error('No file found')
+      }
     } catch (err) {
       throw new Error(`Failure in reading entry: ${id} :: ${err}`)
+    }
+  }
+
+  public readAll(): T[] {
+    try {
+      const files = fs.readdirSync(`${this.dirName}`, { recursive: true, encoding: 'utf8' })
+
+      return files
+        .filter((file) => file.includes('.json'))
+        .map((file) => JSON.parse(fs.readFileSync(this.dirName + file, { encoding: 'utf8' })))
+    } catch (err) {
+      throw new Error(`Failure in reading all items :: ${err}`)
     }
   }
 

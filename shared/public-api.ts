@@ -43,12 +43,7 @@ export {
   LevelUpClassData,
 } from "./models/game/interfaces/class-data";
 export { ClassDC } from "./models/game/interfaces/class-dc";
-export {
-  EffectChoice,
-  EffectChoiceType,
-  FeatChoiceEffect,
-  EffectChoiceEffect,
-} from "./models/game/interfaces/effect-choice";
+export { EffectChoice } from "./models/game/interfaces/effect-choice";
 export {
   CharacterEffect,
   GrantActionEffect,

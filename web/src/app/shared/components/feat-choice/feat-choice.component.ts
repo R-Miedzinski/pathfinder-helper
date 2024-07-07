@@ -14,7 +14,7 @@ import { CustomFormControl } from '../custom-form-control/custom-form-control.co
 import {
   CharacterEffectType,
   EffectChoice,
-  EffectChoiceEffect,
+  EffectChoiceData,
   Feat,
 } from 'rpg-app-shared-package/dist/public-api';
 import { FeatsService } from 'src/app/feature/game/services/feats.service';
@@ -95,7 +95,7 @@ export class FeatChoiceComponent
         const effectChoices = (
           this.chosenFeat?.effect.find(
             effect => effect.effectType === CharacterEffectType.choice
-          ) as EffectChoiceEffect
+          ) as EffectChoiceData
         )?.payload.data;
         if (effectChoices) {
           this.featChoices = effectChoices;

@@ -40,8 +40,8 @@ export class AddFeatComponent
   protected newFeatForm: FormGroup = new FormGroup({});
 
   protected readonly traits = [] as string[];
-  protected readonly featCategories = Object.values(FeatCategory);
-  protected readonly effectTypes = Object.values(CharacterEffectType);
+  protected readonly featCategories = Object.values(FeatCategory).sort();
+  protected readonly effectTypes = Object.values(CharacterEffectType).sort();
 
   private readonly ngDestroyed$: Subject<void> = new Subject();
   constructor(private fb: FormBuilder) {
@@ -121,14 +121,3 @@ export class AddFeatComponent
     });
   }
 }
-
-// Feat {
-//   id: string;
-//   name: string;
-//   level: number;
-//   category: FeatCategory;
-//   traits?: string[];
-//   description: string;
-//   rules?: RulePayload[];
-//   effect: CharacterEffect[];
-// }

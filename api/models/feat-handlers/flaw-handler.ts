@@ -9,6 +9,12 @@ export class FlawHandler extends EffectHandler {
   public async handleEffect(character: Character, seedData: SeedCharacterData): Promise<void> {
     const payload = (<GrantFlawEffect>this._effect).payload
 
-    seedData.flaws.push(payload.flaw)
+    if (Array.isArray(payload.flaw)) {
+      payload.flaw.forEach((item) => {
+        seedData.flaws.push(item)
+      })
+    } else {
+      seedData.flaws.push(payload.flaw)
+    }
   }
 }

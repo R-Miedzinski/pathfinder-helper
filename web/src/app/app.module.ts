@@ -19,6 +19,11 @@ import { HttpCacheClientService } from './shared/services/http-cache-client.serv
 import { EnterDataFormComponent } from './core/enter-data-form/enter-data-form.component';
 import { AddFeatComponent } from './core/enter-data-form/add-feat/add-feat.component';
 import { AddEffectComponent } from './core/enter-data-form/add-effect/add-effect.component';
+import { AddTraitComponent } from './core/enter-data-form/add-trait/add-trait.component';
+import { AddActionComponent } from './core/enter-data-form/add-action/add-action.component';
+import { AddBackgroundComponent } from './core/enter-data-form/add-background/add-background.component';
+import { AddItemComponent } from './core/enter-data-form/add-item/add-item.component';
+import { AddSpellComponent } from './core/enter-data-form/add-spell/add-spell.component';
 
 @NgModule({
   declarations: [
@@ -33,6 +38,11 @@ import { AddEffectComponent } from './core/enter-data-form/add-effect/add-effect
     EnterDataFormComponent,
     AddFeatComponent,
     AddEffectComponent,
+    AddTraitComponent,
+    AddActionComponent,
+    AddBackgroundComponent,
+    AddItemComponent,
+    AddSpellComponent,
   ],
   imports: [
     BrowserModule,
