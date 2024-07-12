@@ -11,10 +11,10 @@
     <app-add-trait [(value)]="data"></app-add-trait>
   </ng-container>
   <ng-container *ngSwitchCase="categories.Action">
-    <app-add-action></app-add-action
+    <app-add-action [(value)]="data"></app-add-action
   ></ng-container>
   <ng-container *ngSwitchCase="categories.Background">
-    <app-add-background></app-add-background>
+    <app-add-background [(value)]="data"></app-add-background>
   </ng-container>
   <ng-container *ngSwitchCase="categories.Item">
     <app-add-item></app-add-item>
@@ -27,9 +27,6 @@
     Select data type above to open apropriate data entry form.
   </ng-container>
 </div>
-
-{{ categoryControl.value }}
-{{ data | json }}
 
 <div *ngIf="categoryControl.value">
   <button

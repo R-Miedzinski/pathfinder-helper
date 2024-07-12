@@ -13,7 +13,6 @@ import {
 import { Observable, Subject, map, of, takeUntil, tap } from 'rxjs';
 import { FeatsService } from 'src/app/feature/game/services/feats.service';
 import {
-  Form,
   FormArray,
   FormBuilder,
   FormControl,
@@ -33,6 +32,7 @@ export class LevelBonusComponent implements OnInit, OnDestroy {
   @Input() race?: Race;
   @Input() valueControl!: FormGroup;
   @Input({ required: false }) skills: Skill[] = [];
+  @Input({ required: false }) featsInPossession: string[] = [];
 
   protected feats$: Observable<string[]> = new Observable();
   protected addFeatChoice: EffectChoice[] = [];

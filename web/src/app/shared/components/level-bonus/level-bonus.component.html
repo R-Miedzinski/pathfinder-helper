@@ -4,6 +4,7 @@
       <ng-container *ngSwitchCase="bonusCategory.addFeat">
         <div *ngFor="let feat of feats">
           <app-feat-choice
+            [featsInPossession]="featsInPossession"
             (effectChoice)="onAddFeatEffectChoice($event, feat)"
             label="Add"
             [feats]="[feat]"></app-feat-choice>
@@ -12,6 +13,7 @@
       <ng-container *ngSwitchCase="bonusCategory.classFeat">
         <div>
           <app-feat-choice
+            [featsInPossession]="featsInPossession"
             label="Class"
             [feats]="feats"
             [formControl]="valueControl.get('data')! | toFormControl">
@@ -21,6 +23,7 @@
       <ng-container *ngSwitchCase="bonusCategory.ancestralFeat">
         <div>
           <app-feat-choice
+            [featsInPossession]="featsInPossession"
             label="Ancestral"
             [feats]="feats"
             [formControl]="valueControl.get('data')! | toFormControl">
@@ -30,6 +33,7 @@
       <ng-container *ngSwitchCase="bonusCategory.generalFeat">
         <div>
           <app-feat-choice
+            [featsInPossession]="featsInPossession"
             label="General"
             [feats]="feats"
             [formControl]="valueControl.get('data')! | toFormControl">
@@ -39,6 +43,7 @@
       <ng-container *ngSwitchCase="bonusCategory.skillFeat">
         <div>
           <app-feat-choice
+            [featsInPossession]="featsInPossession"
             label="Skill"
             [feats]="feats"
             [formControl]="valueControl.get('data')! | toFormControl">
@@ -49,10 +54,12 @@
     <ng-container *ngSwitchCase="bonusCategory.replaceFeat">
       <form [formGroup]="featReplaceForm">
         <app-feat-choice
+          [featsInPossession]="featsInPossession"
           label="Replace"
           [feats]="[levelBonus.payload!.toReplace]"
           formControlName="toReplace"></app-feat-choice>
         <app-feat-choice
+          [featsInPossession]="featsInPossession"
           label="New"
           [feats]="[levelBonus.payload!.replacement]"
           formControlName="replacement"

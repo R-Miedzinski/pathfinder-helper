@@ -37,6 +37,7 @@ export class FeatChoiceComponent
   implements OnInit, OnDestroy, OnChanges
 {
   @Input() feats: string[] | null = [];
+  @Input() featsInPossession: string[] | null = [];
   @Input() label: string = 'Choose';
   @Output() effectChoice: EventEmitter<EffectChoice> = new EventEmitter();
 
@@ -125,22 +126,30 @@ export class FeatChoiceComponent
   }
 
   private getFeats(): void {
+    const filteredFeats = this.feats?.filter(
+      feat => !this.featsInPossession?.includes(feat)
+    );
+
+    console.log(this.feats);
+    console.log(this.featsInPossession);
+    console.log(filteredFeats);
+
     this.featsService
-      .getFeats(this.feats ?? [])
+      .getFeats(filteredFeats ?? [])
       .pipe(takeUntil(this.ngDestroyed$))
       .subscribe({
         next: feats => {
           this.featsData = feats;
 
-          if (this.feats?.length === 1) {
-            this.initWithChosenFeat();
+          if (filteredFeats?.length === 1) {
+            this.initWithChosenFeat(filteredFeats[0]);
           }
         },
       });
   }
 
-  private initWithChosenFeat(): void {
-    this.featControl.setValue(this.feats ? this.feats[0] : '');
+  private initWithChosenFeat(feat: string): void {
+    this.featControl.setValue(feat ?? '');
     this.setDisabledState(true);
   }
 }

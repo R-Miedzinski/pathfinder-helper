@@ -1,5 +1,5 @@
 <ng-container [ngSwitch]="effectType">
-  <div *ngSwitchCase="effectTypes.action">
+  <ng-container *ngSwitchCase="effectTypes.action">
     <mat-form-field *ngIf="payloadForm.get('actionId') as control">
       <mat-label>Actions granted:</mat-label>
       <mat-select
@@ -19,8 +19,8 @@
         </mat-option>
       </mat-select>
     </mat-form-field>
-  </div>
-  <div *ngSwitchCase="effectTypes.armor">
+  </ng-container>
+  <ng-container *ngSwitchCase="effectTypes.armor">
     <mat-form-field *ngIf="payloadForm.get('armor') as control">
       <mat-label>Armor Type:</mat-label>
       <mat-select
@@ -45,18 +45,19 @@
         </mat-option>
       </mat-select>
     </mat-form-field>
-  </div>
-  <div *ngSwitchCase="effectTypes.boost">
-    <div>
+  </ng-container>
+  <ng-container *ngSwitchCase="effectTypes.boost">
+    <div class="form-field">
       <label>Boost granted:</label>
       <app-boost-choice
         *ngIf="payloadForm.get('boost') as control"
         [formControl]="control | toFormControl"></app-boost-choice>
     </div>
-  </div>
-  <div *ngSwitchCase="effectTypes.choice">
-    <ng-container *ngIf="choicesArray">
+  </ng-container>
+  <ng-container *ngSwitchCase="effectTypes.choice">
+    <div class="array" *ngIf="choicesArray">
       <div
+        class="array__item"
         *ngFor="let control of choicesArray.controls; let i = index"
         [formGroup]="control | toFormGroup">
         <button (click)="removeChoiceEffect(i)">
@@ -103,30 +104,11 @@
           <button (click)="addEffect(i)">+ Add Choice Effect</button>
         </ng-container>
       </div>
-      <!-- <div
-      *ngFor="let control of effects.controls; let i = index"
-        [formGroup]="control | toFormGroup">
-        <button (click)="removeEffect(i)"><mat-icon>cancel</mat-icon></button>
-        <mat-form-field>
-          <mat-label>Effect</mat-label>
-          <mat-select
-            formControlName="effectType"
-            placeholder="Choose effect type...">
-            <mat-option *ngFor="let type of effectTypes" [value]="type">
-              {{ type }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-        <app-add-effect
-          *ngIf="control.get('effectType')?.value"
-          formControlName="payload"
-          [effectType]="control.get('effectType')?.value"></app-add-effect>
-      </div> -->
       <button (click)="addChoiceEffect()">+ Add Choice</button>
-    </ng-container>
-  </div>
-  <div *ngSwitchCase="effectTypes.description"></div>
-  <div *ngSwitchCase="effectTypes.feat">
+    </div>
+  </ng-container>
+  <ng-container *ngSwitchCase="effectTypes.description"></ng-container>
+  <ng-container *ngSwitchCase="effectTypes.feat">
     <mat-form-field *ngIf="payloadForm.get('featId') as control">
       <mat-label>Feats granted:</mat-label>
       <mat-select
@@ -146,16 +128,16 @@
         </mat-option>
       </mat-select>
     </mat-form-field>
-  </div>
-  <div *ngSwitchCase="effectTypes.flaw">
-    <div>
-      <label>Boost granted:</label>
+  </ng-container>
+  <ng-container *ngSwitchCase="effectTypes.flaw">
+    <div class="form-field">
+      <label>Flaw granted:</label>
       <app-boost-choice
         *ngIf="payloadForm.get('flaw') as control"
         [formControl]="control | toFormControl"></app-boost-choice>
     </div>
-  </div>
-  <div *ngSwitchCase="effectTypes.savingThrow">
+  </ng-container>
+  <ng-container *ngSwitchCase="effectTypes.savingThrow">
     <mat-form-field *ngIf="payloadForm.get('savingThrow') as control">
       <mat-label>Saving Throw:</mat-label>
       <mat-select
@@ -180,8 +162,8 @@
         </mat-option>
       </mat-select>
     </mat-form-field>
-  </div>
-  <div *ngSwitchCase="effectTypes.skill">
+  </ng-container>
+  <ng-container *ngSwitchCase="effectTypes.skill">
     <mat-form-field *ngIf="payloadForm.get('skill') as control">
       <mat-label>Skill name:</mat-label>
       <mat-select
@@ -206,12 +188,16 @@
         </mat-option>
       </mat-select>
     </mat-form-field>
-    <mat-form-field *ngIf="payloadForm.get('specialty') as control">
+    <mat-form-field
+      *ngIf="
+        payloadForm.get('skill')?.value === skillLore &&
+        payloadForm.get('specialty') as control
+      ">
       <mat-label>Skill Specialty (optional):</mat-label>
       <input matInput type="text" [formControl]="control | toFormControl" />
     </mat-form-field>
-  </div>
-  <div *ngSwitchCase="effectTypes.weapon">
+  </ng-container>
+  <ng-container *ngSwitchCase="effectTypes.weapon">
     <mat-form-field *ngIf="payloadForm.get('weapon') as control">
       <mat-label>Weapon Group:</mat-label>
       <mat-select
@@ -236,5 +222,5 @@
         </mat-option>
       </mat-select>
     </mat-form-field>
-  </div>
+  </ng-container>
 </ng-container>

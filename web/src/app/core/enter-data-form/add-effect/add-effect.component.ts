@@ -56,6 +56,7 @@ export class AddEffectComponent
   protected readonly proficiencies = Proficiency;
   protected readonly savingThrows = SavingThrowName;
   protected readonly skills = Skills;
+  protected readonly skillLore = Skills.lore;
   protected readonly armorCategories = ArmorCategory;
   protected readonly weaponGroups = WeaponGroup;
   protected readonly keepOrderLocal = keepOrder;

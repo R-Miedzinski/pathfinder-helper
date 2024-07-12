@@ -20,7 +20,7 @@ export class ActionsLoader extends JsonDataLoader<CharacterAction> {
 
     try {
       fs.writeFileSync(fileUrl, JSON.stringify(entry), { encoding: 'utf8', flag: 'wx' })
-      return `Feat added: ${entry.id}`
+      return `Action added: ${entry.id}`
     } catch (err) {
       throw new Error(`Failure in creating new entry: ${entry.id} :: ${err}`)
     }

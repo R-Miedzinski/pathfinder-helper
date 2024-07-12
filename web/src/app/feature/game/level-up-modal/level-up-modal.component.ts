@@ -42,6 +42,7 @@ export class LevelUpModalComponent implements OnDestroy, OnInit {
       level: number;
       id: string;
       skills: Skill[];
+      feats: string[];
     },
     private dialogRef: MatDialogRef<LevelUpModalComponent>,
     private fb: FormBuilder,
