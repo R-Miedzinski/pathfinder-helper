@@ -67,6 +67,16 @@
       </mat-option>
     </mat-select>
   </mat-form-field>
+  <mat-form-field class="required">
+    <mat-label>Skill:</mat-label>
+    <mat-select
+      formControlName="skill"
+      placeholder="Select associated skill...">
+      <mat-option *ngFor="let val of skills" [value]="val">
+        {{ val }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
   <mat-form-field>
     <mat-label>Materials:</mat-label>
     <textarea matInput formControlName="materials"></textarea>

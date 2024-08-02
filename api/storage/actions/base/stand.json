@@ -1,0 +1,14 @@
+{
+  "id": "stand",
+  "name": "Stand",
+  "description": "You stand up from prone.",
+  "type": "Encounter",
+  "source": "basic",
+  "effects": { "criticalSuccess": null, "success": null, "failure": null, "criticalFailure": null },
+  "cost": 1,
+  "skill": null,
+  "materials": null,
+  "traits": ["move"],
+  "trigger": null,
+  "rules": null
+}

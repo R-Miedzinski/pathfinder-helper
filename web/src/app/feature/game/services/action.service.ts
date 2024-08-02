@@ -12,8 +12,8 @@ export class ActionService {
   constructor(private http: HttpCacheClientService) {}
 
   public getActions(actionIds: string[]): Observable<CharacterAction[]> {
-    const url = `${environment.apiUrl}/api/actions/list/${actionIds.join('.')}`;
+    const url = `${environment.apiUrl}/api/actions/list`;
 
-    return this.http.get<CharacterAction[]>(url);
+    return this.http.post<CharacterAction[]>(url, actionIds);
   }
 }

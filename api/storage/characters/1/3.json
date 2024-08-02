@@ -1,0 +1,76 @@
+[
+  {
+    "id": "TEST-1-3",
+    "name": "Ok",
+    "class": "Alchemist",
+    "race": "Dwarf",
+    "background": "animal-whisperer",
+    "level": 1,
+    "featChoices": [
+      {
+        "featId": "research-field",
+        "choiceName": "Bomber",
+        "description": "You specialize in explosions and other violent alchemical reactions. You start with the formulas for two 1st-level alchemical bombs in your formula book, in addition to your other formulas.When throwing an alchemical bomb with the splash trait, you can deal splash damage to only your primary target instead of the usual splash area.",
+        "effect": [{ "effectType": "Description" }]
+      }
+    ],
+    "feats": [
+      "train-animal",
+      "forge-dwarf",
+      "dwarven-weapon-familiarity",
+      "darkvision",
+      "alchemy",
+      "formula-book",
+      "research-field",
+      "c2"
+    ],
+    "boosts": ["Intelligence", "Wisdom", "Constitution", "Constitution", "Wisdom", "Dexterity"],
+    "flaws": ["Charisma"],
+    "savingThrows": [
+      { "name": "Fortitude", "level": "Expert" },
+      { "name": "Reflex", "level": "Expert" },
+      { "name": "Will", "level": "Trained" }
+    ],
+    "skills": [
+      { "name": "Acrobatics", "level": "Trained", "value": 0, "ability": "Dexterity" },
+      { "name": "Intimidation", "level": "Trained", "value": 0, "ability": "Charisma" },
+      { "name": "Stealth", "level": "Trained", "value": 0, "ability": "Dexterity" },
+      { "name": "Survival", "level": "Trained", "value": 0, "ability": "Wisdom" },
+      { "name": "Nature", "level": "Trained", "ability": "Wisdom", "value": 0 },
+      { "name": "Lore", "level": "Trained", "specialty": "Terrain", "ability": "Intelligence", "value": 0 }
+    ],
+    "attacks": [
+      { "type": "Simple", "level": "Trained" },
+      { "type": "Bomb", "level": "Trained" },
+      { "type": "Unarmed", "level": "Trained" }
+    ],
+    "defences": [
+      { "type": "Light armor", "level": "Trained" },
+      { "type": "Unarmored", "level": "Trained" }
+    ],
+    "inventory": [],
+    "equippedItems": [],
+    "investedItems": [],
+    "spells": [],
+    "actions": [],
+    "backstory": {
+      "story": "Tańczył pprofejjsnolanie",
+      "alignment": "Chaotic Evil",
+      "languages": ["Common", "Dwarven", "asdas"],
+      "nationality": "",
+      "ethnicity": "",
+      "deity": "",
+      "age": "",
+      "gender": "",
+      "pronouns": "",
+      "height": "",
+      "weight": "",
+      "appearence": "",
+      "attitude": "",
+      "beliefs": "",
+      "likes": "Dnd",
+      "dislikes": "Pierogi",
+      "notes": ""
+    }
+  }
+]

@@ -1,0 +1,18 @@
+{
+  "id": "high-jump",
+  "name": "High Jump",
+  "description": "You Stride, then make a vertical Leap and attempt a DC 30 \nAthletics check to increase the height of your jump. If you \ndidn’t Stride at least 10 feet, you automatically fail your check. \nThis DC might be increased or decreased due to the situation, \nas determined by the GM.",
+  "type": "Base",
+  "source": "basic",
+  "effects": {
+    "criticalSuccess": " Increase the maximum vertical distance to 8 \nfeet, or increase the maximum vertical distance to 5 feet \nand maximum horizontal distance to 10 feet.",
+    "success": " Increase the maximum vertical distance to 5 feet.",
+    "failure": "You Leap normally.",
+    "criticalFailure": "You don’t Leap at all, and instead you fall prone \nin your space"
+  },
+  "cost": 2,
+  "materials": null,
+  "traits": null,
+  "trigger": null,
+  "rules": null
+}

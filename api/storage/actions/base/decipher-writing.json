@@ -1,0 +1,18 @@
+{
+  "id": "decipher-writing",
+  "name": "Decipher Writing",
+  "description": "You attempt to decipher complicated writing or literature on an \nobscure topic. This usually takes 1 minute per page of text, but \nmight take longer (typically an hour per page for decrypting \nciphers or the like). The text must be in a language you can \nread, though the GM might allow you to attempt to decipher \ntext written in an unfamiliar language using Society instead.\n The DC is determined by the GM based on the state or \ncomplexity of the document. The GM might have you roll one \ncheck for a short text or a check for each section of a larger text.",
+  "type": "Exploration",
+  "source": "basic",
+  "effects": {
+    "criticalSuccess": " You understand the true meaning of the text.",
+    "success": "You understand the true meaning of the text. If it was \na coded document, you know the general meaning but might \nnot have a word-for-word translation.",
+    "failure": " You can’t understand the text and take a –2 circumstance \npenalty to further checks to decipher it.",
+    "criticalFailure": " You believe you understand the text on that \npage, but you have in fact misconstrued its message."
+  },
+  "cost": null,
+  "materials": null,
+  "traits": ["concentrate", "exploration", "secret"],
+  "trigger": null,
+  "rules": null
+}

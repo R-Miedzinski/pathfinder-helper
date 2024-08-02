@@ -87,6 +87,7 @@ export class AddFeatComponent
   protected addEffect(): void {
     const newEffect = this.fb.group({
       effectType: [CharacterEffectType.description, Validators.required],
+      level: null,
       payload: null,
     });
 

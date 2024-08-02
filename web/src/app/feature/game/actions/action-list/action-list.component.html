@@ -1,14 +1,7 @@
 <ul class="action-list" *ngIf="actions.length > 0">
   <ng-container *ngFor="let action of actions">
-    <li
-      class="action"
-      *ngIf="
-        action.name
-          .toLowerCase()
-          .includes(filters?.name?.toLocaleLowerCase() ?? '') &&
-        (filters?.source?.includes(action.source) || !filters?.source?.length)
-      ">
-      <app-hover-card position="top-left" [hoverCardWidth]="28">
+    <li class="action" *ngIf="shouldDisplayAction(action)">
+      <app-hover-card position="top" [hoverCardWidth]="28">
         <div hoverable class="action-item">
           <span class="action-item__name">{{ action.name }}</span>
           <span class="action-item__cost" *ngIf="action.cost !== undefined">

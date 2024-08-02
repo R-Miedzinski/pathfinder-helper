@@ -1,0 +1,18 @@
+{
+  "id": "earn-income",
+  "name": "Earn Income",
+  "description": "You use one of your skills to make money during downtime. \nThe GM assigns a task level representing the most lucrative \njob available. You can search for lower-level tasks, with the \nGM determining whether you find any. Sometimes you can \nattempt to find better work than the initial offerings, though  this takes time and requires using the Diplomacy skill to \nGather Information, doing some research, or socializing.\n When you take on a job, the GM secretly sets the DC of your \nskill check. After your first day of work, you roll to determine \nyour earnings. You gain an amount of income based on your \nresult, the task’s level, and your proficiency rank (as listed on \nTable 4–2: Income Earned).\n You can continue working at the task on subsequent days \nwithout needing to roll again. For each day you spend after \nthe first, you earn the same amount as the first day, up until \nthe task’s completion. The GM determines how long you can \nwork at the task. Most tasks last a week or two, though some \ncan take months or even years. ",
+  "type": "Downtime",
+  "source": "basic",
+  "effects": {
+    "criticalSuccess": "You do outstanding work. Gain the amount of \ncurrency listed for the task level + 1 and your proficiency rank.",
+    "success": " You do competent work. Gain the amount of currency \nlisted for the task level and your proficiency rank.",
+    "failure": "You do shoddy work and get paid the bare minimum \nfor your time. Gain the amount of currency listed in the \nfailure column for the task level. The GM will likely reduce \nhow long you can continue at the task.",
+    "criticalFailure": "You earn nothing for your work and are fired \nimmediately. You can’t continue at the task. Your reputation \nsuffers, potentially making it difficult for you to find \nrewarding jobs in that community in the future."
+  },
+  "cost": null,
+  "materials": null,
+  "traits": ["downtime"],
+  "trigger": null,
+  "rules": null
+}

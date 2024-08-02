@@ -25,6 +25,7 @@ export class ActionsComponent implements OnInit, OnDestroy {
     [CharacterActionType.encounter]: [],
     [CharacterActionType.exploration]: [],
     [CharacterActionType.downtime]: [],
+    [CharacterActionType.skilled]: [],
   };
   protected filters: {
     source: ActionSource[];
@@ -32,14 +33,15 @@ export class ActionsComponent implements OnInit, OnDestroy {
     name: string;
   } = {
     source: [
-      ActionSource.BASE,
+      // ActionSource.BASE,
       ActionSource.CLASS,
       ActionSource.FEAT,
       ActionSource.OTHER,
     ],
     category: [
-      CharacterActionType.base,
-      CharacterActionType.downtime,
+      // CharacterActionType.base,
+      CharacterActionType.skilled,
+      // CharacterActionType.downtime,
       CharacterActionType.encounter,
       CharacterActionType.exploration,
     ],
@@ -88,6 +90,7 @@ export class ActionsComponent implements OnInit, OnDestroy {
       [CharacterActionType.encounter]: [],
       [CharacterActionType.exploration]: [],
       [CharacterActionType.downtime]: [],
+      [CharacterActionType.skilled]: [],
     };
   }
 }

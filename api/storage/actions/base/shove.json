@@ -1,0 +1,18 @@
+{
+  "id": "shove",
+  "name": "Shove",
+  "description": " You push an opponent away from you. Attempt an Athletics \ncheck against your opponent’s Fortitude DC.",
+  "type": "Encounter",
+  "source": "basic",
+  "effects": {
+    "criticalSuccess": "You push your opponent up to 10 feet away \nfrom you. You can Stride after it, but you must move the \nsame distance and in the same direction.",
+    "success": "You push your opponent back 5 feet. You can Stride \nafter it, but you must move the same distance and in the \nsame direction.",
+    "failure": null,
+    "criticalFailure": "You lose your balance, fall, and land prone."
+  },
+  "cost": 1,
+  "materials": null,
+  "traits": ["attack"],
+  "trigger": null,
+  "rules": "You have at least one hand free. The target \ncan’t be more than one size larger than you."
+}

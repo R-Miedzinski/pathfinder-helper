@@ -1,5 +1,5 @@
 import { getFiles } from '../helpers/get-files'
-import * as fs from 'fs'
+import * as fs from 'fs/promises'
 import path from 'path'
 import { CRUDController } from '../controllers/crud-controller'
 
@@ -8,57 +8,45 @@ export abstract class JsonDataLoader<T extends { id: string }> implements CRUDCo
   protected data: T[] = []
   protected dirName: string = path.join(__dirname, '../storage/')
 
-  public create(entry: T): string {
+  public create(entry: T): Promise<string> {
     const fileUrl = `${this.dirName}/${entry.id}.json`
 
-    try {
-      fs.writeFileSync(fileUrl, JSON.stringify(entry), { encoding: 'utf8', flag: 'wx' })
-      return 'Success'
-    } catch (err) {
-      throw new Error(`Failure in creating new entry: ${entry.id} :: ${err}`)
+    return fs.writeFile(fileUrl, JSON.stringify(entry), { encoding: 'utf8', flag: 'wx' }).then(() => 'Success')
+  }
+
+  public async read(id: string): Promise<T> {
+    const files = await fs.readdir(`${this.dirName}`, { recursive: true, encoding: 'utf8' })
+
+    const fileUrl = files.find((url) => path.basename(url) === `${id}.json`)
+
+    if (fileUrl) {
+      return fs.readFile(this.dirName + fileUrl, { encoding: 'utf8' }).then((data: string): T => JSON.parse(data))
+    } else {
+      throw new Error('No file found')
     }
   }
 
-  public read(id: string): T {
-    try {
-      const files = fs.readdirSync(`${this.dirName}`, { recursive: true, encoding: 'utf8' })
+  public async readAll(): Promise<T[]> {
+    const files = fs.readdir(`${this.dirName}`, { recursive: true, encoding: 'utf8' })
 
-      const fileUrl = files.find((url) => url.endsWith(`${id}.json`))
-
-      if (fileUrl) {
-        return JSON.parse(fs.readFileSync(this.dirName + fileUrl, { encoding: 'utf8' }))
-      } else {
-        throw new Error('No file found')
-      }
-    } catch (err) {
-      throw new Error(`Failure in reading entry: ${id} :: ${err}`)
-    }
-  }
-
-  public readAll(): T[] {
-    try {
-      const files = fs.readdirSync(`${this.dirName}`, { recursive: true, encoding: 'utf8' })
-
-      return files
+    const promises = await files.then((items) =>
+      items
         .filter((file) => file.includes('.json'))
-        .map((file) => JSON.parse(fs.readFileSync(this.dirName + file, { encoding: 'utf8' })))
-    } catch (err) {
-      throw new Error(`Failure in reading all items :: ${err}`)
-    }
+        .map((file) => fs.readFile(this.dirName + file, { encoding: 'utf8' }))
+    )
+
+    const jsonItems = Promise.all(promises)
+
+    return jsonItems.then((items) => items.map((item: string): T => JSON.parse(item)))
   }
 
-  public update(id: string, entry: T): T {
+  public update(id: string, entry: T): Promise<T> {
     const fileUrl = `${this.dirName}/${id}.json`
 
-    try {
-      fs.writeFileSync(fileUrl, JSON.stringify(entry), { encoding: 'utf8', flag: 'w' })
-      return entry
-    } catch (err) {
-      throw new Error(`Failure in updating new entry: ${id} :: ${err}`)
-    }
+    return fs.writeFile(fileUrl, JSON.stringify(entry), { encoding: 'utf8', flag: 'w' }).then(() => entry)
   }
 
-  public delete(id: string): string {
+  public delete(id: string): Promise<string> {
     throw new Error('Method not implemented.')
   }
 
@@ -72,7 +60,7 @@ export abstract class JsonDataLoader<T extends { id: string }> implements CRUDCo
 
     const dataFiles: string[] = await getFiles(this.dirName)
 
-    const promises = dataFiles.map((file) => fs.promises.readFile(file, 'utf8').then((data) => JSON.parse(data)))
+    const promises = dataFiles.map((file) => fs.readFile(file, 'utf8').then((data) => JSON.parse(data)))
     return new Promise((resolve) => {
       Promise.all(promises).then((data) => {
         this.data = data.flat()

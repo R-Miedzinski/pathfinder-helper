@@ -1,0 +1,19 @@
+{
+  "id": "borrow-an-arcane-spell",
+  "name": "Borrow an Arcane Spell",
+  "description": " If you’re an arcane spellcaster who prepares from a spellbook, \nyou can attempt to prepare a spell from someone else’s \nspellbook. The GM sets the DC for the check based on the \nspell’s level and rarity; it’s typically a bit easier than Learning \nthe Spell.",
+  "type": "Skilled",
+  "source": "basic",
+  "effects": {
+    "criticalSuccess": null,
+    "success": " You prepare the borrowed spell as part of your normal \nspell preparation.",
+    "failure": " You fail to prepare the spell, but the spell slot \nremains available for you to prepare a different \nspell. You can’t try to prepare this spell \nuntil the next time you prepare spells",
+    "criticalFailure": null
+  },
+  "cost": null,
+  "skill": "Arcana",
+  "materials": null,
+  "traits": ["concentrate", "exploration"],
+  "trigger": null,
+  "rules": null
+}

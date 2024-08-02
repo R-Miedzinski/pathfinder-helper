@@ -1,10 +1,10 @@
-<mat-grid-list [cols]="12" rowHeight="{{ rowHeight }}rem">
-  <mat-grid-tile [rowspan]="1" [colspan]="12">
+<mat-grid-list [cols]="60" rowHeight="{{ rowHeight }}rem">
+  <mat-grid-tile [rowspan]="1" [colspan]="60">
     <div class="grid-field">
       <h2>Filter content</h2>
       <form class="actions__form" #filterForm="ngForm">
         <div class="actions__filter-field">
-          <label for="name">Action Name</label>
+          <label for="name">Search Action Name or Trait</label>
           <input
             id="name"
             type="text"
@@ -42,14 +42,14 @@
   <ng-container *ngFor="let type of actionType | keyvalue : keepOrderLocal">
     <mat-grid-tile
       [rowspan]="5"
-      [colspan]="filters.category.length ? 12 / filters.category.length : 3"
+      [colspan]="filters.category.length ? 60 / filters.category.length : 12"
       *ngIf="
         filters.category.includes(type.value) || filters.category.length === 0
       ">
       <div class="grid-field">
         {{ type.value }} Actions
+        <!-- class="grid-field" -->
         <app-action-list
-          class="grid-field"
           [actions]="sortedActions[type.value]"
           [filters]="filters"></app-action-list>
       </div>

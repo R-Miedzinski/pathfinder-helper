@@ -12,12 +12,16 @@
   }
 
   &-list {
+    height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
     gap: 0.8rem;
     padding: 0.8rem 0;
+
+    overflow-y: scroll;
+    overflow-x: visible;
   }
 
   &-item {

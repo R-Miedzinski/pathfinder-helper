@@ -55,6 +55,10 @@
           </mat-option>
         </mat-select>
       </mat-form-field>
+      <mat-form-field class="effect__type">
+        <mat-label>Level</mat-label>
+        <input matInput type="number" formControlName="level" />
+      </mat-form-field>
       <app-add-effect
         class="effect"
         *ngIf="control.get('effectType')?.value"

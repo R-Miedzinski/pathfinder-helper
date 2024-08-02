@@ -1,4 +1,3 @@
-import { trigger } from '@angular/animations';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatChipInputEvent } from '@angular/material/chips';
@@ -6,6 +5,7 @@ import {
   ActionSource,
   CharacterAction,
   CharacterActionType,
+  Skills,
 } from 'rpg-app-shared-package/dist/public-api';
 import { Subject, takeUntil } from 'rxjs';
 import { CustomFormControl } from 'src/app/shared/components/custom-form-control/custom-form-control.component';
@@ -24,7 +24,8 @@ export class AddActionComponent
 
   protected readonly actionSources = Object.values(ActionSource);
   protected readonly actionTypes = Object.values(CharacterActionType);
-  protected readonly actionCosts = [-1, 0, 1, 2, 3];
+  protected readonly skills = Object.values(Skills);
+  protected readonly actionCosts = [undefined, -1, 0, 1, 2, 3];
 
   private readonly ngDestroyed$: Subject<void> = new Subject();
 
@@ -78,6 +79,7 @@ export class AddActionComponent
         criticalFailure: null,
       }),
       cost: null,
+      skill: null,
       materials: null,
       traits: [],
       trigger: null,

@@ -17,7 +17,7 @@
     "id": "3",
     "name": "this game does not include user 1",
     "gameMaster": "Me",
-    "characters": ["TEST-2-3"],
+    "characters": ["TEST-2-3", "TEST-1-3"],
     "description": "the best game ever"
   },
   {

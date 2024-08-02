@@ -1,0 +1,14 @@
+{
+  "id": "avoid-notice",
+  "name": "Avoid Notice",
+  "description": "You attempt a Stealth check to avoid notice while traveling \nat half speed. If you have the Swift Sneak feat, you can move \nat full Speed rather than half, but you still can’t use another \nexploration activity while you do so. If you have the Legendary \nSneak feat, you can move at full Speed and use a second \nexploration activity. If you’re Avoiding Notice at the start of \nan encounter, you usually roll a Stealth check instead of a \nPerception check both to determine your initiative and to see \nif the enemies notice you (based on their Perception DCs, as \nnormal for Sneak, regardless of their initiative check results).",
+  "type": "Exploration",
+  "source": "basic",
+  "effects": { "criticalSuccess": null, "success": null, "failure": null, "criticalFailure": null },
+  "cost": null,
+  "skill": null,
+  "materials": null,
+  "traits": ["exploration"],
+  "trigger": null,
+  "rules": null
+}

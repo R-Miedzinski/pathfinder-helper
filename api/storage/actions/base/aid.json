@@ -10,6 +10,6 @@
   "type": "Encounter",
   "source": "basic",
   "cost": -1,
-  "trigger": " An ally is about to use an action that requires a skill check or attack roll.",
+  "trigger": "An ally is about to use an action that requires a skill check or attack roll.",
   "rules": "The ally is willing to accept your aid, and you have prepared to help (see below)."
 }

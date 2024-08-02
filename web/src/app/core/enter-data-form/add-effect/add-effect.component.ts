@@ -141,6 +141,7 @@ export class AddEffectComponent
     (this.choicesArray.at(id).get('effect') as FormArray).push(
       this.fb.group({
         effectType: [null, Validators.required],
+        level: null,
         payload: null,
       })
     );

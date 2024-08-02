@@ -17,4 +17,17 @@ export class ActionListComponent {
     category: CharacterActionType[];
     name: string;
   };
+
+  protected shouldDisplayAction(action: CharacterAction): boolean {
+    return (
+      (action.name
+        .toLowerCase()
+        .includes(this.filters?.name?.toLocaleLowerCase() ?? '') ||
+        (action.traits ?? []).some(trait =>
+          trait.includes(this.filters?.name?.toLocaleLowerCase() ?? '')
+        )) &&
+      (this.filters?.source?.includes(action.source) ||
+        !this.filters?.source?.length)
+    );
+  }
 }

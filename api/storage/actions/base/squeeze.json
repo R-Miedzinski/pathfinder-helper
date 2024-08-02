@@ -1,0 +1,18 @@
+{
+  "id": "squeeze",
+  "name": "Squeeze",
+  "description": "You contort yourself to squeeze through a space so small you  can barely fit through. This action is for exceptionally small  spaces; many tight spaces are difficult terrain (page 475) that  you can move through more quickly and without a check. ",
+  "type": "Skilled",
+  "source": "basic",
+  "effects": {
+    "criticalSuccess": "You squeeze through the tight space in \n1 minute per 10 feet of squeezing.",
+    "success": "You squeeze through in 1 minute per 5 feet.",
+    "failure": null,
+    "criticalFailure": "You become stuck in the tight space. While \nyou’re stuck, you can spend 1 minute attempting another \nAcrobatics check at the same DC. Any result on that \ncheck other than a critical failure causes you \nto become unstuck."
+  },
+  "materials": null,
+  "skill": "Acrobatics",
+  "traits": ["exploration", "move"],
+  "trigger": null,
+  "rules": null
+}
