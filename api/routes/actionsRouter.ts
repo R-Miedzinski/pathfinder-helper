@@ -10,25 +10,31 @@ function createId(action: CharacterAction): string {
 export function actionsRouterFactory(actionsLoader: ActionsLoader): Router {
   const actionsRouter = express.Router()
 
-  actionsRouter.get('/list/:ids', (req, res) => {
-    const ids = req.params.ids.split('.')
+  actionsRouter.post('/list', (req, res) => {
+    const ids: string[] = req.body
     if (!ids?.length) {
       const err = new Error('No action ids provided')
       res.status(500).send(err)
     }
 
-    const actions = ids
-      .map((id) => {
-        try {
-          return actionsLoader.read(id)
-        } catch (err) {
-          console.error('error getting action: ', id, '::', err)
-          return null
-        }
-      })
-      .filter(Boolean)
+    const actions = [...new Set(ids)].map((id) => {
+      try {
+        return actionsLoader.read(id)
+      } catch (err) {
+        console.error('error getting action: ', id, '::', err)
+        return Promise.resolve(null)
+      }
+    })
 
-    res.send(actions)
+    Promise.all(actions)
+      .then((data) => {
+        const items = data.filter(Boolean)
+
+        res.send(items)
+      })
+      .catch((err) => {
+        res.status(500).send(err)
+      })
   })
 
   createCrud(actionsRouter, actionsLoader, createId)

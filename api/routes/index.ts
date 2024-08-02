@@ -1,4 +1,4 @@
-import express from 'express'
+import express, { Router } from 'express'
 import { characterRouterFactory } from './characterRouter'
 import { raceDataRouterFactory } from './raceDataRouter'
 import { backgroundsRouterFactory } from './backgroundsRouter'
@@ -14,47 +14,52 @@ import { actionsRouterFactory } from './actionsRouter'
 import { ActionsLoader } from '../services/actions-loader'
 import { userRouterFactory } from './userRouter'
 import { GamesLoader } from '../services/games-data-loader'
+import { Db } from 'mongodb'
 
-const router = express.Router()
+function routerFactory(db: Db): Router {
+  const router = express.Router()
 
-// Declare service providers
-const gamesLoader = new GamesLoader()
+  // Declare service providers
+  const gamesLoader = new GamesLoader()
 
-const featFetcher = new FeatFetcher()
-const traisLoader = new TraitsLoader()
-const classDataLoader = new ClassDataLoader()
-const backgroundDataLoader = new BackgroundDataLoader()
-const raceDataLoader = new RaceDataLoader()
-const actionsLoader = new ActionsLoader()
+  const featFetcher = new FeatFetcher(db.collection('feats'))
+  const traisLoader = new TraitsLoader(db.collection('traits'))
+  const classDataLoader = new ClassDataLoader(db.collection('classes'))
+  const backgroundDataLoader = new BackgroundDataLoader(db.collection('backgrounds'))
+  const raceDataLoader = new RaceDataLoader(db.collection('races'))
+  const actionsLoader = new ActionsLoader(db.collection('actions'))
 
-router.use('*', (req, res, next) => {
-  console.log('connection on', req.baseUrl + req.url)
-  console.log('method: ', req.method)
+  router.use('*', (req, res, next) => {
+    console.log('connection on', req.baseUrl + req.url)
+    console.log('method: ', req.method)
 
-  next()
-})
+    next()
+  })
 
-router.use('/api/user', userRouterFactory(gamesLoader))
+  router.use('/api/user', userRouterFactory(gamesLoader))
 
-router.use(
-  '/api/character',
-  characterRouterFactory(classDataLoader, raceDataLoader, featFetcher, actionsLoader, backgroundDataLoader)
-)
+  router.use(
+    '/api/character',
+    characterRouterFactory(classDataLoader, raceDataLoader, featFetcher, actionsLoader, backgroundDataLoader)
+  )
 
-router.use('/api/spells', (req, res) => {
-  res.send('spells')
-})
+  router.use('/api/spells', (req, res) => {
+    res.send('spells')
+  })
 
-router.use('/api/actions', actionsRouterFactory(actionsLoader))
+  router.use('/api/actions', actionsRouterFactory(actionsLoader))
 
-router.use('/api/feats', featsRouterFactory(featFetcher))
+  router.use('/api/feats', featsRouterFactory(featFetcher))
 
-router.use('/api/traits', traitsRouterFactory(traisLoader))
+  router.use('/api/traits', traitsRouterFactory(traisLoader))
 
-router.use('/api/classes', classesRouterFactory(classDataLoader))
+  router.use('/api/classes', classesRouterFactory(classDataLoader))
 
-router.use('/api/race', raceDataRouterFactory(raceDataLoader))
+  router.use('/api/race', raceDataRouterFactory(raceDataLoader))
 
-router.use('/api/backgrounds', backgroundsRouterFactory(backgroundDataLoader))
+  router.use('/api/backgrounds', backgroundsRouterFactory(backgroundDataLoader))
 
-export default router
+  return router
+}
+
+export default routerFactory

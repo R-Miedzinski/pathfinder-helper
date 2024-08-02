@@ -2,21 +2,20 @@ import express, { Application } from 'express'
 import swaggerUi from 'swagger-ui-express'
 import dotenv from 'dotenv'
 import morgan from 'morgan'
-// import connectDB from './config/db'
 
-import Router from './routes'
+import routerFactory from './routes'
+import { MongoClient } from 'mongodb'
 
 //For env File
 dotenv.config()
 
+const dbURI = process.env.DB_URI || 'mongodb://127.0.0.1:27017/'
 const app: Application = express()
 const port = process.env.PORT || 8001
 
 app.use(express.json())
 app.use(morgan('tiny'))
 app.use(express.static('public'))
-
-// connectDB();
 
 app.use(
   '/docs',
@@ -28,7 +27,14 @@ app.use(
   })
 )
 
-app.use(Router)
+app.use(async (req, res, next) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const client: MongoClient = await MongoClient.connect(dbURI)
+  if (client) {
+    const db = client.db('game-data')
+    routerFactory(db)(req, res, next)
+  }
+})
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 app.use((err: any, req: any, res: any) => {

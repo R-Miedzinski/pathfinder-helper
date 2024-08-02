@@ -6,7 +6,7 @@ export function classesRouterFactory(classDataLoader: ClassDataLoader): Router {
 
   classesRouter.get('', (req, res) => {
     classDataLoader
-      .getClassesData()
+      .readAll()
       .then((data) => res.send(data.map((classData) => ({ id: classData.id, name: classData.name }))))
       .catch((err) => res.status(500).send(err))
   })

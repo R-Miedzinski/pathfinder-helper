@@ -1,22 +1,23 @@
-import { Race, RaceData } from 'rpg-app-shared-package/dist/public-api'
-import { JsonDataLoader } from './json-data-loader'
+import { RaceData } from 'rpg-app-shared-package/dist/public-api'
+import { MongoDBDataLoader } from './mongo-db-data-loader'
+import { Collection } from 'mongodb'
 
-export class RaceDataLoader extends JsonDataLoader<RaceData> {
-  constructor() {
-    super()
-    this.dirName = this.dirName + 'race-data/'
+export class RaceDataLoader extends MongoDBDataLoader<RaceData> {
+  constructor(db: Collection) {
+    super(db)
   }
 
   public getRaceDataList(): Promise<RaceData[]> {
-    return this.loadDataFromFile()
+    return this.readAll()
   }
 
   public getRaceData(name: string): Promise<RaceData> {
-    return this.loadDataFromFile().then((data) => {
-      if (!(Object.values(Race) as string[]).includes(name)) {
-        throw Error('Race not found')
+    return this.db.findOne<RaceData>({ name }).then((data) => {
+      if (data) {
+        return data
       }
-      return data.find((entry) => entry.name === name)!
+
+      throw Error(`Race data for: ${name} not found`)
     })
   }
 }

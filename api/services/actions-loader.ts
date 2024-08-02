@@ -1,62 +1,40 @@
-import { ActionSource, CharacterAction } from 'rpg-app-shared-package/dist/public-api'
-import * as fs from 'fs'
-import { JsonDataLoader } from './json-data-loader'
+import { ActionSource, CharacterAction, CharacterActionType, Skills } from 'rpg-app-shared-package/dist/public-api'
+import { MongoDBDataLoader } from './mongo-db-data-loader'
+import { Collection } from 'mongodb'
 
-export class ActionsLoader extends JsonDataLoader<CharacterAction> {
-  private actionDirectories: Record<ActionSource, string> = {
-    [ActionSource.BASE]: 'base',
-    [ActionSource.CLASS]: 'class',
-    [ActionSource.FEAT]: 'feat',
-    [ActionSource.OTHER]: 'other',
-  }
-
-  constructor() {
-    super()
-    this.dirName = this.dirName + 'actions/'
-  }
-
-  public create(entry: CharacterAction): string {
-    const fileUrl = `${this.dirName}/${this.actionDirectories[entry.source]}/${entry.id}.json`
-
-    try {
-      fs.writeFileSync(fileUrl, JSON.stringify(entry), { encoding: 'utf8', flag: 'wx' })
-      return `Action added: ${entry.id}`
-    } catch (err) {
-      throw new Error(`Failure in creating new entry: ${entry.id} :: ${err}`)
-    }
-  }
-
-  public update(id: string, entry: CharacterAction): CharacterAction {
-    const fileUrl = `${this.dirName}/${this.actionDirectories[entry.source]}/${id}.json`
-
-    try {
-      fs.writeFileSync(fileUrl, JSON.stringify(entry), { encoding: 'utf8', flag: 'w' })
-      return entry
-    } catch (err) {
-      throw new Error(`Failure in updating new entry: ${id} :: ${err}`)
-    }
+export class ActionsLoader extends MongoDBDataLoader<CharacterAction> {
+  constructor(db: Collection) {
+    super(db)
   }
 
   public getActions(ids: string[]): Promise<CharacterAction[]> {
-    return this.loadDataFromFile().then((data) => {
-      const toGet = ids
-      return toGet.map((id) => data.filter((entry) => entry.id === id)).flat()
-    })
+    return this.db.find<CharacterAction>({ id: { $in: ids } }).toArray()
   }
 
-  public getBasicActionsIds(): string[] {
-    const dirUrl = `${this.dirName}/${this.actionDirectories[ActionSource.BASE]}/`
+  public async getBasicActionsIds(): Promise<string[]> {
     try {
-      const files = fs.readdirSync(dirUrl)
+      const actions = await this.db.find<CharacterAction>({ source: ActionSource.BASE }).toArray()
 
-      return files
-        .map((item) => {
-          const action: CharacterAction = JSON.parse(fs.readFileSync(dirUrl + item, { encoding: 'utf8' }))
-          return action.id
+      return actions
+        .map((action) => {
+          return action.type !== CharacterActionType.skilled ? action.id : ''
         })
         .filter(Boolean)
     } catch (err) {
       throw new Error(`Failure in loading base actions :: ${err}`)
+    }
+  }
+
+  public async getSkilledActionsIds(skills: Skills[]): Promise<string[]> {
+    try {
+      console.log('getSkilledAction called with skills:', skills)
+      const allSkilledActions = await this.db.find<CharacterAction>({ type: CharacterActionType.skilled }).toArray()
+
+      return allSkilledActions
+        .filter((action) => (action.skill ? skills.includes(action.skill) : false))
+        .map((action) => action.id)
+    } catch (err) {
+      throw new Error(`Failure in loading skilled actions :: ${err}`)
     }
   }
 }

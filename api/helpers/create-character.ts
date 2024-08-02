@@ -45,6 +45,7 @@ export class CharacterFactory {
     await this.applyEffects()
     this.applyAbilityBoosts()
     this.applyEquipment()
+    await this.fetchActions()
     this.calculateAbilityBonuses()
     this.calculateSkillProficiencies()
     this.calculateEquipmentProficiencies()
@@ -63,9 +64,7 @@ export class CharacterFactory {
     this.character.id = this.seedData.id
     this.character.characterName = this.seedData.name
     this.character.class = this.seedData.class
-    this.character.background = await this.backgroundDataLoader
-      .getBackroundData(this.seedData.background)
-      .then((data) => data.name)
+    this.character.background = await this.backgroundDataLoader.read(this.seedData.background).then((data) => data.name)
 
     this.character.feats = this.seedData.feats.filter(Boolean)
     this.character.featChoices = this.seedData.featChoices
@@ -76,7 +75,6 @@ export class CharacterFactory {
     this.character.inventory = this.seedData.inventory
     this.character.equippedItems = this.seedData.equippedItems
     this.character.investedItems = this.seedData.investedItems
-    this.character.actions = this.actionsLoader.getBasicActionsIds().filter(Boolean)
     if (this.seedData.actions.length) {
       this.character.actions.push(...this.seedData.actions)
     }
@@ -123,6 +121,17 @@ export class CharacterFactory {
   private applyEquipment(): void {
     // TODO: Figure out inventory
     console.log('inventory in character facotry:', this.seedData.inventory)
+  }
+
+  private async fetchActions(): Promise<void> {
+    const baseActions = (await this.actionsLoader.getBasicActionsIds()).filter(Boolean)
+    const skilledActions = (
+      await this.actionsLoader.getSkilledActionsIds([
+        ...new Set(this.seedData.skills.filter((skill) => skill.level !== Proficiency.U).map((skill) => skill.name)),
+      ])
+    ).filter(Boolean)
+
+    this.character.actions.push(...baseActions.concat(skilledActions))
   }
 
   private calculateAbilityBonuses(): void {

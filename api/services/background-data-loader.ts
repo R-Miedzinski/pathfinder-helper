@@ -1,17 +1,13 @@
 import { BackgroundData } from 'rpg-app-shared-package/dist/public-api'
-import { JsonDataLoader } from './json-data-loader'
+import { MongoDBDataLoader } from './mongo-db-data-loader'
+import { Collection } from 'mongodb'
 
-export class BackgroundDataLoader extends JsonDataLoader<BackgroundData> {
-  constructor() {
-    super()
-    this.dirName = this.dirName + 'background-data/'
+export class BackgroundDataLoader extends MongoDBDataLoader<BackgroundData> {
+  constructor(db: Collection) {
+    super(db)
   }
 
   public getBackgroundDataIdArray(): Promise<{ id: string; name: string }[]> {
-    return this.loadDataFromFile().then((data) => data.map((entry) => ({ id: entry.id, name: entry.name })))
-  }
-
-  public getBackroundData(id: string): Promise<BackgroundData> {
-    return this.loadDataFromFile().then((data) => data.find((entry) => entry.id === id)!)
+    return this.readAll().then((data) => data.map((entry) => ({ id: entry.id, name: entry.name })))
   }
 }
