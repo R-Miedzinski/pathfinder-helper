@@ -1,15 +1,16 @@
 import { Game } from 'rpg-app-shared-package/dist/public-api'
-import { JsonDataLoader } from './json-data-loader'
+import { MongoDBDataLoader } from './mongo-db-data-loader'
+import { Collection } from 'mongodb'
 
-export class GamesLoader extends JsonDataLoader<Game> {
-  constructor() {
-    super()
-    this.dirName = this.dirName + 'games/'
+export class GamesLoader extends MongoDBDataLoader<Game> {
+  constructor(
+    db: Collection,
+    private __user_code: string
+  ) {
+    super(db)
   }
 
-  public getUserGames(charIds: string[]): Promise<Game[]> {
-    return this.loadDataFromFile().then((data) =>
-      data.filter((entry) => entry.characters.some((id) => charIds.includes(id)))
-    )
+  public getUserGames(): Promise<Game[]> {
+    return this.db.find<Game>({ users: { $all: [this.__user_code] } }).toArray()
   }
 }

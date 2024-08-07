@@ -18,7 +18,7 @@ export class GameMenuComponent implements OnInit, OnDestroy {
   private readonly newGame: Game[] = [
     {
       id: '0',
-      name: 'Create a new character',
+      name: 'Create a new game',
       characters: [],
       gameMaster: '',
     },
@@ -34,7 +34,7 @@ export class GameMenuComponent implements OnInit, OnDestroy {
 
   public ngOnInit() {
     this.userDataService
-      .getUserGames('1')
+      .getUserGames()
       .pipe(takeUntil(this.ngDestroyed$))
       .subscribe({
         next: games => {
@@ -51,8 +51,20 @@ export class GameMenuComponent implements OnInit, OnDestroy {
   protected joinGame(id: string, name: string): void {
     console.error('join game not implemented yet');
     if (Number(id) >= 0) {
-      this.store.dispatch(AppActions.setCurrentGame({ name }));
-      this.router.navigate(['./game/', id], { relativeTo: this.route });
+      this.userDataService
+        .hasCharacterInGame(
+          this.games.find(game => game.id === id)?.characters ?? []
+        )
+        .subscribe({
+          next: contains => {
+            this.store.dispatch(AppActions.setCurrentGame({ name }));
+            if (contains) {
+              this.router.navigate(['./game/', id], { relativeTo: this.route });
+            } else {
+              this.router.navigate(['./game/new'], { relativeTo: this.route });
+            }
+          },
+        });
     } else {
       this.router.navigate(['./newgame'], { relativeTo: this.route });
     }

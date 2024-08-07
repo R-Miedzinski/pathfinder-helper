@@ -12,31 +12,18 @@ import { BackgroundDataLoader } from '../services/background-data-loader'
 import { RaceDataLoader } from '../services/race-data-loader'
 import { actionsRouterFactory } from './actionsRouter'
 import { ActionsLoader } from '../services/actions-loader'
-import { userRouterFactory } from './userRouter'
-import { GamesLoader } from '../services/games-data-loader'
 import { Db } from 'mongodb'
 
-function routerFactory(db: Db): Router {
+export function resourcesRouterFactory(db: Db): Router {
   const router = express.Router()
 
   // Declare service providers
-  const gamesLoader = new GamesLoader()
-
   const featFetcher = new FeatFetcher(db.collection('feats'))
   const traisLoader = new TraitsLoader(db.collection('traits'))
   const classDataLoader = new ClassDataLoader(db.collection('classes'))
   const backgroundDataLoader = new BackgroundDataLoader(db.collection('backgrounds'))
   const raceDataLoader = new RaceDataLoader(db.collection('races'))
   const actionsLoader = new ActionsLoader(db.collection('actions'))
-
-  router.use('*', (req, res, next) => {
-    console.log('connection on', req.baseUrl + req.url)
-    console.log('method: ', req.method)
-
-    next()
-  })
-
-  router.use('/api/user', userRouterFactory(gamesLoader))
 
   router.use(
     '/api/character',
@@ -61,5 +48,3 @@ function routerFactory(db: Db): Router {
 
   return router
 }
-
-export default routerFactory
