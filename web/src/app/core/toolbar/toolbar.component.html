@@ -4,13 +4,16 @@
       mat-icon-button
       class="toolbar-icon"
       aria-label="Toolbar icon-button with menu icon"
-      (click)="toggleSideNav()"
-    >
+      (click)="toggleSideNav()">
       <mat-icon>menu</mat-icon>
     </button>
     <span class="toolbar-spacer"></span>
-    <p *ngIf="!(gameName$ | async)">Hello to the rpg app</p>
-    <p *ngIf="gameName$ | async as gameName">Current game: {{ gameName }}</p>
+    <p *ngIf="game$ | async as game">
+      <ng-container *ngIf="game.name; else noGame">
+        Current game: {{ game.name }}
+      </ng-container>
+      <ng-template #noGame> Hello to the rpg app </ng-template>
+    </p>
     <span class="toolbar-spacer"></span>
     <span>My App</span>
   </mat-toolbar-row>

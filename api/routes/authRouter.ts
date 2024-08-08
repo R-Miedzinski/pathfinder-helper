@@ -67,8 +67,8 @@ export function authRouterFactory(db: Collection): Router {
                 username: data.username,
               }
 
-              const token = jwt.sign(JSON.stringify(payload), secret)
-              res.cookie('token', token).send(data)
+              const token = jwt.sign(payload, secret, { expiresIn: 24 * 60 * 60 })
+              res.cookie('token', token, { maxAge: 24 * 60 * 60 * 1000 }).send(data)
             } else {
               res.status(500).send({ message: 'Error during log-in' })
             }

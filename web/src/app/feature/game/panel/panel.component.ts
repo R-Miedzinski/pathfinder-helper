@@ -68,7 +68,7 @@ export class PanelComponent implements OnInit, OnDestroy {
   }
 
   public ngOnDestroy(): void {
-    this.store.dispatch(AppActions.setCurrentGame({ name: null }));
+    this.store.dispatch(AppActions.setCurrentGame({ id: '', name: '' }));
     this.ngDestroyed$.next();
     this.ngDestroyed$.complete();
   }

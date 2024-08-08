@@ -11,13 +11,13 @@ import { Observable, Subject, takeUntil } from 'rxjs';
   styleUrls: ['./toolbar.component.scss'],
 })
 export class ToolbarComponent implements OnInit, OnDestroy {
-  public gameName$?: Observable<string | undefined>;
+  public game$?: Observable<{ id: string; name: string } | undefined>;
   private readonly ngDestroyed$: Subject<void> = new Subject<void>();
 
   constructor(private store: Store<AppState>) {}
 
   public ngOnInit(): void {
-    this.gameName$ = this.store
+    this.game$ = this.store
       .select(AppSelectors.getCurrentGame)
       .pipe(takeUntil(this.ngDestroyed$));
   }

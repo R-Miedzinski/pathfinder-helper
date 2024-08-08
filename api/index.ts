@@ -11,6 +11,7 @@ import { GamesLoader } from './services/games-data-loader'
 
 import * as jwt from 'jsonwebtoken'
 import { isString } from 'lodash'
+import parseCookie from './helpers/parse-cookie'
 
 //For env File
 dotenv.config()
@@ -54,10 +55,10 @@ app.use('/api/auth', async (req, res, next) => {
 })
 
 app.use('/api/user/characters', async (req, res) => {
-  const cookie = req.headers.cookie?.includes('token') ? req.headers.cookie.split('=')[1] : '' // JWT parser
+  const cookie = parseCookie(req.headers.cookie ?? '')
   let webToken
   try {
-    webToken = jwt.verify(cookie, secret)
+    webToken = jwt.verify(cookie.token ?? '', secret)
   } catch (err) {
     res.status(401).send({ message: 'Unauthorized' })
     return
@@ -80,10 +81,10 @@ app.use('/api/user/characters', async (req, res) => {
 })
 
 app.use('/api/games', async (req, res, next) => {
-  const cookie = req.headers.cookie?.includes('token') ? req.headers.cookie.split('=')[1] : '' // JWT parser
+  const cookie = parseCookie(req.headers.cookie ?? '')
   let webToken
   try {
-    webToken = jwt.verify(cookie, secret)
+    webToken = jwt.verify(cookie.token ?? '', secret)
   } catch (err) {
     res.status(401).send({ message: 'Unauthorized' })
     return
@@ -107,10 +108,10 @@ app.use('/api/games', async (req, res, next) => {
 })
 
 app.use(async (req, res, next) => {
-  const cookie = req.headers.cookie?.includes('token') ? req.headers.cookie.split('=')[1] : '' // JWT parser
+  const cookie = parseCookie(req.headers.cookie ?? '')
   let webToken
   try {
-    webToken = jwt.verify(cookie, secret)
+    webToken = jwt.verify(cookie.token ?? '', secret)
   } catch (err) {
     res.status(401).send({ message: 'Unauthorized' })
     return

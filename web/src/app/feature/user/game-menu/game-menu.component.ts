@@ -57,7 +57,7 @@ export class GameMenuComponent implements OnInit, OnDestroy {
         )
         .subscribe({
           next: contains => {
-            this.store.dispatch(AppActions.setCurrentGame({ name }));
+            this.store.dispatch(AppActions.setCurrentGame({ id, name }));
             if (contains) {
               this.router.navigate(['./game/', id], { relativeTo: this.route });
             } else {
