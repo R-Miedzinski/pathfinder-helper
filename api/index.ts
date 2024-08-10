@@ -50,7 +50,7 @@ app.use('/api/auth', async (req, res, next) => {
     const userDataDB = client.db('user-data')
 
     console.log('initiating user Router')
-    authRouterFactory(userDataDB.collection('users'))(req, res, next) // TODO: generate JWT
+    authRouterFactory(userDataDB.collection('users'), secret)(req, res, next) // TODO: generate JWT
   }
 })
 
@@ -124,8 +124,10 @@ app.use(async (req, res, next) => {
 
     if (client) {
       const resourceDB = client.db('game-data')
+      const charactersDB = client.db('user-data')
+      const gameDB = client.db('games')
 
-      resourcesRouterFactory(resourceDB)(req, res, next)
+      resourcesRouterFactory(resourceDB, charactersDB, gameDB)(req, res, next)
     }
   } else {
     res.status(401).send({ message: 'Unauthorized' })

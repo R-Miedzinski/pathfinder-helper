@@ -2,14 +2,16 @@ import express, { Router } from 'express'
 import { Collection } from 'mongodb'
 import crypto from 'crypto'
 import * as jwt from 'jsonwebtoken'
+import parseCookie from '../helpers/parse-cookie'
+import { isString } from 'lodash'
 
-export function authRouterFactory(db: Collection): Router {
+export function authRouterFactory(db: Collection, secret: string): Router {
   const authRouter = express.Router()
 
-  authRouter.post('/signup', async (req, res) => {
+  authRouter.post('/signup', (req, res) => {
     const salt = crypto.randomBytes(16)
 
-    await db.findOne({ user_code: req.body.user_code }).then((data) => {
+    db.findOne({ user_code: req.body.user_code }).then((data) => {
       if (data) {
         res.status(500).send(`Username ${req.body.username} already exists`)
       } else {
@@ -36,7 +38,7 @@ export function authRouterFactory(db: Collection): Router {
     })
   })
 
-  authRouter.post('/login', async (req, res) => {
+  authRouter.post('/login', (req, res) => {
     db.findOne(
       { username: req.body.username },
       {
@@ -78,6 +80,23 @@ export function authRouterFactory(db: Collection): Router {
       .catch((err) => {
         res.status(500).send(err)
       })
+  })
+
+  authRouter.get('/check-token', (req, res) => {
+    const cookie = parseCookie(req.headers.cookie ?? '')
+    let webToken
+
+    try {
+      webToken = jwt.verify(cookie.token ?? '', secret)
+    } catch (err) {
+      res.status(401).send({ message: 'Token expired or invalid' })
+      return
+    }
+    if (!isString(webToken) && webToken?.role) {
+      res.send({ role: webToken?.role })
+    } else {
+      res.status(401).send({ message: 'Token expired or invalid' })
+    }
   })
 
   return authRouter

@@ -21,6 +21,8 @@ import { StepperSelectionEvent } from '@angular/cdk/stepper';
 import { FeatsService } from '../services/feats.service';
 import { NewCharacterService } from '../services/new-character.service';
 import { LevelUpBonusesService } from '../services/level-up-bonuses.service';
+import { AppState } from 'src/app/core/ngrx/interfaces/app-state';
+import { getCurrentGame } from 'src/app/core/ngrx/selectors/app.selector';
 
 @Component({
   selector: 'app-new-character',
@@ -43,6 +45,7 @@ export class NewCharacterComponent implements OnInit, OnDestroy {
   constructor(
     protected readonly newCharacterService: NewCharacterService,
     private store: Store<GameState>,
+    private appStore: Store<AppState>,
     private gameDataService: GameDataService,
     private featsService: FeatsService,
     private levelUpBonusesService: LevelUpBonusesService
@@ -51,6 +54,11 @@ export class NewCharacterComponent implements OnInit, OnDestroy {
   public ngOnInit(): void {
     this.levelUpBonusesService.reset();
     this.initAdditionalChoicesForm();
+    this.appStore.select(getCurrentGame).subscribe({
+      next: data => {
+        this.gameIdControl.setValue(data.id);
+      },
+    });
   }
 
   public ngOnDestroy(): void {
@@ -142,7 +150,7 @@ export class NewCharacterComponent implements OnInit, OnDestroy {
       }
 
       this.gameDataService
-        .saveNewCharacter(this.characterData, '1', gameId)
+        .saveNewCharacter(this.characterData, '1234', gameId)
         .pipe(takeUntil(this.ngDestroyed$))
         .subscribe({
           next: res => console.log(res),

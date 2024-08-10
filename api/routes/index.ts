@@ -14,10 +14,13 @@ import { actionsRouterFactory } from './actionsRouter'
 import { ActionsLoader } from '../services/actions-loader'
 import { Db } from 'mongodb'
 
-export function resourcesRouterFactory(db: Db): Router {
+export function resourcesRouterFactory(db: Db, charactersDb: Db, gamesDb: Db): Router {
   const router = express.Router()
 
   // Declare service providers
+  const userCollection = charactersDb.collection('users')
+  const charactersCollection = charactersDb.collection('characters')
+  const gamesCollection = gamesDb.collection('games')
   const featFetcher = new FeatFetcher(db.collection('feats'))
   const traisLoader = new TraitsLoader(db.collection('traits'))
   const classDataLoader = new ClassDataLoader(db.collection('classes'))
@@ -27,7 +30,16 @@ export function resourcesRouterFactory(db: Db): Router {
 
   router.use(
     '/api/character',
-    characterRouterFactory(classDataLoader, raceDataLoader, featFetcher, actionsLoader, backgroundDataLoader)
+    characterRouterFactory(
+      userCollection,
+      charactersCollection,
+      gamesCollection,
+      classDataLoader,
+      raceDataLoader,
+      featFetcher,
+      actionsLoader,
+      backgroundDataLoader
+    )
   )
 
   router.use('/api/spells', (req, res) => {

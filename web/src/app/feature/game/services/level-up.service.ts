@@ -8,8 +8,6 @@ import { Observable, map, tap } from 'rxjs';
   providedIn: 'root',
 })
 export class LevelUpService {
-  private _characterSeedData?: SeedCharacterData;
-
   constructor(
     private levelUpBonusesService: LevelUpBonusesService,
     private gameDataService: GameDataService

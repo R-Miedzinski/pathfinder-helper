@@ -1,15 +1,19 @@
+import { DOCUMENT } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { Observable, tap } from 'rxjs';
+import { Inject, Injectable } from '@angular/core';
+import { catchError, Observable, of, tap } from 'rxjs';
 import { environment } from 'src/environment/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private userRole = null;
+  private userRole?: string = undefined;
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    @Inject(DOCUMENT) private document: Document
+  ) {}
 
   public login(
     username: string,
@@ -33,15 +37,28 @@ export class AuthService {
     return this.http.post(url, { username, password, email, user_code });
   }
 
-  public isLoggedIn(): boolean {
-    return !!this.userRole;
+  public isLoggedIn(): Observable<boolean> {
+    return of(!!this.userRole);
   }
 
-  public canPlay(): boolean {
-    return this.userRole === 'USER' || this.userRole === 'ADMIN';
+  public canPlay(): Observable<boolean> {
+    return of(this.userRole === 'USER' || this.userRole === 'ADMIN');
   }
 
-  public canPostData(): boolean {
-    return this.userRole === 'ADMIN';
+  public canPostData(): Observable<boolean> {
+    return of(this.userRole === 'ADMIN');
+  }
+
+  public checkCookie(): Observable<{ role: string }> {
+    const cookie = this.document.cookie;
+
+    const url = `${environment.apiUrl}/api/auth/check-token`;
+
+    return this.http.get<{ role: string }>(url).pipe(
+      tap(data => {
+        console.log('cookie checked: ', data);
+        this.userRole = data?.role;
+      })
+    );
   }
 }

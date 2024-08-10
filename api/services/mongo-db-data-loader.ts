@@ -7,6 +7,7 @@ export abstract class MongoDBDataLoader<T extends { id: string }> implements CRU
   public create(entry: T): Promise<InsertOneResult> {
     return this.db.insertOne(entry)
   }
+
   public read(id: string): Promise<T> {
     return this.db.findOne<T>({ id }).then((item) => {
       if (item) {
@@ -16,15 +17,18 @@ export abstract class MongoDBDataLoader<T extends { id: string }> implements CRU
       throw Error(`Item with id: ${id} not found`)
     })
   }
+
   public readAll(): Promise<T[]> {
     return this.db
       .find<T>({})
       .toArray()
       .then((items) => (items != null ? items : []))
   }
+
   public update(id: string, entry: T): Promise<UpdateResult<T>> {
     return this.db.updateOne({ id }, entry)
   }
+
   public delete(id: string): Promise<DeleteResult> {
     return this.db.deleteOne({ id })
   }

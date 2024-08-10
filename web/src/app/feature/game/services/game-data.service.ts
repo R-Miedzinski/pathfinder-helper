@@ -17,6 +17,7 @@ import {
   SeedCharacterData,
 } from 'rpg-app-shared-package/dist/public-api';
 import { EMPTY, Observable, catchError, of, map } from 'rxjs';
+import { AuthService } from 'src/app/shared/services/auth.service';
 import { HttpCacheClientService } from 'src/app/shared/services/http-cache-client.service';
 import { environment } from 'src/environment/environment';
 
@@ -24,24 +25,16 @@ import { environment } from 'src/environment/environment';
   providedIn: 'root',
 })
 export class GameDataService {
-  private _userId: string = '';
   private _gameId: string = '';
 
   constructor(
     private httpClient: HttpClient,
-    private httpCacheClient: HttpCacheClientService
+    private httpCacheClient: HttpCacheClientService,
+    private authClient: AuthService
   ) {}
-
-  public set userId(id: string) {
-    this._userId = id;
-  }
 
   public set gameId(id: string) {
     this._gameId = id;
-  }
-
-  public get userId(): string | undefined {
-    return this._userId;
   }
 
   public get gameId(): string | undefined {
@@ -49,8 +42,8 @@ export class GameDataService {
   }
 
   public getCharacter(): Observable<Character | 'NEW'> {
-    if (Number(this._gameId) > 0 && this._userId) {
-      const url = `${environment.apiUrl}/api/character?gameId=${this._gameId}&userId=${this._userId}`;
+    if (Number(this._gameId) > 0 && this.authClient.isLoggedIn()) {
+      const url = `${environment.apiUrl}/api/character?gameId=${this._gameId}&user=1234`;
       const headers = new HttpHeaders();
       return this.httpClient.get<Character>(url);
     } else {
@@ -59,7 +52,7 @@ export class GameDataService {
   }
 
   public getSeedData(): Observable<SeedCharacterData> {
-    const url = `${environment.apiUrl}/api/character/seed-character-data?gameId=${this._gameId}&userId=${this._userId}`;
+    const url = `${environment.apiUrl}/api/character/seed-character-data?gameId=${this._gameId}&user=1234`;
 
     return this.httpClient.get<SeedCharacterData>(url);
   }
@@ -128,14 +121,14 @@ export class GameDataService {
 
   public saveNewCharacter(
     characterData: SeedCharacterData,
-    userId: string,
+    user: string,
     gameId: string
   ): Observable<Character> {
     const url = `${environment.apiUrl}/api/character/save-new-character`;
 
     return this.httpCacheClient.post<Character>(url, {
       data: characterData,
-      userId,
+      user,
       gameId,
     });
   }
@@ -143,12 +136,12 @@ export class GameDataService {
   public patchCharacterData(
     characterData: SeedCharacterData
   ): Observable<HttpResponse<string>> {
-    const url = `${environment.apiUrl}/api/character/TEST`;
+    const url = `${environment.apiUrl}/api/character/update`;
 
     return this.httpClient.put<HttpResponse<string>>(url, {
       characterData,
       gameId: this._gameId,
-      userId: this._userId,
+      user: '1234',
     });
   }
 }
