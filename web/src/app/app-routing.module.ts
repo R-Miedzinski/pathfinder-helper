@@ -11,9 +11,9 @@ import { userAuthGuard } from './shared/guards/user-auth.guard';
 const routes: Routes = [
   {
     path: 'user',
-    canActivate: [userAuthGuard],
     loadChildren: () =>
       import('./feature/user/user.module').then(m => m.UserModule),
+    canActivate: [userAuthGuard],
   },
   { path: 'log-in', component: LogInComponent },
   {

@@ -12,14 +12,13 @@ import { GamesLoader } from './services/games-data-loader'
 import * as jwt from 'jsonwebtoken'
 import { isString } from 'lodash'
 import parseCookie from './helpers/parse-cookie'
+import { dbURI, port, secret, session } from './storage/constants'
+import { getEntitlementsForRole } from './helpers/get-entitlements'
 
 //For env File
 dotenv.config()
 
-const dbURI = process.env.DB_URI || 'mongodb://127.0.0.1:27017/'
 const app: Application = express()
-const port = process.env.PORT || 8001
-const secret = process.env.API_KEY || '12345678'
 
 app.use(express.json())
 app.use(morgan('tiny'))
@@ -38,39 +37,52 @@ app.use(
 app.use('*', (req, res, next) => {
   console.log('connection on', req.baseUrl + req.url)
   console.log('method: ', req.method)
+  console.log(req.originalUrl)
 
-  next()
+  const cookie = parseCookie(req.headers.cookie ?? '')
+
+  let webToken
+  try {
+    webToken = jwt.verify(cookie.rpg_app_web_token ?? '', secret)
+
+    if (!isString(webToken)) {
+      session.user.role = webToken?.role ?? ''
+      session.user.user_code = webToken.user_code ?? ''
+      session.user.username = webToken.username ?? ''
+
+      session.entitlements = getEntitlementsForRole(session.user.role ?? '')
+    }
+    next()
+  } catch (err) {
+    console.log('token not found, redirecting to log-in')
+    if (req.originalUrl === '/api/auth/login' || req.originalUrl === '/api/auth/check-token') {
+      next()
+    } else {
+      res.redirect('/log-in')
+    }
+  }
 })
 
 app.use('/api/auth', async (req, res, next) => {
-  console.log('loading mongo')
   const client: MongoClient = await MongoClient.connect(dbURI)
 
   if (client) {
     const userDataDB = client.db('user-data')
 
-    console.log('initiating user Router')
-    authRouterFactory(userDataDB.collection('users'), secret)(req, res, next) // TODO: generate JWT
+    authRouterFactory(userDataDB.collection('users'))(req, res, next)
   }
 })
 
 app.use('/api/user/characters', async (req, res) => {
-  const cookie = parseCookie(req.headers.cookie ?? '')
-  let webToken
-  try {
-    webToken = jwt.verify(cookie.token ?? '', secret)
-  } catch (err) {
-    res.status(401).send({ message: 'Unauthorized' })
-    return
-  }
+  const userInSession = session.user
 
-  if (!isString(webToken) && webToken?.role) {
+  if (userInSession?.role) {
     const client: MongoClient = await MongoClient.connect(dbURI)
 
     if (client) {
       const collection = client.db('user-data').collection('users')
 
-      const user = await collection.findOne({ user_code: webToken?.user_code })
+      const user = await collection.findOne({ user_code: userInSession?.user_code })
       const characters = user ? user.userCharacters : []
 
       res.send(characters)
@@ -81,16 +93,9 @@ app.use('/api/user/characters', async (req, res) => {
 })
 
 app.use('/api/games', async (req, res, next) => {
-  const cookie = parseCookie(req.headers.cookie ?? '')
-  let webToken
-  try {
-    webToken = jwt.verify(cookie.token ?? '', secret)
-  } catch (err) {
-    res.status(401).send({ message: 'Unauthorized' })
-    return
-  }
+  const userInSession = session.user
 
-  if (!isString(webToken) && webToken?.role) {
+  if (userInSession?.role) {
     const client: MongoClient = await MongoClient.connect(dbURI)
 
     if (client) {
@@ -98,7 +103,7 @@ app.use('/api/games', async (req, res, next) => {
 
       const collection = gameDB.collection('games')
 
-      const gamesLoader = new GamesLoader(collection, webToken?.user_code)
+      const gamesLoader = new GamesLoader(collection, userInSession?.user_code ?? '')
 
       gameRouterFactory(gamesLoader)(req, res, next)
     }
@@ -108,18 +113,9 @@ app.use('/api/games', async (req, res, next) => {
 })
 
 app.use(async (req, res, next) => {
-  const cookie = parseCookie(req.headers.cookie ?? '')
-  let webToken
-  try {
-    webToken = jwt.verify(cookie.token ?? '', secret)
-  } catch (err) {
-    res.status(401).send({ message: 'Unauthorized' })
-    return
-  }
+  const userInSession = session.user
 
-  if (!isString(webToken) && webToken?.role) {
-    //Add entitlements handling
-
+  if (userInSession?.role) {
     const client: MongoClient = await MongoClient.connect(dbURI)
 
     if (client) {

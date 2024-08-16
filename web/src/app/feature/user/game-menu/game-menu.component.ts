@@ -19,6 +19,7 @@ export class GameMenuComponent implements OnInit, OnDestroy {
     {
       id: '0',
       name: 'Create a new game',
+      users: [],
       characters: [],
       gameMaster: '',
     },

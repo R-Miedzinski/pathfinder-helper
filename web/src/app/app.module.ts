@@ -13,7 +13,7 @@ import { FormsModule } from '@angular/forms';
 import { AppStoreModule } from './core/ngrx/app-store.module';
 import { ToolbarComponent } from './core/toolbar/toolbar.component';
 import { SideNavComponent } from './core/side-nav/side-nav.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpCacheClientService } from './shared/services/http-cache-client.service';
 import { EnterDataFormComponent } from './core/enter-data-form/enter-data-form.component';
@@ -24,6 +24,7 @@ import { AddActionComponent } from './core/enter-data-form/add-action/add-action
 import { AddBackgroundComponent } from './core/enter-data-form/add-background/add-background.component';
 import { AddItemComponent } from './core/enter-data-form/add-item/add-item.component';
 import { AddSpellComponent } from './core/enter-data-form/add-spell/add-spell.component';
+import { HttpRedirectInterceptor } from './shared/interceptors/http-redirect.interceptor';
 
 @NgModule({
   declarations: [
@@ -53,7 +54,14 @@ import { AddSpellComponent } from './core/enter-data-form/add-spell/add-spell.co
     HttpClientModule,
     BrowserAnimationsModule,
   ],
-  providers: [HttpCacheClientService],
+  providers: [
+    HttpCacheClientService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: HttpRedirectInterceptor,
+      multi: true,
+    },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

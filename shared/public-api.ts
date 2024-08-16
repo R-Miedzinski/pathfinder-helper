@@ -86,6 +86,8 @@ export { Weapon } from "./models/game/interfaces/weapon";
 /* User module */
 /* Classes */
 /* Enums */
+export { UserRole } from "./models/user/enums/user-role";
+
 /* Interfaces */
 export { Game } from "./models/user/interfaces/game";
 

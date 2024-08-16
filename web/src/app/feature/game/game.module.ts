@@ -11,7 +11,6 @@ import { SkillsComponent } from './skills/skills.component';
 import { HealthComponent } from './health/health.component';
 import { VariousStatsComponent } from './various-stats/various-stats.component';
 import { InventoryComponent } from './inventory/inventory.component';
-import { GameDataService } from './services/game-data.service';
 import { StoreModule } from '@ngrx/store';
 import { gameFeature } from './ngrx/game-reducer';
 import { ModifierPlusMinusPipe } from './pipes/modifier-plus-minus.pipe';

@@ -1,29 +1,27 @@
-import { DOCUMENT } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { Inject, Injectable } from '@angular/core';
-import { catchError, Observable, of, tap } from 'rxjs';
+import { Injectable } from '@angular/core';
+import { UserRole } from 'rpg-app-shared-package/dist/public-api';
+import { Observable, tap, map, ReplaySubject, BehaviorSubject } from 'rxjs';
 import { environment } from 'src/environment/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private userRole?: string = undefined;
+  private userRole: BehaviorSubject<string> = new BehaviorSubject('');
 
-  constructor(
-    private http: HttpClient,
-    @Inject(DOCUMENT) private document: Document
-  ) {}
+  constructor(private http: HttpClient) {}
 
   public login(
     username: string,
     password: string
   ): Observable<any /*{ username: string; role: string }*/> {
     const url = `${environment.apiUrl}/api/auth/login`;
+    console.log('log-in called');
 
     return this.http
       .post<any>(url, { username, password })
-      .pipe(tap(data => (this.userRole = data?.role)));
+      .pipe(tap(data => this.userRole.next(data?.role)));
   }
 
   public register(
@@ -38,26 +36,28 @@ export class AuthService {
   }
 
   public isLoggedIn(): Observable<boolean> {
-    return of(!!this.userRole);
+    return this.userRole.asObservable().pipe(map(role => !!role));
   }
 
   public canPlay(): Observable<boolean> {
-    return of(this.userRole === 'USER' || this.userRole === 'ADMIN');
+    return this.userRole
+      .asObservable()
+      .pipe(map(role => role === UserRole.USER || role === UserRole.ADMIN));
   }
 
   public canPostData(): Observable<boolean> {
-    return of(this.userRole === 'ADMIN');
+    return this.userRole
+      .asObservable()
+      .pipe(map(role => role === UserRole.ADMIN));
   }
 
   public checkCookie(): Observable<{ role: string }> {
-    const cookie = this.document.cookie;
-
     const url = `${environment.apiUrl}/api/auth/check-token`;
 
-    return this.http.get<{ role: string }>(url).pipe(
+    return this.http.get<{ role: UserRole }>(url).pipe(
       tap(data => {
         console.log('cookie checked: ', data);
-        this.userRole = data?.role;
+        this.userRole.next(data?.role);
       })
     );
   }

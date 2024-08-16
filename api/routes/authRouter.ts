@@ -4,8 +4,10 @@ import crypto from 'crypto'
 import * as jwt from 'jsonwebtoken'
 import parseCookie from '../helpers/parse-cookie'
 import { isString } from 'lodash'
+import { secret } from '../storage/constants'
+import { UserRole } from 'rpg-app-shared-package/dist/public-api'
 
-export function authRouterFactory(db: Collection, secret: string): Router {
+export function authRouterFactory(db: Collection): Router {
   const authRouter = express.Router()
 
   authRouter.post('/signup', (req, res) => {
@@ -26,7 +28,7 @@ export function authRouterFactory(db: Collection, secret: string): Router {
             user_code: req.body.user_code,
             password: hashedPassword,
             salt,
-            role: 'USER',
+            role: UserRole.USER,
             userCharacters: [],
           })
             .then((data) => {
@@ -69,8 +71,12 @@ export function authRouterFactory(db: Collection, secret: string): Router {
                 username: data.username,
               }
 
-              const token = jwt.sign(payload, secret, { expiresIn: 24 * 60 * 60 })
-              res.cookie('token', token, { maxAge: 24 * 60 * 60 * 1000 }).send(data)
+              const secondsInDay = 24 * 60 * 60
+
+              const token = jwt.sign(payload, secret, { expiresIn: secondsInDay })
+              res
+                .cookie('rpg_app_web_token', token, { maxAge: secondsInDay * 1000 })
+                .send({ message: 'User succesfully logged in', username: data.username, user_code: data.user_code })
             } else {
               res.status(500).send({ message: 'Error during log-in' })
             }
@@ -87,11 +93,12 @@ export function authRouterFactory(db: Collection, secret: string): Router {
     let webToken
 
     try {
-      webToken = jwt.verify(cookie.token ?? '', secret)
+      webToken = jwt.verify(cookie.rpg_app_web_token ?? '', secret)
     } catch (err) {
       res.status(401).send({ message: 'Token expired or invalid' })
       return
     }
+
     if (!isString(webToken) && webToken?.role) {
       res.send({ role: webToken?.role })
     } else {
