@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { UserRole } from 'rpg-app-shared-package/dist/public-api';
 import { Observable, tap, map, BehaviorSubject } from 'rxjs';
@@ -26,8 +26,11 @@ export class AuthService {
   ): Observable<any /*{ username: string; role: string }*/> {
     const url = `${environment.apiUrl}/api/auth/login`;
 
+    const body = { username, password };
+    const headers = new HttpHeaders().set('content-type', 'application/json');
+
     return this.http
-      .post<any>(url, { username, password })
+      .post<any>(url, body, { headers })
       .pipe(tap(data => this.userRole.next(data?.role)));
   }
 

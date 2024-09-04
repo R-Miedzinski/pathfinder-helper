@@ -2,6 +2,7 @@ import express, { Application } from 'express'
 import swaggerUi from 'swagger-ui-express'
 import dotenv from 'dotenv'
 import morgan from 'morgan'
+import cors from 'cors'
 
 import { resourcesRouterFactory } from './routes'
 import { MongoClient } from 'mongodb'
@@ -12,7 +13,7 @@ import { GamesLoader } from './services/games-data-loader'
 import * as jwt from 'jsonwebtoken'
 import { isString } from 'lodash'
 import parseCookie from './helpers/parse-cookie'
-import { dbURI, port, secret, session } from './storage/constants'
+import { dbURI, frontOrigin, port, secret, session } from './storage/constants'
 import { getEntitlementsForRole } from './helpers/get-entitlements'
 
 //For env File
@@ -34,9 +35,18 @@ app.use(
   })
 )
 
+app.use((req, res, next) => {
+  res.set('Access-Control-Allow-Origin', frontOrigin)
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH')
+  next()
+})
+
+app.options('*', cors())
+
 app.use('*', (req, res, next) => {
   console.log('connection on', req.baseUrl + req.url)
   console.log('method: ', req.method)
+  console.log(req.headers.origin)
   console.log(req.originalUrl)
 
   const cookie = parseCookie(req.headers.cookie ?? '')
@@ -54,10 +64,12 @@ app.use('*', (req, res, next) => {
     }
     next()
   } catch (err) {
-    console.log('token not found, redirecting to log-in')
+    console.log('token not found')
     if (req.originalUrl.includes('/api/auth')) {
+      console.log('logging in, calling next')
       next()
     } else {
+      console.log('not logging in, redirecting to log-in')
       res.redirect('/log-in')
     }
   }

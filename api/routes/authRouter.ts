@@ -41,8 +41,10 @@ export function authRouterFactory(db: Collection): Router {
   })
 
   authRouter.post('/login', (req, res) => {
+    const body = req.body
+
     db.findOne(
-      { username: req.body.username },
+      { username: body.username },
       {
         promoteBuffers: true,
       }
@@ -51,7 +53,7 @@ export function authRouterFactory(db: Collection): Router {
         if (!data) {
           res.status(500).send({ message: 'Incorrect username or password.' })
         } else {
-          crypto.pbkdf2(req.body.password, data.salt, 310000, 32, 'sha256', (err, hashedPassword) => {
+          crypto.pbkdf2(body.password, data.salt, 310000, 32, 'sha256', (err, hashedPassword) => {
             if (err) {
               res.status(500).send(err)
               return

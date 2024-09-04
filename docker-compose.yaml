@@ -1,21 +1,24 @@
 version: "3.8"
 
 services:
-
   api:
     image: node:18-alpine3.17
     container_name: dd_api
     working_dir: /usr/src/app
     environment:
+      DB_URI: mongodb://mongo:27017
       NODE_ENV: development
     volumes:
       - ./api:/usr/src/app
-    command: sh -c "npm install && npm run dev"
+      - ./shared:/usr/src/shared
+    command: sh -c "sh ./install.sh && sh ./run.sh"
     restart: always
     ports:
       - "8001:8001"
     depends_on:
       - mongo
+    networks:
+      - node-network
 
   web:
     image: node:18-alpine3.17
@@ -23,7 +26,8 @@ services:
     working_dir: /usr/src/app
     volumes:
       - ./web:/usr/src/app
-    command: sh -c "npm install && npm run start -- --host 0.0.0.0"
+      - ./shared:/usr/src/shared
+    command: sh -c "sh ./install.sh && sh ./serve.sh"
     restart: always
     ports:
       - "8000:4200"
@@ -41,7 +45,9 @@ services:
       - "27017:27017"
     volumes:
       - MONGO_DATA:/data/db
-      - MONGO_CONFIG:/data/configdb
+      # - MONGO_CONFIG:/data/configdb
+    networks:
+      - node-network
 
   mongo-express:
     image: mongo-express:latest
@@ -64,3 +70,7 @@ volumes:
     name: MONGO_DATA
   MONGO_CONFIG:
     name: MONGO_CONFIG
+
+networks:
+  node-network:
+    driver: bridge
