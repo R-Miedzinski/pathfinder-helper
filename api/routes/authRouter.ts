@@ -4,7 +4,7 @@ import crypto from 'crypto'
 import * as jwt from 'jsonwebtoken'
 import parseCookie from '../helpers/parse-cookie'
 import { isString } from 'lodash'
-import { secret } from '../storage/constants'
+import { cookie_key, secret } from '../storage/constants'
 import { UserRole } from 'rpg-app-shared-package/dist/public-api'
 
 export function authRouterFactory(db: Collection): Router {
@@ -75,7 +75,7 @@ export function authRouterFactory(db: Collection): Router {
 
               const token = jwt.sign(payload, secret, { expiresIn: secondsInDay })
               res
-                .cookie('rpg_app_web_token', token, { maxAge: secondsInDay * 1000 })
+                .cookie(cookie_key, token, { maxAge: secondsInDay * 1000 })
                 .send({ message: 'User succesfully logged in', username: data.username, user_code: data.user_code })
             } else {
               res.status(500).send({ message: 'Error during log-in' })
@@ -88,12 +88,16 @@ export function authRouterFactory(db: Collection): Router {
       })
   })
 
+  authRouter.get('/logout', (req, res) => {
+    return res.clearCookie(cookie_key).status(200).send({ message: 'successfullt logged out', success: true })
+  })
+
   authRouter.get('/check-token', (req, res) => {
     const cookie = parseCookie(req.headers.cookie ?? '')
     let webToken
 
     try {
-      webToken = jwt.verify(cookie.rpg_app_web_token ?? '', secret)
+      webToken = jwt.verify(cookie[cookie_key] ?? '', secret)
     } catch (err) {
       res.status(401).send({ message: 'Token expired or invalid' })
       return
@@ -103,6 +107,22 @@ export function authRouterFactory(db: Collection): Router {
       res.send({ role: webToken?.role })
     } else {
       res.status(401).send({ message: 'Token expired or invalid' })
+    }
+  })
+
+  authRouter.get('/check-unique-code', (req, res) => {
+    const code = req.query.user_code ?? ''
+
+    if (code) {
+      db.findOne({ user_code: code }).then((data) => {
+        if (data) {
+          res.send({ isUnique: false })
+        } else {
+          res.send({ isUnique: true })
+        }
+      })
+    } else {
+      res.status(500).send({ message: 'empty user_code received' })
     }
   })
 

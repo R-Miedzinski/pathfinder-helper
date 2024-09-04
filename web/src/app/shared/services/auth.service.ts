@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { UserRole } from 'rpg-app-shared-package/dist/public-api';
-import { Observable, tap, map, ReplaySubject, BehaviorSubject } from 'rxjs';
+import { Observable, tap, map, BehaviorSubject } from 'rxjs';
 import { environment } from 'src/environment/environment';
 
 @Injectable({
@@ -12,12 +12,19 @@ export class AuthService {
 
   constructor(private http: HttpClient) {}
 
+  public logOut(): Observable<{ message: string; success: boolean }> {
+    const url = `${environment.apiUrl}/api/auth/logout`;
+
+    return this.http
+      .get<{ message: string; success: boolean }>(url)
+      .pipe(tap(data => this.userRole.next('')));
+  }
+
   public login(
     username: string,
     password: string
   ): Observable<any /*{ username: string; role: string }*/> {
     const url = `${environment.apiUrl}/api/auth/login`;
-    console.log('log-in called');
 
     return this.http
       .post<any>(url, { username, password })
@@ -33,6 +40,14 @@ export class AuthService {
     const url = `${environment.apiUrl}/api/auth/signup`;
 
     return this.http.post(url, { username, password, email, user_code });
+  }
+
+  public isUserCodeUnique(userCode: string): Observable<boolean> {
+    const url = `${environment.apiUrl}/api/auth/check-unique-code`;
+
+    return this.http
+      .get<{ isUnique: boolean }>(url, { params: { user_code: userCode } })
+      .pipe(map(response => response.isUnique));
   }
 
   public isLoggedIn(): Observable<boolean> {

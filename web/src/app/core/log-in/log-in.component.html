@@ -1,4 +1,4 @@
-<form [formGroup]="logInForm" class="main-container">
+<form [formGroup]="logInForm" class="main-container" *ngIf="!isCreateAccount">
   <mat-form-field>
     <mat-label>Enter username</mat-label>
     <input matInput placeholder="username" formControlName="username" />
@@ -18,6 +18,50 @@
       <mat-icon>{{ hide ? 'visibility_off' : 'visibility' }}</mat-icon>
     </button>
   </mat-form-field>
-  <button mat-raised-button (click)="logIn()">LogIn</button>
-  <button mat-raised-button (click)="signUp()">SignUp</button>
+  <button
+    mat-raised-button
+    (click)="logIn()"
+    [disabled]="this.logInForm.invalid">
+    Log In
+  </button>
 </form>
+<form [formGroup]="logInForm" class="main-container" *ngIf="isCreateAccount">
+  <mat-form-field>
+    <mat-label>Choose username</mat-label>
+    <input matInput placeholder="username" formControlName="username" />
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Choose password</mat-label>
+    <input matInput type="password" formControlName="password" />
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Repeat password</mat-label>
+    <input matInput type="password" formControlName="repeatPassword" />
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Enter email</mat-label>
+    <input matInput placeholder="email@domain.com" formControlName="email" />
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Repeat email</mat-label>
+    <input
+      matInput
+      placeholder="email@domain.com"
+      formControlName="repeatEmail" />
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Choose user_code</mat-label>
+    <input matInput placeholder="unique_user_code" formControlName="userCode" />
+  </mat-form-field>
+  <button
+    mat-raised-button
+    (click)="signUp()"
+    [disabled]="this.logInForm.invalid">
+    Sign Up
+  </button>
+</form>
+<div class="main-container">
+  <button mat-raised-button (click)="switchLogInMode()">
+    {{ isCreateAccount ? 'Back to Log In' : 'Create New Account' }}
+  </button>
+</div>

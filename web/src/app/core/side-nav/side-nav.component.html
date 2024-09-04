@@ -9,3 +9,7 @@
   *ngIf="authService.canPostData() | async">
   Enter Data
 </button>
+<br />
+<button (click)="logOut()" *ngIf="authService.isLoggedIn() | async">
+  Log Out
+</button>

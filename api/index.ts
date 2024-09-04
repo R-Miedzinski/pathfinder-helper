@@ -55,7 +55,7 @@ app.use('*', (req, res, next) => {
     next()
   } catch (err) {
     console.log('token not found, redirecting to log-in')
-    if (req.originalUrl === '/api/auth/login' || req.originalUrl === '/api/auth/check-token') {
+    if (req.originalUrl.includes('/api/auth')) {
       next()
     } else {
       res.redirect('/log-in')

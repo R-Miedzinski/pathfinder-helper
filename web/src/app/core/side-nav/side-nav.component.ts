@@ -19,4 +19,14 @@ export class SideNavComponent {
   public navigateTo(route: string) {
     this.router.navigate([`${route}`]);
   }
+
+  public logOut(): void {
+    this.authService.logOut().subscribe({
+      next: data => {
+        if (data.success) {
+          this.navigateTo('');
+        }
+      },
+    });
+  }
 }
