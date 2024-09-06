@@ -29,7 +29,7 @@ export function resourcesRouterFactory(db: Db, charactersDb: Db, gamesDb: Db): R
   const actionsLoader = new ActionsLoader(db.collection('actions'))
 
   router.use(
-    '/api/character',
+    '/character',
     characterRouterFactory(
       userCollection,
       charactersCollection,
@@ -42,21 +42,21 @@ export function resourcesRouterFactory(db: Db, charactersDb: Db, gamesDb: Db): R
     )
   )
 
-  router.use('/api/spells', (req, res) => {
+  router.use('/spells', (req, res) => {
     res.send('spells')
   })
 
-  router.use('/api/actions', actionsRouterFactory(actionsLoader))
+  router.use('/actions', actionsRouterFactory(actionsLoader))
 
-  router.use('/api/feats', featsRouterFactory(featFetcher))
+  router.use('/feats', featsRouterFactory(featFetcher))
 
-  router.use('/api/traits', traitsRouterFactory(traisLoader))
+  router.use('/traits', traitsRouterFactory(traisLoader))
 
-  router.use('/api/classes', classesRouterFactory(classDataLoader))
+  router.use('/classes', classesRouterFactory(classDataLoader))
 
-  router.use('/api/race', raceDataRouterFactory(raceDataLoader))
+  router.use('/race', raceDataRouterFactory(raceDataLoader))
 
-  router.use('/api/backgrounds', backgroundsRouterFactory(backgroundDataLoader))
+  router.use('/backgrounds', backgroundsRouterFactory(backgroundDataLoader))
 
   return router
 }

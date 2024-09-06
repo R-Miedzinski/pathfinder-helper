@@ -3,6 +3,7 @@ import swaggerUi from 'swagger-ui-express'
 import dotenv from 'dotenv'
 import morgan from 'morgan'
 import cors from 'cors'
+import path from 'path'
 
 import { resourcesRouterFactory } from './routes'
 import { MongoClient } from 'mongodb'
@@ -10,10 +11,11 @@ import { authRouterFactory } from './routes/authRouter'
 import { gameRouterFactory } from './routes/gamesRouter'
 import { GamesLoader } from './services/games-data-loader'
 
+import * as fs from 'fs'
 import * as jwt from 'jsonwebtoken'
 import { isString } from 'lodash'
 import parseCookie from './helpers/parse-cookie'
-import { dbURI, frontOrigin, port, secret, session } from './storage/constants'
+import { dbURI, frontOrigin, port, secret, session, webRoot } from './storage/constants'
 import { getEntitlementsForRole } from './helpers/get-entitlements'
 
 //For env File
@@ -36,19 +38,19 @@ app.use(
 )
 
 app.use((req, res, next) => {
-  res.set('Access-Control-Allow-Origin', frontOrigin)
+  console.log('connection on', req.baseUrl + req.url)
+  console.log('method: ', req.method)
+  console.log(req.headers.origin)
+  console.log(req.originalUrl)
+
+  // res.set('Access-Control-Allow-Origin', frontOrigin)
   res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH')
   next()
 })
 
 app.options('*', cors())
 
-app.use('*', (req, res, next) => {
-  console.log('connection on', req.baseUrl + req.url)
-  console.log('method: ', req.method)
-  console.log(req.headers.origin)
-  console.log(req.originalUrl)
-
+app.use('/api', (req, res, next) => {
   const cookie = parseCookie(req.headers.cookie ?? '')
 
   let webToken
@@ -64,81 +66,125 @@ app.use('*', (req, res, next) => {
     }
     next()
   } catch (err) {
-    console.log('token not found')
-    if (req.originalUrl.includes('/api/auth')) {
-      console.log('logging in, calling next')
+    try {
+      console.log('token not found')
+      if (req.originalUrl.includes('/api/auth')) {
+        console.log('logging in, calling next')
+        next()
+      } else {
+        console.log('not logging in, redirecting to log-in')
+        res.redirect('/log-in')
+      }
+    } catch (err) {
+      console.log('error ocurred')
+      console.log(err)
       next()
-    } else {
-      console.log('not logging in, redirecting to log-in')
-      res.redirect('/log-in')
     }
   }
 })
 
 app.use('/api/auth', async (req, res, next) => {
-  const client: MongoClient = await MongoClient.connect(dbURI)
-
-  if (client) {
-    const userDataDB = client.db('user-data')
-
-    authRouterFactory(userDataDB.collection('users'))(req, res, next)
-  }
-})
-
-app.use('/api/user/characters', async (req, res) => {
-  const userInSession = session.user
-
-  if (userInSession?.role) {
+  try {
     const client: MongoClient = await MongoClient.connect(dbURI)
 
     if (client) {
-      const collection = client.db('user-data').collection('users')
+      const userDataDB = client.db('user-data')
 
-      const user = await collection.findOne({ user_code: userInSession?.user_code })
-      const characters = user ? user.userCharacters : []
-
-      res.send(characters)
+      authRouterFactory(userDataDB.collection('users'))(req, res, next)
     }
-  } else {
-    res.status(401).send({ message: 'Unauthorized' })
+  } catch (err) {
+    console.log('error ocurred')
+    console.log(err)
+    next()
+  }
+})
+
+app.use('/api/user/characters', async (req, res, next) => {
+  try {
+    const userInSession = session.user
+
+    if (userInSession?.role) {
+      const client: MongoClient = await MongoClient.connect(dbURI)
+
+      if (client) {
+        const collection = client.db('user-data').collection('users')
+
+        const user = await collection.findOne({ user_code: userInSession?.user_code })
+        const characters = user ? user.userCharacters : []
+
+        res.send(characters)
+      }
+    } else {
+      res.status(401).send({ message: 'Unauthorized' })
+    }
+  } catch (err) {
+    console.log('error ocurred')
+    console.log(err)
+    next()
   }
 })
 
 app.use('/api/games', async (req, res, next) => {
-  const userInSession = session.user
+  try {
+    const userInSession = session.user
 
-  if (userInSession?.role) {
-    const client: MongoClient = await MongoClient.connect(dbURI)
+    if (userInSession?.role) {
+      const client: MongoClient = await MongoClient.connect(dbURI)
 
-    if (client) {
-      const gameDB = client.db('games')
+      if (client) {
+        const gameDB = client.db('games')
 
-      const collection = gameDB.collection('games')
+        const collection = gameDB.collection('games')
 
-      const gamesLoader = new GamesLoader(collection, userInSession?.user_code ?? '')
+        const gamesLoader = new GamesLoader(collection, userInSession?.user_code ?? '')
 
-      gameRouterFactory(gamesLoader)(req, res, next)
+        gameRouterFactory(gamesLoader)(req, res, next)
+      }
+    } else {
+      res.status(401).send({ message: 'Unauthorized' })
     }
-  } else {
-    res.status(401).send({ message: 'Unauthorized' })
+  } catch (err) {
+    console.log('error ocurred')
+    console.log(err)
+    next()
   }
 })
 
-app.use(async (req, res, next) => {
-  const userInSession = session.user
+app.use('/api', async (req, res, next) => {
+  try {
+    const userInSession = session.user
 
-  if (userInSession?.role) {
-    const client: MongoClient = await MongoClient.connect(dbURI)
+    if (userInSession?.role) {
+      const client: MongoClient = await MongoClient.connect(dbURI)
 
-    if (client) {
-      const resourceDB = client.db('game-data')
-      const charactersDB = client.db('user-data')
-      const gameDB = client.db('games')
+      if (client) {
+        const resourceDB = client.db('game-data')
+        const charactersDB = client.db('user-data')
+        const gameDB = client.db('games')
 
-      resourcesRouterFactory(resourceDB, charactersDB, gameDB)(req, res, next)
+        resourcesRouterFactory(resourceDB, charactersDB, gameDB)(req, res, next)
+      }
+    } else {
+      res.status(401).send({ message: 'Unauthorized' })
     }
+  } catch (err) {
+    console.log('error ocurred')
+    console.log(err)
+    next()
+  }
+})
+
+app.get('*', (req, res, next) => {
+  if (process.env.PRODUCTION && !req.originalUrl.includes('api')) {
+    fs.stat(webRoot + req.path, function (err) {
+      if (err) {
+        res.sendFile('index.html', { root: webRoot })
+      } else {
+        res.sendFile(req.path, { root: webRoot })
+      }
+    })
   } else {
-    res.status(401).send({ message: 'Unauthorized' })
+    next()
   }
 })
 

@@ -122,7 +122,6 @@ export function characterRouterFactory(
       console.log('characterId found:', characterId)
       if (characterId) {
         charactersDb.findOne<{ _id: ObjectId; character: SeedCharacterData[] }>({ _id: characterId }).then((data) => {
-          console.log('data received: ', data)
           const characterData = data?.character.at(-1)
           console.log('character found: ', characterData?.name)
 

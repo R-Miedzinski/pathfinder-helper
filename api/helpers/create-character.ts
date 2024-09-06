@@ -120,7 +120,6 @@ export class CharacterFactory {
 
   private applyEquipment(): void {
     // TODO: Figure out inventory
-    console.log('inventory in character facotry:', this.seedData.inventory)
   }
 
   private async fetchActions(): Promise<void> {
