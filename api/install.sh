@@ -16,10 +16,10 @@ sh -c "npm install && npm link rpg-app-shared-package"
 
 sh -c "npm run build:docker"
 
-rm -rf ../app/web
-mv -f dist ../app/web
+rm -rf ../api/web
+mv -f dist ../api/web
 
 
 ## install app
-cd ../app
+cd ../api
 sh -c "npm install && npm link rpg-app-shared-package"

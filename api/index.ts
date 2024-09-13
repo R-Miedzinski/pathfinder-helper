@@ -43,7 +43,7 @@ app.use((req, res, next) => {
   console.log(req.headers.origin)
   console.log(req.originalUrl)
 
-  // res.set('Access-Control-Allow-Origin', frontOrigin)
+  res.set('Access-Control-Allow-Origin', frontOrigin)
   res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH')
   next()
 })

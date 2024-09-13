@@ -9,10 +9,11 @@ services:
       DB_URI: mongodb+srv://admin:admin@cluster0.cxqna.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
       NODE_ENV: development
       WEBROOT: /usr/src/app/web/rpg-app/
+      FRONT_ORIGIN: http://192.168.0.136:8001
       PRODUCTION: true
       PORT: 8001
     volumes:
-      - ./api:/usr/src/app
+      - ./api:/usr/src/api
       - ./shared:/usr/src/shared
       - ./web:/usr/src/web
     command: sh -c "sh ./install.sh && sh ./run.sh"
