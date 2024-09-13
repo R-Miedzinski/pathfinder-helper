@@ -1,0 +1,10 @@
+<form [formGroup]="savingThrowsForm" class="saving-throws-form">
+  <div class="saving-throw" *ngFor="let savingThrow of savingThrows">
+    <label [for]="savingThrow.name">{{ savingThrow.name }}</label>
+    <div class="proficiency">
+      {{ savingThrow.proficiency }}
+    </div>
+    <div>{{ savingThrow.value }}</div>
+    <div>{{ savingThrow.ability }}</div>
+  </div>
+</form>

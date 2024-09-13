@@ -1,0 +1,16 @@
+.form {
+  &__info {
+    display: flex;
+    gap: 2rem;
+
+    div {
+      display: flex;
+      flex-direction: column;
+    }
+
+    span {
+      font-size: 1.2rem;
+      align-self: end;
+    }
+  }
+}

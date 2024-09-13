@@ -1,0 +1,19 @@
+{
+  "id": "feint",
+  "name": "Feint",
+  "description": "With a misleading flourish, you leave an opponent unprepared \nfor your real attack. Attempt a Deception check against that \nopponent’s Perception DC.With a misleading flourish, you leave an opponent unprepared \nfor your real attack. Attempt a Deception check against that \nopponent’s Perception DC.",
+  "type": "Skilled",
+  "source": "basic",
+  "effects": {
+    "criticalSuccess": "You throw your enemy’s defenses against \nyou entirely off. The target is flat-footed against melee \nattacks that you attempt against it until the end of your \nnext turn.",
+    "success": " Your foe is fooled, but only momentarily. The target is \nf\n lat-footed against the next melee attack that you attempt \nagainst it before the end of your current turn.",
+    "failure": null,
+    "criticalFailure": "Your feint backfires. You are flat-footed against \nmelee attacks the target attempts against you until the end \nof your next turn."
+  },
+  "cost": 1,
+  "skill": "Deception",
+  "materials": null,
+  "traits": ["mental"],
+  "trigger": null,
+  "rules": " You are within melee reach of the opponent you \nattempt to Feint."
+}

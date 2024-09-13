@@ -1,0 +1,51 @@
+.new-character-form {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+
+  & > * {
+    flex-basis: 100%;
+    padding: 0.8rem 1.6rem;
+    border: 1px solid black;
+  }
+}
+
+.additional-info-form {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.backstory {
+  &__form {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+
+  &__form-group {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+
+    &.full-width {
+      flex-basis: 100%;
+    }
+
+    &.half-width {
+      width: 50%;
+    }
+
+    &.third-width {
+      width: 33.33%;
+    }
+  }
+
+  &__input {
+  }
+}
+
+.required::after {
+  content: '*';
+  color: red;
+}

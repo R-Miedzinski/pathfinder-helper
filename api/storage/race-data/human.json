@@ -1,0 +1,21 @@
+{
+  "id": "human",
+  "name": "Human",
+  "description": "Humans are incredibly diverse. Some, such as half-elves and half-orcs, even have non-human ancestors.",
+  "boosts": [
+    {
+      "type": "free",
+      "abilities": []
+    },
+    {
+      "type": "free",
+      "abilities": []
+    }
+  ],
+  "flaws": [],
+  "size": "Small",
+  "baseSpeed": 25,
+  "languages": ["Common"],
+  "traits": ["Human", "Humanoid"],
+  "baseHp": 8
+}

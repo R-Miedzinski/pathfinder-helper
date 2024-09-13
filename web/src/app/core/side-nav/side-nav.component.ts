@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Observable, Subject, takeUntil } from 'rxjs';
+import { AuthService } from 'src/app/shared/services/auth.service';
 
 @Component({
   selector: 'app-side-nav',
@@ -7,11 +9,24 @@ import { Router } from '@angular/router';
   styleUrls: ['./side-nav.component.scss'],
 })
 export class SideNavComponent {
-  routeToNavigate: string = '';
+  public routeToNavigate: string = '';
 
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    protected readonly authService: AuthService
+  ) {}
 
-  navigateTo(route: string) {
+  public navigateTo(route: string) {
     this.router.navigate([`${route}`]);
+  }
+
+  public logOut(): void {
+    this.authService.logOut().subscribe({
+      next: data => {
+        if (data.success) {
+          this.navigateTo('');
+        }
+      },
+    });
   }
 }

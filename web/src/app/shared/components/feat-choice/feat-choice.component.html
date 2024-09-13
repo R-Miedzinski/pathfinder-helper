@@ -1,0 +1,32 @@
+<div class="feat-choice" *ngIf="feats">
+  <div class="feat-choice__form-block">
+    <form class="feat-choice__form">
+      <label [for]="label + '-feat'" [ngClass]="{ required: feats.length > 1 }">
+        {{ label }} Feat:
+      </label>
+      <select [id]="label + '-feat'" [formControl]="featControl">
+        <option value="" disabled selected hidden>Choose a Feat</option>
+        <option *ngFor="let feat of featsData" [value]="feat.id">
+          {{ feat.name }}
+        </option>
+      </select>
+    </form>
+    <form *ngIf="featChoices?.length && chosenFeat" class="feat-choice__form">
+      <label [for]="label + '-choice'" class="required">
+        Additional Choices for {{ chosenFeat.name }}:
+      </label>
+      <select [id]="label + '-choice'" [formControl]="choiceControl">
+        <option value="" disabled selected hidden>Choose an Effect</option>
+        <option *ngFor="let choice of featChoices" [value]="choice.choiceName">
+          {{ choice.choiceName }}
+        </option>
+      </select>
+    </form>
+  </div>
+  <div *ngIf="chosenFeat" class="feat-choice__feat">
+    <app-feat
+      [feat]="chosenFeat"
+      [cardOnly]="true"
+      [choiceData]="chosenEffect"></app-feat>
+  </div>
+</div>

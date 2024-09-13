@@ -1,0 +1,31 @@
+{
+  "id": "dwarf",
+  "name": "Dwarf",
+  "description": "Dwarves are a short, stocky people who are often stubborn, fierce, and devoted.",
+  "boosts": [
+    {
+      "type": "set",
+      "abilities": ["Constitution"]
+    },
+    {
+      "type": "set",
+      "abilities": ["Wisdom"]
+    },
+    {
+      "type": "free",
+      "abilities": []
+    }
+  ],
+  "flaws": [
+    {
+      "type": "set",
+      "abilities": ["Charisma"]
+    }
+  ],
+  "size": "Medium",
+  "baseSpeed": 20,
+  "languages": ["Common", "Dwarven"],
+  "traits": ["Dwarf", "Humanoid"],
+  "baseHp": 10,
+  "darkvision": "darkvision"
+}

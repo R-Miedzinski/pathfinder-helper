@@ -1,0 +1,91 @@
+<form [formGroup]="newBackgroundForm">
+  <mat-form-field class="form-field required">
+    <mat-label>Name:</mat-label>
+    <input matInput type="text" formControlName="name" />
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Description:</mat-label>
+    <textarea matInput formControlName="description"></textarea>
+  </mat-form-field>
+  <div class="array" formArrayName="boosts">
+    <ng-container *ngFor="let control of boosts.controls; let i = index">
+      <div [formGroup]="control | toFormGroup" class="array__item">
+        <button (click)="removeBoost(i)">
+          <mat-icon>cancel</mat-icon>
+        </button>
+        <mat-form-field>
+          <mat-label>Boost Type:</mat-label>
+          <mat-select formControlName="type">
+            <mat-option *ngFor="let type of boostTypes" [value]="type">
+              {{ type }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Abilities:</mat-label>
+          <mat-select formControlName="abilities" [multiple]="true">
+            <mat-option *ngFor="let ability of abilities" [value]="ability">
+              {{ ability }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </ng-container>
+    <button (click)="addBoost()">+ Add Boost</button>
+  </div>
+  <div class="array" formArrayName="proficiencies">
+    <ng-container *ngFor="let control of skills.controls; let i = index">
+      <div [formGroup]="control | toFormGroup" class="array__item">
+        <button (click)="removeProficiency(i)">
+          <mat-icon>cancel</mat-icon>
+        </button>
+        <mat-form-field>
+          <mat-label>Skill name:</mat-label>
+          <mat-select placeholder="Select Skill" formControlName="name">
+            <mat-option *ngFor="let skill of allSkills" [value]="skill">
+              {{ skill }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Proficiency level granted:</mat-label>
+          <mat-select
+            placeholder="Select Proficiency Level"
+            formControlName="level">
+            <mat-option *ngFor="let level of allProficiencies" [value]="level">
+              {{ level }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field *ngIf="control.get('name')?.value === skillLore">
+          <mat-label>Skill Specialty (optional):</mat-label>
+          <input matInput type="text" formControlName="specialty" />
+        </mat-form-field>
+      </div>
+    </ng-container>
+    <button (click)="addProficiency()">+ Add Proficiency</button>
+  </div>
+  <mat-form-field>
+    <mat-label>Feats granted:</mat-label>
+    <mat-select
+      placeholder="Select Feats"
+      formControlName="feats"
+      [multiple]="true">
+      <mat-select-trigger>
+        {{ getFeatName(newBackgroundForm.get('feats')?.value?.[0]) }}
+        <span *ngIf="(newBackgroundForm.get('feats')?.value?.length || 0) > 1">
+          (+{{ (newBackgroundForm.get('feats')?.value?.length || 0) - 1 }}
+          {{
+            newBackgroundForm.get('feats')?.value?.length === 2
+              ? 'other'
+              : 'others'
+          }})
+        </span>
+      </mat-select-trigger>
+      <input (keyup)="filterFeats($event)" />
+      <mat-option *ngFor="let feat of filteredFeats" [value]="feat.id">
+        {{ feat.name }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+</form>

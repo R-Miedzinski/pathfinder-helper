@@ -1,0 +1,19 @@
+{
+  "name": "rpg-app-shared-package",
+  "version": "1.0.0",
+  "description": "Shared functionalities for rpg companion app frontend and backend applications",
+  "main": "dist/public-api.js",
+  "types": "dist/public-api.d.js",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "npx tsc"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "typescript": "^5.3.3"
+  }
+}

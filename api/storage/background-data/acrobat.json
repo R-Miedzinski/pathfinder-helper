@@ -1,0 +1,29 @@
+{
+  "id": "acrobat",
+  "name": "Acrobat",
+  "description": "In a circus or on the streets, you earned your pay by performing as an acrobat. You might have turned to adventuring when the money dried up, or simply decided to put your skills to better use.",
+  "boosts": [
+    {
+      "type": "choice",
+      "abilities": ["Strength", "Dexterity"]
+    },
+    {
+      "type": "free",
+      "abilities": []
+    }
+  ],
+  "proficiencies": [
+    {
+      "name": "Acrobatics",
+      "level": "Trained",
+      "ability": "Dexterity"
+    },
+    {
+      "name": "Lore",
+      "level": "Trained",
+      "specialty": "Circus",
+      "ability": "Intelligence"
+    }
+  ],
+  "feats": ["steady-balance"]
+}

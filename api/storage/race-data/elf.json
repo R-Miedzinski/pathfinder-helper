@@ -1,0 +1,31 @@
+{
+  "id": "elf",
+  "name": "Elf",
+  "description": "Elves are a tall, slender, long-lived people with a strong tradition of art and magic.",
+  "boosts": [
+    {
+      "type": "set",
+      "abilities": ["Dexterity"]
+    },
+    {
+      "type": "set",
+      "abilities": ["Intelligence"]
+    },
+    {
+      "type": "free",
+      "abilities": []
+    }
+  ],
+  "flaws": [
+    {
+      "type": "set",
+      "abilities": ["Constitution"]
+    }
+  ],
+  "size": "Medium",
+  "baseSpeed": 30,
+  "languages": ["Common", "Elven"],
+  "traits": ["Elf", "Humanoid"],
+  "baseHp": 6,
+  "darkvision": "low-light-vision"
+}

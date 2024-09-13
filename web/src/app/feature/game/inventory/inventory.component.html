@@ -1,1 +1,57 @@
-<p>inventory works!</p>
+<div class="inventory">
+  <div class="inventory__all">
+    <h3>All Items</h3>
+    <ul>
+      <li *ngFor="let position of inventoryLocal">
+        <app-hover-card position="top" [hoverCardWidth]="19.6">
+          <div class="item" hoverable>
+            {{ position.item.name }}
+            <div class="buttons">
+              <button
+                mat-raised-button
+                color="primary"
+                (click)="equip(position.item.id)">
+                equip
+              </button>
+              <button
+                mat-raised-button
+                color="warn"
+                (click)="deequip(position.item.id)">
+                deequip
+              </button>
+              <button
+                mat-raised-button
+                color="primary"
+                (click)="invest(position.item.id)">
+                invest
+              </button>
+              <button
+                mat-raised-button
+                color="warn"
+                (click)="deinvest(position.item.id)">
+                deinvest
+              </button>
+            </div>
+          </div>
+          <app-item [item]="position.item" card-content></app-item>
+        </app-hover-card>
+      </li>
+    </ul>
+  </div>
+  <div class="inventory__invested">
+    <h3>Invested Items</h3>
+    <ul>
+      <li *ngFor="let position of investedLocal">
+        {{ position.item.name }} : {{ position.count }}
+      </li>
+    </ul>
+  </div>
+  <div class="inventory__equipped">
+    <h3>Equipped Items</h3>
+    <ul>
+      <li *ngFor="let position of equippedLocal">
+        {{ position.item.name }} : {{ position.count }}
+      </li>
+    </ul>
+  </div>
+</div>

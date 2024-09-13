@@ -1,0 +1,13 @@
+{
+  "id": "death-warden-dwarf",
+  "name": "Death Warden Dwarf",
+  "level": 1,
+  "category": "Heritage Feat",
+  "traits": ["dwarf"],
+  "description": "Your ancestors have been tomb guardians for generations, and the power they cultivated to ward off necromancy has passed on to you. If you roll a success on a saving throw against a necromancy effect, you get a critical success instead.",
+  "effect": [
+    {
+      "effectType": "Description"
+    }
+  ]
+}

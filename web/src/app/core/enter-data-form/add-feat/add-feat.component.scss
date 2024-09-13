@@ -1,0 +1,28 @@
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+.array {
+  margin: 0 2.4rem 1.2rem;
+  display: flex;
+  flex-direction: column;
+
+  &__item {
+    border: 2px solid #232323;
+    border-radius: 5px;
+
+    button {
+      width: 100%;
+    }
+  }
+}
+
+.effect {
+  width: 75%;
+  display: block;
+
+  &__type {
+    width: 25%;
+  }
+}

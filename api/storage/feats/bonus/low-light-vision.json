@@ -1,0 +1,12 @@
+{
+  "id": "low-light-vision",
+  "name": "Low-Light Vision",
+  "level": 1,
+  "category": "Special Feat",
+  "description": "You can see in dim light as though it were bright light, so you ignore the concealed condition due to dim light.",
+  "effect": [
+    {
+      "effectType": "Description"
+    }
+  ]
+}

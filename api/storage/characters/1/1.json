@@ -1,0 +1,73 @@
+[
+  {
+    "id": "TEST-1-1",
+    "name": "Not ORK",
+    "class": "Alchemist",
+    "race": "Dwarf",
+    "background": "acolyte",
+    "level": 1,
+    "feats": ["ancient-blooded-dwarf", "dwarven-lore", "c5", "student-of-the-canon", "darkvision"],
+    "featChoices": [
+      {
+        "featId": "c5",
+        "choiceName": "Choice Name",
+        "description": "This choice grants boost to strength and flaw to charisma",
+        "effect": [
+          { "effectType": "Ability Boost", "payload": { "boost": "Strength" } },
+          { "effectType": "Ability Flaw", "payload": { "flaw": "Charisma" } }
+        ]
+      }
+    ],
+    "boosts": ["Constitution", "Wisdom", "Strength", "Intelligence", "Strength", "Intelligence"],
+    "flaws": ["Charisma"],
+    "savingThrows": [
+      { "name": "Fortitude", "level": "Expert" },
+      { "name": "Reflex", "level": "Expert" },
+      { "name": "Will", "level": "Trained" }
+    ],
+    "skills": [
+      { "name": "Athletics", "level": "Trained", "value": 0, "ability": "Strength" },
+      { "name": "Crafting", "level": "Trained", "value": 0, "ability": "Intelligence" },
+      { "name": "Diplomacy", "level": "Trained", "value": 0, "ability": "Charisma" },
+      { "name": "Occultism", "level": "Trained", "value": 0, "ability": "Intelligence" },
+      { "name": "Perception", "level": "Trained", "value": 0, "ability": "Wisdom" },
+      { "name": "Performance", "level": "Trained", "value": 0, "ability": "Charisma" },
+      { "name": "Religion", "level": "Trained", "value": 0, "ability": "Wisdom" },
+      { "name": "Survival", "level": "Trained", "value": 0, "ability": "Wisdom" },
+      { "value": 0, "name": "Lore", "level": "Trained", "specialty": "Scribing", "ability": "Intelligence" }
+    ],
+    "attacks": [
+      { "type": "Simple", "level": "Trained" },
+      { "type": "Bomb", "level": "Trained" },
+      { "type": "Unarmed", "level": "Trained" }
+    ],
+    "defences": [
+      { "type": "Light armor", "level": "Trained" },
+      { "type": "Unarmored", "level": "Trained" }
+    ],
+    "inventory": [],
+    "equippedItems": [],
+    "investedItems": [],
+    "spells": [],
+    "actions": [],
+    "backstory": {
+      "story": "Really. Not an ORK.",
+      "alignment": "Chaotic Evil",
+      "languages": ["Common", "Dwarven", "ORK", "WAAAAAGH!!!"],
+      "nationality": "",
+      "ethnicity": "",
+      "deity": "",
+      "age": "",
+      "gender": "",
+      "pronouns": "",
+      "height": "",
+      "weight": "",
+      "appearence": "",
+      "attitude": "",
+      "beliefs": "",
+      "likes": "",
+      "dislikes": "",
+      "notes": ""
+    }
+  }
+]
