@@ -1,1 +1,9 @@
-<p>new-game works!</p>
+<div>
+  <button mat-stroked-button (click)="navigateTo('..')">Back</button>
+  <button mat-raised-button (click)="navigateTo('../join-game')">
+    Join Game
+  </button>
+  <button mat-raised-button (click)="navigateTo('../create-game')">
+    Create Game
+  </button>
+</div>

@@ -9,13 +9,17 @@ import { UserRole } from 'rpg-app-shared-package/dist/public-api'
 
 export function authRouterFactory(db: Collection): Router {
   const authRouter = express.Router()
+  const secondsInDay = 24 * 60 * 60
 
   authRouter.post('/signup', (req, res) => {
     const salt = crypto.randomBytes(16)
 
-    db.findOne({ user_code: req.body.user_code }).then((data) => {
+    const username = req.body.username
+    const user_code = req.body.user_code
+
+    db.findOne({ user_code: user_code }).then((data) => {
       if (data) {
-        res.status(500).send(`Username ${req.body.username} already exists`)
+        res.status(500).send(`Username ${username} already exists`)
       } else {
         crypto.pbkdf2(req.body.password, salt, 310000, 32, 'sha256', (err, hashedPassword) => {
           if (err) {
@@ -24,17 +28,31 @@ export function authRouterFactory(db: Collection): Router {
 
           db.insertOne({
             email: req.body.email,
-            username: req.body.username,
-            user_code: req.body.user_code,
+            username,
+            user_code,
             password: hashedPassword,
             salt,
             role: UserRole.USER,
             userCharacters: [],
           })
             .then((data) => {
-              res.send(data)
+              if (secret) {
+                const payload = {
+                  role: UserRole.USER,
+                  user_code,
+                  username,
+                }
+
+                const token = jwt.sign(payload, secret, { expiresIn: secondsInDay })
+
+                res
+                  .cookie(cookie_key, token, { maxAge: secondsInDay * 1000 })
+                  .send({ message: 'Sign-up successfull, user logged in', username, user_code })
+              } else {
+                res.status(500).send({ message: 'Error during sign-up' })
+              }
             })
-            .catch((err) => res.status(500).send(err))
+            .catch((err) => res.status(500).send({ message: 'Error during sign-up' }))
         })
       }
     })
@@ -64,16 +82,12 @@ export function authRouterFactory(db: Collection): Router {
               return
             }
 
-            const secret = process.env.API_KEY
-
             if (secret) {
               const payload = {
                 role: data.role,
                 user_code: data.user_code,
                 username: data.username,
               }
-
-              const secondsInDay = 24 * 60 * 60
 
               const token = jwt.sign(payload, secret, { expiresIn: secondsInDay })
               res

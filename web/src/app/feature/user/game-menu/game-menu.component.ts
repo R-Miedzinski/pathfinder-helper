@@ -17,8 +17,8 @@ export class GameMenuComponent implements OnInit, OnDestroy {
 
   private readonly newGame: Game[] = [
     {
-      id: '0',
-      name: 'Create a new game',
+      id: '-1',
+      name: 'New game',
       users: [],
       characters: [],
       gameMaster: '',
@@ -67,7 +67,7 @@ export class GameMenuComponent implements OnInit, OnDestroy {
           },
         });
     } else {
-      this.router.navigate(['./newgame'], { relativeTo: this.route });
+      this.router.navigate(['./new-game'], { relativeTo: this.route });
     }
   }
 }

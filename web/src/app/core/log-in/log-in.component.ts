@@ -7,7 +7,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { Router } from '@angular/router';
-import { map, tap } from 'rxjs';
+import { map } from 'rxjs';
 import { AuthService } from 'src/app/shared/services/auth.service';
 
 @Component({
@@ -42,31 +42,7 @@ export class LogInComponent implements OnInit {
 
     this.isCreateAccount = !this.isCreateAccount;
 
-    if (this.isCreateAccount) {
-      this.logInForm
-        .get('repeatPassword')
-        ?.setValidators([
-          Validators.required,
-          this.isSameValidator(this.logInForm.get('password')!),
-        ]);
-      this.logInForm
-        .get('email')
-        ?.setValidators([Validators.required, Validators.email]);
-      this.logInForm
-        .get('repeatEmail')
-        ?.setValidators([
-          Validators.required,
-          this.isSameValidator(this.logInForm.get('email')!),
-        ]);
-      this.logInForm.get('userCode')?.setValidators(Validators.required);
-      this.logInForm.get('userCode')?.setAsyncValidators(this.isUniqueCode());
-    } else {
-      this.logInForm.get('repeatPassword')?.clearValidators();
-      this.logInForm.get('email')?.clearValidators();
-      this.logInForm.get('repeatEmail')?.clearValidators();
-      this.logInForm.get('userCode')?.clearValidators();
-      this.logInForm.get('userCode')?.clearAsyncValidators();
-    }
+    this.setupValidators();
   }
 
   protected logIn(): void {
@@ -92,7 +68,11 @@ export class LogInComponent implements OnInit {
       this.authService.register(username, password, email, userCode).subscribe({
         next: data => {
           console.log('next called: ', data);
-          this.router.navigate(['/log-in']);
+          this.logInForm.reset();
+
+          this.isCreateAccount = false;
+
+          this.setupValidators();
         },
         error: err => {
           console.log('error called: ', err);
@@ -115,5 +95,33 @@ export class LogInComponent implements OnInit {
         .isUserCodeUnique(control.value)
         .pipe(map(isUnique => (isUnique ? null : { isNotUnique: true })));
     };
+  }
+
+  private setupValidators(): void {
+    if (this.isCreateAccount) {
+      this.logInForm
+        .get('repeatPassword')
+        ?.setValidators([
+          Validators.required,
+          this.isSameValidator(this.logInForm.get('password')!),
+        ]);
+      this.logInForm
+        .get('email')
+        ?.setValidators([Validators.required, Validators.email]);
+      this.logInForm
+        .get('repeatEmail')
+        ?.setValidators([
+          Validators.required,
+          this.isSameValidator(this.logInForm.get('email')!),
+        ]);
+      this.logInForm.get('userCode')?.setValidators(Validators.required);
+      this.logInForm.get('userCode')?.setAsyncValidators(this.isUniqueCode());
+    } else {
+      this.logInForm.get('repeatPassword')?.clearValidators();
+      this.logInForm.get('email')?.clearValidators();
+      this.logInForm.get('repeatEmail')?.clearValidators();
+      this.logInForm.get('userCode')?.clearValidators();
+      this.logInForm.get('userCode')?.clearAsyncValidators();
+    }
   }
 }
