@@ -4,7 +4,12 @@
 <br />
 <button (click)="navigateTo('user')">User</button>
 <br />
+<button
+  (click)="navigateTo('enter-data')"
+  *ngIf="authService.canPostData() | async">
+  Enter Data
+</button>
 <br />
-<input [(ngModel)]="routeToNavigate" placeholder="Enter route" value="" />
-<br />
-<button (click)="navigateTo(routeToNavigate)">Entered Route</button>
+<button (click)="logOut()" *ngIf="authService.isLoggedIn() | async">
+  Log Out
+</button>

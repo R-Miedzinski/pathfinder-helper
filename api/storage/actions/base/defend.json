@@ -1,0 +1,14 @@
+{
+  "id": "defend",
+  "name": "Defend",
+  "description": "You move at half your travel speed with your shield raised. If \ncombat breaks out, you gain the benefits of Raising a Shield \nbefore your first turn begins.",
+  "type": "Exploration",
+  "source": "basic",
+  "effects": { "criticalSuccess": null, "success": null, "failure": null, "criticalFailure": null },
+  "cost": null,
+  "skill": null,
+  "materials": null,
+  "traits": ["exploration"],
+  "trigger": null,
+  "rules": null
+}

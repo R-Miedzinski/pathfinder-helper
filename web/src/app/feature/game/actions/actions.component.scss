@@ -1,0 +1,26 @@
+mat-grid-tile {
+  border: 1px solid black;
+  overflow: unset;
+}
+
+.grid-field {
+  width: 100%;
+  height: 100%;
+}
+
+.actions {
+  &__form {
+    display: flex;
+    justify-content: space-around;
+  }
+
+  &__filter-field {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+
+    & mat-button-toggle-group {
+      margin-top: -1rem;
+    }
+  }
+}

@@ -4,5 +4,5 @@ export const toggleSideNav = createAction('[App] ToggleSideNav');
 
 export const setCurrentGame = createAction(
   '[User] SetCurrentGame',
-  props<{ name: string | null }>()
+  props<{ id: string; name: string }>()
 );

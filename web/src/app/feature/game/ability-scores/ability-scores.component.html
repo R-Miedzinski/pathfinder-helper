@@ -1,1 +1,10 @@
-<p>ability-scores works!</p>
+<form [formGroup]="abilitiesForm" class="ability__list">
+  <div class="ability__card" *ngFor="let ability of abilityScores">
+    <label [for]="ability.id" class="ability__key">{{ ability.name }}</label>
+    <span class="ability__value"> {{ ability.score }}</span>
+    <span class="ability__modifier">
+      {{ ability.score | modifierPlusMinus }}
+      {{ ability.modifier }}
+    </span>
+  </div>
+</form>

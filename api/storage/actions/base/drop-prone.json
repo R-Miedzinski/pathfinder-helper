@@ -1,0 +1,1 @@
+{"id":"drop-prone","name":"Drop Prone","description":"You fall prone.","type":"Encounter","source":"basic","effects":{"criticalSuccess":null,"success":null,"failure":null,"criticalFailure":null},"cost":1,"skill":null,"materials":null,"traits":[],"trigger":null,"rules":null}

@@ -1,0 +1,123 @@
+{
+  "id": "Alchemist",
+  "name": "Alchemist",
+  "initData": {
+    "boosts": [
+      {
+        "type": "set",
+        "abilities": ["Intelligence"]
+      }
+    ],
+    "keyAbility": "Intelligence",
+    "description": "The alchemist uses their skill at crafting to create alchemical items—such as bombs, elixirs, and poisons—that they use to defeat foes and aid allies. Smart and resourceful, an alchemist often has just the right tool for the job and esoteric knowledge to help their friends get out of a jam.",
+    "baseHp": 8,
+    "savingThrows": [
+      {
+        "name": "Fortitude",
+        "level": "Expert"
+      },
+      {
+        "name": "Reflex",
+        "level": "Expert"
+      },
+      {
+        "name": "Will",
+        "level": "Trained"
+      }
+    ],
+    "proficiencies": [
+      {
+        "name": "Perception",
+        "level": "Trained",
+        "ability": "Wisdom"
+      },
+      {
+        "name": "Crafting",
+        "level": "Trained",
+        "ability": "Intelligence"
+      }
+    ],
+    "weaponProficiencies": [
+      {
+        "type": "Simple",
+        "level": "Trained"
+      },
+      {
+        "type": "Bomb",
+        "level": "Trained"
+      },
+      {
+        "type": "Unarmed",
+        "level": "Trained"
+      }
+    ],
+    "armorProficiencies": [
+      {
+        "type": "Light armor",
+        "level": "Trained"
+      },
+      {
+        "type": "Unarmored",
+        "level": "Trained"
+      }
+    ],
+    "classDC": {
+      "savingThrow": "Trained"
+    },
+    "additionalProficiencies": 3
+  },
+  "levelUpData": {
+    "1": [
+      {
+        "category": "Add Feat",
+        "payload": {
+          "featId": ["alchemy", "formula-book", "research-field"]
+        }
+      },
+      {
+        "category": "Class Feat"
+      }
+    ],
+    "2": [
+      {
+        "category": "Class Feat"
+      },
+      {
+        "category": "Skill Feat"
+      }
+    ],
+    "3": [
+      {
+        "category": "General Feat"
+      },
+      {
+        "category": "Skill Increase"
+      }
+    ],
+    "4": [
+      {
+        "category": "Class Feat"
+      },
+      {
+        "category": "Skill Feat"
+      }
+    ],
+    "5": [
+      {
+        "category": "Ability Boost"
+      },
+      {
+        "category": "Ancestry Feat"
+      },
+      {
+        "category": "Add Feat",
+        "payload": {
+          "featId": ["field-discovery"]
+        }
+      },
+      {
+        "category": "Skill Increase"
+      }
+    ]
+  }
+}

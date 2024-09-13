@@ -1,0 +1,39 @@
+<form *ngIf="skillForm" [formGroup]="skillForm">
+  <div class="form-group">
+    <span>Name:</span>
+    <span>{{ skillName }}</span>
+  </div>
+  <div class="form-group">
+    <span>Profciency Level:</span>
+    <div class="button-group">
+      <span>{{ skillForm.get('level')?.value }}</span>
+      <button
+        (click)="increaseLevel()"
+        [disabled]="
+          skillForm.disabled ||
+          skillForm.get('level')?.value === maxLevel ||
+          disableIncrease
+        ">
+        +
+      </button>
+      <button
+        (click)="decreaseLevel()"
+        [disabled]="
+          skillForm.disabled ||
+          skillForm.get('level')?.value === proficiencies.U ||
+          disableDecrease
+        ">
+        -
+      </button>
+    </div>
+  </div>
+  <div class="form-group">
+    <span>Ability:</span>
+    <span>{{ skillAbility }}</span>
+  </div>
+  <div *ngIf="!skillSpecialty" class="form-group"></div>
+  <div *ngIf="skillSpecialty" class="form-group">
+    <span>Specialty:</span>
+    <span>{{ skillSpecialty }}</span>
+  </div>
+</form>

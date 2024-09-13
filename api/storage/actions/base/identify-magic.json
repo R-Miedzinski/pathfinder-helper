@@ -1,0 +1,18 @@
+{
+  "id": "identify-magic",
+  "name": "Identify Magic",
+  "description": " Once you discover that an item, location, or ongoing effect \nis magical, you can spend 10 minutes to try to identify the \nparticulars of its magic. If your attempt is interrupted, you \nmust start over. The GM sets the DC for your check. Cursed \nor esoteric subjects usually have higher DCs or might even be \nimpossible to identify using this activity alone. Heightening a \nspell doesn’t increase the DC to identify it.",
+  "type": "Exploration",
+  "source": "basic",
+  "effects": {
+    "criticalSuccess": "You learn all the attributes of the magic, \nincluding its name (for an effect), what it does, any means of \nactivating it (for an item or location), and whether it is cursed.",
+    "success": "For an item or location, you get a sense of what it does \nand learn any means of activating it. For an ongoing effect \n(such as a spell with a duration), you learn the effect’s name \nand what it does. You can’t try again in hopes of getting a \ncritical success.",
+    "failure": " You fail to identify the magic and can’t try again for 1 day.",
+    "criticalFailure": "You misidentify the magic as something else \nof the GM’s choice."
+  },
+  "cost": null,
+  "materials": null,
+  "traits": ["concentrate", "exploration", "secret"],
+  "trigger": null,
+  "rules": null
+}

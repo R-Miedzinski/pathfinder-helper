@@ -1,0 +1,14 @@
+{
+  "id": "ancient-blooded-dwarf",
+  "name": "Ancient-Blooded Dwarf",
+  "level": 1,
+  "category": "Heritage Feat",
+  "traits": ["dwarf"],
+  "description": "Dwarven heroes of old could shrug off their enemies’ magic, and some of that resistance manifests in you. You gain the Call on Ancient Blood reaction.",
+  "effect": [
+    {
+      "effectType": "Action",
+      "payload": { "actionId": "call-on-ancient-blood" }
+    }
+  ]
+}

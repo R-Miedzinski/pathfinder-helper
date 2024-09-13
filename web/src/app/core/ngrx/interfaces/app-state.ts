@@ -1,8 +1,9 @@
 export interface AppState {
   showSideNav: Boolean;
-  currentGame?: string;
+  currentGame: { id: string; name: string };
 }
 
 export const initialState: AppState = {
-  showSideNav: true,
+  showSideNav: false,
+  currentGame: { id: '', name: '' },
 };

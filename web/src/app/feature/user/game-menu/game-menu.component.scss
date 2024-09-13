@@ -5,5 +5,8 @@
 }
 
 .game-card {
-  width: 10rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 24rem;
 }

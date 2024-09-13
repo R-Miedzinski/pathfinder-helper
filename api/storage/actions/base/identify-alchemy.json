@@ -1,0 +1,19 @@
+{
+  "id": "identify-alchemy",
+  "name": "Identify Alchemy",
+  "description": "You can identify the nature of an alchemical item with 10 minutes \nof testing using alchemist’s tools. If your attempt is interrupted \nin any way, you must start over.",
+  "type": "Skilled",
+  "source": "basic",
+  "effects": {
+    "criticalSuccess": null,
+    "success": " You identify the item and the means of activating it.",
+    "failure": " You fail to identify the item but can try again.",
+    "criticalFailure": "You misidentify the item as another item of \nthe GM’s choice."
+  },
+  "cost": null,
+  "skill": "Craft",
+  "materials": null,
+  "traits": ["concentrate", "exploration", "secret"],
+  "trigger": null,
+  "rules": "You have alchemist’s tools (page 287)."
+}

@@ -1,0 +1,41 @@
+.form-group {
+  display: flex;
+  gap: 1.2rem;
+  justify-content: center;
+
+  & > * {
+    flex-basis: 33%;
+    width: 100%;
+  }
+
+  &:has(button) {
+    flex-basis: 100%;
+  }
+}
+
+.health {
+  &-wrapper {
+    border: 1px black solid;
+    padding: 1.2rem 2.4rem;
+    font-size: 1.6rem;
+    font-weight: bold;
+  }
+
+  &-current {
+    color: green;
+  }
+
+  &-temporary {
+    color: blue;
+  }
+
+  &-maximum {
+    color: red;
+  }
+
+  &-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+}

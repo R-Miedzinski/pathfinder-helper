@@ -1,0 +1,22 @@
+{
+  "id": "steady-balance",
+  "name": "Steady Balance",
+  "level": 1,
+  "category": "Skill Feat",
+  "traits": ["General", "Skill"],
+  "rules": [
+    {
+      "condition": "skill-proficiency",
+      "payload": {
+        "level": "Trained",
+        "skill": "Acrobatics"
+      }
+    }
+  ],
+  "description": "You can keep your balance easily, even in adverse conditions. Whenever you roll a success using the Balance action, you get a critical success instead. You’re not flat-footed while attempting to Balance on narrow surfaces and uneven ground. Thanks to your incredible balance, you can attempt an Acrobatics check instead of a Reflex save to Grab an Edge.",
+  "effect": [
+    {
+      "effectType": "Description"
+    }
+  ]
+}

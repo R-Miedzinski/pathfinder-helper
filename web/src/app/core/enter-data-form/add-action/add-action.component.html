@@ -1,0 +1,92 @@
+<form [formGroup]="newActionForm">
+  <mat-form-field class="form-field required">
+    <mat-label>Name:</mat-label>
+    <input matInput type="text" formControlName="name" />
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Description:</mat-label>
+    <textarea matInput formControlName="description"></textarea>
+  </mat-form-field>
+  <mat-form-field class="required">
+    <mat-label>Action Type:</mat-label>
+    <mat-select formControlName="type" placeholder="Select action type...">
+      <mat-option *ngFor="let val of actionTypes" [value]="val">
+        {{ val }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field class="required">
+    <mat-label>Action Source:</mat-label>
+    <mat-select formControlName="source" placeholder="Select action source...">
+      <mat-option *ngFor="let val of actionSources" [value]="val">
+        {{ val }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field class="form-field">
+    <mat-label>Traits:</mat-label>
+    <mat-chip-grid #chipGrid formControlName="traits">
+      <ng-container *ngFor="let trait of traits">
+        <mat-chip-row (removed)="removeTrait(trait)">
+          {{ trait }}
+          <button matChipRemove>
+            <mat-icon>cancel</mat-icon>
+          </button>
+        </mat-chip-row>
+      </ng-container>
+    </mat-chip-grid>
+    <input
+      placeholder="New trait..."
+      [matChipInputFor]="chipGrid"
+      (matChipInputTokenEnd)="add($event)" />
+  </mat-form-field>
+  <div formGroupName="effects" class="effects">
+    <h3>Additional Effects:</h3>
+    <mat-form-field>
+      <mat-label>Critical Success:</mat-label>
+      <textarea matInput formControlName="criticalSuccess"></textarea>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Success:</mat-label>
+      <textarea matInput formControlName="success"></textarea>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Failure:</mat-label>
+      <textarea matInput formControlName="failure"></textarea>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Critical Failure:</mat-label>
+      <textarea matInput formControlName="criticalFailure"></textarea>
+    </mat-form-field>
+  </div>
+  <mat-form-field class="required">
+    <mat-label>Cost:</mat-label>
+    <mat-select formControlName="cost" placeholder="Select action cost...">
+      <mat-option *ngFor="let val of actionCosts" [value]="val">
+        {{ val }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field class="required">
+    <mat-label>Skill:</mat-label>
+    <mat-select
+      formControlName="skill"
+      placeholder="Select associated skill...">
+      <mat-option *ngFor="let val of skills" [value]="val">
+        {{ val }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Materials:</mat-label>
+    <textarea matInput formControlName="materials"></textarea>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Trigger:</mat-label>
+    <textarea matInput formControlName="trigger"></textarea>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Rules:</mat-label>
+    <textarea matInput formControlName="rules"></textarea>
+  </mat-form-field>
+</form>
