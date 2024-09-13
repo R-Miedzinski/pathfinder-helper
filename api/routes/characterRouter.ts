@@ -6,7 +6,7 @@ import { RaceDataLoader } from '../services/race-data-loader'
 import { ActionsLoader } from '../services/actions-loader'
 import { BackgroundDataLoader } from '../services/background-data-loader'
 import { SeedCharacterData } from 'rpg-app-shared-package/dist/public-api'
-import { Collection, ObjectId } from 'mongodb'
+import { Collection, Document, ObjectId, PushOperator } from 'mongodb'
 
 export function characterRouterFactory(
   userDb: Collection,
@@ -31,13 +31,17 @@ export function characterRouterFactory(
         if (result.acknowledged) {
           const id = result.insertedId
 
-          userDb.updateOne({ user_code: user }, { $push: { userCharacters: id } }).catch((err) => {
-            console.log('error during registering character to user')
-          })
+          userDb
+            .updateOne({ user_code: user }, { $push: { userCharacters: id } as unknown as PushOperator<Document> })
+            .catch((err) => {
+              console.log('error during registering character to user')
+            })
 
-          gamesDb.updateOne({ id: gameId }, { $push: { characters: id } }).catch((err) => {
-            console.log('error during registering character to game')
-          })
+          gamesDb
+            .updateOne({ id: gameId }, { $push: { characters: id } as unknown as PushOperator<Document> })
+            .catch((err) => {
+              console.log('error during registering character to game')
+            })
         }
 
         res.send(result)
