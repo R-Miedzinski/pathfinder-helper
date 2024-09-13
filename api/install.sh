@@ -23,3 +23,5 @@ mv -f dist ../api/web
 ## install app
 cd ../api
 sh -c "npm install && npm link rpg-app-shared-package"
+
+sh -c "npx tsc"
