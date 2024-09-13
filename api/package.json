@@ -10,7 +10,7 @@
     "start-dev": "nodemon index.ts",
     "predev": "npm run swagger",
     "dev": "concurrently \"nodemon index.ts\" \"nodemon -x tsoa spec\" ",
-    "build:render": "sh -c \"sh ./install.sh && sh ./run.sh\"",
+    "build:render": "sh -c ./install.sh",
     "swagger": "tsoa spec",
     "format:check": "prettier --check .",
     "format:write": "prettier --write .",
