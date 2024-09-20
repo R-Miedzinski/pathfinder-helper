@@ -1,9 +1,15 @@
 <div>
-  <button mat-stroked-button (click)="navigateTo('..')">Back</button>
-  <button mat-raised-button (click)="navigateTo('../join-game')">
+  <button mat-raised-button (click)="navigateTo('..')">Back</button>
+  <button
+    mat-raised-button
+    color="primary"
+    (click)="navigateTo('../join-game')">
     Join Game
   </button>
-  <button mat-raised-button (click)="navigateTo('../create-game')">
+  <button
+    mat-raised-button
+    color="primary"
+    (click)="navigateTo('../create-game')">
     Create Game
   </button>
 </div>

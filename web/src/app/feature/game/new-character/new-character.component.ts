@@ -36,7 +36,6 @@ export class NewCharacterComponent implements OnInit, OnDestroy {
 
   protected additionalSkills: FormControl = new FormControl<Skill[]>([]);
   protected addLanguageControl: FormControl = new FormControl<string[]>([]);
-  protected gameIdControl: FormControl = new FormControl<string>('1');
 
   protected readonly proficiencies = Proficiency;
   private characterData?: SeedCharacterData;
@@ -54,11 +53,6 @@ export class NewCharacterComponent implements OnInit, OnDestroy {
   public ngOnInit(): void {
     this.levelUpBonusesService.reset();
     this.initAdditionalChoicesForm();
-    this.appStore.select(getCurrentGame).subscribe({
-      next: data => {
-        this.gameIdControl.setValue(data.id);
-      },
-    });
   }
 
   public ngOnDestroy(): void {
@@ -143,14 +137,8 @@ export class NewCharacterComponent implements OnInit, OnDestroy {
 
   protected saveCharacter(): void {
     if (this.characterData) {
-      let gameId = this.gameIdControl.value;
-
-      if (!gameId) {
-        gameId = '1';
-      }
-
       this.gameDataService
-        .saveNewCharacter(this.characterData, '1234', gameId)
+        .saveNewCharacter(this.characterData)
         .pipe(takeUntil(this.ngDestroyed$))
         .subscribe({
           next: res => console.log(res),

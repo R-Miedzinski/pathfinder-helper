@@ -81,10 +81,6 @@
       <app-character-sheet></app-character-sheet>
     </form>
     <button mat-button matStepperPrevious>Back</button>
-    <div>
-      <label for="game-id"></label>
-      <input id="game-id" type="text" [formControl]="gameIdControl" />
-    </div>
     <button mat-button (click)="saveCharacter()">Create</button>
   </mat-step>
 </mat-stepper>
