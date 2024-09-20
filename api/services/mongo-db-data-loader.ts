@@ -1,7 +1,7 @@
-import { Collection, DeleteResult, InsertOneResult, UpdateResult } from 'mongodb'
+import { Collection, DeleteResult, Document, InsertOneResult, UpdateResult } from 'mongodb'
 import { CRUDController } from '../controllers/crud-controller'
 
-export abstract class MongoDBDataLoader<T extends { id: string }> implements CRUDController<T> {
+export abstract class MongoDBDataLoader<T extends Document> implements CRUDController<T> {
   constructor(protected db: Collection) {}
 
   public create(entry: T): Promise<InsertOneResult> {
