@@ -89,7 +89,7 @@ const gameReducer = createReducer(
       const gameStateCopy = cloneDeep(state);
       gameStateCopy.character.savingThrows =
         gameStateCopy.character.savingThrows.map(savingThrow =>
-          savingThrow.id === props.savingThrow.id
+          savingThrow.name === props.savingThrow.name
             ? props.savingThrow
             : savingThrow
         );
@@ -130,14 +130,14 @@ const gameReducer = createReducer(
     GameActions.saveFeatsAction,
     (state: GameState, props: { feats: Feat[] }) => {
       const gameStateCopy = cloneDeep(state);
-      gameStateCopy.character.feats = props.feats.map(feat => feat.id);
+      gameStateCopy.character.feats = props.feats.map(feat => feat._id);
 
       return gameStateCopy;
     }
   ),
   on(GameActions.addFeatAction, (state: GameState, props: { feat: Feat }) => {
     const gameStateCopy = cloneDeep(state);
-    gameStateCopy.character.feats.push(props.feat.id);
+    gameStateCopy.character.feats.push(props.feat._id);
 
     return gameStateCopy;
   }),
@@ -146,7 +146,8 @@ const gameReducer = createReducer(
     (state: GameState, props: { ability: Ability }) => {
       const gameStateCopy = cloneDeep(state);
       gameStateCopy.character.abilities = gameStateCopy.character.abilities.map(
-        ability => (ability.id === props.ability.id ? props.ability : ability)
+        ability =>
+          ability.name === props.ability.name ? props.ability : ability
       );
 
       return gameStateCopy;

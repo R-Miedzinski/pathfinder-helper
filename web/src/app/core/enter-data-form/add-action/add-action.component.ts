@@ -67,7 +67,6 @@ export class AddActionComponent
 
   private initForm(): void {
     this.newActionForm = this.fb.group({
-      id: '0',
       name: [null, Validators.required],
       description: [null, Validators.required],
       type: [null, Validators.required],

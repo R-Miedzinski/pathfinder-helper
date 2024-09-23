@@ -20,7 +20,7 @@ import {
 export class PanelComponent implements OnInit, OnDestroy {
   protected currentGame: string = '';
   protected isNewCharacter: boolean = false;
-  protected characterId?: string;
+  protected isCharacterLoaded: boolean = false;
   private readonly ngDestroyed$: Subject<void> = new Subject();
 
   constructor(
@@ -44,15 +44,14 @@ export class PanelComponent implements OnInit, OnDestroy {
           .subscribe({
             next: character => {
               if (typeof character !== 'string') {
-                this.characterId = character.id;
+                this.isCharacterLoaded = true;
                 this.store.dispatch(
                   GameActions.saveCharacterAction({ character })
                 );
                 this.isNewCharacter = false;
               } else {
                 const character = newCharacter();
-                character.id = '0';
-                this.characterId = character.id;
+                this.isCharacterLoaded = true;
                 this.store.dispatch(
                   GameActions.saveCharacterAction({ character })
                 );

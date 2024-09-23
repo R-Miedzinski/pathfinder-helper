@@ -4,7 +4,7 @@ import { Skills } from "../enums/skills";
 import { ActionEffects } from "./action-effects";
 
 export interface CharacterAction {
-  id: string;
+  _id: string;
   name: string;
   description: string;
   type: CharacterActionType;

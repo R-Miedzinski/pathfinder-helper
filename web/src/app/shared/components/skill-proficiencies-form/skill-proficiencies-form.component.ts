@@ -7,7 +7,7 @@ import {
   SimpleChanges,
   forwardRef,
 } from '@angular/core';
-import { FormBuilder, FormGroup, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { FormGroup, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { cloneDeep } from 'lodash';
 import {
   Proficiency,
@@ -46,7 +46,7 @@ export class SkillProficienciesFormComponent
   private readonly basicProficiencies = newSkills();
   private readonly ngDestroyed$: Subject<void> = new Subject();
 
-  constructor(private fb: FormBuilder) {
+  constructor() {
     super();
   }
 

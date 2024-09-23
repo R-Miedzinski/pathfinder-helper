@@ -5,7 +5,6 @@ import {
   Feat,
 } from 'rpg-app-shared-package/dist/public-api';
 import { Observable, map } from 'rxjs';
-import { Action } from 'rxjs/internal/scheduler/Action';
 import { HttpCacheClientService } from 'src/app/shared/services/http-cache-client.service';
 import { environment } from 'src/environment/environment';
 
@@ -21,7 +20,7 @@ export class AddEffectService {
     return this.http
       .get<Feat[]>(url)
       .pipe(
-        map(feats => feats.map(feat => ({ id: feat.id, name: feat.name })))
+        map(feats => feats.map(feat => ({ id: feat._id, name: feat.name })))
       );
   }
 
@@ -34,7 +33,7 @@ export class AddEffectService {
         map(actions =>
           actions
             .filter(action => action.type !== CharacterActionType.base)
-            .map(action => ({ id: action.id, name: action.name }))
+            .map(action => ({ id: action._id, name: action.name }))
         )
       );
   }

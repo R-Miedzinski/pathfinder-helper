@@ -7,7 +7,7 @@ export function classesRouterFactory(classDataLoader: ClassDataLoader): Router {
   classesRouter.get('', (req, res) => {
     classDataLoader
       .readAll()
-      .then((data) => res.send(data.map((classData) => ({ id: classData.id, name: classData.name }))))
+      .then((data) => res.send(data.map((classData) => ({ id: classData._id, name: classData.name }))))
       .catch((err) => res.status(500).send(err))
   })
 
@@ -26,16 +26,16 @@ export function classesRouterFactory(classDataLoader: ClassDataLoader): Router {
       .catch((err) => res.status(500).send(err))
   })
 
-  classesRouter.get('/level/:id', (req, res) => {
-    const id = req.params?.id
+  classesRouter.get('/level/:name', (req, res) => {
+    const name = req.params?.name
 
-    if (!id) {
-      const err = new Error('Class id needed to get class level up data')
+    if (!name) {
+      const err = new Error('Class name needed to get class level up data')
       res.status(500).send(err)
     }
 
     classDataLoader
-      .getLevelUpClassData(id)
+      .getLevelUpClassData(name)
       .then((data) => {
         res.send(data)
       })

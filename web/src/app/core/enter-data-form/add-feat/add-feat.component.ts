@@ -100,7 +100,6 @@ export class AddFeatComponent
 
   private initForm(): void {
     this.newFeatForm = this.fb.group({
-      id: '0',
       name: [null, Validators.required],
       level: [null, Validators.required],
       category: [null, Validators.required],

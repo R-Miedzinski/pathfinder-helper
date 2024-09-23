@@ -12,14 +12,13 @@ export class AddFeatHandler extends EffectHandler {
   }
 
   public async handleEffect(character: Character, seedData: SeedCharacterData): Promise<void> {
-    console.log('handle add feat')
     const payload = (<GrantFeatEffect>this._effect).payload
 
     if (Array.isArray(payload.featId)) {
       const promises = payload.featId.map((id) => {
         this.featFetcher.getFeatData(id).then((data) => {
           if (data) {
-            character.feats.push(data.id)
+            character.feats.push(data._id)
             data.effect.forEach(
               async (effect) => await identifyEffect(effect, this.featFetcher).handleEffect(character, seedData)
             )
@@ -31,13 +30,10 @@ export class AddFeatHandler extends EffectHandler {
     } else {
       await this.featFetcher.getFeatData(payload.featId).then((data) => {
         if (data) {
-          character.feats.push(data.id)
+          character.feats.push(data._id)
           data.effect.forEach(
             async (effect) => await identifyEffect(effect, this.featFetcher).handleEffect(character, seedData)
           )
-          // identifyEffects(data.effect, this.featFetcher).forEach(
-          //   async (effect) => await effect.handleFeat(character, seedData)
-          // )
         }
       })
     }

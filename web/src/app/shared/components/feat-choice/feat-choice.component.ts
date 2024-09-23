@@ -92,7 +92,7 @@ export class FeatChoiceComponent
         this.updateValue();
 
         this.resetFeatChoices();
-        this.chosenFeat = this.featsData?.find(feat => feat.id === id);
+        this.chosenFeat = this.featsData?.find(feat => feat._id === id);
         const effectChoices = (
           this.chosenFeat?.effect.find(
             effect => effect.effectType === CharacterEffectType.choice

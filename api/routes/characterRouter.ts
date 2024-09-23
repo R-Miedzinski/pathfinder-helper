@@ -70,7 +70,10 @@ export function characterRouterFactory(
       .then(() => {
         res.send(characterFactory.createNewCharacter())
       })
-      .catch((err) => res.status(500).send(err))
+      .catch((err) => {
+        console.log(err)
+        res.status(500).send(err)
+      })
   })
 
   characterRouter.get('/seed-character-data', (req, res) => {
@@ -109,7 +112,7 @@ export function characterRouterFactory(
     findUserWithCharacter(gameId, user, gamesDb).then((characterId) => {
       if (characterId) {
         charactersDb.updateOne({ _id: characterId }, { $push: { character: req.body.characterData } }).then((data) => {
-          res.send(data)
+          res.send({ data, ok: true })
         })
       } else {
         res.status(500).send({ message: 'error has occured in finding user character' })

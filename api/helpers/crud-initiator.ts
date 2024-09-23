@@ -3,7 +3,7 @@ import { CRUDController } from '../controllers/crud-controller'
 import { session } from '../storage/constants'
 import { Entitlements } from './get-entitlements'
 
-export function createCrud<T extends { id: string }>(
+export function createCrud<T extends { _id: string }>(
   router: Router,
   loader: CRUDController<T>,
   createId: (item: T) => string
@@ -58,7 +58,7 @@ export function createCrud<T extends { id: string }>(
       try {
         const item: T = req.body
 
-        item.id = createId(item)
+        item._id = createId(item)
 
         const response = await loader.create(item)
 

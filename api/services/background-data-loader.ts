@@ -8,6 +8,6 @@ export class BackgroundDataLoader extends MongoDBDataLoader<BackgroundData> {
   }
 
   public getBackgroundDataIdArray(): Promise<{ id: string; name: string }[]> {
-    return this.readAll().then((data) => data.map((entry) => ({ id: entry.id, name: entry.name })))
+    return this.readAll().then((data) => data.map((entry) => ({ id: entry._id, name: entry.name })))
   }
 }

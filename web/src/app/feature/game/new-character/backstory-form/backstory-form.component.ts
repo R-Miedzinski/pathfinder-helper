@@ -78,7 +78,6 @@ export class BackstoryFormComponent implements OnInit, OnDestroy {
 
     this.nameControl.valueChanges.pipe(takeUntil(this.ngDestroyed$)).subscribe({
       next: name => {
-        console.log('name changed:', name, this.nameControl.valid);
         if (this.nameControl.valid) {
           this.name.emit(name);
         }

@@ -1,5 +1,5 @@
 <button mat-raised-button (click)="backToMenu()">Back to user menu</button>
-<ng-container *ngIf="characterId">
+<ng-container *ngIf="isCharacterLoaded">
   <ng-container *ngIf="!isNewCharacter; else newCharacterBlock">
     <mat-tab-group>
       <mat-tab label="Character Sheet">

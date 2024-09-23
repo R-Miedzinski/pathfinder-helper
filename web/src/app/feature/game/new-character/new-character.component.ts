@@ -21,8 +21,7 @@ import { StepperSelectionEvent } from '@angular/cdk/stepper';
 import { FeatsService } from '../services/feats.service';
 import { NewCharacterService } from '../services/new-character.service';
 import { LevelUpBonusesService } from '../services/level-up-bonuses.service';
-import { AppState } from 'src/app/core/ngrx/interfaces/app-state';
-import { getCurrentGame } from 'src/app/core/ngrx/selectors/app.selector';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-new-character',
@@ -44,10 +43,11 @@ export class NewCharacterComponent implements OnInit, OnDestroy {
   constructor(
     protected readonly newCharacterService: NewCharacterService,
     private store: Store<GameState>,
-    private appStore: Store<AppState>,
     private gameDataService: GameDataService,
     private featsService: FeatsService,
-    private levelUpBonusesService: LevelUpBonusesService
+    private levelUpBonusesService: LevelUpBonusesService,
+    private router: Router,
+    private route: ActivatedRoute
   ) {}
 
   public ngOnInit(): void {
@@ -141,7 +141,13 @@ export class NewCharacterComponent implements OnInit, OnDestroy {
         .saveNewCharacter(this.characterData)
         .pipe(takeUntil(this.ngDestroyed$))
         .subscribe({
-          next: res => console.log(res),
+          next: res => {
+            this.router.navigate(['../', this.gameDataService.gameId], {
+              queryParams: { hasCharacter: 'T' },
+              relativeTo: this.route,
+            });
+            console.log(res);
+          },
         });
     }
   }

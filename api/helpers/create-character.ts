@@ -39,8 +39,8 @@ export class CharacterFactory {
   public async buildNewCharacter(): Promise<void> {
     await this.assignConstantValues()
 
-    this.raceData = await this.raceDataLoader.getRaceData(this.character.race)
-    this.classData = await this.classDataLoader.getInitClassData(this.character.class)
+    this.raceData = await this.raceDataLoader.read(this.seedData.race)
+    this.classData = await this.classDataLoader.getInitClassData(this.seedData.class)
 
     await this.applyEffects()
     this.applyAbilityBoosts()
@@ -61,15 +61,15 @@ export class CharacterFactory {
   }
 
   private async assignConstantValues(): Promise<void> {
-    this.character.id = this.seedData.id
+    this.character._id = this.seedData._id
     this.character.characterName = this.seedData.name
-    this.character.class = this.seedData.class
+    this.character.class = await this.classDataLoader.read(this.seedData.class).then((data) => data.name)
     this.character.background = await this.backgroundDataLoader.read(this.seedData.background).then((data) => data.name)
 
     this.character.feats = this.seedData.feats.filter(Boolean)
     this.character.featChoices = this.seedData.featChoices
 
-    this.character.race = this.seedData.race
+    this.character.race = await this.raceDataLoader.read(this.seedData.race).then((data) => data.name)
     this.character.level = this.seedData.level
     this.character.spells = this.seedData.spells
     this.character.inventory = this.seedData.inventory
@@ -97,7 +97,7 @@ export class CharacterFactory {
       .map(async (feat) => {
         return await this.featFetcher.getFeatData(feat).then(async (data) => {
           if (data) {
-            const choiceEffects = featToChoice.get(data.id)
+            const choiceEffects = featToChoice.get(data._id)
             if (choiceEffects?.length) {
               return data.effect.concat(choiceEffects)
             }

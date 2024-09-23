@@ -147,7 +147,6 @@ export class AddBackgroundComponent
 
   private initForm(): void {
     this.newBackgroundForm = this.fb.group({
-      id: '0',
       name: [null, Validators.required],
       description: [null, Validators.required],
       boosts: this.fb.array([]),

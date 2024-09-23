@@ -40,7 +40,6 @@ export class LevelUpModalComponent implements OnDestroy, OnInit {
       charClass: Classes;
       race: Race;
       level: number;
-      id: string;
       skills: Skill[];
       feats: string[];
     },

@@ -224,7 +224,7 @@ export class ChooseRaceFormComponent implements OnInit, OnDestroy {
         .pipe(takeUntil(this.ngDestroyed$))
         .subscribe({
           next: (feats: Feat[]) => {
-            this.raceFeats = feats.map(feat => feat.id);
+            this.raceFeats = feats.map(feat => feat._id);
           },
         });
 
@@ -233,7 +233,7 @@ export class ChooseRaceFormComponent implements OnInit, OnDestroy {
         .pipe(takeUntil(this.ngDestroyed$))
         .subscribe({
           next: (feats: Feat[]) => {
-            this.heritageFeats = feats.map(feat => feat.id);
+            this.heritageFeats = feats.map(feat => feat._id);
           },
         });
     }
