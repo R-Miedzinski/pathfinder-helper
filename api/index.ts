@@ -90,6 +90,7 @@ app.use('/api/auth', async (req, res, next) => {
       const userDataDB = client.db('user-data')
 
       authRouterFactory(userDataDB.collection('users'))(req, res, next)
+      client.close()
     }
   } catch (err) {
     console.log('error ocurred')
@@ -112,6 +113,7 @@ app.use('/api/user/characters', async (req, res, next) => {
         const characters = user ? user.userCharacters : []
 
         res.send(characters)
+        client.close()
       }
     } else {
       res.status(401).send({ message: 'Unauthorized' })
@@ -138,6 +140,7 @@ app.use('/api/games', async (req, res, next) => {
         const gamesLoader = new GamesLoader(collection, userInSession?.user_code ?? '')
 
         gameRouterFactory(gamesLoader)(req, res, next)
+        client.close()
       }
     } else {
       res.status(401).send({ message: 'Unauthorized' })
@@ -162,6 +165,7 @@ app.use('/api', async (req, res, next) => {
         const gameDB = client.db('games')
 
         resourcesRouterFactory(resourceDB, charactersDB, gameDB)(req, res, next)
+        client.close()
       }
     } else {
       res.status(401).send({ message: 'Unauthorized' })
