@@ -21,8 +21,7 @@ import { StepperSelectionEvent } from '@angular/cdk/stepper';
 import { FeatsService } from '../services/feats.service';
 import { NewCharacterService } from '../services/new-character.service';
 import { LevelUpBonusesService } from '../services/level-up-bonuses.service';
-import { AppState } from 'src/app/core/ngrx/interfaces/app-state';
-import { getCurrentGame } from 'src/app/core/ngrx/selectors/app.selector';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-new-character',
@@ -36,7 +35,6 @@ export class NewCharacterComponent implements OnInit, OnDestroy {
 
   protected additionalSkills: FormControl = new FormControl<Skill[]>([]);
   protected addLanguageControl: FormControl = new FormControl<string[]>([]);
-  protected gameIdControl: FormControl = new FormControl<string>('1');
 
   protected readonly proficiencies = Proficiency;
   private characterData?: SeedCharacterData;
@@ -45,20 +43,16 @@ export class NewCharacterComponent implements OnInit, OnDestroy {
   constructor(
     protected readonly newCharacterService: NewCharacterService,
     private store: Store<GameState>,
-    private appStore: Store<AppState>,
     private gameDataService: GameDataService,
     private featsService: FeatsService,
-    private levelUpBonusesService: LevelUpBonusesService
+    private levelUpBonusesService: LevelUpBonusesService,
+    private router: Router,
+    private route: ActivatedRoute
   ) {}
 
   public ngOnInit(): void {
     this.levelUpBonusesService.reset();
     this.initAdditionalChoicesForm();
-    this.appStore.select(getCurrentGame).subscribe({
-      next: data => {
-        this.gameIdControl.setValue(data.id);
-      },
-    });
   }
 
   public ngOnDestroy(): void {
@@ -143,17 +137,17 @@ export class NewCharacterComponent implements OnInit, OnDestroy {
 
   protected saveCharacter(): void {
     if (this.characterData) {
-      let gameId = this.gameIdControl.value;
-
-      if (!gameId) {
-        gameId = '1';
-      }
-
       this.gameDataService
-        .saveNewCharacter(this.characterData, '1234', gameId)
+        .saveNewCharacter(this.characterData)
         .pipe(takeUntil(this.ngDestroyed$))
         .subscribe({
-          next: res => console.log(res),
+          next: res => {
+            this.router.navigate(['../', this.gameDataService.gameId], {
+              queryParams: { hasCharacter: 'T' },
+              relativeTo: this.route,
+            });
+            console.log(res);
+          },
         });
     }
   }

@@ -1,6 +1,5 @@
 /* Game module */
 /* Classes */
-export { Dice } from "./models/game/classes/dice";
 /* Enums */
 export { Abilities } from "./models/game/enums/abilities";
 export { ActionSource } from "./models/game/enums/action-source";

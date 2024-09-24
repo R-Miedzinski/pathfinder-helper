@@ -8,8 +8,8 @@ export const webRoot = process.env.WEBROOT || '../web/dist/rpg-app'
 export const session = {
   user: {
     role: null,
-    user_code: null,
-    username: null,
+    user_code: '',
+    username: '',
   },
   entitlements: [] as string[],
 }

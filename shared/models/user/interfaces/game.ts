@@ -1,7 +1,10 @@
 export interface Game {
-  id: string;
+  _id: string;
   name: string;
-  characters: string[];
+  characters: {
+    user: string;
+    id: string;
+  }[];
   users: string[];
   gameMaster: string;
   description?: string;

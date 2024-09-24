@@ -9,13 +9,17 @@ export class ClassDataLoader extends MongoDBDataLoader<ClassData> {
 
   public getInitClassData(id: string): Promise<DisplayInitClassData> {
     return this.read(id).then((entry) => {
-      return { id: entry.id, name: entry.name, ...entry.initData }
+      return { id: entry._id, name: entry.name, ...entry.initData }
     })
   }
 
-  public getLevelUpClassData(id: string): Promise<DisplayLevelUpClassData> {
-    return this.read(id).then((entry) => {
-      return { id: entry.id, name: entry.name, ...entry.levelUpData }
+  public getLevelUpClassData(name: string): Promise<DisplayLevelUpClassData> {
+    return this.db.findOne({ name }).then((entry) => {
+      if (entry) {
+        return { id: entry._id, name: entry.name, ...entry.levelUpData }
+      } else {
+        throw Error(`No class ${name} found`)
+      }
     })
   }
 }

@@ -3,7 +3,6 @@ import swaggerUi from 'swagger-ui-express'
 import dotenv from 'dotenv'
 import morgan from 'morgan'
 import cors from 'cors'
-import path from 'path'
 
 import { resourcesRouterFactory } from './routes'
 import { MongoClient } from 'mongodb'

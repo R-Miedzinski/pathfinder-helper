@@ -1,0 +1,15 @@
+.game-cards {
+  display: flex;
+  gap: 2.4rem;
+
+  padding: 1.2rem 2.4rem;
+
+  &__card {
+    width: 14.8rem;
+    height: 16rem;
+
+    &--selected {
+      background-color: #eee;
+    }
+  }
+}

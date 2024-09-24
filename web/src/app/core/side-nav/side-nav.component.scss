@@ -1,0 +1,12 @@
+button {
+  width: 100%;
+  border: 1px solid #0006;
+}
+
+.button-group {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+
+  padding: 0.6rem 1.2rem;
+}

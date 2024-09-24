@@ -9,7 +9,7 @@ import { LevelBonus } from "./level-bonus";
 import { WeaponProficiency } from "./weapon-proficiency";
 
 export interface ClassData {
-  id: string;
+  _id: string;
   name: Classes;
   initData: InitClassData;
   levelUpData: LevelUpClassData;

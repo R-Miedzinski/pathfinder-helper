@@ -74,7 +74,6 @@ export class AuthService {
 
     return this.http.get<{ role: UserRole }>(url).pipe(
       tap(data => {
-        console.log('cookie checked: ', data);
         this.userRole.next(data?.role);
       })
     );

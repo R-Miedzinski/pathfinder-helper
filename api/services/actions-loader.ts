@@ -1,6 +1,6 @@
 import { ActionSource, CharacterAction, CharacterActionType, Skills } from 'rpg-app-shared-package/dist/public-api'
 import { MongoDBDataLoader } from './mongo-db-data-loader'
-import { Collection } from 'mongodb'
+import { Collection, ObjectId } from 'mongodb'
 
 export class ActionsLoader extends MongoDBDataLoader<CharacterAction> {
   constructor(db: Collection) {
@@ -8,7 +8,7 @@ export class ActionsLoader extends MongoDBDataLoader<CharacterAction> {
   }
 
   public getActions(ids: string[]): Promise<CharacterAction[]> {
-    return this.db.find<CharacterAction>({ id: { $in: ids } }).toArray()
+    return this.db.find<CharacterAction>({ _id: { $in: ids.map((item) => new ObjectId(item)) } }).toArray()
   }
 
   public async getBasicActionsIds(): Promise<string[]> {
@@ -17,7 +17,7 @@ export class ActionsLoader extends MongoDBDataLoader<CharacterAction> {
 
       return actions
         .map((action) => {
-          return action.type !== CharacterActionType.skilled ? action.id : ''
+          return action.type !== CharacterActionType.skilled ? action._id : ''
         })
         .filter(Boolean)
     } catch (err) {
@@ -32,7 +32,7 @@ export class ActionsLoader extends MongoDBDataLoader<CharacterAction> {
 
       return allSkilledActions
         .filter((action) => (action.skill ? skills.includes(action.skill) : false))
-        .map((action) => action.id)
+        .map((action) => action._id)
     } catch (err) {
       throw new Error(`Failure in loading skilled actions :: ${err}`)
     }

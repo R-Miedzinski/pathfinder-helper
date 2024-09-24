@@ -1,7 +1,7 @@
 import { SpellType } from "../enums/spell-type";
 
 export interface Spell {
-  id: string;
+  _id: string;
   name: string;
   type: SpellType;
   level: number;

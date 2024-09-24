@@ -148,11 +148,10 @@ export class NewCharacterService {
 
   public createNewCharacter(): SeedCharacterData {
     const newCharacter = {
-      id: '0',
       name: this._characterName,
-      class: this._classData?.name,
-      race: this._race?.name,
-      background: this._background?.id,
+      class: this._classData?.id,
+      race: this._race?._id,
+      background: this._background?._id,
       level: 1,
       featChoices: this.gatherChoices(),
       feats: this.gatherFeats(),
@@ -168,7 +167,7 @@ export class NewCharacterService {
       spells: [],
       actions: [],
       backstory: this.gatherBackstory(),
-    } as SeedCharacterData;
+    } as unknown as SeedCharacterData;
     return newCharacter;
   }
 

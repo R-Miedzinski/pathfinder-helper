@@ -7,6 +7,7 @@ import { ActionsLoader } from '../services/actions-loader'
 import { BackgroundDataLoader } from '../services/background-data-loader'
 import { SeedCharacterData } from 'rpg-app-shared-package/dist/public-api'
 import { Collection, Document, ObjectId, PushOperator } from 'mongodb'
+import { session } from '../storage/constants'
 
 export function characterRouterFactory(
   userDb: Collection,
@@ -22,7 +23,7 @@ export function characterRouterFactory(
 
   characterRouter.post('/save-new-character', (req, res) => {
     const seedData: SeedCharacterData = req.body.data
-    const user = req.body.user
+    const user = session.user.user_code
     const gameId = req.body.gameId
 
     charactersDb
@@ -38,7 +39,10 @@ export function characterRouterFactory(
             })
 
           gamesDb
-            .updateOne({ id: gameId }, { $push: { characters: id } as unknown as PushOperator<Document> })
+            .updateOne(
+              { _id: new ObjectId(gameId) },
+              { $push: { characters: { user, id } } as unknown as PushOperator<Document> }
+            )
             .catch((err) => {
               console.log('error during registering character to game')
             })
@@ -66,11 +70,14 @@ export function characterRouterFactory(
       .then(() => {
         res.send(characterFactory.createNewCharacter())
       })
-      .catch((err) => res.status(500).send(err))
+      .catch((err) => {
+        console.log(err)
+        res.status(500).send(err)
+      })
   })
 
   characterRouter.get('/seed-character-data', (req, res) => {
-    const user = req.query.user as string
+    const user = session.user.user_code
     const gameId = req.query.gameId as string
 
     if (!user || !gameId) {
@@ -79,7 +86,7 @@ export function characterRouterFactory(
       res.status(500).send(err)
     }
 
-    findUserWithCharacter(gameId, user, gamesDb, userDb)
+    findUserWithCharacter(gameId, user, gamesDb)
       .then((characterId) => {
         if (characterId) {
           charactersDb.findOne<{ _id: ObjectId; character: SeedCharacterData[] }>({ _id: characterId }).then((data) => {
@@ -95,18 +102,17 @@ export function characterRouterFactory(
   })
 
   characterRouter.put('/update', (req, res) => {
-    //TODO: update level-up (update) call to work with mongo
     const gameId = req?.body?.gameId
-    const user = req?.body?.user
+    const user = session.user.user_code
     if (!gameId || !user) {
       const error = new Error('Query parameters: gameId and userId are required')
       res.status(500).send(error)
     }
 
-    findUserWithCharacter(gameId, user, gamesDb, userDb).then((characterId) => {
+    findUserWithCharacter(gameId, user, gamesDb).then((characterId) => {
       if (characterId) {
         charactersDb.updateOne({ _id: characterId }, { $push: { character: req.body.characterData } }).then((data) => {
-          res.send(data)
+          res.send({ data, ok: true })
         })
       } else {
         res.status(500).send({ message: 'error has occured in finding user character' })
@@ -116,13 +122,13 @@ export function characterRouterFactory(
 
   characterRouter.get('', (req, res) => {
     const gameId = req?.query?.gameId as string
-    const user = req?.query?.user as string
+    const user = session.user.user_code
     if (!gameId || !user) {
       const error = new Error('Query parameters: gameId and user are required')
       res.status(500).send({ message: error })
     }
 
-    findUserWithCharacter(gameId, user, gamesDb, userDb).then((characterId) => {
+    findUserWithCharacter(gameId, user, gamesDb).then((characterId) => {
       console.log('characterId found:', characterId)
       if (characterId) {
         charactersDb.findOne<{ _id: ObjectId; character: SeedCharacterData[] }>({ _id: characterId }).then((data) => {
@@ -160,18 +166,12 @@ export function characterRouterFactory(
   return characterRouter
 }
 
-function findUserWithCharacter(gameId: string, user: string, gamesDb: Collection, userDb: Collection) {
-  return gamesDb.findOne({ id: gameId }).then((gameData) => {
-    const gameCharacters: ObjectId[] = gameData?.characters ?? []
+function findUserWithCharacter(gameId: string, user: string, gamesDb: Collection) {
+  return gamesDb.findOne({ _id: new ObjectId(gameId) }).then((gameData) => {
+    const gameCharacters: { user: string; id: ObjectId }[] = gameData?.characters ?? []
 
-    return userDb.findOne({ user_code: user }).then((userData) => {
-      const userCharacters: ObjectId[] = userData?.userCharacters ?? []
+    const character = gameCharacters.find((entry) => entry.user === user)?.id
 
-      const sameCharacter = userCharacters.find((character: ObjectId) =>
-        gameCharacters.some((char) => String(char) === String(character))
-      )
-
-      return sameCharacter
-    })
+    return character
   })
 }

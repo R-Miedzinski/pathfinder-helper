@@ -63,7 +63,7 @@ export class LevelBonusComponent implements OnInit, OnDestroy {
           .getClassFeatsToAdd(this.level, this.charClass!)
           .pipe(
             takeUntil(this.ngDestroyed$),
-            map(feats => feats.map(item => item.id))
+            map(feats => feats.map(item => item._id))
           );
         return;
       case LevelBonusCategory.ancestralFeat:
@@ -133,7 +133,7 @@ export class LevelBonusComponent implements OnInit, OnDestroy {
       .getFeatsQuery(this.level, category, trait)
       .pipe(
         takeUntil(this.ngDestroyed$),
-        map(feats => feats.map(item => item.id))
+        map(feats => feats.map(item => item._id))
       );
   }
 

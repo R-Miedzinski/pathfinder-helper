@@ -5,7 +5,7 @@
       <ul>
         <li *ngFor="let feat of ancestryFeats">
           <app-feat
-            [choiceData]="featChoices.get(feat.id)"
+            [choiceData]="featChoices.get(feat._id)"
             [feat]="feat"></app-feat>
         </li>
       </ul>
@@ -17,7 +17,7 @@
       <ul>
         <li *ngFor="let feat of skillFeats">
           <app-feat
-            [choiceData]="featChoices.get(feat.id)"
+            [choiceData]="featChoices.get(feat._id)"
             [feat]="feat"></app-feat>
         </li>
       </ul>
@@ -29,7 +29,7 @@
       <ul>
         <li *ngFor="let feat of generalFeats">
           <app-feat
-            [choiceData]="featChoices.get(feat.id)"
+            [choiceData]="featChoices.get(feat._id)"
             [feat]="feat"></app-feat>
         </li>
       </ul>
@@ -41,7 +41,7 @@
       <ul>
         <li *ngFor="let feat of classFeats">
           <app-feat
-            [choiceData]="featChoices.get(feat.id)"
+            [choiceData]="featChoices.get(feat._id)"
             [feat]="feat"></app-feat>
         </li>
       </ul>
@@ -53,7 +53,7 @@
       <ul>
         <li *ngFor="let feat of bonusFeats">
           <app-feat
-            [choiceData]="featChoices.get(feat.id)"
+            [choiceData]="featChoices.get(feat._id)"
             [feat]="feat"></app-feat>
         </li>
       </ul>

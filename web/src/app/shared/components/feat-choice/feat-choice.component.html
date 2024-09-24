@@ -6,7 +6,7 @@
       </label>
       <select [id]="label + '-feat'" [formControl]="featControl">
         <option value="" disabled selected hidden>Choose a Feat</option>
-        <option *ngFor="let feat of featsData" [value]="feat.id">
+        <option *ngFor="let feat of featsData" [value]="feat._id">
           {{ feat.name }}
         </option>
       </select>

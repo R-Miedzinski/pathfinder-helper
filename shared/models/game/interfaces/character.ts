@@ -11,7 +11,7 @@ import { ClassDC } from "./class-dc";
 import { EffectChoice } from "./effect-choice";
 
 export interface Character {
-  id: string;
+  _id: string;
   characterName: string;
   class: Classes;
   background: string;
@@ -50,7 +50,6 @@ export interface Character {
 
 export function newCharacter(): Character {
   const newCharacter = {
-    id: "",
     characterName: "",
     class: Classes.fighter,
     background: "",
@@ -76,7 +75,7 @@ export function newCharacter(): Character {
     attacks: [],
     defences: [],
     actions: [],
-  };
+  } as unknown as Character;
 
   return newCharacter;
 }
