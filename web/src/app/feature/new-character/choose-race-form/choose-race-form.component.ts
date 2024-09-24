@@ -15,10 +15,10 @@ import {
   RaceData,
 } from 'rpg-app-shared-package/dist/public-api';
 import keepOrder from 'src/app/shared/helpers/keepOrder';
-import { GameDataService } from '../../services/game-data.service';
+import { GameDataService } from '../../game/services/game-data.service';
 import { Observable, Subject, map, takeUntil } from 'rxjs';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { FeatsService } from '../../services/feats.service';
+import { FeatsService } from '../../game/services/feats.service';
 
 @Component({
   selector: 'app-choose-race-form',

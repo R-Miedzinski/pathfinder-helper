@@ -24,7 +24,7 @@ import {
 } from 'rpg-app-shared-package/dist/public-api';
 import { Subject, takeUntil } from 'rxjs';
 import { CustomFormControl } from 'src/app/shared/components/custom-form-control/custom-form-control.component';
-import { AddEffectService } from '../../services/add-effect.service';
+import { AddEffectService } from '../services/add-effect.service';
 import { cloneDeep } from 'lodash';
 import keepOrder from 'src/app/shared/helpers/keepOrder';
 

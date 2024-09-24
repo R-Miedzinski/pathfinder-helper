@@ -5,7 +5,7 @@ import {
   OnInit,
   Output,
 } from '@angular/core';
-import { GameDataService } from '../../services/game-data.service';
+import { GameDataService } from '../../game/services/game-data.service';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subject, takeUntil } from 'rxjs';
 import {
@@ -15,7 +15,7 @@ import {
   BackgroundData,
   Feat,
 } from 'rpg-app-shared-package/dist/public-api';
-import { FeatsService } from '../../services/feats.service';
+import { FeatsService } from '../../game/services/feats.service';
 
 @Component({
   selector: 'app-choose-background-form',

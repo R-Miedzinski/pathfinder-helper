@@ -1,8 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { EnterDataService } from '../services/enter-data.service';
-import { DataCategory, dataCategories } from '../model/data-entry-category';
 import { FormControl } from '@angular/forms';
 import { Subject, takeUntil } from 'rxjs';
+import { dataCategories, DataCategory } from '../model/data-entry-category';
+import { EnterDataService } from '../services/enter-data.service';
 
 @Component({
   selector: 'app-enter-data-form',

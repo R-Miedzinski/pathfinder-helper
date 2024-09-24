@@ -17,9 +17,9 @@ import {
   LevelBonusCategory,
 } from 'rpg-app-shared-package/dist/public-api';
 import { Subject, takeUntil } from 'rxjs';
-import { GameDataService } from '../../services/game-data.service';
-import { FeatsService } from '../../services/feats.service';
-import { LevelUpBonusesService } from '../../services/level-up-bonuses.service';
+import { GameDataService } from '../../game/services/game-data.service';
+import { FeatsService } from '../../game/services/feats.service';
+import { LevelUpBonusesService } from '../../game/services/level-up-bonuses.service';
 
 @Component({
   selector: 'app-choose-class-form',
