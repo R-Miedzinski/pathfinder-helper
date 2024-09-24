@@ -1,6 +1,6 @@
 import { Game } from 'rpg-app-shared-package/dist/public-api'
 import { MongoDBDataLoader } from './mongo-db-data-loader'
-import { Collection, ObjectId } from 'mongodb'
+import { Collection, Document, ObjectId, PushOperator } from 'mongodb'
 
 export class GamesLoader extends MongoDBDataLoader<Game> {
   constructor(
@@ -21,8 +21,10 @@ export class GamesLoader extends MongoDBDataLoader<Game> {
   }
 
   public joinGame(id: string, user: string): Promise<{ message: string }> {
-    return this.db.updateOne({ _id: new ObjectId(id) }, { $push: { users: user } }).then((data) => {
-      return { message: 'Game updated successfully' }
-    })
+    return this.db
+      .updateOne({ _id: new ObjectId(id) }, { $push: { users: user } } as unknown as PushOperator<Document>)
+      .then((data) => {
+        return { message: 'Game updated successfully' }
+      })
   }
 }
