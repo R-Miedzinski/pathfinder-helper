@@ -1,7 +1,7 @@
-import { Collection, DeleteResult, InsertOneResult, UpdateResult } from 'mongodb'
+import { Collection, DeleteResult, Document, InsertOneResult, ObjectId, UpdateResult } from 'mongodb'
 import { CRUDController } from '../controllers/crud-controller'
 
-export abstract class MongoDBDataLoader<T extends { id: string }> implements CRUDController<T> {
+export abstract class MongoDBDataLoader<T extends Document> implements CRUDController<T> {
   constructor(protected db: Collection) {}
 
   public create(entry: T): Promise<InsertOneResult> {
@@ -9,7 +9,7 @@ export abstract class MongoDBDataLoader<T extends { id: string }> implements CRU
   }
 
   public read(id: string): Promise<T> {
-    return this.db.findOne<T>({ id }).then((item) => {
+    return this.db.findOne<T>({ _id: new ObjectId(id) }).then((item) => {
       if (item) {
         return item
       }
@@ -26,10 +26,10 @@ export abstract class MongoDBDataLoader<T extends { id: string }> implements CRU
   }
 
   public update(id: string, entry: T): Promise<UpdateResult<T>> {
-    return this.db.updateOne({ id }, entry)
+    return this.db.updateOne({ _id: new ObjectId(id) }, entry)
   }
 
   public delete(id: string): Promise<DeleteResult> {
-    return this.db.deleteOne({ id })
+    return this.db.deleteOne({ _id: new ObjectId(id) })
   }
 }

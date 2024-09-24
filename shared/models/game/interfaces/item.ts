@@ -1,7 +1,7 @@
 import { ItemType } from "../enums/item-type";
 
 export interface Item {
-  id: string;
+  _id: string;
   name: string;
   itemType: ItemType;
   level: number;

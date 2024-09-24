@@ -3,26 +3,7 @@ import { ReplaySubject, Subject, takeUntil } from 'rxjs';
 import { cloneDeep } from 'lodash';
 import { Spell, SpellType } from 'rpg-app-shared-package/dist/public-api';
 
-export const spellsList: Spell[] = [
-  {
-    id: '1',
-    name: 'spell1',
-    type: SpellType.Spell,
-    level: 1,
-    tradition: ['Arcane'],
-    description: 'description of spell 1',
-    school: 'conjuration',
-  },
-  {
-    id: '2',
-    name: 'spell2',
-    type: SpellType.Cantrip,
-    level: 4,
-    tradition: ['Occult', 'Primal'],
-    description: 'description of spell 2',
-    school: 'destruction',
-  },
-];
+export const spellsList: Spell[] = [];
 
 @Injectable()
 export class SpellsService implements OnDestroy {
@@ -44,7 +25,7 @@ export class SpellsService implements OnDestroy {
   public getSpells(spellIds: string[]): void {
     this.spellList$.next(
       spellIds.map(id => {
-        return spellsList.find(spell => spell.id === id) || ({} as Spell);
+        return spellsList.find(spell => spell._id === id) || ({} as Spell);
       })
     );
   }

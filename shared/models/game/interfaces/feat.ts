@@ -3,7 +3,7 @@ import { CharacterEffect } from "./character-effect";
 import { RulePayload } from "./rule-payload";
 
 export interface Feat {
-  id: string;
+  _id: string;
   name: string;
   level: number;
   category: FeatCategory;

@@ -1,5 +1,5 @@
 export interface Trait {
-  id: string;
+  _id: string;
   name: string;
   description?: string;
 }

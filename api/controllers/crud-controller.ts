@@ -1,4 +1,4 @@
-export abstract class CRUDController<T extends { id: string }> {
+export abstract class CRUDController<T> {
   public abstract create(entry: T): Promise<unknown>
 
   public abstract read(id: string): Promise<T>

@@ -6,6 +6,8 @@ import { UserSettingsComponent } from './user-settings/user-settings.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { UserRoutingModule } from './user-routing.module';
 import { NewGameComponent } from './new-game/new-game.component';
+import { JoinGameComponent } from './join-game/join-game.component';
+import { CreateGameComponent } from './create-game/create-game.component';
 
 @NgModule({
   declarations: [
@@ -13,6 +15,8 @@ import { NewGameComponent } from './new-game/new-game.component';
     GameMenuComponent,
     UserSettingsComponent,
     NewGameComponent,
+    JoinGameComponent,
+    CreateGameComponent,
   ],
   imports: [UserRoutingModule, SharedModule],
 })

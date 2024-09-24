@@ -1,12 +1,16 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { PanelComponent } from './panel/panel.component';
-import { NewCharacterComponent } from './new-character/new-character.component';
+import { userAuthGuard } from 'src/app/shared/guards/user-auth.guard';
 
 const routes: Routes = [
   {
     path: 'new',
-    component: NewCharacterComponent,
+    loadChildren: () =>
+      import('../new-character/new-character.module').then(
+        m => m.NewCharacterModule
+      ),
+    canActivate: [userAuthGuard],
   },
   {
     path: ':id',

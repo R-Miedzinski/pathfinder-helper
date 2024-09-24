@@ -3,12 +3,12 @@
     #drawer
     class="sidenav"
     mode="side"
-    [opened]="showSideNav$ | async"
-  >
+    [opened]="showSideNav$ | async">
     <app-side-nav></app-side-nav>
   </mat-drawer>
   <mat-drawer-content>
     <app-toolbar></app-toolbar>
     <router-outlet></router-outlet>
+    <app-spinner [loadingOnRoutes]="true"></app-spinner>
   </mat-drawer-content>
 </mat-drawer-container>

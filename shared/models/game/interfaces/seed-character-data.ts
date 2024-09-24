@@ -10,7 +10,7 @@ import { EffectChoice } from "./effect-choice";
 import { WeaponProficiency } from "./weapon-proficiency";
 
 export interface SeedCharacterData {
-  id: string;
+  _id: string;
   name: string;
   class: Classes;
   background: string;

@@ -19,9 +19,8 @@ export class UserDataService {
   public hasCharacterInGame(characters: string[]): Observable<boolean> {
     const url = `${environment.apiUrl}/api/user/characters`;
 
-    return this.http.get<string[]>(url).pipe(
-      tap(data => console.log(data)),
-      map(data => data.some(item => characters.includes(item)))
-    );
+    return this.http
+      .get<string[]>(url)
+      .pipe(map(data => data.some(item => characters.includes(item))));
   }
 }

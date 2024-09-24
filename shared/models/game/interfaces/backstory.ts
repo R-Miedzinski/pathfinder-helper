@@ -1,7 +1,6 @@
 import { Alignment } from "../enums/alignment";
 
 export interface Backstory {
-  id: string;
   alignment: Alignment;
   story: string;
   languages: string[];
@@ -24,7 +23,6 @@ export interface Backstory {
 
 export function newBackstory(): Backstory {
   return {
-    id: "",
     alignment: Alignment.N,
     story: "",
     languages: [],

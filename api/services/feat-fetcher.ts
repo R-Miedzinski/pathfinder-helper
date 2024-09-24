@@ -133,7 +133,7 @@ export class FeatFetcher extends MongoDBDataLoader<Feat> {
         const payloadData = (<EffectChoiceData>effect).payload.data
 
         ;(<EffectChoiceData>effect).payload.data = payloadData.map((item) => {
-          item.featId = feat.id
+          item.featId = feat._id
           return item
         })
         acc.push(effect)
@@ -146,7 +146,7 @@ export class FeatFetcher extends MongoDBDataLoader<Feat> {
 
     feat.effect.forEach((effect) => {
       if (effect.effectType === CharacterEffectType.choice) {
-        ;(<EffectChoiceData>effect).payload.data.forEach((choice) => (choice.featId = feat.id))
+        ;(<EffectChoiceData>effect).payload.data.forEach((choice) => (choice.featId = feat._id))
       }
     })
   }

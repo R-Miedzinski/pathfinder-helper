@@ -19,6 +19,9 @@ import { LevelBonusComponent } from './components/level-bonus/level-bonus.compon
 import { ToFormGroupPipe } from './pipes/to-form-group.pipe';
 import { ToFormArrayPipe } from './pipes/to-form-array.pipe';
 import { ExcludeForFreeBoostPipe } from './pipes/exclude-for-free-boost.pipe';
+import { SpinnerComponent } from './components/spinner/spinner.component';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { SpinnerInterceptor } from './interceptors/spinner.interceptor';
 
 @NgModule({
   declarations: [
@@ -39,6 +42,7 @@ import { ExcludeForFreeBoostPipe } from './pipes/exclude-for-free-boost.pipe';
     FeatChoiceComponent,
     LevelBonusComponent,
     ExcludeForFreeBoostPipe,
+    SpinnerComponent,
   ],
   imports: [CommonModule, MaterialModule, FormsModule, ReactiveFormsModule],
   exports: [
@@ -63,6 +67,14 @@ import { ExcludeForFreeBoostPipe } from './pipes/exclude-for-free-boost.pipe';
     FeatChoiceComponent,
     LevelBonusComponent,
     ExcludeForFreeBoostPipe,
+    SpinnerComponent,
+  ],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: SpinnerInterceptor,
+      multi: true,
+    },
   ],
 })
 export class SharedModule {}

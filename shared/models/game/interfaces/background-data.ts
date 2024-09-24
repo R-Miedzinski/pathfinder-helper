@@ -4,7 +4,7 @@ import { Skills } from "../enums/skills";
 import { AbilityBoost } from "./ability-boost";
 
 export interface BackgroundData {
-  id: string;
+  _id: string;
   name: string;
   description: string;
   boosts: AbilityBoost[];

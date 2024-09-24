@@ -8,10 +8,7 @@ import keepOrder from 'src/app/shared/helpers/keepOrder';
 import { AbstractControl, FormBuilder, FormGroup } from '@angular/forms';
 import { AbilitiesService } from '../services/abilities.service';
 import { cloneDeep } from 'lodash';
-import {
-  Ability,
-  CharacterSheetMode,
-} from 'rpg-app-shared-package/dist/public-api';
+import { Ability } from 'rpg-app-shared-package/dist/public-api';
 
 @Component({
   selector: 'app-ability-scores',
@@ -42,7 +39,7 @@ export class AbilityScoresComponent implements OnInit {
   protected createFormGroup(abilities: Ability[]): AbstractControl[] {
     let formControlObj: any = {};
     abilities.forEach(ability => {
-      formControlObj[ability.id] = ability.score;
+      formControlObj[ability.name] = ability.score;
     });
 
     return formControlObj;
@@ -51,7 +48,7 @@ export class AbilityScoresComponent implements OnInit {
   protected valueChanged(ability: Ability): void {
     const updatedAbility = cloneDeep(ability);
     updatedAbility.score =
-      this.abilitiesForm.get(ability.id)?.value ?? ability.score;
+      this.abilitiesForm.get(ability.name)?.value ?? ability.score;
 
     this.abilitiesService.abilityChangeHandler(updatedAbility);
   }

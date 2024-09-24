@@ -9,12 +9,10 @@ export class TraitsLoader extends MongoDBDataLoader<Trait> {
 
   public async read(id: string): Promise<Trait> {
     return super.read(id).catch(() => {
+      console.log('creating default trait')
       return {
-        id,
-        name: id
-          .split('-')
-          .map((word) => word[0].toUpperCase() + word.slice(1))
-          .join(' '),
+        _id: id,
+        name: 'Placeholder',
         description: `Trait with id ${id} not found`,
       }
     })

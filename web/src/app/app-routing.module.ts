@@ -4,7 +4,6 @@ import { PageNotFoundComponent } from './core/page-not-found/page-not-found.comp
 import { MainComponent } from './core/main/main.component';
 import { InfoAndLicensesComponent } from './core/info-and-licenses/info-and-licenses.component';
 import { LogInComponent } from './core/log-in/log-in.component';
-import { EnterDataFormComponent } from './core/enter-data-form/enter-data-form.component';
 import { postDataGuard } from './shared/guards/post-data.guard';
 import { userAuthGuard } from './shared/guards/user-auth.guard';
 
@@ -18,7 +17,10 @@ const routes: Routes = [
   { path: 'log-in', component: LogInComponent },
   {
     path: 'enter-data',
-    component: EnterDataFormComponent,
+    loadChildren: () =>
+      import('./feature/enter-data/enter-data.module').then(
+        m => m.EnterDataModule
+      ),
     canActivate: [postDataGuard],
   },
   { path: 'info', component: InfoAndLicensesComponent },
