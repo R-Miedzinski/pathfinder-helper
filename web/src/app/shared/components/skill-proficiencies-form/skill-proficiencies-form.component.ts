@@ -90,16 +90,16 @@ export class SkillProficienciesFormComponent
   }
 
   protected override updateValue(): void {
-    const upgradedSkills = this.availableSkills?.filter(
-      this.filterUnchangedSkill
+    const updatedSkills = this.availableSkills?.filter(
+      this.filterUnchangedSkill.bind(this)
     );
 
-    this.onChange(upgradedSkills);
-    this.valueChange.emit(upgradedSkills);
+    this.onChange(updatedSkills);
+    this.valueChange.emit(updatedSkills);
   }
 
   protected canDecrease(skill: Skill): boolean {
-    return this.filterUnchangedSkill(skill);
+    return this.filterUnchangedSkill.bind(this)(skill);
   }
 
   private initProficienciesForm(): void {
