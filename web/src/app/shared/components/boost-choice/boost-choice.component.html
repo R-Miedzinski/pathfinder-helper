@@ -1,0 +1,26 @@
+<form [formGroup]="chosenAbility" *ngIf="!isSetValue">
+  <div class="form-radio-group">
+    <fieldset
+      class="ability"
+      *ngFor="let ability of abilities | keyvalue : keepOrderLocal"
+      [disabled]="disabledAbilities.get(ability.value) || disabled">
+      <label [for]="ability.value + componentId">{{ ability.value }}</label>
+      <input
+        [id]="ability.value + componentId"
+        name="ability"
+        type="radio"
+        [value]="ability.value"
+        formControlName="ability" />
+    </fieldset>
+  </div>
+</form>
+<div *ngIf="isSetValue">
+  <div class="form-radio-group">
+    <div
+      class="ability ability--set"
+      *ngIf="chosenAbility.get('ability')?.value">
+      <input type="checkbox" checked="true" />
+      <label>{{ chosenAbility.get('ability')?.value }}</label>
+    </div>
+  </div>
+</div>

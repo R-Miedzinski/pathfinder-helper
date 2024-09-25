@@ -1,0 +1,19 @@
+{
+  "id": "maneuver-in-flight",
+  "name": "Maneuver in Flight",
+  "description": "You try a difficult maneuver while flying. Attempt an Acrobatics \ncheck. The GM determines what maneuvers are possible, but \nthey rarely allow you to move farther than your fly Speed.\n Success You succeed at the maneuver.",
+  "type": "Skilled",
+  "source": "basic",
+  "effects": {
+    "criticalSuccess": null,
+    "success": "You succeed at the maneuver.",
+    "failure": "Your maneuver fails. The GM chooses if you simply \ncan’t move or if some other detrimental effect happens. \nThe outcome should be appropriate for the maneuver you \nattempted (for instance, being blown off course if you were \ntrying to fly against a strong wind).",
+    "criticalFailure": " As failure, but the consequence is more dire."
+  },
+  "cost": 1,
+  "skill": "Acrobatics",
+  "materials": null,
+  "traits": ["move"],
+  "trigger": null,
+  "rules": "You have a fly Speed"
+}

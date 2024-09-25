@@ -1,0 +1,52 @@
+<form [formGroup]="skillsForm">
+  <div *ngFor="let skill of skills" class="skill">
+    <label [for]="skill.name">
+      <span *ngIf="skill.specialty">{{ skill.specialty }}</span>
+      {{ skill.name }}
+    </label>
+    <div class="proficiency">{{ skill.level }}</div>
+    <div>{{ skill.value }}</div>
+    <div>{{ skill.ability }}</div>
+  </div>
+</form>
+<div class="block">
+  <h3>Weapon Proficiencies:</h3>
+  <ul>
+    <li *ngFor="let weapon of weapons" class="skill">
+      <label>
+        {{ weapon.type }}
+      </label>
+      <div class="proficiency">{{ weapon.level }}</div>
+      <div>{{ profToValMap.get(weapon.level) }}</div>
+    </li>
+  </ul>
+  <h3>Armor Proficiencies:</h3>
+  <ul>
+    <li *ngFor="let armor of armores" class="skill">
+      <label>
+        {{ armor.type }}
+      </label>
+      <div class="proficiency">{{ armor.level }}</div>
+      <div>{{ profToValMap.get(armor.level) }}</div>
+    </li>
+  </ul>
+</div>
+<div class="block" *ngIf="classDC">
+  <h3>Class Proficiencies:</h3>
+  <ul>
+    <li class="skill">
+      <label>Key Ability: </label>
+      <div class="proficiency">{{ classDC.ability }}</div>
+    </li>
+    <li class="skill" *ngIf="classDC.savingThrow">
+      <label> Class DC </label>
+      <div class="proficiency">{{ classDC.savingThrow.level }}</div>
+      <div>{{ classDC.savingThrow.value }}</div>
+    </li>
+    <li class="skill" *ngIf="classDC.attack">
+      <label> Class Attack Bonus </label>
+      <div class="proficiency">{{ classDC.attack.level }}</div>
+      <div>{{ classDC.attack.value }}</div>
+    </li>
+  </ul>
+</div>

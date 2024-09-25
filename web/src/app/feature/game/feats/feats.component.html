@@ -1,0 +1,62 @@
+<mat-grid-list cols="4" rowHeight="{{ rowHeight }}rem">
+  <mat-grid-tile [colspan]="1" [rowspan]="5">
+    <div class="feat-list">
+      <h3>Ancestry feats</h3>
+      <ul>
+        <li *ngFor="let feat of ancestryFeats">
+          <app-feat
+            [choiceData]="featChoices.get(feat._id)"
+            [feat]="feat"></app-feat>
+        </li>
+      </ul>
+    </div>
+  </mat-grid-tile>
+  <mat-grid-tile [colspan]="1" [rowspan]="5">
+    <div class="feat-list">
+      <h3>Skill feats</h3>
+      <ul>
+        <li *ngFor="let feat of skillFeats">
+          <app-feat
+            [choiceData]="featChoices.get(feat._id)"
+            [feat]="feat"></app-feat>
+        </li>
+      </ul>
+    </div>
+  </mat-grid-tile>
+  <mat-grid-tile [colspan]="1" [rowspan]="3">
+    <div class="feat-list">
+      <h3>General feats</h3>
+      <ul>
+        <li *ngFor="let feat of generalFeats">
+          <app-feat
+            [choiceData]="featChoices.get(feat._id)"
+            [feat]="feat"></app-feat>
+        </li>
+      </ul>
+    </div>
+  </mat-grid-tile>
+  <mat-grid-tile [colspan]="1" [rowspan]="5">
+    <div class="feat-list">
+      <h3>Class feats</h3>
+      <ul>
+        <li *ngFor="let feat of classFeats">
+          <app-feat
+            [choiceData]="featChoices.get(feat._id)"
+            [feat]="feat"></app-feat>
+        </li>
+      </ul>
+    </div>
+  </mat-grid-tile>
+  <mat-grid-tile [colspan]="1" [rowspan]="2">
+    <div class="feat-list">
+      <h3>Bonus feats</h3>
+      <ul>
+        <li *ngFor="let feat of bonusFeats">
+          <app-feat
+            [choiceData]="featChoices.get(feat._id)"
+            [feat]="feat"></app-feat>
+        </li>
+      </ul>
+    </div>
+  </mat-grid-tile>
+</mat-grid-list>

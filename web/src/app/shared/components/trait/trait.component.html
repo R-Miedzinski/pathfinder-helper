@@ -1,0 +1,12 @@
+<ng-container *ngIf="trait$ | async as trait">
+  <app-hover-card [position]="position" [hoverCardWidth]="19.6">
+    <div class="trait" hoverable>
+      <span>
+        {{ trait.name }}
+      </span>
+    </div>
+    <div class="trait-description" card-content *ngIf="trait.description">
+      <span [innerHTML]="trait.description | sanitazeHTML"></span>
+    </div>
+  </app-hover-card>
+</ng-container>

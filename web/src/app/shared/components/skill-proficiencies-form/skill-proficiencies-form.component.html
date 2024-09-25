@@ -1,0 +1,29 @@
+<div>
+  <div class="form__info">
+    <div>
+      <h4>Proficiencies to add:</h4>
+      <span>
+        {{ toChange }}
+      </span>
+    </div>
+    <div>
+      <h4>Max Level:</h4>
+      <span>
+        {{ maxLevel }}
+      </span>
+    </div>
+  </div>
+  <form class="form">
+    <ng-container *ngFor="let skill of availableSkills; index as i">
+      <app-skill-input
+        [(value)]="skill.level"
+        [skillName]="skill.name"
+        [skillAbility]="skill.ability"
+        [skillSpecialty]="skill.specialty"
+        [disableIncrease]="disableIncrease"
+        [disableDecrease]="!canDecrease(skill)"
+        [maxLevel]="maxLevel"
+        (levelChange)="onLevelChange($event)"></app-skill-input>
+    </ng-container>
+  </form>
+</div>

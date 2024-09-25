@@ -1,0 +1,21 @@
+{
+  "id": "half-elf",
+  "name": "Half-elf",
+  "description": "A half-elf is born to an elf and a human, or to two half-elves. The life of a half-elf can be difficult, often marked by a struggle to fit in.",
+  "boosts": [
+    {
+      "type": "free",
+      "abilities": []
+    },
+    {
+      "type": "free",
+      "abilities": []
+    }
+  ],
+  "flaws": [],
+  "size": "Small",
+  "baseSpeed": 25,
+  "languages": ["Common"],
+  "traits": ["Human", "Half-elf", "Humanoid"],
+  "baseHp": 8
+}

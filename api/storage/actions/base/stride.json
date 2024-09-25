@@ -1,0 +1,1 @@
+{"id":"stride","name":"Stride","description":"You move up to your Speed (page 463).","type":"Encounter","source":"basic","effects":{"criticalSuccess":null,"success":null,"failure":null,"criticalFailure":null},"cost":1,"skill":null,"materials":null,"traits":["move"],"trigger":null,"rules":null}

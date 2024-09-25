@@ -1,0 +1,120 @@
+<form [formGroup]="backstoryForm" class="backstory__form">
+  <div class="backstory__form-group half-width">
+    <label for="characterName" class="backstory__label required">
+      Character Name:
+    </label>
+    <input type="text" id="characterName" [formControl]="nameControl" />
+  </div>
+  <div class="backstory__form-group half-width">
+    <label for="alignment" class="backstory__label required">
+      Alignment:
+    </label>
+    <select
+      id="alignment"
+      type="select"
+      class="backstory__input"
+      formControlName="alignment">
+      <option
+        *ngFor="let alignment of alignments | keyvalue : keepOrderLocal"
+        [value]="alignment.value">
+        {{ alignment.value }}
+      </option>
+    </select>
+  </div>
+  <div class="backstory__form-group full-width">
+    <label for="story" class="backstory__label required">Backstory:</label>
+    <textarea
+      id="story"
+      class="backstory__input"
+      formControlName="story"></textarea>
+  </div>
+  <div class="backstory__form-group third-width">
+    <label for="nationality" class="backstory__label">Nationality:</label>
+    <input
+      type="text"
+      id="nationality"
+      class="backstory__input"
+      formControlName="nationality" />
+  </div>
+  <div class="backstory__form-group third-width">
+    <label for="ethnicity" class="backstory__label">Ethnicity:</label>
+    <input
+      type="text"
+      id="ethnicity"
+      class="backstory__input"
+      formControlName="ethnicity" />
+  </div>
+  <div class="backstory__form-group third-width">
+    <label for="deity" class="backstory__label">Deity:</label>
+    <input
+      type="text"
+      id="deity"
+      class="backstory__input"
+      formControlName="deity" />
+  </div>
+  <div class="backstory__form-group third-width">
+    <label for="age" class="backstory__label">Age:</label>
+    <input
+      type="text"
+      id="age"
+      class="backstory__input"
+      formControlName="age" />
+  </div>
+  <div class="backstory__form-group third-width">
+    <label for="height" class="backstory__label">Height:</label>
+    <input
+      type="text"
+      id="height"
+      class="backstory__input"
+      formControlName="height" />
+  </div>
+  <div class="backstory__form-group third-width">
+    <label for="weight" class="backstory__label">Weight:</label>
+    <input
+      type="text"
+      id="weight"
+      class="backstory__input"
+      formControlName="weight" />
+  </div>
+  <div class="backstory__form-group half-width">
+    <label for="gender" class="backstory__label">Gender:</label>
+    <input
+      type="text"
+      id="gender"
+      class="backstory__input"
+      formControlName="gender" />
+  </div>
+  <div class="backstory__form-group half-width">
+    <label for="pronouns" class="backstory__label">Pronouns:</label>
+    <input
+      type="text"
+      id="pronouns"
+      class="backstory__input"
+      formControlName="pronouns" />
+  </div>
+  <div class="backstory__form-group half-width">
+    <label for="attitude" class="backstory__label">Attitude:</label>
+    <textarea id="attitude" class="backstory__input" formControlName="attitude">
+    </textarea>
+  </div>
+  <div class="backstory__form-group half-width">
+    <label for="beliefs" class="backstory__label">Beliefs:</label>
+    <textarea id="beliefs" class="backstory__input" formControlName="beliefs">
+    </textarea>
+  </div>
+  <div class="backstory__form-group half-width">
+    <label for="likes" class="backstory__label">Likes:</label>
+    <textarea id="likes" class="backstory__input" formControlName="likes">
+    </textarea>
+  </div>
+  <div class="backstory__form-group half-width">
+    <label for="dislikes" class="backstory__label">Dislikes:</label>
+    <textarea id="dislikes" class="backstory__input" formControlName="dislikes">
+    </textarea>
+  </div>
+  <div class="backstory__form-group full-width">
+    <label for="notes" class="backstory__label">Notes:</label>
+    <textarea id="notes" class="backstory__input" formControlName="notes">
+    </textarea>
+  </div>
+</form>

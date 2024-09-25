@@ -1,0 +1,18 @@
+{
+  "id": "learn-a-spell",
+  "name": "Learn a Spell",
+  "description": " You can gain access to a new spell of your tradition from \nsomeone who knows that spell or from magical writing like a \nspellbook or scroll. If you can cast spells of multiple traditions, \nyou can Learn a Spell of any of those traditions, but you must \nuse the corresponding skill to do so. For example, if you were \na cleric with the bard multiclass archetype, you couldn’t use \nReligion to add an occult spell to your bardic spell repertoire.\n To learn the spell, you must do the following:\n • Spend 1 hour per level of the spell, during which you \nmust remain in conversation with a person who knows \nthe spell or have the magical writing in your possession.\n • Have materials with the Price indicated in Table 4–3. \n• Attempt a skill check for the skill corresponding to your \ntradition (DC determined by the GM, often close to the \nDC on Table 4–3). Uncommon or rare spells have higher \nDCs; full guidelines for the GM appear on page 503.\n If you have a spellbook, Learning a Spell lets you add the \nspell to your spellbook; if you prepare spells from a list, it’s \nadded to your list; if you have a spell repertoire, you can select \nit when you add or swap spells.",
+  "type": "Exploration",
+  "source": "basic",
+  "effects": {
+    "criticalSuccess": "You expend half the materials and learn the spell. ",
+    "success": "You expend the materials and learn the spell.",
+    "failure": "You fail to learn the spell but can try again after you \ngain a level. The materials aren’t expended.",
+    "criticalFailure": "As failure, plus you expend half the materials."
+  },
+  "cost": null,
+  "materials": null,
+  "traits": ["concentrate", "exploration"],
+  "trigger": null,
+  "rules": "You have a spellcasting class feature, and the \nspell you want to learn is on your magical tradition’s spell list."
+}

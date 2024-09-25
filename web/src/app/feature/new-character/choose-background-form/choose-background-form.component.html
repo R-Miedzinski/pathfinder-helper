@@ -1,0 +1,74 @@
+<form
+  [formGroup]="backgroundForm"
+  class="new-character-form background-form"
+  *ngIf="backgrounds.length">
+  <div class="background__choice">
+    <label for="background" class="required">
+      Choose characters background:
+    </label>
+    <select id="background" formControlName="background">
+      <option value="" disabled selected hidden>Choose a Background</option>
+      <option *ngFor="let value of backgrounds" [value]="value.id">
+        {{ value.name }}
+      </option>
+    </select>
+  </div>
+  <ng-container *ngIf="chosenBackground">
+    <div class="background__name">
+      <h4 class="background__label">Chosen Background:</h4>
+      {{ chosenBackground.name }}
+    </div>
+    <div class="background__description">
+      <h4 class="background__label">Description:</h4>
+      {{ chosenBackground.description }}
+    </div>
+    <div class="background__abilities">
+      <h4 class="background__label" class="required">Ability Boosts Gained:</h4>
+      <ul formArrayName="boosts">
+        <li *ngFor="let boost of backgroundBoosts.controls; let i = index">
+          <div [formGroupName]="i" [ngSwitch]="chosenBackground.boosts[i].type">
+            <app-boost-choice
+              [formControl]="boost.get('boost')! | toFormControl"
+              [exclude]="backgroundBoosts.value | excludeForFreeBoost : i"
+              *ngSwitchCase="boostTypes.free"></app-boost-choice>
+            <app-boost-choice
+              [formControl]="boost.get('boost')! | toFormControl"
+              [exclude]="backgroundBoosts.value | excludeForFreeBoost : i"
+              [enableOnly]="chosenBackground.boosts[i].abilities"
+              *ngSwitchCase="boostTypes.choice"></app-boost-choice>
+            <app-boost-choice
+              [formControl]="boost.get('boost')! | toFormControl"
+              [enableOnly]="chosenBackground.boosts[i].abilities"
+              *ngSwitchCase="boostTypes.set"></app-boost-choice>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <div
+      class="background__skills"
+      *ngIf="chosenBackground.proficiencies?.length">
+      <h4 class="background__label">Skill Proficiencies Gained:</h4>
+      <ul>
+        <li *ngFor="let proficiency of chosenBackground.proficiencies">
+          You become
+          <strong>
+            {{ proficiency.level }}
+          </strong>
+          in
+          <strong>
+            <ng-container *ngIf="proficiency.specialty">
+              {{ proficiency.specialty }}
+            </ng-container>
+            {{ proficiency.name }}
+          </strong>
+        </li>
+      </ul>
+    </div>
+    <div *ngIf="chosenBackground.feats?.length">
+      <app-feat-choice
+        *ngFor="let feat of chosenBackground.feats"
+        [feats]="[feat]"
+        label="Background"></app-feat-choice>
+    </div>
+  </ng-container>
+</form>

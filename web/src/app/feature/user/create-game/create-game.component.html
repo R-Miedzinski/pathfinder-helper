@@ -1,0 +1,22 @@
+<h2>Create new game</h2>
+
+<form [formGroup]="newGameForm" class="game-form">
+  <mat-form-field>
+    <mat-label>Name of the game</mat-label>
+    <input type="text" matInput formControlName="name" />
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Description</mat-label>
+    <textarea matInput formControlName="description"></textarea>
+  </mat-form-field>
+</form>
+<div class="button-group">
+  <button mat-raised-button (click)="navigateTo('../new-game')">Cancel</button>
+  <button
+    mat-raised-button
+    color="primary"
+    (click)="submitGame()"
+    [disabled]="!newGameForm.valid">
+    Create
+  </button>
+</div>

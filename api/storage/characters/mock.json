@@ -1,0 +1,75 @@
+{
+  "id": "1",
+  "name": "CHAR_NAME",
+  "class": "Alchemist",
+  "ancestryFeats": ["A1"],
+  "classFeats": ["C2", "C5"],
+  "skillFeats": ["S8"],
+  "bonusFeats": ["B6"],
+  "generalFeats": ["G4"],
+  "race": "Dwarf",
+  "level": 1,
+  "boosts": [
+    "Strength",
+    "Strength",
+    "Strength",
+    "Strength",
+    "Strength",
+    "Dexterity",
+    "Dexterity",
+    "Constitution",
+    "Constitution"
+  ],
+  "flaws": ["Intelligence", "Intelligence", "Wisdom"],
+  "skills": [
+    { "name": "Acrobatics", "level": "Master", "ability": "Dexterity" },
+    { "name": "Athletics", "level": "Trained", "ability": "Strength" },
+    { "name": "Occultism", "level": "Legendary", "ability": "Intelligence" },
+    { "name": "Thievery", "level": "Expert", "ability": "Dexterity" }
+  ],
+  "savingThrows": [
+    { "name": "Fortitude", "level": "Legendary" },
+    { "name": "Will", "level": "Trained" }
+  ],
+  "inventory": [
+    { "itemId": "1", "count": 1 },
+    { "itemId": "2", "count": 2 },
+    { "itemId": "3", "count": 3 },
+    { "itemId": "4", "count": 1 }
+  ],
+  "spells": ["1", "2"],
+  "actions": ["1", "2", "3", "4", "5"],
+  "equippedItems": [{ "itemId": "4", "count": 1 }],
+  "investedItems": [],
+  "backstory": {
+    "id": "1",
+    "alignment": "Chaotic Evil",
+    "story": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vehicula justo sed risus lacinia, at sagittis lorem malesuada. Vivamus ultricies ullamcorper tortor, non bibendum turpis commodo at. Maecenas nunc lacus, luctus id ante at, egestas ornare tortor. Morbi id erat at ipsum luctus facilisis. In at pretium nisl. Praesent finibus iaculis justo. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Donec a lacus sed turpis lobortis scelerisque. Vivamus bibendum tortor id rhoncus aliquet.</p>\n<p>Proin viverra metus ac vulputate accumsan. Praesent aliquet sit amet metus ut faucibus. Vestibulum varius condimentum tellus, sed cursus dui sodales sed. Pellentesque vestibulum at risus vitae suscipit. Sed id venenatis dolor. Vivamus enim augue, tristique a facilisis nec, elementum et eros. Aliquam at velit enim. Morbi ut sollicitudin magna. Fusce ac ipsum lacus. Praesent facilisis ut ipsum a euismod. Nam eu urna augue. Maecenas vulputate vulputate eros, nec porttitor arcu ornare eu. Nam malesuada lacus aliquam lectus elementum laoreet. Suspendisse orci ex, maximus quis dolor eget, egestas auctor tellus.</p>\n<p>Phasellus augue erat, rutrum non nisl eu, posuere vestibulum velit. Aliquam sagittis faucibus ornare. Sed eros dolor, finibus non egestas et, fringilla quis magna. Duis sagittis elementum aliquam. Sed sit amet enim eros. Aliquam lacinia commodo quam ut congue. Nam mollis lectus et condimentum iaculis. Sed augue orci, pulvinar rhoncus tortor ac, pharetra pretium ipsum.</p>",
+    "image": "some test image",
+    "languages": ["lang1", "lang2", "lang3"],
+    "notes": "Some other notes",
+    "nationality": "Aussie",
+    "ethnicity": "Also Aussie",
+    "age": "Old",
+    "gender": "man",
+    "pronouns": "he/him",
+    "height": 1.23,
+    "weight": "overweight",
+    "appearence": "overweight aussie",
+    "attitude": "fine, acceptable",
+    "beliefs": "chemtrail enthusiast",
+    "likes": "chemtrails",
+    "dislikes": "wind and grass",
+    "deity": "Grand Kangaroo"
+  },
+  "hp": { "temporary": 5 },
+  "attacks": [
+    { "type": "Simple", "level": "Trained" },
+    { "type": "Bomb", "level": "Trained" },
+    { "type": "Unarmed", "level": "Trained" }
+  ],
+  "defences": [
+    { "type": "Light armor", "level": "Trained" },
+    { "type": "Unarmored", "level": "Trained" }
+  ]
+}

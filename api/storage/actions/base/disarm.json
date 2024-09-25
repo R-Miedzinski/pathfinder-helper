@@ -1,0 +1,19 @@
+{
+  "id": "disarm",
+  "name": "Disarm",
+  "description": "You try to knock something out of an opponent’s grasp. \nAttempt an Athletics check against the opponent’s Reflex DC.",
+  "type": "Skilled",
+  "source": "basic",
+  "effects": {
+    "criticalSuccess": "You knock the item out of the opponent’s \ngrasp. It falls to the ground in the opponent’s space.",
+    "success": "You weaken your opponent’s grasp on the item. Until \nthe start of that creature’s turn, attempts to Disarm the \nopponent of that item gain a +2 circumstance bonus, and \nthe target takes a –2 circumstance penalty to attacks with \nthe item or other checks requiring a firm grasp on the item.",
+    "failure": null,
+    "criticalFailure": "You lose your balance and become flat-footed \nuntil the start of your next turn."
+  },
+  "cost": 1,
+  "skill": "Athletics",
+  "materials": null,
+  "traits": [],
+  "trigger": null,
+  "rules": "You have at least one hand free. The target \ncan’t be more than one size larger than you."
+}

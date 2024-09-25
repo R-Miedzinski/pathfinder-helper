@@ -1,0 +1,230 @@
+<ng-container [ngSwitch]="effectType">
+  <ng-container *ngSwitchCase="effectTypes.action">
+    <mat-form-field *ngIf="payloadForm.get('actionId') as control">
+      <mat-label>Actions granted:</mat-label>
+      <mat-select
+        placeholder="Select Actions"
+        [formControl]="control | toFormControl"
+        [multiple]="true">
+        <mat-select-trigger>
+          {{ getActionName(control.value?.[0]) }}
+          <span *ngIf="(control.value?.length || 0) > 1">
+            (+{{ (control.value?.length || 0) - 1 }}
+            {{ control.value?.length === 2 ? 'other' : 'others' }})
+          </span>
+        </mat-select-trigger>
+        <input (keyup)="filterActions($event)" />
+        <mat-option *ngFor="let action of filteredActions" [value]="action.id">
+          {{ action.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </ng-container>
+  <ng-container *ngSwitchCase="effectTypes.armor">
+    <mat-form-field *ngIf="payloadForm.get('armor') as control">
+      <mat-label>Armor Type:</mat-label>
+      <mat-select
+        placeholder="Select Armor Type"
+        [formControl]="control | toFormControl">
+        <mat-option
+          *ngFor="let category of armorCategories | keyvalue : keepOrderLocal"
+          [value]="category.value">
+          {{ category.value }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field *ngIf="payloadForm.get('level') as control">
+      <mat-label>Proficiency level granted:</mat-label>
+      <mat-select
+        placeholder="Select Proficiency Level"
+        [formControl]="control | toFormControl">
+        <mat-option
+          *ngFor="let level of proficiencies | keyvalue : keepOrderLocal"
+          [value]="level.value">
+          {{ level.value }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </ng-container>
+  <ng-container *ngSwitchCase="effectTypes.boost">
+    <div class="form-field">
+      <label>Boost granted:</label>
+      <app-boost-choice
+        *ngIf="payloadForm.get('boost') as control"
+        [formControl]="control | toFormControl"></app-boost-choice>
+    </div>
+  </ng-container>
+  <ng-container *ngSwitchCase="effectTypes.choice">
+    <div class="array" *ngIf="choicesArray">
+      <div
+        class="array__item"
+        *ngFor="let control of choicesArray.controls; let i = index"
+        [formGroup]="control | toFormGroup">
+        <button (click)="removeChoiceEffect(i)">
+          <mat-icon>cancel</mat-icon>
+        </button>
+        <mat-form-field>
+          <mat-label>Choice Name:</mat-label>
+          <input matInput type="text" formControlName="choiceName" />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Description:</mat-label>
+          <input matInput type="text" formControlName="description" />
+        </mat-form-field>
+        <ng-container>
+          <div
+            *ngFor="
+              let effectControl of (control.get('effect')! | toFormArray)
+                .controls;
+              let j = index
+            "
+            [formGroup]="effectControl | toFormGroup">
+            <button (click)="removeEffect(j, i)">
+              <mat-icon>cancel</mat-icon>
+            </button>
+            <mat-form-field>
+              <mat-label>Effect</mat-label>
+              <mat-select
+                formControlName="effectType"
+                placeholder="Choose effect type...">
+                <mat-option
+                  *ngFor="let type of getEffectTypes()"
+                  [value]="type">
+                  {{ type }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field class="effect__type">
+              <mat-label>Level</mat-label>
+              <input matInput type="number" formControlName="level" />
+            </mat-form-field>
+            <app-add-effect
+              *ngIf="effectControl.get('effectType')?.value"
+              formControlName="payload"
+              [effectType]="
+                effectControl.get('effectType')?.value
+              "></app-add-effect>
+          </div>
+          <button (click)="addEffect(i)">+ Add Choice Effect</button>
+        </ng-container>
+      </div>
+      <button (click)="addChoiceEffect()">+ Add Choice</button>
+    </div>
+  </ng-container>
+  <ng-container *ngSwitchCase="effectTypes.description"></ng-container>
+  <ng-container *ngSwitchCase="effectTypes.feat">
+    <mat-form-field *ngIf="payloadForm.get('featId') as control">
+      <mat-label>Feats granted:</mat-label>
+      <mat-select
+        placeholder="Select Feats"
+        [formControl]="control | toFormControl"
+        [multiple]="true">
+        <mat-select-trigger>
+          {{ getFeatName(control.value?.[0]) }}
+          <span *ngIf="(control.value?.length || 0) > 1">
+            (+{{ (control.value?.length || 0) - 1 }}
+            {{ control.value?.length === 2 ? 'other' : 'others' }})
+          </span>
+        </mat-select-trigger>
+        <input (keyup)="filterFeats($event)" />
+        <mat-option *ngFor="let feat of filteredFeats" [value]="feat.id">
+          {{ feat.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </ng-container>
+  <ng-container *ngSwitchCase="effectTypes.flaw">
+    <div class="form-field">
+      <label>Flaw granted:</label>
+      <app-boost-choice
+        *ngIf="payloadForm.get('flaw') as control"
+        [formControl]="control | toFormControl"></app-boost-choice>
+    </div>
+  </ng-container>
+  <ng-container *ngSwitchCase="effectTypes.savingThrow">
+    <mat-form-field *ngIf="payloadForm.get('savingThrow') as control">
+      <mat-label>Saving Throw:</mat-label>
+      <mat-select
+        placeholder="Select Saving Throw Type"
+        [formControl]="control | toFormControl">
+        <mat-option
+          *ngFor="let category of savingThrows | keyvalue : keepOrderLocal"
+          [value]="category.value">
+          {{ category.value }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field *ngIf="payloadForm.get('level') as control">
+      <mat-label>Proficiency level granted:</mat-label>
+      <mat-select
+        placeholder="Select Proficiency Level"
+        [formControl]="control | toFormControl">
+        <mat-option
+          *ngFor="let level of proficiencies | keyvalue : keepOrderLocal"
+          [value]="level.value">
+          {{ level.value }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </ng-container>
+  <ng-container *ngSwitchCase="effectTypes.skill">
+    <mat-form-field *ngIf="payloadForm.get('skill') as control">
+      <mat-label>Skill name:</mat-label>
+      <mat-select
+        placeholder="Select Skill"
+        [formControl]="control | toFormControl">
+        <mat-option
+          *ngFor="let category of skills | keyvalue : keepOrderLocal"
+          [value]="category.value">
+          {{ category.value }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field *ngIf="payloadForm.get('level') as control">
+      <mat-label>Proficiency level granted:</mat-label>
+      <mat-select
+        placeholder="Select Proficiency Level"
+        [formControl]="control | toFormControl">
+        <mat-option
+          *ngFor="let level of proficiencies | keyvalue : keepOrderLocal"
+          [value]="level.value">
+          {{ level.value }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field
+      *ngIf="
+        payloadForm.get('skill')?.value === skillLore &&
+        payloadForm.get('specialty') as control
+      ">
+      <mat-label>Skill Specialty (optional):</mat-label>
+      <input matInput type="text" [formControl]="control | toFormControl" />
+    </mat-form-field>
+  </ng-container>
+  <ng-container *ngSwitchCase="effectTypes.weapon">
+    <mat-form-field *ngIf="payloadForm.get('weapon') as control">
+      <mat-label>Weapon Group:</mat-label>
+      <mat-select
+        placeholder="Select Weapon Group"
+        [formControl]="control | toFormControl">
+        <mat-option
+          *ngFor="let category of weaponGroups | keyvalue : keepOrderLocal"
+          [value]="category.value">
+          {{ category.value }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field *ngIf="payloadForm.get('level') as control">
+      <mat-label>Proficiency level granted:</mat-label>
+      <mat-select
+        placeholder="Select Proficiency Level"
+        [formControl]="control | toFormControl">
+        <mat-option
+          *ngFor="let level of proficiencies | keyvalue : keepOrderLocal"
+          [value]="level.value">
+          {{ level.value }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </ng-container>
+</ng-container>

@@ -1,0 +1,14 @@
+<mat-grid-list cols="6" rowHeight="{{ rowHeight / 2 }}rem">
+  <mat-grid-tile [colspan]="3" [rowspan]="1">
+    <p>Initiative:{{ initiativeMod }}</p>
+  </mat-grid-tile>
+  <mat-grid-tile [colspan]="3" [rowspan]="1">
+    <p>AC:{{ armorClass }}</p>
+  </mat-grid-tile>
+  <mat-grid-tile
+    [colspan]="1"
+    [rowspan]="1"
+    *ngFor="let mode of speed | keyvalue : keepOrderLocal">
+    <p>{{ mode.key }}:{{ mode.value }}</p>
+  </mat-grid-tile>
+</mat-grid-list>

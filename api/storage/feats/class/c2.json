@@ -1,0 +1,10 @@
+{
+  "id": "c2",
+  "name": "c2",
+  "level": 1,
+  "category": "Class Feat",
+  "traits": ["alchemist", "manipulate"],
+  "description": "Test Feat c2 with different descirption",
+  "rules": [],
+  "effect": [{ "effectType": "Description" }]
+}

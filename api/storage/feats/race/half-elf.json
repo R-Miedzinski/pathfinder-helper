@@ -1,0 +1,10 @@
+{
+  "id": "half-elf",
+  "name": "Half-Elf",
+  "level": 1,
+  "category": "Heritage Feat",
+  "traits": ["human", "half-elf"],
+  "description": " Either one of your parents was an elf, or one or both \nwere half-elves. You have pointed ears and other telltale \nsigns of elf heritage. You gain the elf trait and low-light \nvision. In addition, you can select elf, half-elf, and \nhuman feats whenever you gain an ancestry feat.",
+  "rules": [],
+  "effect": [{ "effectType": "Feat", "payload": { "featId": ["low-light-vision"] } }]
+}

@@ -1,0 +1,21 @@
+{
+  "id": "half-orc",
+  "name": "Half-orc",
+  "description": "A half-orc is the offspring of a human and an orc, or of two half-orcs. Because some intolerant people see orcs as more akin to monsters than people, they sometimes hate and fear half-orcs simply due to their lineage.",
+  "boosts": [
+    {
+      "type": "free",
+      "abilities": []
+    },
+    {
+      "type": "free",
+      "abilities": []
+    }
+  ],
+  "flaws": [],
+  "size": "Small",
+  "baseSpeed": 25,
+  "languages": ["Common"],
+  "traits": ["Human", "Half-orc", "Humanoid"],
+  "baseHp": 8
+}

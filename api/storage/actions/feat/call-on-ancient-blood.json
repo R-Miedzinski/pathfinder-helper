@@ -1,0 +1,9 @@
+{
+  "id": "call-on-ancient-blood",
+  "name": "Call On Ancient Blood",
+  "description": "Your ancestors’ innate resistance to magic surges, before slowly ebbing down. You gain a +1 circumstance bonus to the triggering saving throw and until the end of this turn.",
+  "type": "Encounter",
+  "source": "feat",
+  "cost": -1,
+  "trigger": "You attempt a saving throw against a magical effect, but you haven't rolled yet."
+}

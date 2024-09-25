@@ -1,0 +1,12 @@
+{
+  "id": "formula-book",
+  "name": "Formula Book",
+  "level": 1,
+  "category": "Class Feature",
+  "description": "An alchemist keeps meticulous records of the formulas for every item they can create. You start with a standard formula book worth 10 sp or less (as detailed on page 290) for free. The formula book contains the formulas for two common 1st-level alchemical items of your choice, in addition to those you gained from Alchemical Crafting and your research field. The catalog of alchemical items begins on page 543.Each time you gain a level, you can add the formulas for two common alchemical items to your formula book. These new formulas can be for any level of item you can create. You learn these formulas automatically, but it’s also possible to find or buy additional formulas in settlements or from other alchemists, or to invent them with the Inventor feat (page 262).",
+  "effect": [
+    {
+      "effectType": "Description"
+    }
+  ]
+}

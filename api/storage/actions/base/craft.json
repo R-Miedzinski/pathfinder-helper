@@ -1,0 +1,19 @@
+{
+  "id": "craft",
+  "name": "Craft",
+  "description": " You can make an item from raw materials. You need the \nAlchemical Crafting skill feat to create alchemical items, the \nMagical Crafting skill feat to create magic items, and the Snare \nCrafting feat to create snares.\n To Craft an item, you must meet the following requirements:\n • The item is your level or lower. An item that doesn’t list \na level is level 0. If the item is 9th level or higher, you \nmust be a master in Crafting, and if it’s 16th or higher, \nyou must be legendary.\n • You have the formula for the item; see Getting \nFormulas below for more information.\n • You have an appropriate set of tools and, in many \ncases, a workshop. For example, you need access to a \nsmithy to forge a metal shield.\n • You must supply raw materials worth at least half the \nitem’s Price. You always expend at least that amount \nof raw materials when you Craft successfully. If you’re \nin a settlement, you can usually spend currency to get \nthe amount of raw materials you need, except in the \ncase of rarer precious materials.\n You must spend 4 days at work, at which point you attempt \na Crafting check. The GM determines the DC to Craft the item \nbased on its level, rarity, and other circumstances.\n If your attempt to create the item is successful, you expend \nthe raw materials you supplied. You can pay the remaining \nportion of the item’s Price in materials to complete the item \nimmediately, or you can spend additional downtime days \nworking on it. For each additional day you spend, reduce \nthe value of the materials you need to expend to complete \nthe item. This amount is determined using Table 4–2: Income \nEarned (page 236), based on your proficiency rank in Crafting \nand using your own level instead of a task level. After any of \nthese downtime days, you can complete the item by spending \nthe remaining portion of its Price in materials. If the downtime \ndays you spend are interrupted, you can return to finish \nthe item later, continuing where you left off. An example of \nCrafting appears in the sidebar.",
+  "type": "Skilled",
+  "source": "basic",
+  "effects": {
+    "criticalSuccess": "Your attempt is successful. Each additional \nday spent Crafting reduces the materials needed to complete \nthe item by an amount based on your level + 1 and your \nproficiency rank in Crafting.",
+    "success": "Your attempt is successful. Each additional day spent \nCrafting reduces the materials needed to complete the item \nby an amount based on your level and your proficiency rank.",
+    "failure": "You fail to complete the item. You can salvage the raw \nmaterials you supplied for their full value. If you want to try \nagain, you must start over.",
+    "criticalFailure": "You fail to complete the item. You ruin 10% of \nthe raw materials you supplied, but you can salvage the \nrest. If you want to try again, you must start over."
+  },
+  "cost": null,
+  "skill": "Crafting",
+  "materials": null,
+  "traits": ["downtime", "manipulate"],
+  "trigger": null,
+  "rules": null
+}

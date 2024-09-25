@@ -1,0 +1,34 @@
+<div class="button-group">
+  <button mat-raised-button color="accent" (click)="navigateTo('')">
+    Main
+  </button>
+
+  <button mat-raised-button color="secondary" (click)="navigateTo('info')">
+    Info
+  </button>
+
+  <button
+    mat-raised-button
+    color="primary"
+    mat-raised-button
+    color="primary"
+    (click)="navigateTo('user')">
+    User
+  </button>
+
+  <button
+    mat-raised-button
+    color="warn"
+    (click)="navigateTo('enter-data')"
+    *ngIf="authService.canPostData() | async">
+    Enter Data
+  </button>
+
+  <button
+    mat-raised-button
+    color="warn"
+    (click)="logOut()"
+    *ngIf="authService.isLoggedIn() | async">
+    Log Out
+  </button>
+</div>

@@ -3,5 +3,7 @@ package-lock.json
 npm-debug.log*
 dist
 build
+web
 .idea
 .history
+.env

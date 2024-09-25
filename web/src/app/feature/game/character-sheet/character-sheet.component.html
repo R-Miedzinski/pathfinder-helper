@@ -1,0 +1,77 @@
+<div class="container">
+  <div class="character-sheet__name-band">
+    <div class="character-sheet__block">
+      <span class="character-sheet__label">Name:</span>
+      <span class="character-sheet__data">{{ character.characterName }}</span>
+    </div>
+    <mat-divider [vertical]="true"></mat-divider>
+    <div class="character-sheet__block">
+      <span class="character-sheet__label">Level:</span>
+      <span class="character-sheet__data">{{ character.level }}</span>
+    </div>
+    <mat-divider [vertical]="true"></mat-divider>
+    <div class="character-sheet__block">
+      <span class="character-sheet__label">Race:</span>
+      <span class="character-sheet__data">{{ character.race }}</span>
+    </div>
+    <mat-divider [vertical]="true"></mat-divider>
+    <div class="character-sheet__block">
+      <span class="character-sheet__label">Background:</span>
+      <span class="character-sheet__data">{{ character.background }}</span>
+    </div>
+    <mat-divider [vertical]="true"></mat-divider>
+    <div class="character-sheet__block">
+      <span class="character-sheet__label">Class:</span>
+      <span class="character-sheet__data">{{ character.class }}</span>
+    </div>
+  </div>
+  <div *ngIf="canLevelUp">
+    <button mat-raised-button color="primary" (click)="handleLevelUp()">
+      Level Up
+    </button>
+  </div>
+</div>
+<mat-tab-group>
+  <mat-tab label="Main Page">
+    <app-main-character-page
+      class="container"
+      [rowHeight]="rowHeight"
+      [character]="character"
+      (healthChange)="handleHealthChange($event)" />
+  </mat-tab>
+  <mat-tab label="Feats & Inventory">
+    <div class="container">
+      <mat-grid-list cols="1" rowHeight="{{ rowHeight / 3 }}rem">
+        <mat-grid-tile [rowspan]="5">
+          <app-feats
+            class="grid-field"
+            [featChoices]="featChoices"
+            [rowHeight]="rowHeight / 3"
+            [featList]="featsList$ | async" />
+        </mat-grid-tile>
+        <mat-grid-tile [rowspan]="4">
+          <app-inventory
+            class="grid-field"
+            [inventory]="inventoryWithItems"
+            [investedItems]="investedItems"
+            [equippedItems]="equippedItems"
+            (equipmentChange)="changeEquipment($event)" />
+        </mat-grid-tile>
+      </mat-grid-list>
+    </div>
+  </mat-tab>
+  <mat-tab label="RP page (name pending)">
+    <div class="container">
+      <app-backstory
+        [name]="character.characterName"
+        [race]="character.race"
+        [backstory]="character.backstory"
+        [rowHeight]="rowHeight / 4" />
+    </div>
+  </mat-tab>
+  <mat-tab label="Spell Book">
+    <div class="container">
+      <app-spell-book [spellList]="spellsList | async" />
+    </div>
+  </mat-tab>
+</mat-tab-group>

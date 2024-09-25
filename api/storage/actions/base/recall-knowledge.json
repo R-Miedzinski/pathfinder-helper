@@ -1,0 +1,18 @@
+{
+  "id": "recall-knowledge",
+  "name": "Recall Knowledge",
+  "description": " You attempt a skill check to try to remember a bit of knowledge \nregarding a topic related to that skill. The GM determines the \nDCs for such checks and which skills apply.",
+  "type": "Base",
+  "source": "basic",
+  "effects": {
+    "criticalSuccess": "You recall the knowledge accurately and gain \nadditional information or context.",
+    "success": "You recall the knowledge accurately or gain a useful \nclue about your current situation.",
+    "failure": null,
+    "criticalFailure": "You recall incorrect information or gain an \nerroneous or misleading clue."
+  },
+  "cost": 1,
+  "materials": null,
+  "traits": ["concentrate", "secret"],
+  "trigger": null,
+  "rules": null
+}

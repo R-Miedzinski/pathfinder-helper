@@ -1,0 +1,16 @@
+.modal {
+  padding: 1rem;
+
+  height: 80vh;
+  width: 80vw;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  &__navigation {
+    display: flex;
+    gap: 2rem;
+    justify-content: end;
+  }
+}

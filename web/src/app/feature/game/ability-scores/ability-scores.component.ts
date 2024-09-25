@@ -1,0 +1,55 @@
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  OnInit,
+} from '@angular/core';
+import keepOrder from 'src/app/shared/helpers/keepOrder';
+import { AbstractControl, FormBuilder, FormGroup } from '@angular/forms';
+import { AbilitiesService } from '../services/abilities.service';
+import { cloneDeep } from 'lodash';
+import { Ability } from 'rpg-app-shared-package/dist/public-api';
+
+@Component({
+  selector: 'app-ability-scores',
+  templateUrl: './ability-scores.component.html',
+  styleUrls: ['./ability-scores.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+})
+export class AbilityScoresComponent implements OnInit {
+  @Input() abilityScores: Ability[] = [];
+  protected abilitiesForm!: FormGroup;
+  protected keepOrderLocal = keepOrder;
+
+  constructor(
+    private fb: FormBuilder,
+    private abilitiesService: AbilitiesService
+  ) {}
+
+  public ngOnInit(): void {
+    this.initForm();
+  }
+
+  protected initForm(): void {
+    this.abilitiesForm = this.fb.group(
+      this.createFormGroup(this.abilityScores)
+    );
+  }
+
+  protected createFormGroup(abilities: Ability[]): AbstractControl[] {
+    let formControlObj: any = {};
+    abilities.forEach(ability => {
+      formControlObj[ability.name] = ability.score;
+    });
+
+    return formControlObj;
+  }
+
+  protected valueChanged(ability: Ability): void {
+    const updatedAbility = cloneDeep(ability);
+    updatedAbility.score =
+      this.abilitiesForm.get(ability.name)?.value ?? ability.score;
+
+    this.abilitiesService.abilityChangeHandler(updatedAbility);
+  }
+}

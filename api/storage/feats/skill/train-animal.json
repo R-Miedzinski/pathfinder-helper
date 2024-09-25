@@ -1,0 +1,23 @@
+{
+  "id": "train-animal",
+  "name": "Train Animal",
+  "level": 1,
+  "category": "Skill Feat",
+  "traits": ["Downtime", "General", "Manipulate", "Skill"],
+  "rules": [
+    {
+      "condition": "skill-proficiency",
+      "payload": {
+        "level": "Trained",
+        "skill": "Nature"
+      }
+    }
+  ],
+  "description": "Grants a Train Animal Action: You spend time teaching an animal to do a certain action.",
+  "effect": [
+    {
+      "effectType": "Action",
+      "payload": { "actionId": "train-animal" }
+    }
+  ]
+}

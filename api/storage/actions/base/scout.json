@@ -1,0 +1,14 @@
+{
+  "id": "scout",
+  "name": "Scout",
+  "description": "You scout ahead and behind the group to watch danger, moving \nat half speed. At the start of the next encounter, every creature in \nyour party gains a +1 circumstance bonus to their initiative rolls.",
+  "type": "Exploration",
+  "source": "basic",
+  "effects": { "criticalSuccess": null, "success": null, "failure": null, "criticalFailure": null },
+  "cost": null,
+  "skill": null,
+  "materials": null,
+  "traits": ["concentrate", "exploration"],
+  "trigger": null,
+  "rules": null
+}

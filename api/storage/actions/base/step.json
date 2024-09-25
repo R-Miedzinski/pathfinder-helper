@@ -1,0 +1,14 @@
+{
+  "id": "step",
+  "name": "Step",
+  "description": "You carefully move 5 feet. Unlike most types of movement, \nStepping doesn’t trigger reactions, such as Attacks of Opportunity, \nthat can be triggered by move actions or upon leaving or entering \na square. \nYou can’t Step into difficult terrain (page 475), and you can’t \nStep using a Speed other than your land Speed.",
+  "type": "Encounter",
+  "source": "basic",
+  "effects": { "criticalSuccess": null, "success": null, "failure": null, "criticalFailure": null },
+  "cost": 1,
+  "skill": null,
+  "materials": null,
+  "traits": [],
+  "trigger": null,
+  "rules": "Your Speed is at least 10 feet."
+}

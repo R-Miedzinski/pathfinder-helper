@@ -1,0 +1,92 @@
+<ng-container *ngIf="levelBonus && valueControl">
+  <ng-container [ngSwitch]="levelBonus.category">
+    <ng-container *ngIf="feats$ | async as feats">
+      <ng-container *ngSwitchCase="bonusCategory.addFeat">
+        <div *ngFor="let feat of feats">
+          <app-feat-choice
+            [featsInPossession]="featsInPossession"
+            (effectChoice)="onAddFeatEffectChoice($event, feat)"
+            label="Add"
+            [feats]="[feat]"></app-feat-choice>
+        </div>
+      </ng-container>
+      <ng-container *ngSwitchCase="bonusCategory.classFeat">
+        <div>
+          <app-feat-choice
+            [featsInPossession]="featsInPossession"
+            label="Class"
+            [feats]="feats"
+            [formControl]="valueControl.get('data')! | toFormControl">
+          </app-feat-choice>
+        </div>
+      </ng-container>
+      <ng-container *ngSwitchCase="bonusCategory.ancestralFeat">
+        <div>
+          <app-feat-choice
+            [featsInPossession]="featsInPossession"
+            label="Ancestral"
+            [feats]="feats"
+            [formControl]="valueControl.get('data')! | toFormControl">
+          </app-feat-choice>
+        </div>
+      </ng-container>
+      <ng-container *ngSwitchCase="bonusCategory.generalFeat">
+        <div>
+          <app-feat-choice
+            [featsInPossession]="featsInPossession"
+            label="General"
+            [feats]="feats"
+            [formControl]="valueControl.get('data')! | toFormControl">
+          </app-feat-choice>
+        </div>
+      </ng-container>
+      <ng-container *ngSwitchCase="bonusCategory.skillFeat">
+        <div>
+          <app-feat-choice
+            [featsInPossession]="featsInPossession"
+            label="Skill"
+            [feats]="feats"
+            [formControl]="valueControl.get('data')! | toFormControl">
+          </app-feat-choice>
+        </div>
+      </ng-container>
+    </ng-container>
+    <ng-container *ngSwitchCase="bonusCategory.replaceFeat">
+      <form [formGroup]="featReplaceForm">
+        <app-feat-choice
+          [featsInPossession]="featsInPossession"
+          label="Replace"
+          [feats]="[levelBonus.payload!.toReplace]"
+          formControlName="toReplace"></app-feat-choice>
+        <app-feat-choice
+          [featsInPossession]="featsInPossession"
+          label="New"
+          [feats]="[levelBonus.payload!.replacement]"
+          formControlName="replacement"
+          (effectChoice)="onFeatReplaceChoice($event)"></app-feat-choice>
+      </form>
+    </ng-container>
+    <ng-container *ngSwitchCase="bonusCategory.boost">
+      <h4 class="required">Ability Boosts:</h4>
+      <ul>
+        <li *ngFor="let boost of boostsArray.controls; let i = index">
+          <div>
+            <app-boost-choice
+              [formControl]="boost.get('boost')! | toFormControl"
+              [exclude]="boostsArray.value | excludeForFreeBoost : i">
+            </app-boost-choice>
+          </div>
+        </li>
+      </ul>
+    </ng-container>
+    <ng-container *ngSwitchCase="bonusCategory.skill">
+      <app-skill-proficiencies-form
+        *ngIf="skills?.length"
+        [currentProficiencies]="skills"
+        [toChange]="1"
+        [maxLevel]="maxSkillLevel"
+        [formControl]="skillIncreaseControl"></app-skill-proficiencies-form>
+    </ng-container>
+    <ng-container *ngSwitchDefault> Default </ng-container>
+  </ng-container>
+</ng-container>

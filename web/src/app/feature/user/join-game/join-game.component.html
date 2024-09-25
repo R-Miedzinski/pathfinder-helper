@@ -1,0 +1,38 @@
+<form>
+  <mat-form-field>
+    <mat-label>Search game by name</mat-label>
+    <input type="text" matInput [formControl]="nameControl" />
+  </mat-form-field>
+</form>
+
+<div class="game-cards">
+  <ng-container *ngIf="games.length > 0; else NoGames">
+    <mat-card
+      class="game-cards__card"
+      matRipple
+      [matRippleCentered]="true"
+      (click)="selectGame(i)"
+      [ngClass]="{
+        'game-cards__card--selected': i === selectedGame
+      }"
+      *ngFor="let game of games; let i = index">
+      <mat-card-header>
+        {{ game.name }}
+      </mat-card-header>
+      <mat-card-content> {{ game.description }} </mat-card-content>
+    </mat-card>
+  </ng-container>
+</div>
+
+<ng-template #NoGames>
+  <p>{{ elseMessage }}</p>
+</ng-template>
+
+<button
+  mat-raised-button
+  color="primary"
+  (click)="joinGame()"
+  [disabled]="selectedGame < 0">
+  Join Game
+</button>
+<button mat-raised-button (click)="navigateTo('../new-game')">Back</button>

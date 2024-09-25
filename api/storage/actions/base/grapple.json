@@ -1,0 +1,18 @@
+{
+  "id": "grapple",
+  "name": "Grapple",
+  "description": " You attempt to grab an opponent with your free hand. \nAttempt an Athletics check against their Fortitude DC. \nYou can also Grapple to keep your hold on a creature you \nalready grabbed.",
+  "type": "Encounter",
+  "source": "basic",
+  "effects": {
+    "criticalSuccess": "Your opponent is restrained until the end of \nyour next turn unless you move or your opponent Escapes \n(page 470).",
+    "success": "Your opponent is grabbed until the end of your next \nturn unless you move or your opponent Escapes.",
+    "failure": "You fail to grab your opponent. If you already had \nthe opponent grabbed or restrained using a Grapple, those \nconditions on that creature end.",
+    "criticalFailure": "If you already had the opponent grabbed or \nrestrained, it breaks free. Your target can either grab you, \nas if it succeeded at using the Grapple action against you, \nor force you to fall and land prone."
+  },
+  "cost": 1,
+  "materials": null,
+  "traits": ["attack"],
+  "trigger": null,
+  "rules": "You have at least one free hand. Your target \ncannot be more than one size larger than you."
+}
