@@ -52,6 +52,11 @@ export class NewCharacterComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
     this.levelUpBonusesService.reset();
+    this.resetRemainingChoicesForm();
+
+    this.newCharacterService.skills = [];
+    this.newCharacterService.languages = [];
+
     this.initAdditionalChoicesForm();
   }
 
@@ -118,8 +123,6 @@ export class NewCharacterComponent implements OnInit, OnDestroy {
       this.initLanguageForm();
       this.gatherSkillProficiencies();
     } else if (event.selectedIndex === 7) {
-      this.newCharacterService.languages = this.addLanguageControl.value;
-
       this.characterData = this.newCharacterService.createNewCharacter();
 
       console.log(this.characterData);
@@ -170,14 +173,13 @@ export class NewCharacterComponent implements OnInit, OnDestroy {
       });
   }
 
-  // TODO: Handle reset correctly
   private resetRemainingChoicesForm(): void {
-    this.chosenSkills = [];
+    this.chosenSkills = this.newCharacterService.skills ?? [];
     this.skillsToChange = 0;
-    this.additionalSkills.setValue([]);
+    this.additionalSkills.setValue(this.newCharacterService.skills ?? []);
 
     this.languagesToAdd = 0;
-    this.addLanguageControl.setValue([]);
+    this.addLanguageControl.setValue(this.newCharacterService.languages ?? []);
   }
 
   private initLanguageForm(): void {
@@ -199,7 +201,8 @@ export class NewCharacterComponent implements OnInit, OnDestroy {
 
           this.chosenSkills = chosenSkills;
 
-          this.skillsToChange = skillsToChange;
+          this.skillsToChange =
+            skillsToChange - this.additionalSkills.value.length;
         },
       });
   }

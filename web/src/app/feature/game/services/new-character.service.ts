@@ -52,6 +52,10 @@ export class NewCharacterService {
     this._languages = languages;
   }
 
+  public get languages(): string[] | undefined {
+    return this._languages;
+  }
+
   public set classData(data: DisplayInitClassData | undefined) {
     this._classData = data;
   }
@@ -98,6 +102,10 @@ export class NewCharacterService {
     this._skills = data;
   }
 
+  public get skills(): Skill[] | undefined {
+    return this._skills;
+  }
+
   public get raceChoiceCompleted(): boolean {
     return (
       !!this._race &&
@@ -136,7 +144,7 @@ export class NewCharacterService {
     return !!this._characterName && !!this._backstory;
   }
 
-  public get newCaracterCompleted(): boolean {
+  public get newCharacterCompleted(): boolean {
     return (
       this.raceChoiceCompleted &&
       this.backgroundChoiceCompleted &&
@@ -186,6 +194,10 @@ export class NewCharacterService {
       return Math.floor(addedValue / 2);
     };
 
+    const intModifier = this.abilityModifiers
+      ? this.abilityModifiers[Abilities.int]
+      : 0;
+
     this.abilityModifiers = {
       [Abilities.str]: getModifier(
         boosts.filter(item => item === Abilities.str).length -
@@ -212,6 +224,14 @@ export class NewCharacterService {
           flaws.filter(item => item === Abilities.cha).length
       ),
     };
+
+    if (intModifier !== this.abilityModifiers[Abilities.int]) {
+      this.skillsToAdd = 0;
+      this.skills = [];
+
+      this.languagesToAdd = 0;
+      this.languages = [];
+    }
   }
 
   public gatherFeats(): string[] {
@@ -245,7 +265,9 @@ export class NewCharacterService {
       ? this.abilityModifiers[Abilities.int]
       : 0;
 
-    const initialLanguages = [...(this._race?.languages ?? [])];
+    const initialLanguages = this._languages?.length
+      ? this._languages
+      : [...(this._race?.languages ?? [])];
 
     return { languagesToAdd: this.languagesToAdd, initialLanguages };
   }
@@ -384,10 +406,10 @@ export class NewCharacterService {
   }
 
   private gatherSkills(): Skill[] {
-    const skills = this._skills ?? [];
+    let skills = this._skills ?? [];
 
     if (this._background?.proficiencies?.length) {
-      skills.push(
+      skills = skills.concat(
         ...this._background.proficiencies.map(item => ({ ...item, value: 0 }))
       );
     }
