@@ -1,66 +1,34 @@
-# Make RPG great again!
+# *ENG*
+## Deployment
 
-Witam degeneratów
+- project is deployed on `render` at: https://pathfinder-helper-app.onrender.com/
+- after period of inactivity, waking the server up may take some time (free plan)
 
-## Porty
+## Running the Project Locally
 
-- http://localhost:8000 - Web
-- http://localhost:8001 - Api
-- http://localhost:8002 - Taki panel wizualny dla edycji bazy danych (admin/admin)
+First, you need to build and link the `rpg-app-shared-package`. To do this:
 
-## Docker
+Navigate to the `shared` folder:
+- Run `npm install`, and after installation, run `npm run build`.
+- Navigate to the `dist` folder using `cd dist`.
+- Create a local link with the command: `npm link`.
 
-W celu postawienia projektu wymagane sa:
+In both the `web` and `api` folders, you need to link the package:
+- Run `npm install`.
+- Link the package with the command: `npm link rpg-app-shared-package`.
 
-- **docker [dla Ubuntu polecam](https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-20-04)**
-- **docker compose [dla Ubuntu polecam](https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-compose-on-ubuntu-20-04)**
+To start the project locally:
 
-W teorii aby apka wystartowała wystarczy w katalogu głownym wpisć
+- In one terminal: navigate to the `api` folder and run: `npm run start-dev`
+- In another terminal: navigate to the web folder and run: `npm run start`
 
-```bash
-# Będąc z folderze z plikiem docker-compose.yaml
-docker compose up -d
-```
+The application will be available at: `http://localhost:4200/`
 
-Jednak mogą się pojawić jakies problemy z zajętymi portami czy coś, więc piszcie w razie potrzeby
+# *PL*
+## Deployment
 
-## Głowne polecenia dockera
-
-```bash
-# Będąc z folderze z plikiem docker-compose.yaml
-# Wyłącza nam wszystkie kontenery związane z projektem
-docker compose down
-```
-
-```bash
-# Restartuje nam całość, czyści jakieś tam cache itd, taka bezpieczna komenda do resetu jeżeli dzieją się dziwne rzeczy
-docker compose up -d -build --force-recreate
-```
-
-```bash
-# Listuje istniejące kontenery, ich ID, nazwy, porty itd...
-docker ps
-```
-
-```bash
-# Podgląd dla logów konsoli wewnątrz kontenera
-docker logs -f <CONTAINER_ID/NAME np. dd_web>
-```
-
-```bash
-# Resetuje dany kontener - czasem potrafią się zawiesić, zwłaszcza po włączeniu systemu
-docker container restart <CONTAINER_ID/NAME np. dd_web>
-```
-
-**ISTOTNE**
-W projekcie mamy obrazy noda w wersji apline - takie lekkie, tam nie ma basha stąd na dole zadziała komenda z ash
-
-```bash
-# Odpala nam terminal w trybie interaktywnym danego kontenera - to tutaj powinno się dodawać paczki npm install xyz
-docker exec -it <CONTAINER_ID/NAME> ash
-lub
-docker exec -it <CONTAINER_ID/NAME> bash
-```
+- aplikacja działa na hostingu `render`, dostępna pod linkiem: https://pathfinder-helper-app.onrender.com/
+- po okresie nieaktywności, może być potrzeba odczekania zanim serwer się obudzi (kwestia darmowego planu render'a)
 
 ## Odpalanie projektu lokalnie
 Najpierw trzeba zbudować i zalinkować rpg-app-shared-package. Żeby to zrobić trzeba:
