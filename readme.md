@@ -1,3 +1,7 @@
+# *TODO*
+ - UI design in progress: https://www.figma.com/design/YSvAatuSAxvV1ENe1gPIhm/Pathfinder-Helper?node-id=260-501&t=M1a8JChmIkW6ue57-1
+ - data entry on live environment
+
 # *ENG*
 ## Deployment
 
