@@ -1,62 +1,61 @@
-# Make RPG great again!
+# _TODO_
 
-Witam degeneratów
+- UI design in progress: https://www.figma.com/design/YSvAatuSAxvV1ENe1gPIhm/Pathfinder-Helper?node-id=260-501&t=M1a8JChmIkW6ue57-1
+- data entry on live environment
 
-## Porty
+# _ENG_
 
-- http://localhost:8000 - Web
-- http://localhost:8001 - Api
-- http://localhost:8002 - Taki panel wizualny dla edycji bazy danych (admin/admin)
+## Deployment
 
+- project is deployed on `render` at: https://pathfinder-helper-app.onrender.com/
+- after period of inactivity, waking the server up may take some time (free plan)
 
-## Docker
+## Running the Project Locally
 
-W celu postawienia projektu wymagane sa:
-- **docker [dla Ubuntu polecam](https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-20-04)**
-- **docker compose [dla Ubuntu polecam](https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-compose-on-ubuntu-20-04)**
+First, you need to build and link the `rpg-app-shared-package`. To do this:
 
-W teorii aby apka wystartowała wystarczy w katalogu głownym wpisć
+Navigate to the `shared` folder:
 
-```bash
-# Będąc z folderze z plikiem docker-compose.yaml
-docker compose up -d
-```
+- Run `npm install`, and after installation, run `npm run build`.
+- Navigate to the `dist` folder using `cd dist`.
+- Create a local link with the command: `npm link`.
 
-Jednak mogą się pojawić jakies problemy z zajętymi portami czy coś, więc piszcie w razie potrzeby
+In both the `web` and `api` folders, you need to link the package:
 
-## Głowne polecenia dockera
+- Run `npm install`.
+- Link the package with the command: `npm link rpg-app-shared-package`.
 
-```bash
-# Będąc z folderze z plikiem docker-compose.yaml
-# Wyłącza nam wszystkie kontenery związane z projektem
-docker compose down
-```
+To start the project locally:
 
-```bash
-# Restartuje nam całość, czyści jakieś tam cache itd, taka bezpieczna komenda do resetu jeżeli dzieją się dziwne rzeczy
-docker compose up -d -build --force-recreate
-```
+- In one terminal: navigate to the `api` folder and run: `npm run start-dev`
+- In another terminal: navigate to the web folder and run: `npm run start`
 
-```bash
-# Listuje istniejące kontenery, ich ID, nazwy, porty itd...
-docker ps
-```
+The application will be available at: `http://localhost:4200/`
 
-```bash
-# Podgląd dla logów konsoli wewnątrz kontenera
-docker logs -f <CONTAINER_ID/NAME np. dd_web>
-```
+# _PL_
 
-```bash
-# Resetuje dany kontener - czasem potrafią się zawiesić, zwłaszcza po włączeniu systemu
-docker container restart <CONTAINER_ID/NAME np. dd_web>
-```
+## Deployment
 
-**ISTOTNE**
-W projekcie mamy obrazy noda w wersji apline - takie lekkie, tam nie ma basha stąd na dole zadziała komenda z ash
-```bash
-# Odpala nam terminal w trybie interaktywnym danego kontenera - to tutaj powinno się dodawać paczki npm install xyz
-docker exec -it <CONTAINER_ID/NAME> ash
-lub
-docker exec -it <CONTAINER_ID/NAME> bash
-```
+- aplikacja działa na hostingu `render`, dostępna pod linkiem: https://pathfinder-helper-app.onrender.com/
+- po okresie nieaktywności, może być potrzeba odczekania zanim serwer się obudzi (kwestia darmowego planu render'a)
+
+## Odpalanie projektu lokalnie
+
+Najpierw trzeba zbudować i zalinkować rpg-app-shared-package. Żeby to zrobić trzeba:
+
+- wejść w folder `shared`
+- odpalić `npm install`, po zainstalowaniu `npm run build`
+- `cd dist`
+- stworzyć lokalny link komendą `npm link`
+
+Teraz w obu folderach `web` i `api` trzeba podpiąć link do pakietu:
+
+- `npm install`
+- `npm link rpg-app-shared-package`
+
+Aby włączyć projekt lokalnie:
+
+- w jednym terminalu: z folderu `api`, opdalić `npm run start-dev`
+- w drugim terminalu: z folderu `web`, opdalić `npm run start`
+
+aplikacja będzie dostępna pod: `http://localhost:4200/`
